@@ -1,0 +1,21 @@
+<h1><%= @film.serial %></h1>
+<%= labeled_form_for @film, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.error_messages %>
+  <%= edit_fields_for(@film.phase, f) %> 
+  <%= f.text_field :reserved_for %>
+  <%= f.text_area :note %>
+  <% if @film.phase == "inspection" %>
+    <%= f.fields_for :master_film do |mff| %>
+      <fieldset>
+        <legend>Defects</legend>
+        <%= mff.fields_for :defects do |df| %>
+          <%= render 'defect_fields', f: df %>
+        <% end %></br>
+        <%= link_to_add_fields "Add defect", mff, :defects %>
+      </fieldset>
+    <% end %>
+  <% end %>
+  <%= f.select :phase, @film.valid_destinations, include_blank: true, label: "Move to:" %>
+  <%= movement_fieldsets(@film.phase, f) %>
+  <div class="form-actions"><%= f.submit "Update", class: "btn btn-success" %></div>
+<% end %>

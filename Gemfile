@@ -5,15 +5,6 @@ gem 'jquery-rails', '2.0.2'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'bootstrap-sass', '~> 2.3.0.1'
 gem 'pg', '0.14.1'
-gem 'spring'
-
-gem 'commands', group: [:development, :test]
-
-group :development do
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  gem 'meta_request'
-end
 
 group :assets do
   gem 'sass-rails', '3.2.5'

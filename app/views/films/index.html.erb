@@ -1,0 +1,44 @@
+<% provide :title, "Inventory" %>
+
+<% content_for :sidebar do %>
+  <%= link_to "New Film", new_master_film_path, class: "btn btn-primary" %>
+  <ul class="nav nav-list">
+    <li class="<%= "active" if params[:scope] == 'lamination' %>">
+      <%= link_to "Lamination", films_path('lamination') %></li>
+    <li class="<%= "active" if params[:scope] == 'inspection' %>">
+      <%= link_to "Inspection", films_path('inspection') %></li>
+    <li class="<%= "active" if params[:scope] == 'stock' %>">
+      <%= link_to "Stock", films_path('stock') %></li>
+    <li class="<%= "active" if params[:scope] == 'wip' %>">
+      <%= link_to "WIP", films_path('wip') %></li>
+    <li class="<%= "active" if params[:scope] == 'fg' %>">
+      <%= link_to "FG", films_path('fg') %></li>
+    <li class="<%= "active" if params[:scope] == 'testing' %>">
+      <%= link_to "Test", films_path('testing') %></li>
+    <li class="<%= "active" if params[:scope] == 'nc' %>">
+      <%= link_to "NC", films_path('nc') %></li>
+    <li class="<%= "active" if params[:scope] == 'scrap' %>">
+      <%= link_to "Scrap", films_path('scrap') %></li>
+  </ul>
+<% end %>
+
+<%= form_tag edit_multiple_films_path, method: :get do %>
+  <%= submit_tag "Move selected", class: "btn" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Serial</th>
+        <%= column_headers_for(params[:scope]) %>
+        <th>Reserved</th>
+        <th>Note</th>
+        <th>Updated</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @films %>
+    </tbody>
+  </table>
+<% end %>

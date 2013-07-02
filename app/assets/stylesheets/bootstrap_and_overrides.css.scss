@@ -1,0 +1,19 @@
+@import "bootstrap";
+
+.sidebar-fixed {
+  position: absolute;
+  width: 160px;
+  
+  .btn {
+    margin-left: 15px;
+  }
+}
+
+.header.container-fluid {
+  padding: 0;
+}
+
+.main {
+  margin-left: 160px;
+
+}

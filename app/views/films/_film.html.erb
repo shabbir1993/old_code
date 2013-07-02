@@ -1,0 +1,10 @@
+<tr>
+  <td><%= check_box_tag "film_ids[]", film.id %></td>
+  <td><%= link_to 'Edit', edit_film_path(film) %> <%= link_to('Split', split_film_path(film)) if film.phase == "stock" %></td>
+  <td><%= film.serial %></td>
+  <%= column_values_for(film, params[:scope]) %>
+  <td><%= film.reserved_for %></td>
+  <td><%= film.note %></td>
+  <td><%= film.updated_at %></td>
+  <td><%= film.created_at %></td>
+</tr>
