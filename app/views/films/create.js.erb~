@@ -1,0 +1,5 @@
+<% if @master_film.errors.any? %>
+  $('#film-actions-modal .modal-body').html("<%= j render 'new' %>");
+<% else %>
+  window.location.href = "<%= j session[:return_to] %>"
+<% end %>

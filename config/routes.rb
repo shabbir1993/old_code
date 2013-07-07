@@ -1,18 +1,14 @@
 Pcms::Application.routes.draw do
-  resources :master_films
-
-  resources :films, except: [:show, :index, :destroy] do
+  resources :films, except: [:show, :destroy] do
     member do
       get :split
+      put :create_split
     end
     collection do
       get :edit_multiple
       put :update_multiple
     end
   end
-
-  get '/films/:scope', to: 'films#index', as: :films, 
-                       defaults: { :scope => "lamination" }
 
   get '/imports', to: 'imports#home'
   post '/import_master_films', to: 'imports#import_master_films'

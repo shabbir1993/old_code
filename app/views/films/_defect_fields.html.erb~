@@ -1,6 +1,6 @@
-<fieldset>
-  <%= f.select :defect_type, Defect.allowed_types, include_blank: true %>
-  <%= f.number_field :count %>
-  <%= f.hidden_field :_destroy %>
+<fieldset class="defect-fields">
+  <%= f.input :defect_type, collection: Defect.allowed_types, include_blank: true %>
+  <%= f.input :count, value: 1 %>
+  <%= f.hidden_field :_destroy, as: :hidden %>
   <%= link_to "remove", '#', class: "remove-fields" %>
 </fieldset>

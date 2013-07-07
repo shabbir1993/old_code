@@ -28,7 +28,7 @@ module FilmsHelper
       ['Mix/g', 'Mach', 'Film Type', 'Thinky', 'Chemist', 'Operator']
     when "inspection"
       ['Eff W', 'Eff L', 'Eff Area', 'Defects']
-    when "stock", "nc", "scrap", "testing"
+    when "large_stock","small_stock", "nc", "scrap", "testing"
       ['Shelf', 'Width', 'Length', 'Area']
     when "wip", "fg"
       ['Shelf', 'Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',
@@ -53,73 +53,13 @@ module FilmsHelper
   def edit_fields_for(phase, f)
     case phase
     when "lamination"
-      lamination_fields(f)
+      render "lamination_fields", f: f
     when "inspection"
-      inspection_fields(f)
+      render "inspection_fields", f: f
     when "stock", "nc", "scrap", "testing"
-      backend_fields(f)
+      render "backend_fields", f: f
     when "wip", "fg"
-      checkout_fields(f)
-    end
-  end
-
-  def lamination_fields(f)
-    f.fields_for :master_film do |mff|
-      mff.number_field(:mix_mass) +
-      mff.collection_select(:machine_id, Machine.all, :id, :code) +
-      mff.text_field(:film_code) +
-      mff.text_field(:thinky_code) +
-      mff.collection_select(:chemist_id, User.chemists, :id, :name) +
-      mff.collection_select(:operator_id, User.operators, :id, :name)
-    end
-  end
-
-  def inspection_fields(f)
-    f.fields_for :master_film do |mff|
-      mff.number_field(:effective_width) +
-      mff.number_field(:effective_length)
-    end
-  end
-
-  def backend_fields(f)
-    f.text_field(:shelf) +
-    f.number_field(:width) +
-    f.number_field(:length)
-  end
-
-  def checkout_fields(f)
-    f.number_field(:width) +
-    f.number_field(:length) +
-    f.text_field(:customer) +
-    f.text_field(:sales_order_code) +
-    f.number_field(:custom_width) +
-    f.number_field(:custom_length) 
-  end
-
-  def movement_fieldsets(phase, f)
-    case phase
-    when "inspection"
-      move_to_checkout_fieldset(f) +
-      move_to_backend_fieldset(f)
-    when "stock"
-      move_to_checkout_fieldset(f)
-    when "wip", "fg"
-      move_to_backend_fieldset(f)
-    end
-  end
-
-  def move_to_checkout_fieldset(f)
-    field_set_tag 'Checkout fields', class: "checkout-fields movement-fields" do
-      f.text_field(:customer) +
-      f.text_field(:sales_order_code) +
-      f.number_field(:custom_width) +
-      f.number_field(:custom_length)
-    end
-  end
-
-  def move_to_backend_fieldset(f)
-    field_set_tag 'Backend fields', class: "backend-fields movement-fields" do
-      f.text_field(:shelf)
+      render "checkout_fields", f: f
     end
   end
 end

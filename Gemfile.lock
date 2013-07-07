@@ -44,6 +44,7 @@ GEM
     bootstrap-sass (2.3.0.1)
       sass (~> 3.2)
     builder (3.0.4)
+    callsite (0.0.11)
     capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -84,6 +85,10 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    meta_request (0.2.5)
+      callsite
+      rack-contrib
+      railties
     mime-types (1.23)
     minitest (4.6.1)
     multi_json (1.7.3)
@@ -93,6 +98,8 @@ GEM
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-contrib (1.1.0)
+      rack (>= 0.9.1)
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -120,6 +127,9 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    simple_form (2.1.0)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -155,11 +165,13 @@ DEPENDENCIES
   factory_girl_rails (= 4.2.1)
   jquery-rails (= 2.0.2)
   launchy (~> 2.2.0)
+  meta_request
   minitest (= 4.6.1)
   pg (= 0.14.1)
   poltergeist!
   rails (= 3.2.11)
   sass-rails (= 3.2.5)
+  simple_form (~> 2.1.0)
   thin (~> 1.5.0)
   turn (~> 0.9.6)
   uglifier (= 1.2.4)

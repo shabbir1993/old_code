@@ -1,0 +1,10 @@
+<fieldset class="checkout-fields movement-fields hide">
+  <%= f.input :customer  %>
+  <%= f.input :sales_order_code  %>
+  <%= f.input :custom_width  %>
+  <%= f.input :custom_length %>
+</fieldset>
+
+<fieldset class= "backend-fields movement-fields">
+  <%= f.input :shelf %>
+</fieldset>

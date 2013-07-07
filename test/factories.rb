@@ -1,19 +1,9 @@
 FactoryGirl.define do
   factory :master_film do
-    sequence(:date_code) { |n| "E#{'%04d' % n }"}
-    sequence(:number) { |n| n } 
-    formula "AB"
-    mix_mass 101.5
-    film_code "ABCD"
-    thinky_code "1"
-    machine
-    association :chemist
-    association :operator
+    sequence(:serial) { |n| "E#{'%04d' % n }-#{'%02d' % n}"}
   end
 
   factory :film do
-    # automatically set
-    # division 2
     phase "lamination"
     master_film
   end

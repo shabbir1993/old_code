@@ -1,9 +1,0 @@
-<fieldset class="<%= "division-" + f.object.division.to_s + "-fields" %>">
-  <legend>
-    <%= @film.master_serial + '-' %>
-    <%= f.number_field :division, label: false, class: "division-field" %>
-  </legend>
-  <%= f.number_field :width %>
-  <%= f.number_field :length %>
-  <%= f.hidden_field :phase, value: "stock" %>
-</fieldset>

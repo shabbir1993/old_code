@@ -1,0 +1,6 @@
+<% if @film.errors.any? %>
+  $('#film-actions-modal .modal-body').html("<%= j render 'split_form' %>");
+  alert("<%= @film.errors.full_messages.first %>");
+<% else %>
+  window.location.href = "<%= j session[:return_to] %>"
+<% end %>

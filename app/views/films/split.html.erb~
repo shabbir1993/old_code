@@ -1,0 +1,2 @@
+<h3 class="text-center">Split</h3>
+<%= render 'split_form' %>
