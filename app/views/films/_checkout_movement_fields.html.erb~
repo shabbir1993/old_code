@@ -4,7 +4,3 @@
   <%= f.input :custom_width  %>
   <%= f.input :custom_length %>
 </fieldset>
-
-<fieldset class= "backend-fields movement-fields hide">
-  <%= f.input :shelf %>
-</fieldset>

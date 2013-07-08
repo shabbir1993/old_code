@@ -1,0 +1,10 @@
+<td><%= film.shelf %></td>
+<td><%= film.customer %></td>
+<td><%= film.sales_order_code %></td>
+<td><%= film.custom_width %></td>
+<td><%= film.custom_length %></td>
+<td><%= number_with_precision(film.custom_area, 2) %></td>
+<td><%= number_to_percentage(film.utilization, precision: 2) %></td>
+<td><%= film.width %></td>
+<td><%= film.length %></td>
+<td><%= number_with_precision(film.area, 2) %></td>

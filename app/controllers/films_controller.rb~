@@ -13,10 +13,9 @@ class FilmsController < ApplicationController
   end
 
   def index
-    @master_film = MasterFilm.new
     safe_scopes = %w{ lamination inspection wip fg testing nc scrap large_stock small_stock }
     if safe_scopes.include? params[:scope]
-      @films = Film.send(params[:scope])
+      @films = Film.send(params[:scope]).page params[:page]
     end
   end
 

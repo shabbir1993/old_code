@@ -30,5 +30,6 @@ class MasterFilm < ActiveRecord::Base
       record = MasterFilm.new(row.to_hash, without_protection: true)
       record.save!(validate: false)
     end
+    ActiveRecord::Base.connection.execute("SELECT setval('master_films_id_seq', (SELECT MAX(id) FROM master_films));")
   end
 end

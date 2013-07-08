@@ -46,3 +46,19 @@ body {
 .inline-fields .control-group:not(:first-child) .controls {
   margin-left: 0
 }
+
+.new-film-link {
+  padding-top: 9px;
+  display: block;
+  height: 30px;
+  border-style: dashed;
+  border-width: 1px;
+
+  &:hover {
+    background-color: #FCF8E3;
+  }
+}
+
+.pagination {
+  float: right;
+}

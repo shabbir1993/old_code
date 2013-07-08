@@ -95,20 +95,29 @@ describe "Inventory integration" do
           click_link 'Edit'
         end
       end
-      
-      it "unhides backend fields and moves film to stock given valid attributes" do
+
+      it "displays correct movement fields on destination selection" do
         select 'stock', from: 'Move to'
-        page.has_selector?('.backend-fields', visible: true).must_equal true
+        page.has_selector?('#backend-destination-fields', visible: true).must_equal true
+        select 'wip', from: 'Move to'
+        page.has_selector?('#backend-destination-fields', visible: false).must_equal true
+        page.has_selector?('#checkout-destination-fields', visible: true).must_equal true
+      end
+
+      
+      it "updates fields and moves film to stock given valid attributes" do
+        select 'stock', from: 'Move to'
         fill_in 'Shelf', with: "M1"
-        fill_in 'Width', with: "60"
-        fill_in 'Length', with: "60"
         click_button 'Update'
+        save_screenshot('ss.png', full: true)
         page.has_selector?('tbody td', text: @inspection_film.serial).must_equal false
         click_link 'Stock'
-        within "tbody td", text: @inspection_film.serial do
-          page.has_selector?('tbody td', text: "M1").must_equal true
+        within "tbody", text: @inspection_film.serial do
+          page.has_selector?('td', text: "M1").must_equal true
         end
       end
+
+      it "displays error messages given invalid attributes"
 
       it "adds defects given valid attributes" do
         click_link "Add defect"
@@ -133,7 +142,6 @@ describe "Inventory integration" do
       before do
         FactoryGirl.create(:defect, count: 1, master_film: @inspection_film.master_film)
         FactoryGirl.create(:defect, count: 1, master_film: @inspection_film.master_film)
-        visit films_path(scope: "inspection")
         within('tr', text: @inspection_film.serial) do
           click_link 'Edit'
         end

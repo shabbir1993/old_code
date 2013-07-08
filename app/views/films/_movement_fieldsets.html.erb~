@@ -5,6 +5,6 @@
   <%= f.input :custom_length %>
 </fieldset>
 
-<fieldset class= "backend-fields movement-fields">
+<fieldset class= "backend-fields movement-fields hide">
   <%= f.input :shelf %>
 </fieldset>

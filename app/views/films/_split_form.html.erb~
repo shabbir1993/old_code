@@ -5,7 +5,6 @@
     <%= f.input :length, label: false, placeholder: "Length", input_html: { class: "input-small" } %>
   </div>
   <%= f.fields_for :master_film do |mff| %>
-    <%= mff.object.each do %>
     <%= mff.fields_for :films do |ff| %>
       <% if ff.object.new_record? %>
         <div class="inline-fields split-film">

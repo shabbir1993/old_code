@@ -1,0 +1,4 @@
+<td><%= film.effective_width %></td>
+<td><%= film.effective_length %></td>
+<td><%= number_with_precision(film.effective_area, precision: 2) %></td>
+<td class="defect-count"><%= film.defect_count %></td>

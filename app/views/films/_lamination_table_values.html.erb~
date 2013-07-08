@@ -1,0 +1,6 @@
+<td><%= film.mix_mass %></td>
+<td><%= film.machine_code %></td>
+<td><%= film.film_cody %></td>
+<td><%= film.thinky_code %></td>
+<td><%= film.chemist_name %></td>
+<td><%= film.operator_name %></td>

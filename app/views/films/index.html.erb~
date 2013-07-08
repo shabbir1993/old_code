@@ -1,7 +1,6 @@
 <% provide :title, "Inventory" %>
 
 <% content_for :sidebar do %>
-  <%= link_to "Enter film", new_film_path, { :"data-toggle" => "modal", :"data-target" => "#film-actions-modal" } %>
   <ul class="nav nav-list">
     <li class="<%= "active" if params[:scope] == 'lamination' %>">
       <%= link_to "Lamination", films_path(scope: 'lamination') %></li>
@@ -40,6 +39,13 @@
         <th>Updated</th>
         <th>Created</th>
       </tr>
+      <% if params[:scope] == "lamination" %>
+        <tr>
+          <th colspan="100%">
+            <%= link_to "Enter film", new_film_path, { class: "new-film-link text-center", :"data-toggle" => "modal", :"data-target" => "#film-actions-modal" } %>
+          </th>
+        </tr>
+      <% end %>
     </thead>
     <tbody>
       <%= render @films %>

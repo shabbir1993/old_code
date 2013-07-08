@@ -1,27 +1,4 @@
 module FilmsHelper
-  def variable_columns
-    { 'Eff W' => 'effective_width',
-      'Eff L' => 'effective_length',
-      'Eff Area' => 'effective_area',
-      'Defects' => 'defect_count',
-      'Mix/g' => 'mix_mass', 
-      'Mach' => 'machine_code', 
-      'Film Type' => 'film_code', 
-      'Thinky' => 'thinky_code', 
-      'Chemist' => 'chemist_name', 
-      'Operator' => 'operator_name', 
-      'Shelf' => 'shelf',
-      'Width' => 'width',
-      'Length' => 'length',
-      'Area' => 'area',
-      'Customer' => 'customer',
-      'SO#' => 'sales_order_code',
-      'Custom W' => 'custom_width',
-      'Custom L' => 'custom_length',
-      'Custom Area' => 'custom_area',
-      'Util' => 'utilization' }
-  end
-  
   def visible_columns_for(scope)
     case scope
     when "lamination"
@@ -43,11 +20,18 @@ module FilmsHelper
       content_tag(:th, header)
     end.join.html_safe
   end
-  
-  def column_values_for(film, scope)
-    visible_columns_for(scope).map do |key|
-      content_tag(:td, film.send(variable_columns[key]), class: variable_columns[key])
-    end.join.html_safe
+
+  def table_values_for(scope, film)
+    case scope
+    when "lamination"
+      render "lamination_table_values", film: film
+    when "inspection"
+      render "inspection_table_values", film: film
+    when "large_stock","small_stock", "nc", "scrap", "testing"
+      render "backend_table_values", film: film
+    when "wip", "fg"
+      render "checkout_table_values", film: film
+    end
   end
 
   def edit_fields_for(phase, f)
@@ -60,33 +44,6 @@ module FilmsHelper
       render "backend_fields", f: f
     when "wip", "fg"
       render "checkout_fields", f: f
-    end
-  end
-
-  def movement_fieldsets(phase, f)
-    case phase
-    when "inspection"
-      move_to_checkout_fieldset(f) +
-      move_to_backend_fieldset(f)
-    when "stock"
-      move_to_checkout_fieldset(f)
-    when "wip", "fg"
-      move_to_backend_fieldset(f)
-    end
-  end
-
-  def move_to_checkout_fieldset(f)
-    field_set_tag 'Checkout fields', class: "checkout-fields movement-fields" do
-      f.input(:customer) +
-      f.input(:sales_order_code) +
-      f.input(:custom_width) +
-      f.input(:custom_length)
-    end
-  end
-
-  def move_to_backend_fieldset(f)
-    field_set_tag 'Backend fields', class: "backend-fields movement-fields" do
-      f.input(:shelf)
     end
   end
 end

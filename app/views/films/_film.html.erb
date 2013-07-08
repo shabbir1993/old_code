@@ -5,9 +5,9 @@
   <%= link_to('Split', split_film_path(film), { :"data-toggle" => "modal", :"data-target" => "#film-actions-modal" }) if film.phase == "stock" %>
   </td>
   <td><%= film.serial %></td>
-  <%= column_values_for(film, params[:scope]) %>
+  <%= table_values_for(params[:scope], film) %>
   <td><%= film.reserved_for %></td>
   <td><%= film.note %></td>
-  <td><%= film.updated_at %></td>
-  <td><%= film.created_at %></td>
+  <td><%= l film.updated_at, format: :short %></td>
+  <td><%= l film.created_at, format: :short %></td>
 </tr>
