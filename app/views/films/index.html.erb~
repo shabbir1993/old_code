@@ -22,11 +22,14 @@
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
+    <li>count: <%= @films.count %></li>
+    <li>count: <%= @films.sum(:area) %></li>
   </ul>
 <% end %>
 
 <%= form_tag edit_multiple_films_path, method: :get, remote: true, id: "inventory-form" do %>
   <%= submit_tag "Move selected", class: "btn" %>
+  <%= paginate @films %>
   <table class="inventory table table-striped">
     <thead>
       <tr>
