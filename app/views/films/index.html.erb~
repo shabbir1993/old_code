@@ -23,7 +23,7 @@
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
     <li>count: <%= @films.count %></li>
-    <li>count: <%= @films.sum(&:area) %></li>
+    <li>total sqft: <%= @films.sum(&:area) %></li>
   </ul>
 <% end %>
 
