@@ -7,7 +7,7 @@ class Defect < ActiveRecord::Base
   validates :master_film_id, presence: true
 
   def self.allowed_types
-    ['white spot']
+    ['Air Bubble', 'Clarity', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS']
   end
 
   def self.import(file)
