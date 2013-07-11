@@ -15,7 +15,8 @@ class FilmsController < ApplicationController
   def index
     safe_scopes = %w{ lamination inspection wip fg testing nc scrap large_stock small_stock }
     if safe_scopes.include? params[:scope]
-      @films = Film.send(params[:scope]).page(params[:page])
+      @films = Film.send(params[:scope]).joins(:master_film).order('master_films.serial DESC').page(params[:page])
+      @all_scope = Film.send(params[:scope])
     end
   end
 

@@ -22,7 +22,9 @@
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
-    <li>count: <%= @films.count %></li>
+    <li>count: <%= @all_scope.count %></li>
+    <li>total sqft: <%= number_with_precision(@all_scope.to_a.sum { |f| f.area.to_s.to_d }, precision: 2) %></li>
+    <li>ip: <%= request.remote_ip %></li>
   </ul>
 <% end %>
 

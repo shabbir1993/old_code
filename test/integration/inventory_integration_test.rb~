@@ -1,6 +1,7 @@
 describe "Inventory integration" do
   before do 
     Capybara.current_driver = Capybara.javascript_driver
+    page.driver.headers = { "Authorization" => ActionController::HttpAuthentication::Basic.encode_credentials("frodo", "thering") }
     visit films_path(scope: "lamination")
   end
 
@@ -121,7 +122,7 @@ describe "Inventory integration" do
 
       it "adds defects given valid attributes" do
         click_link "Add defect"
-        select 'white spot', from: 'Defect type'
+        select 'White Spot', from: 'Defect type'
         fill_in 'Count', with: 3
         click_button 'Update'
         within('tr', text: @inspection_film.serial) do

@@ -14,7 +14,7 @@ class Film < ActiveRecord::Base
   validates :master_film_id, presence: true
   validates :width, :length, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
 
-  default_scope joins(:master_film).order('master_films.name')
+  default_scope joins(:master_film).order('master_films.serial')
   scope :phase, lambda { |phase| where(phase: phase) }
   scope :small, where('width*length/144 < ?', 16)
   scope :large, where('width*length/144 >= ? or width IS NULL or length IS NULL', 16)
