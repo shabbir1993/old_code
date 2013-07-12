@@ -110,13 +110,14 @@ describe "Inventory integration" do
         select 'stock', from: 'Move to'
         fill_in 'Shelf', with: "M1"
         click_button 'Update'
-        save_screenshot('ss.png', full: true)
         page.has_selector?('tbody td', text: @inspection_film.serial).must_equal false
         click_link 'Stock'
         within "tbody", text: @inspection_film.serial do
           page.has_selector?('td', text: "M1").must_equal true
         end
       end
+
+      it "copies effective dimensions to film dimensions"
 
       it "displays error messages given invalid attributes"
 

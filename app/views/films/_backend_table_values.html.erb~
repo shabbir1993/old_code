@@ -1,4 +1,0 @@
-<td><%= film.shelf %></td>
-<td><%= film.width %></td>
-<td><%= film.length %></td>
-<td><%= number_with_precision(film.area, precision: 2) %></td>

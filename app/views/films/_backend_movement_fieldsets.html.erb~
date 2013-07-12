@@ -1,3 +1,0 @@
-<fieldset class= "backend-destination-fields destination-fields hide">
-  <%= f.input :shelf %>
-</fieldset>

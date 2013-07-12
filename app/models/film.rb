@@ -9,6 +9,7 @@ class Film < ActiveRecord::Base
   accepts_nested_attributes_for :master_film
 
   before_create :set_division
+  after_commit :copy_master_dimensions
 
   validates :phase, presence: true
   validates :master_film_id, presence: true
@@ -91,6 +92,11 @@ class Film < ActiveRecord::Base
 
   def set_division
     self.division ||= sibling_films.count + 1
+  end
+
+  def copy_master_dimensions
+    self.width ||= master_film.effective_width
+    self.length ||= master_film.effective_length
   end
 
   def self.import(file)
