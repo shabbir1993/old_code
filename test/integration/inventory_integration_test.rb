@@ -104,7 +104,6 @@ describe "Inventory integration" do
         page.has_selector?('#backend-destination-fields', visible: false).must_equal true
         page.has_selector?('#checkout-destination-fields', visible: true).must_equal true
       end
-
       
       it "updates fields and moves film to stock given valid attributes" do
         select 'stock', from: 'Move to'

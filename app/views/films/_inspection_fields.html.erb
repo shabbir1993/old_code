@@ -1,6 +1,4 @@
-<%= f.fields_for :master_film do |mff| %>
-  <div class="inline-fields">
-    <%= mff.input :effective_width, label: "Effective", placeholder: "Width", input_html: { class: "input-small" } %> x
-    <%= mff.input :effective_length, label: false, placeholder: "Length", input_html: { class: "input-small" } %>
-  </div>
-<% end %>
+<div class="inline-fields">
+  <%= f.input :inspection_width, label: "Inspection", placeholder: "Width", input_html: { class: "input-small" } %> x
+  <%= f.input :inspection_length, label: false, placeholder: "Length", input_html: { class: "input-small" } %>
+</div>

@@ -25,24 +25,14 @@ describe Film do
     film.phase.must_equal "lamination"
   end
 
-  it "sets width and length to master film's effective width and effective length after save if nil" do
-    film.width = nil
-    film.length = nil
-    film.master_film.effective_width = 50
-    film.master_film.effective_length = 50
+  it "inspection dimensions set film dimensions and master film effective dimensions" do
+    film.inspection_width = 1
+    film.inspection_length = 2
     film.save!
-    film.width.must_equal 50
-    film.length.must_equal 50
-  end
-
-  it "does not set width and length to master film's effective width and effective length on save if not nil" do
-    film.width = 40
-    film.length = 40
-    film.master_film.effective_width = 50
-    film.master_film.effective_length = 50
-    film.save!
-    film.width.must_equal 40
-    film.length.must_equal 40
+    film.width.must_equal 1
+    film.length.must_equal 2
+    film.master_film.effective_width.must_equal 1
+    film.master_film.effective_length.must_equal 2
   end
 
   it "valid_destinations must return an array" do

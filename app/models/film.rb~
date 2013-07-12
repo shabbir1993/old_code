@@ -1,5 +1,5 @@
 class Film < ActiveRecord::Base
-  attr_accessible :destination, :width, :length, :custom_width, :custom_length, :reserved_for, :note, :sales_order_code, :customer, :shelf, :master_film_attributes, :splits, :inspection_width, :inspection_length
+  attr_accessible :destination, :width, :length, :custom_width, :custom_length, :reserved_for, :note, :sales_order_code, :customer, :shelf, :master_film_attributes, :splits
 
   belongs_to :master_film
   delegate :formula, :mix_mass, :film_code, :thinky_code, :machine_code, 
