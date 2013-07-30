@@ -24,3 +24,8 @@
   <%= file_field_tag :file %>
   <%= submit_tag "Import" %>
 <% end %>
+<h2>Import film movements</h2>
+<%= form_tag import_film_movements_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>

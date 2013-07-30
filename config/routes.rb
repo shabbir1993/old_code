@@ -16,6 +16,7 @@ Pcms::Application.routes.draw do
   post 'import_users', to: 'imports#import_users'
   post 'import_machines', to: 'imports#import_machines'
   post 'import_defects', to: 'imports#import_defects'
+  post 'import_film_movements', to: 'imports#import_film_movements'
 
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history

@@ -26,5 +26,10 @@ class ImportsController < ApplicationController
     Defect.import(params[:file])
     redirect_to imports_path, notice: "Defects imported."
   end
+
+  def import_film_movements
+    FilmMovements.import(params[:file])
+    redirect_to imports_path, notice: "Film movements imported."
+  end
 end
 
