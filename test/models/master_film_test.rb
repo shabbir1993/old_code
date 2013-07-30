@@ -1,28 +1,24 @@
+require 'test_helper'
+
 describe MasterFilm do
   let(:master_film) { FactoryGirl.build(:master_film) }
 
-  it "effective area returns decimal given effective width and effective length" do
-    master_film.effective_width = 1
-    master_film.effective_length = 2
-    master_film.effective_area.must_be_instance_of BigDecimal
+  it "creates nested defects" do
+    before_count = Defect.count
+    FactoryGirl.create(:master_film, defects_attributes: [FactoryGirl.attributes_for(:defect)])
+    Defect.count.must_equal before_count + 1
   end
 
-  it "effective area returns nil without effective width" do
-    master_film.effective_width = nil
-    master_film.effective_length = 1
-    master_film.effective_area.must_equal nil
+  it "creates nested films given required attributes" do
+    before_count = Film.count
+    FactoryGirl.create(:master_film, films_attributes: [{ width: 1, length: 2, phase: "stock" }])
+    Film.count.must_equal before_count + 1
   end
 
-  it "effective area returns nil without effective length" do
-    master_film.effective_width = 1
-    master_film.effective_length = nil
-    master_film.effective_area.must_equal nil
-  end
-
-  it "defect count returns the correct calculation" do
-    master_film.save!
-    2.times { master_film.defects.create!(defect_type: "white spot", count: 3) }
-    master_film.defect_count.must_equal 6
+  it "rejects nested films without required attributes" do
+    before_count = Defect.count
+    FactoryGirl.create(:master_film, films_attributes: [{ phase: "stock" }])
+    Film.count.must_equal before_count
   end
 
   it "requires a serial" do
@@ -30,10 +26,49 @@ describe MasterFilm do
     master_film.invalid?(:serial).must_equal true
   end
 
+  it "rejects invalid serials on create" do
+    invalid_serials = ["CD121-2", "4121-4", "J12125", "E0405_2", "a0304-12", "G1212-12a"]
+    invalid_serials.each do |serial|
+      proc { FactoryGirl.create(:master_film, serial: serial) }.must_raise ActiveRecord::RecordInvalid
+    end
+  end
+  
+  it "accepts valid serials" do
+    valid_serials = ["C1212-01", "D4163-13"]
+    valid_serials.each do |serial|
+      proc { FactoryGirl.create(:master_film, serial: serial) }.must_be_silent
+    end
+  end
+
   it "rejects duplicate serials" do
+    puts master_film.serial
     duplicate_master_film = FactoryGirl.create(:master_film, 
-                                              serial: master_film.serial) 
+                                               serial: master_film.serial) 
     master_film.invalid?(:serial).must_equal true
+  end
+
+  it "calculates correct effective area given effective dimensions" do
+    master_film.effective_width = 60
+    master_film.effective_length = 60
+    master_film.effective_area.must_equal 25
+  end
+
+  it "has a nil effective area given nil effective width" do
+    master_film.effective_width = nil
+    master_film.effective_length = 1
+    master_film.effective_area.must_equal nil
+  end
+
+  it "has a nil effective area given nil effective length" do
+    master_film.effective_width = 1
+    master_film.effective_length = nil
+    master_film.effective_area.must_equal nil
+  end
+
+  it "calculates correct defect count" do
+    master_film.save!
+    2.times { master_film.defects.create!(defect_type: "white spot", count: 2) }
+    master_film.defect_count.must_equal 4
   end
 
   it "machine_code returns machine's code" do

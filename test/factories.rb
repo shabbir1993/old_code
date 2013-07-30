@@ -1,11 +1,17 @@
 FactoryGirl.define do
   factory :master_film do
-    sequence(:serial) { |n| "E#{'%04d' % n }-#{'%02d' % n}"}
+    sequence(:serial) { |n| "E#{ ('%04d' % n)[-4, 4] }-#{ ('%02d' % n)[-2, 2] }"}
   end
 
   factory :film do
     phase "lamination"
     master_film
+  end
+
+  factory :film_movement do
+    from "stock"
+    to "wip"
+    film
   end
 
   factory :user do
@@ -26,7 +32,7 @@ FactoryGirl.define do
   end
 
   factory :defect do
-    defect_type "white spot"
+    defect_type "White Spot"
     count 2
     master_film
   end

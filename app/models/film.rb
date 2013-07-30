@@ -1,19 +1,21 @@
 class Film < ActiveRecord::Base
-  attr_accessible :destination, :width, :length, :custom_width, :custom_length, :reserved_for, :note, :sales_order_code, :customer, :shelf, :master_film_attributes, :splits, :inspection_width, :inspection_length
+  attr_accessible :destination, :width, :length, :custom_width, :custom_length,
+    :reserved_for, :note, :sales_order_code, :customer, :shelf,
+    :master_film_attributes, :splits, :effective_width, :effective_length,
+    :phase
 
   belongs_to :master_film
-  delegate :formula, :mix_mass, :film_code, :thinky_code, :machine_code, 
-           :chemist_name, :operator_name, :effective_width, :effective_length, 
-           :effective_area, :defect_count, to: :master_film
+  has_many :film_movements
+
+  delegate :formula, :mix_mass, :film_code, :thinky_code, :machine_code,
+    :chemist_name, :operator_name, :effective_width, :effective_length,
+    :effective_area, :defect_count, to: :master_film
 
   accepts_nested_attributes_for :master_film
 
   before_create :set_division
-  after_save :copy_master_dimensions
 
   validates :phase, presence: true
-  validates :master_film_id, presence: true
-  validates :width, :length, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
 
   scope :phase, lambda { |phase| where(phase: phase) }
   scope :small, where('width*length/144 < ?', 16)
@@ -31,26 +33,23 @@ class Film < ActiveRecord::Base
   def destination
   end
 
-  def destination=(phase)
-    self.phase = phase if phase.present?
+  def destination=(to_phase)
+    if to_phase.present?
+      from_phase = to_phase == "lamination" ? "raw material" : phase
+      self.phase = to_phase
+      movement = film_movements.build(from: from_phase, to: to_phase, area: area)
+      movement.save!
+    end
   end
 
-  def inspection_width
-    master_film.effective_width
-  end
-
-  def inspection_width=(width)
+  def effective_width=(width)
     if width.present?
       self.width = width
       master_film.effective_width = width
     end
   end
 
-  def inspection_length
-    master_film.effective_length
-  end
-
-  def inspection_length=(length)
+  def effective_length=(length)
     if length.present?
       self.length = length
       master_film.effective_length = length
@@ -59,10 +58,6 @@ class Film < ActiveRecord::Base
 
   def serial
     master_film.serial + "-" + division.to_s
-  end
-
-  def master_serial
-    master_film.serial
   end
 
   def area
@@ -100,26 +95,16 @@ class Film < ActiveRecord::Base
     end
   end
 
-  def split(count)
-    splits = []
-    count.times do 
-      splits << master_film.films.build
-    end
-    splits
-  end
-
   def sibling_films
     Film.where(master_film_id: master_film_id)
   end
 
-  def set_division
-    self.division ||= sibling_films.count + 1
+  def sibling_count
+    sibling_films.count
   end
 
-  def copy_master_dimensions
-    master_film.effective_width ||= width
-    master_film.effective_length ||= length
-    master_film.save
+  def set_division
+    self.division ||= sibling_films.count + 1
   end
 
   def self.import(file)
@@ -127,6 +112,7 @@ class Film < ActiveRecord::Base
       record = Film.new(row.to_hash, without_protection: true)
       record.save!(validate: false)
     end
-    ActiveRecord::Base.connection.execute("SELECT setval('films_id_seq', (SELECT MAX(id) FROM films));")
+    ActiveRecord::Base.connection.execute("SELECT setval('films_id_seq',
+                                          (SELECT MAX(id) FROM films));") 
   end
 end

@@ -1,7 +1,8 @@
+require 'test_helper'
+
 describe "Imports integration" do
   before do
-    Capybara.current_driver = Capybara.javascript_driver
-    page.driver.headers = { "Authorization" => ActionController::HttpAuthentication::Basic.encode_credentials("frodo", "thering") }
+    http_login
     visit imports_path
   end
 

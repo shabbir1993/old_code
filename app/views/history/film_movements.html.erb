@@ -1,0 +1,25 @@
+<% provide :title, "History" %>
+
+<% content_for :sidebar do %>
+  <ul class="nav nav-list">
+    <li class="<%= "active" if params[:action] == 'film_movements' %>">
+      <%= link_to "Film movements", film_movements_history_path %></li>
+    <li class="<%= "active" if params[:action] == 'fg_film_movements' %>">
+      <%= link_to "FG movements", fg_film_movements_history_path %></li>
+  </ul>
+<% end %>
+
+<table class="film-movements-history table table-striped">
+  <thead>
+    <tr>
+      <th>Serial</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Area</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "film_movement", collection: @film_movements %>
+  </tbody>
+</table>

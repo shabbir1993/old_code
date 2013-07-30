@@ -1,3 +1,5 @@
+require 'test_helper'
+
 describe Machine do
   let (:machine) { FactoryGirl.build(:machine) }
 

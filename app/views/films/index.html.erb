@@ -22,10 +22,15 @@
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
-    <li>count: <%= @all_scope.count %></li>
-    <li>total sqft: <%= number_with_precision(@all_scope.to_a.sum { |f| f.area.to_s.to_d }, precision: 2) %></li>
-    <li>ip: <%= request.remote_ip %></li>
   </ul>
+  <div class="summary">
+    <span class="count">count: <%= @film_areas.count %></span>
+    <br>
+    <span class="total-sqft">total sqft: <%= number_with_precision(@film_areas.inject(0, :+),
+      precision: 2) %></span>
+    <br>
+    <span>ip: <%= request.remote_ip %></span>
+  </div>
 <% end %>
 
 <%= form_tag edit_multiple_films_path, method: :get, remote: true, id: "inventory-form" do %>
@@ -37,6 +42,7 @@
         <th></th>
         <th></th>
         <th>Serial</th>
+        <th>Formula</th>
         <%= column_headers_for(params[:scope]) %>
         <th>Reserved</th>
         <th>Note</th>

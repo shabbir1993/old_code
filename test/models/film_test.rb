@@ -1,117 +1,19 @@
+require 'test_helper'
+
 describe Film do
   let(:film) { FactoryGirl.build(:film) }
 
-  it "has a serial" do
-    film.serial.empty?.must_equal false
+  it "can change nested master film attributes" do
+    film.save!
+    film.update_attributes( master_film_attributes: { film_code: "new code" })
+    film.master_film.film_code.must_equal "new code"
   end
 
   it "sets correct division on create" do
-    FactoryGirl.create(:film, master_film_id: film.master_film_id)
+    first_film = FactoryGirl.create(:film, master_film_id: film.master_film_id)
+    next_division = first_film.division + 1
     film.save!
-    film.division.must_equal 2
-  end
-
-  it "destination setter sets phase if not empty" do
-    film.phase = "lamination"
-    film.destination = "inspection"
-    film.save!
-    film.phase.must_equal "inspection"
-  end
-
-  it "destination setter does not set phase if empty" do
-    film.phase = "lamination"
-    film.destination = ""
-    film.save!
-    film.phase.must_equal "lamination"
-  end
-
-  it "inspection dimensions set film dimensions and master film effective dimensions" do
-    film.inspection_width = 1
-    film.inspection_length = 2
-    film.save!
-    film.width.must_equal 1
-    film.length.must_equal 2
-    film.master_film.effective_width.must_equal 1
-    film.master_film.effective_length.must_equal 2
-  end
-
-  it "valid_destinations must return an array" do
-    film.valid_destinations.must_be_instance_of Array
-  end
-
-  it "effective_width returns master film effective width" do
-    film.effective_width.must_equal film.master_film.effective_width
-  end
-  
-  it "effective_length returns master film effective length" do
-    film.effective_length.must_equal film.master_film.effective_length
-  end
-
-  it "effective_area returns master film effective area" do
-    film.effective_area.must_equal film.master_film.effective_area
-  end
-
-  it "area returns nil with no width or length" do
-    film.width = nil
-    film.area.must_equal nil
-  end
-
-  it "area returns decimal given width and length" do
-    film.width = 1
-    film.length = 2
-    film.area.must_be_instance_of BigDecimal
-  end
-
-  it "custom area returns nil with no custom width or custom area" do
-    film.custom_length = nil
-    film.custom_area.must_equal nil
-  end
-
-  it "custom area returns decimal with custom width and custom length" do
-    film.custom_width = 1
-    film.custom_length = 2
-    film.custom_area.must_be_instance_of BigDecimal
-  end
-
-  it "utilization returns nil with no width, length, custom width or custom length" do
-    film.width = nil
-    film.utilization.must_equal nil
-  end
-
-  it "utilization returns decimal given width, length, custom width or custom length" do
-    film.width = 1
-    film.length = 2
-    film.custom_width = 1
-    film.custom_length = 2
-    film.utilization.must_be_instance_of BigDecimal
-  end
-
-  it "defect_count returns master film defect count" do
-    film.defect_count.must_equal film.master_film.defect_count
-  end
-
-  it "mix_mass returns master film mix mass" do
-    film.mix_mass.must_equal film.master_film.mix_mass
-  end
-
-  it "machine_code returns master film machine_code" do
-    film.machine_code.must_equal film.master_film.machine_code
-  end
-
-  it "film_code returns master film film code" do
-    film.film_code.must_equal film.master_film.film_code
-  end
-
-  it "thinky_code returns master film thinky code" do
-    film.thinky_code.must_equal film.master_film.thinky_code
-  end
-
-  it "chemist_name returns master film chemist_name" do
-    film.chemist_name.must_equal film.master_film.chemist_name
-  end
-
-  it "operator_name returns master film operator_name" do
-    film.operator_name.must_equal film.master_film.operator_name
+    film.division.must_equal next_division
   end
 
   it "requires a phase" do
@@ -119,62 +21,179 @@ describe Film do
     film.invalid?(:phase).must_equal true
   end
 
-  it "requires a master film id" do
-    film.master_film_id = nil
-    film.invalid?(:master_film_id).must_equal true
-  end
+  describe "with phase set to lamination" do
+    before do 
+      film.phase = "stock"
+      film.width = 60
+      film.length = 60
+    end
 
-  it "rejects negative widths" do
-    film.width = -1
-    film.invalid?(:width).must_equal true
-  end
+    it "destination setter sets phase if not empty" do
+      film.destination = "wip"
+      film.save!
+      film.phase.must_equal "wip"
+    end
 
-  it "rejects negative lengths" do
-    film.length = -1
-    film.invalid?(:length).must_equal true
-  end
+    it "destination setter does not set phase if empty" do
+      film.destination = ""
+      film.save!
+      film.phase.must_equal "stock"
+    end
 
-  it "split builds and returns new sibling films" do
-    film.save!
-    film.split(2).each do |s|
-      s.master_film_id.must_equal film.master_film_id
+    it "destination setter creates a new film movement with correct attributes" do
+      movement_count = film.film_movements.count
+      film.destination = "wip"
+      film.save!
+      film.film_movements.count.must_equal movement_count + 1
+      film.film_movements.first.from.must_equal "stock"
+      film.film_movements.first.to.must_equal "wip"
+      film.film_movements.first.area.must_equal 25
     end
   end
 
-  it "phase scope should return specified phase film" do
+  it "effective dimensions sets attributes if not nil" do
+    film.effective_width = 1
+    film.effective_length = 2
+    film.save!
+    film.width.must_equal 1
+    film.length.must_equal 2
+    film.effective_width.must_equal 1
+    film.effective_length.must_equal 2
+  end
+
+  it "effective dimensions does not set attributes if nil" do
+    film.width = 3
+    film.length = 3
+    film.master_film.effective_width = 3
+    film.master_film.effective_length = 3
+    film.effective_width = nil
+    film.effective_length = nil
+    film.save!
+    film.width.must_equal 3
+    film.length.must_equal 3
+    film.master_film.effective_width.must_equal 3
+    film.master_film.effective_length.must_equal 3
+  end
+
+  it "valid_destinations must return an array" do
+    film.valid_destinations.must_be_instance_of Array
+  end
+
+  describe "given dimensions" do
+    before do
+      film.width = 60
+      film.length = 60
+    end
+
+    it "calculates the correct area given dimensions" do
+      film.area.must_equal 25
+    end
+
+    it "has nil area given nil length" do
+      film.length = nil
+      film.area.must_equal nil
+    end
+
+    it "has nil area given nil width" do
+      film.width = nil
+      film.area.must_equal nil
+    end
+  end
+
+  describe "given custom dimensions" do
+    before do
+      film.custom_width = 60
+      film.custom_length = 60
+    end
+      
+    it "calculates correct custom area given custom dimensions" do
+      film.custom_area.must_equal 25
+    end
+
+    it "has nil custom area given nil custom length" do
+      film.custom_length = nil
+      film.custom_area.must_equal nil
+    end
+
+    it "has nil custom area given nil custom width" do
+      film.custom_width = nil
+      film.custom_area.must_equal nil
+    end
+  end
+
+  describe "given dimensions, effective dimensions & custom dimensions" do
+    before do
+      film.width = 60
+      film.length = 60
+      film.custom_width = 48
+      film.custom_length = 48
+    end
+
+    it "calculates correct utilization" do
+      film.utilization.must_equal 0.64
+    end
+
+    it "has nil utilization given nil measurement" do
+      film.custom_width = nil
+      film.utilization.must_equal nil
+    end
+  end
+
+  it "returns sibling films including self" do
+    film.save!
+    sibling_film = FactoryGirl.create(:film, master_film_id:
+                                      film.master_film_id)
+    film.sibling_films.must_include sibling_film
+    film.sibling_films.must_include film
+  end
+
+  it "does not return non-sibling films" do
+    film.save!
+    other_film = FactoryGirl.create(:film)
+    film.sibling_films.wont_include other_film
+  end
+
+  it "calculates the number of sibling films" do
+    film.save!
+    original_count = film.sibling_count
+    2.times { FactoryGirl.create(:film, master_film_id: film.master_film_id) }
+    film.sibling_count.must_equal (original_count + 2)
+  end
+
+  it "phase scope returns specified phase film" do
     film.phase = "lamination"
     film.save!
     Film.phase("lamination").must_include(film)
   end
 
-  it "phase scope should not return other phase film" do
+  it "phase scope does not return other phase film" do
     film.phase = "something-else"
     film.save!
     Film.phase("lamination").wont_include(film)
   end
 
-  it "small scope should return < 16sqft film" do
+  it "small scope returns < 16sqft film" do
     film.width = 45 
     film.length = 45
     film.save!
     Film.small.must_include(film)
   end
 
-  it "small scope should not return >= 16sqft film" do
+  it "small scope does not return >= 16sqft film" do
     film.width = 48
     film.length = 48
     film.save!
     Film.small.wont_include(film)
   end
   
-  it "large scope should return >= 16sqft film" do
+  it "large scope returns >= 16sqft film" do
     film.width = 50
     film.length = 50
     film.save!
     Film.large.must_include(film)
   end
 
-  it "large scope should not return < 16sqft film" do
+  it "large scope does not return < 16sqft film" do
     film.width = 40
     film.length = 40
     film.save!

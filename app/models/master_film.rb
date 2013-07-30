@@ -1,5 +1,7 @@
 class MasterFilm < ActiveRecord::Base
-  attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,  :thinky_code, :chemist_id, :operator_id, :effective_width, :effective_length, :films_attributes, :defects_attributes
+  attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,
+    :thinky_code, :chemist_id, :operator_id, :effective_width,
+    :effective_length, :films_attributes, :defects_attributes
 
   has_many :films
   has_many :defects
@@ -7,15 +9,17 @@ class MasterFilm < ActiveRecord::Base
   belongs_to :chemist, class_name: "User"
   belongs_to :operator, class_name: "User"
 
-  accepts_nested_attributes_for :defects, allow_destroy: true,
-                                          reject_if: proc { |attr| attr['defect_type'].blank? }
-  accepts_nested_attributes_for :films, reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
+  accepts_nested_attributes_for :defects, allow_destroy: true
+  accepts_nested_attributes_for :films, 
+    reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
   delegate :name, to: :chemist, prefix: true, allow_nil: true
   delegate :name, to: :operator, prefix: true, allow_nil: true
 
-  validates :serial, presence: true, uniqueness: { case_sensitive: false }
+  validates :serial, presence: true, 
+            uniqueness: { case_sensitive: false },
+            format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }
 
   def effective_area
     effective_width*effective_length/144 if effective_width && effective_length

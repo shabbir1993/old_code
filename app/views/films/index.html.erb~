@@ -1,0 +1,64 @@
+<% provide :title, "Inventory" %>
+
+<% content_for :sidebar do %>
+  <ul class="nav nav-list">
+    <li class="<%= "active" if params[:scope] == 'lamination' %>">
+      <%= link_to "Lamination", films_path(scope: 'lamination') %></li>
+    <li class="<%= "active" if params[:scope] == 'inspection' %>">
+      <%= link_to "Inspection", films_path(scope: 'inspection') %></li>
+    <li class="<%= "active" if params[:scope] == 'large_stock' %>">
+      <%= link_to "Stock", films_path(scope: 'large_stock') %></li>
+    <ul class="nav nav-list">
+      <li class="<%= "active" if params[:scope] == 'small_stock' %>">
+      <%= link_to "<16", films_path(scope: 'small_stock') %></li>
+    </ul>
+    <li class="<%= "active" if params[:scope] == 'wip' %>">
+      <%= link_to "WIP", films_path(scope: 'wip') %></li>
+    <li class="<%= "active" if params[:scope] == 'fg' %>">
+      <%= link_to "FG", films_path(scope: 'fg') %></li>
+    <li class="<%= "active" if params[:scope] == 'testing' %>">
+      <%= link_to "Test", films_path(scope: 'testing') %></li>
+    <li class="<%= "active" if params[:scope] == 'nc' %>">
+      <%= link_to "NC", films_path(scope: 'nc') %></li>
+    <li class="<%= "active" if params[:scope] == 'scrap' %>">
+      <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
+    <li>count: <%= @film_areas.count %></li>
+    <li>total sqft: <%= number_with_precision(@film_areas.inject(0, :+),
+                                              precision: 2) %></li>
+    <li>ip: <%= request.remote_ip %></li>
+  </ul>
+<% end %>
+
+<%= form_tag edit_multiple_films_path, method: :get, remote: true, id: "inventory-form" do %>
+  <%= submit_tag "Move selected", class: "btn" %>
+  <%= paginate @films %>
+  <table class="inventory table table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Serial</th>
+        <%= column_headers_for(params[:scope]) %>
+        <th>Reserved</th>
+        <th>Note</th>
+        <th>Updated</th>
+        <th>Created</th>
+      </tr>
+      <% if params[:scope] == "lamination" %>
+        <tr>
+          <th colspan="100%">
+            <%= link_to "Enter film", new_film_path, { class: "new-film-link text-center", :"data-toggle" => "modal", :"data-target" => "#film-actions-modal" } %>
+          </th>
+        </tr>
+      <% end %>
+    </thead>
+    <tbody>
+      <%= render @films %>
+    </tbody>
+  </table>
+<% end %>
+
+<div id="film-actions-modal" class="modal hide" tabindex="-1" role="dialog">
+  <div class="modal-body">
+  </div>
+</div>

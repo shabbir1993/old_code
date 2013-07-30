@@ -4,7 +4,6 @@ class Defect < ActiveRecord::Base
 
   validates :defect_type, presence: true
   validates :count, numericality: { greater_than_or_equal_to: 0 }
-  validates :master_film_id, presence: true
 
   def self.allowed_types
     ['Air Bubble', 'Clarity', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS']

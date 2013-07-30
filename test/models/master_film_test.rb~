@@ -1,0 +1,64 @@
+describe MasterFilm do
+  let(:master_film) { FactoryGirl.build(:master_film) }
+
+  it "creates nested defects"
+
+  it "creates nested films given required attributes"
+
+  it "rejects nested films without required attributes"
+
+  it "requires a serial" do
+    master_film.serial = nil
+    master_film.invalid?(:serial).must_equal true
+  end
+
+  it "rejects invalid serials"
+
+  it "rejects duplicate serials" do
+    duplicate_master_film = FactoryGirl.create(:master_film, 
+                                               serial: master_film.serial) 
+    master_film.invalid?(:serial).must_equal true
+  end
+
+  it "calculates correct effective area given effective dimensions" do
+    master_film.effective_width = 60
+    master_film.effective_length = 60
+    master_film.effective_area.must_equal 25
+  end
+
+  it "has a nil effective area given nil effective width" do
+    master_film.effective_width = nil
+    master_film.effective_length = 1
+    master_film.effective_area.must_equal nil
+  end
+
+  it "has a nil effective area given nil effective length" do
+    master_film.effective_width = 1
+    master_film.effective_length = nil
+    master_film.effective_area.must_equal nil
+  end
+
+  it "calculates correct defect count" do
+    master_film.save!
+    2.times { master_film.defects.create!(defect_type: "white spot", count: 2) }
+    master_film.defect_count.must_equal 4
+  end
+
+  it "machine_code returns machine's code" do
+    machine = FactoryGirl.create(:machine)
+    master_film.machine_id = machine.id
+    master_film.machine_code.must_equal master_film.machine.code
+  end
+
+  it "chemist_name returns chemist's name" do
+    chemist = FactoryGirl.create(:chemist)
+    master_film.chemist_id = chemist.id
+    master_film.chemist_name.must_equal master_film.chemist.name
+  end
+
+  it "operator_name returns operator's name" do
+    operator = FactoryGirl.create(:operator)
+    master_film.operator_id = operator.id
+    master_film.operator_name.must_equal master_film.operator.name
+  end
+end

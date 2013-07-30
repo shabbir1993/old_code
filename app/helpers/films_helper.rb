@@ -2,7 +2,7 @@ module FilmsHelper
   def visible_columns_for(scope)
     case scope
     when "lamination"
-      ['Formula', 'Mix/g', 'Mach', 'Film Type', 'Thinky', 'Chemist', 'Operator']
+      ['Mix/g', 'Mach', 'Film Type', 'Thinky', 'Chemist', 'Operator']
     when "inspection"
       ['Eff W', 'Eff L', 'Eff Area', 'Defects']
     when "large_stock","small_stock", "nc", "scrap", "testing"

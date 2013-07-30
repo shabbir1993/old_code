@@ -10,7 +10,7 @@
         <div class="inline-fields split-film">
           <%= ff.input :width, label: false, placeholder: "Width", error: false, input_html: { class: "input-small" } %> x
           <%= ff.input :length, label: false, placeholder: "Length", error: false, input_html: { class: "input-small" } %>
-          <%= ff.hidden_field :destination, value: @film.phase %>
+          <%= ff.hidden_field :phase, value: @film.phase %>
         </div>
       <% end %>
     <% end %>

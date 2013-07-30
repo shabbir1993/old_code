@@ -1,3 +1,5 @@
+require 'test_helper'
+
 describe Defect do
   let (:defect) { FactoryGirl.build(:defect) }
 
@@ -11,9 +13,9 @@ describe Defect do
     defect.invalid?(:count).must_equal true
   end
 
-  it "requires a master film id" do
-    defect.master_film_id = nil
-    defect.invalid?(:master_film_id).must_equal true
+  it "rejects negative counts" do
+    defect.count = -1
+    defect.invalid?(:count).must_equal true
   end
 
   it "has an allowed_types that returns an array" do
