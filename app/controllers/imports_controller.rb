@@ -28,7 +28,7 @@ class ImportsController < ApplicationController
   end
 
   def import_film_movements
-    FilmMovements.import(params[:file])
+    FilmMovement.import(params[:file])
     redirect_to imports_path, notice: "Film movements imported."
   end
 end
