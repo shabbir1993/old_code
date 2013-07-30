@@ -1,8 +1,8 @@
 class FilmMovement < ActiveRecord::Base
-  attr_accessible :from, :to, :area
+  attr_accessible :from, :to, :area, :created_at
   belongs_to :film
 
-  scope :fg, where(to: "fg")
+  scope :fg, where(to: "FG")
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
