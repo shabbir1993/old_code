@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  before_filter :restrict_by_ip
   http_basic_authenticate_with :name => "frodo", :password => "thering"
   protect_from_forgery
 
