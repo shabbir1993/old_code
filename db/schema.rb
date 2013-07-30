@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130729214351) do
     t.string   "to"
     t.decimal  "area"
     t.integer  "film_id"
+    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

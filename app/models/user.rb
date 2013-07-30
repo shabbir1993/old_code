@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   validates :name, presence: true
 
+  has_many :film_movements
+
   scope :chemists, where(chemist: true)
   scope :operators, where(operator:true)
 

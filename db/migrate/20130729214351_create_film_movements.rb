@@ -5,6 +5,7 @@ class CreateFilmMovements < ActiveRecord::Migration
       t.string :to
       t.decimal :area
       t.integer :film_id
+      t.integer :user_id
 
       t.timestamps
     end

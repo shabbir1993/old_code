@@ -1,8 +1,11 @@
 class FilmMovement < ActiveRecord::Base
   attr_accessible :from, :to, :area, :created_at
-  belongs_to :film
 
-  scope :fg, where(to: "FG")
+  belongs_to :film
+  belongs_to :user
+
+  default_scope order('created_at DESC')
+  scope :fg, where(to: "fg")
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|

@@ -15,12 +15,17 @@
     <tr>
       <th>Serial</th>
       <th>From</th>
-      <th>To</th>
-      <th>Area</th>
+      <th>User</th>
+      <th>Customer</th>
+      <th>SO#</th>
+      <th>Custom W</th>
+      <th>Custom L</th>
+      <th>Custom Area</th>
+      <th>Util</th>
       <th>Date</th>
     </tr>
   </thead>
   <tbody>
-    <%= render partial: "film_movement", collection: @fg_film_movements %>
+    <%= render partial: "fg_film_movement", collection: @fg_film_movements %>
   </tbody>
 </table>
