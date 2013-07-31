@@ -1,4 +1,5 @@
 <% new = false if local_assigns[:new].nil? %>
+<% edited = false if local_assigns[:edited].nil? %>
 <tr id="<%= "film-#{film.id}" %>" class="<%= "success" if new %>">
   <td><%= check_box_tag "film_ids[]", film.id %></td>
   <td>
