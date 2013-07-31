@@ -29,20 +29,22 @@ describe "Inventory integration" do
       select chemist.name, from: 'Chemist'
       select operator.name, from: 'Operator'
       click_button 'Add film'
-      page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
-      page.has_selector?('td.formula', text: attrs[:formula]).must_equal true
-      page.has_selector?('td.mix_mass', text: attrs[:mix_mass]).must_equal true
-      page.has_selector?('td.machine_code', text: machine.code).must_equal true
-      page.has_selector?('td.film_code', text: attrs[:film_code]).must_equal true
-      page.has_selector?('td.thinky_code', text: attrs[:thinky_code]).must_equal true
-      page.has_selector?('td.chemist_name', text: chemist.name).must_equal true
-      page.has_selector?('td.operator_name', text: operator.name).must_equal true
+      within("tr.success") do
+        page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
+        page.has_selector?('td.formula', text: attrs[:formula]).must_equal true
+        page.has_selector?('td.mix_mass', text: attrs[:mix_mass]).must_equal true
+        page.has_selector?('td.machine_code', text: machine.code).must_equal true
+        page.has_selector?('td.film_code', text: attrs[:film_code]).must_equal true
+        page.has_selector?('td.thinky_code', text: attrs[:thinky_code]).must_equal true
+        page.has_selector?('td.chemist_name', text: chemist.name).must_equal true
+        page.has_selector?('td.operator_name', text: operator.name).must_equal true
+      end
     end
 
     it "displays error messages given invalid attributes" do
       click_link 'Enter film'
       click_button 'Add film'
-      assert page.has_selector?('.help-inline', text: "can't be blank").must_equal true
+      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
     end
 
     describe "pagination" do
@@ -51,11 +53,11 @@ describe "Inventory integration" do
         click_link 'Lamination'
       end
 
-      it "displays users on first page" do
+      it "displays films on first page" do
         page.has_selector?('tbody tr', count: 25).must_equal true
       end
 
-      it "displays users on second page" do
+      it "displays films on second page" do
         within('.pagination') do
           click_link '2'
         end
@@ -93,7 +95,7 @@ describe "Inventory integration" do
         fill_in 'Reserved for', with: "Example company"
         fill_in 'Note', with: "Example note"
         click_button 'Update'
-        page.has_selector?('tbody td', text: @inspection_film.serial).must_equal false
+        page.has_selector?('tr.info', text: "#{@inspection_film.serial} moved to stock").must_equal true
         click_link 'Stock'
         within "tbody", text: @inspection_film.serial do
           page.has_selector?('td.width', text: "60").must_equal true
@@ -109,7 +111,7 @@ describe "Inventory integration" do
         select 'White Spot', from: 'Defect type'
         fill_in 'Count', with: 3
         click_button 'Update'
-        within('tr', text: @inspection_film.serial) do
+        within('tr.info', text: @inspection_film.serial) do
           assert page.has_selector?('td.defect_count', text: '3')
         end
       end
@@ -117,7 +119,7 @@ describe "Inventory integration" do
       it "displays error messages given invalid defect attributes" do
         click_link "Add defect"
         click_button 'Update'
-        page.has_selector?('.help-inline', text: "can't be blank").must_equal true
+        page.has_selector?('.error-messages', text: "can't be blank").must_equal true
       end
     end
 

@@ -17,9 +17,8 @@ class MasterFilm < ActiveRecord::Base
   delegate :name, to: :chemist, prefix: true, allow_nil: true
   delegate :name, to: :operator, prefix: true, allow_nil: true
 
-  validates :serial, presence: true, 
-            uniqueness: { case_sensitive: false },
-            format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }
+  validates :serial, presence: true, uniqueness: { case_sensitive: false },
+    format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }
 
   def effective_area
     effective_width*effective_length/144 if effective_width && effective_length

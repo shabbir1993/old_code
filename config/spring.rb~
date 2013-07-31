@@ -1,3 +1,0 @@
-require Rails.root.join("test/test_helper")
-Spring.watch "test/factories.rb"
-
