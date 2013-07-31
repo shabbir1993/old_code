@@ -41,7 +41,6 @@ describe MasterFilm do
   end
 
   it "rejects duplicate serials" do
-    puts master_film.serial
     duplicate_master_film = FactoryGirl.create(:master_film, 
                                                serial: master_film.serial) 
     master_film.invalid?(:serial).must_equal true

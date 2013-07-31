@@ -5,5 +5,5 @@
 <% else %>
   $('#film-actions-modal').modal('hide')
   $('.inventory tbody').prepend("<%= j render 'film', film:
-                                @master_film.films.first, new: true  %>")
+                                @master_film.films.first, row_class: "success"  %>")
 <% end %>

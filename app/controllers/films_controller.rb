@@ -1,6 +1,5 @@
 class FilmsController < ApplicationController
   def new
-    session[:return_to] = request.referer
     @master_film = MasterFilm.new
     render layout: false
   end
