@@ -29,20 +29,22 @@ describe "Inventory integration" do
       select chemist.name, from: 'Chemist'
       select operator.name, from: 'Operator'
       click_button 'Add film'
-      page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
-      page.has_selector?('td.formula', text: attrs[:formula]).must_equal true
-      page.has_selector?('td.mix_mass', text: attrs[:mix_mass]).must_equal true
-      page.has_selector?('td.machine_code', text: machine.code).must_equal true
-      page.has_selector?('td.film_code', text: attrs[:film_code]).must_equal true
-      page.has_selector?('td.thinky_code', text: attrs[:thinky_code]).must_equal true
-      page.has_selector?('td.chemist_name', text: chemist.name).must_equal true
-      page.has_selector?('td.operator_name', text: operator.name).must_equal true
+      within("tr.success") do
+        page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
+        page.has_selector?('td.formula', text: attrs[:formula]).must_equal true
+        page.has_selector?('td.mix_mass', text: attrs[:mix_mass]).must_equal true
+        page.has_selector?('td.machine_code', text: machine.code).must_equal true
+        page.has_selector?('td.film_code', text: attrs[:film_code]).must_equal true
+        page.has_selector?('td.thinky_code', text: attrs[:thinky_code]).must_equal true
+        page.has_selector?('td.chemist_name', text: chemist.name).must_equal true
+        page.has_selector?('td.operator_name', text: operator.name).must_equal true
+      end
     end
 
     it "displays error messages given invalid attributes" do
       click_link 'Enter film'
       click_button 'Add film'
-      assert page.has_selector?('.help-inline', text: "can't be blank").must_equal true
+      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
     end
 
     describe "pagination" do

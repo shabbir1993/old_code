@@ -27,7 +27,7 @@ module FilmsHelper
       render "lamination_table_values", film: film
     when "inspection"
       render "inspection_table_values", film: film
-    when "large_stock","small_stock", "nc", "scrap", "testing"
+    when "stock", "nc", "scrap", "testing"
       render "backend_table_values", film: film
     when "wip", "fg"
       render "checkout_table_values", film: film
