@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
 //= require bootstrap-modal
 //= require bootstrap-alert
+//= require highcharts
+//= require_tree .

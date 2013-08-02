@@ -1,17 +1,12 @@
 <% if @film.errors.any? %>
-  $("form[id^=edit_film] .error-messages").remove();
-  $("form[id^=edit_film]").prepend("<%= j render 'shared/error_messages', object:
-                                @film %>");
+  $("<%= "#edit_film_#{@film.id}" %> .error-messages").remove();
+  $("<%= "#edit_film_#{@film.id}" %>").prepend("<%= j render 'shared/error_messages', object: @film %>");
 <% else %>
   $('#film-actions-modal').modal('hide')
   <% if params[:film][:destination].present? %>
-  $("<%= "tr#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', 
-                                                film: @film, 
-                                                row_class: "info" %>")
+    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', film: @film, row_class: "info" %>");
   <% else %>
-  $("<%= "tr#film-#{@film.id}" %>").replaceWith("<%= j render 'film', 
-                                                film: @film, 
-                                                row_class: "info" %>")
+    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");
   <% end %>
 <% end %>
 

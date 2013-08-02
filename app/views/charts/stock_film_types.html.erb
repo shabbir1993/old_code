@@ -1,0 +1,54 @@
+<% provide :title, "Charts" %>
+
+<% content_for :sidebar do %>
+  <ul class="nav nav-list">
+    <li class="<%= "active" if params[:action] == 'stock_film_types' %>">
+      <%= link_to "Film types in Stock", stock_film_types_chart_path %></li>
+  </ul>
+<% end %>
+
+<script>
+  $(function () { 
+    $('#stock-film-types-chart').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Film types in Stock'
+      },
+      xAxis: {
+        categories: <%= raw(@data.map{ |i| i[:film_type] }.flatten) %>
+      },
+
+      yAxis: [{
+        title: {
+          text: 'Count'
+        }
+      }, {
+        title: {
+          text: 'SQFT'
+        }
+      }],
+
+      plotOptions: {
+        series: {
+          groupPadding: 0.25
+        }
+      },
+
+      series: [{
+        yAxis: 0,
+        name: 'Count',
+        data: <%= raw(@data.map{ |i| i[:count] }.flatten.to_json) %>,
+        pointPlacement: 0.2
+        }, {
+        yAxis: 1,
+        name: 'SQFT',
+        data: <%= raw(@data.map{ |i| i[:total_area] }.flatten.to_json) %>,
+        pointPlacement: -0.2
+      }]
+    });
+  });
+</script>
+
+<div id="stock-film-types-chart" class="chart"></div>

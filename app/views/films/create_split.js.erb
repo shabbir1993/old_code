@@ -1,5 +1,11 @@
 <% if @film.errors.any? %>
-  $('#film-actions-modal .modal-body').html("<%= j render 'split_form' %>");
+  $("<%= "#edit_film_#{@film.id}" %> .error-messages").remove();
+  $("<%= "#edit_film_#{@film.id}" %>").prepend("<%= j render "shared/error_messages", object:
+                                @film %>");
 <% else %>
-  window.location.href = "<%= j session[:return_to] %>"
+  $('#film-actions-modal').modal('hide');
+  $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");
+  <% @splits.reverse.each do |split| %>
+    $("<%= "#film-#{@film.id}" %>").after("<%= j render 'film', film: split, row_class: "success" %>");
+  <% end %>
 <% end %>

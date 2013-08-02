@@ -21,8 +21,8 @@ module FilmsHelper
     end.join.html_safe
   end
 
-  def table_values_for(scope, film)
-    case scope
+  def table_values_for(phase, film)
+    case phase
     when "lamination"
       render "lamination_table_values", film: film
     when "inspection"

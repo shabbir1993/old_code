@@ -21,12 +21,14 @@ describe "Authentication integration" do
     end
 
     describe "with incorrect http authentication credentials" do
-      before { http_login }
+      before { http_login('invaliduser', 'wrongpw') }
       it "denies access to inventory page" do
+        visit films_path(scope: "lamination")
         page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
       end
 
       it "denies access to imports page" do
+        visit imports_path
         page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
       end
     end

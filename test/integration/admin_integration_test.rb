@@ -1,12 +1,12 @@
 require 'test_helper'
 
-describe "Imports integration" do
+describe "Admin integration" do
   before do
     http_login
-    visit imports_path
+    click_link "Admin"
   end
 
   it "has the right title" do
-    assert page.has_title?("Imports").must_equal true
+    assert page.has_title?("Admin")
   end
 end

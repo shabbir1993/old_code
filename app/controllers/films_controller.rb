@@ -17,13 +17,12 @@ class FilmsController < ApplicationController
     if safe_scopes.include? params[:scope]
       scoped_films = Film.send(params[:scope])
       @films = scoped_films.joins(:master_film).order('master_films.serial
-                                                      DESC').page(params[:page])
+                                                      DESC, division ASC').page(params[:page])
       @film_areas = scoped_films.map { |f| f.area ? f.area : 0 }
     end
   end
 
   def edit
-    session[:return_to] = request.referer
     @film = Film.find(params[:id])
     render layout: false
   end
@@ -34,7 +33,6 @@ class FilmsController < ApplicationController
   end 
 
   def edit_multiple
-    session[:return_to] = request.referer
     @films = Film.find(params[:film_ids])
     @valid_destinations = @films.map(&:valid_destinations).reduce(:&)
     render layout: false
@@ -61,5 +59,6 @@ class FilmsController < ApplicationController
   def create_split
     @film = Film.find(params[:id])
     @film.update_attributes(params[:film])
+    @splits = @film.sibling_films.where("created_at > ?", 2.seconds.ago)
   end
 end

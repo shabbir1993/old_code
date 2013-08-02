@@ -4,12 +4,16 @@ describe "History integration" do
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     http_login
+    click_link "History"
+  end
+
+  it "has the right title" do
+      page.has_title?("History").must_equal true
   end
 
   describe "film movements history" do
-    it "has the right title" do
-      visit film_movements_history_path
-      page.has_title?("History").must_equal true
+    before do
+      click_link "Film movements"
     end
 
     it "records the movement of films created" do

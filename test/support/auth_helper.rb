@@ -1,6 +1,4 @@
-def http_login
-  user = "frodo"
-  pw = "thering"
+def http_login(user = 'frodo', pw = 'thering')
   if page.driver.respond_to?(:basic_auth)
       page.driver.basic_auth(user, pw)
   elsif page.driver.respond_to?(:basic_authorize)
@@ -12,4 +10,5 @@ def http_login
   else
       raise "I don't know how to log in!"
   end
+  visit root_path
 end

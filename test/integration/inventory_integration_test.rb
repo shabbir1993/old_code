@@ -147,7 +147,7 @@ describe "Inventory integration" do
     before do
       @stock_film_1 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
       @stock_film_2 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
-      @stock_film_3 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
+      @stock_film_3 = FactoryGirl.create(:film, master_film: @stock_film_2.master_film, phase: "stock", width: 60, length: 60) 
       click_link 'Stock'
     end
 
@@ -164,10 +164,8 @@ describe "Inventory integration" do
     end
 
     it "displays the films in the correct order" do
-      within('tbody') do
-        assert_operator page.all('.serial')[0].text, :>, page.all('.serial')[1].text
-        assert_operator page.all('.serial')[1].text, :>, page.all('.serial')[2].text
-      end
+      assert_operator page.all('.serial')[0].text, :<, page.all('.serial')[1].text
+      assert_operator page.all('.serial')[1].text, :>, page.all('.serial')[2].text
     end
 
     describe "split form" do
@@ -177,7 +175,9 @@ describe "Inventory integration" do
         end
       end
     
-      it "splits film" do
+      it "splits film and displays in correct order" do
+        #to simulate actual use, so original doesn't get ajax added
+        sleep 2
         within('div.original-film') do
           fill_in 'Width', with: 50
           fill_in 'Length', with: 51
@@ -187,13 +187,18 @@ describe "Inventory integration" do
         fill_in 'film_master_film_attributes_films_attributes_2_width', with: 54
         fill_in 'film_master_film_attributes_films_attributes_2_length', with: 55
         click_button "Split"
-        assert page.has_selector?('tr', text: @stock_film_1.master_film.serial, count: 3)
-        assert page.has_selector?('td.width', text: 50)
-        assert page.has_selector?('td.length', text: 51)
-        assert page.has_selector?('td.width', text: 52)
-        assert page.has_selector?('td.length', text: 53)
-        assert page.has_selector?('td.width', text: 54)
-        assert page.has_selector?('td.length', text: 55)
+        save_screenshot('ss.png', full: true)
+        within('tr.info') do
+          assert page.has_selector?('td.serial', text: @stock_film_1.serial)
+          assert page.has_selector?('td.width', text: 50)
+          assert page.has_selector?('td.length', text: 51)
+        end
+        assert page.has_selector?('tr.success .serial', text: @stock_film_1.master_film.serial, count: 2)
+        assert page.has_selector?('tr.success .width', text: 52)
+        assert page.has_selector?('tr.success .length', text: 53)
+        assert page.has_selector?('tr.success .width', text: 54)
+        assert page.has_selector?('tr.success .length', text: 55)
+        assert_operator page.all('tr.success .serial')[0].text, :<, page.all('tr.success .serial')[1].text
       end
     end
 
@@ -207,19 +212,18 @@ describe "Inventory integration" do
         click_button 'Move selected'
         select 'wip', from: 'Move to'
         click_button 'Move all'
-        sleep 1
-        page.has_selector?('tbody tr', text: @stock_film_1.serial).must_equal false
-        page.has_selector?('tbody tr', text: @stock_film_2.serial).must_equal false
+        page.has_selector?('tr.info', text: "#{@stock_film_1.serial} moved to wip").must_equal true
+        page.has_selector?('tr.info', text: "#{@stock_film_2.serial} moved to wip").must_equal true
         click_link 'WIP'
-        page.has_selector?('tbody tr', text: @stock_film_1.serial).must_equal true
-        page.has_selector?('tbody tr', text: @stock_film_2.serial).must_equal true
+        page.has_selector?('tr td.serial', text: @stock_film_1.serial).must_equal true
+        page.has_selector?('tr td.serial', text: @stock_film_2.serial).must_equal true
       end
 
       it "does not move them to wip given no destination" do
         click_button 'Move selected'
         click_button 'Move all'
-        page.has_selector?('tbody tr', text: @stock_film_1.serial).must_equal true
-        page.has_selector?('tbody tr', text: @stock_film_1.serial).must_equal true
+        page.has_selector?('td.serial', text: @stock_film_1.serial).must_equal true
+        page.has_selector?('td.serial', text: @stock_film_1.serial).must_equal true
       end
     end
   end
