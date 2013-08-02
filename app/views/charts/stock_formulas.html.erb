@@ -11,15 +11,15 @@
 
 <script>
   $(function () { 
-    $('#stock-film-types-chart').highcharts({
+    $('#stock-formulas-chart').highcharts({
       chart: {
         type: 'bar'
       },
       title: {
-        text: 'Film types in Stock'
+        text: 'Formula in Stock'
       },
       xAxis: {
-        categories: <%= raw(@data.map{ |i| i[:film_type] }.flatten) %>
+        categories: <%= raw(@data.map{ |i| i[:film_formula] }.flatten) %>
       },
 
       yAxis: [{
@@ -53,4 +53,4 @@
   });
 </script>
 
-<div id="stock-film-types-chart" class="chart"></div>
+<div id="stock-formulas-chart" class="chart"></div>
