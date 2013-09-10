@@ -1,0 +1,12 @@
+<% provide :title, "Charts" %>
+
+<% content_for :sidebar do %>
+  <ul class="nav nav-list">
+    <li class="<%= "active" if params[:action] == 'stock_formula_totals' %>">
+      <%= link_to "Stock formula totals", stock_formula_totals_chart_path %></li>
+    <li class="<%= "active" if params[:action] == 'stock_film_type_totals' %>">
+      <%= link_to "Stock film type totals", stock_film_type_totals_chart_path %></li>
+  </ul>
+<% end %>
+
+<%= render template: "layouts/application" %>

@@ -1,22 +1,11 @@
-<% provide :title, "Charts" %>
-
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="<%= "active" if params[:action] == 'stock_formulas' %>">
-      <%= link_to "Formulas in Stock", stock_formulas_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'stock_film_types' %>">
-      <%= link_to "Film types in Stock", stock_film_types_chart_path %></li>
-  </ul>
-<% end %>
-
 <script>
   $(function () { 
-    $('#stock-film-types-chart').highcharts({
+    $('#stock-film-type-totals').highcharts({
       chart: {
         type: 'bar'
       },
       title: {
-        text: 'Film types in Stock'
+        text: 'Stock film type totals'
       },
       xAxis: {
         categories: <%= raw(@data.map{ |i| i[:film_type] }.flatten) %>
@@ -53,4 +42,4 @@
   });
 </script>
 
-<div id="stock-film-types-chart" class="chart"></div>
+<div id="stock-film-type-totals" class="chart"></div>

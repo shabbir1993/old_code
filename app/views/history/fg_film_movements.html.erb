@@ -1,14 +1,3 @@
-<% provide :title, "History" %>
-
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="<%= "active" if params[:action] == 'film_movements' %>">
-      <%= link_to "Film movements", film_movements_history_path %></li>
-    <li class="<%= "active" if params[:action] == 'fg_film_movements' %>">
-      <%= link_to "FG movements", fg_film_movements_history_path %></li>
-  </ul>
-<% end %>
-
 <%= paginate @fg_film_movements %>
 <table class="fg-film-movements-history table table-striped">
   <thead>

@@ -32,6 +32,13 @@ describe MasterFilm do
       proc { FactoryGirl.create(:master_film, serial: serial) }.must_raise ActiveRecord::RecordInvalid
     end
   end
+
+  it "does not reject invalid serials on update" do
+    invalid_serial = "CD121-2"
+    master_film.serial = invalid_serial
+    master_film.save!(validate: false)
+    master_film.save!.must_equal true
+  end
   
   it "accepts valid serials" do
     valid_serials = ["C1212-01", "D4163-13"]

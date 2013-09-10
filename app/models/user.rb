@@ -1,9 +1,10 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :chemist, :operator
-  validates :email, presence: true
-  validates :name, presence: true
 
   has_many :film_movements
+
+  validates :email, presence: true
+  validates :name, presence: true
 
   scope :chemists, where(chemist: true)
   scope :operators, where(operator:true)

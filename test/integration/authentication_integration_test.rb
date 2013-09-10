@@ -9,28 +9,35 @@ describe "Authentication integration" do
     describe "with correct http authentication" do
       before { http_login }
 
-      it "allows access to films page" do
-        visit films_path(scope: "lamination")
+      it "allows access to inventory page" do
+        visit root_path
+        click_link "Inventory"
         page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
       end
 
-      it "allows access to imports page" do
-        visit imports_path
+      it "allows access to history page" do
+        visit root_path
+        click_link "History"
+        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+      end
+
+      it "allows access to charts page" do
+        visit root_path
+        click_link "Charts"
+        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+      end
+
+      it "allows access to admin page" do
+        visit root_path
+        click_link "Admin"
         page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
       end
     end
 
-    describe "with incorrect http authentication credentials" do
-      before { http_login('invaliduser', 'wrongpw') }
-      it "denies access to inventory page" do
-        visit films_path(scope: "lamination")
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
-      end
-
-      it "denies access to imports page" do
-        visit imports_path
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
-      end
+    it "denies access with invalid http auth" do
+      http_login('invaliduser', 'wrongpw')
+      visit root_path
+      page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
     end
   end
 

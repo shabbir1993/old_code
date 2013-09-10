@@ -2,7 +2,7 @@
   <fieldset>
     <%= mff.fields_for :defects do |df| %>
       <%= render 'defect_fields', f: df %>
-    <% end %></br>
+    <% end %>
     <%= link_to_add_fields "Add defect", mff, :defects %>
   </fieldset>
 <% end %>

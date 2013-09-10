@@ -18,17 +18,18 @@ class Film < ActiveRecord::Base
   validates :phase, presence: true
 
   scope :phase, lambda { |phase| where(phase: phase) }
+  scope :by_serial, joins(:master_film).order('master_films.serial DESC, division ASC')
   scope :small, where('width*length/144 < ?', 16)
   scope :large, where('width*length/144 >= ? or width IS NULL or length IS NULL', 16)
-  scope :lamination, phase("lamination")
-  scope :inspection, phase("inspection")
-  scope :large_stock, phase("stock").large
-  scope :small_stock, phase("stock").small
-  scope :wip, phase("wip")
-  scope :fg, phase("fg")
-  scope :testing, phase("testing")
-  scope :nc, phase("nc")
-  scope :scrap, phase("scrap")
+  scope :lamination, phase("lamination").by_serial
+  scope :inspection, phase("inspection").by_serial
+  scope :large_stock, phase("stock").large.by_serial
+  scope :small_stock, phase("stock").small.by_serial
+  scope :wip, phase("wip").by_serial
+  scope :fg, phase("fg").by_serial
+  scope :test, phase("test").by_serial
+  scope :nc, phase("nc").by_serial
+  scope :scrap, phase("scrap").by_serial
 
   def destination
   end
@@ -77,19 +78,19 @@ class Film < ActiveRecord::Base
     when "lamination"
       ["inspection"]
     when "inspection"
-      %w{stock wip testing nc}
+      %w{stock wip test nc}
     when "stock"
-      %w{wip testing nc}
+      %w{wip test nc}
     when "wip"
-      %w{fg stock testing nc}
+      %w{fg stock test nc}
     when "fg"
-      %w{wip stock testing nc}
-    when "testing"
+      %w{wip stock test nc}
+    when "test"
       %w{stock nc}
     when "nc"
-      %w{scrap stock testing}
+      %w{scrap stock test}
     when "scrap"
-      %w{stock nc testing}
+      %w{stock nc test}
     else
       []
     end
@@ -105,6 +106,19 @@ class Film < ActiveRecord::Base
 
   def set_division
     self.division ||= sibling_films.count + 1
+  end
+
+  def self.search_dimensions(min_width, max_width, min_length, max_length)
+    if min_width || max_width || min_length || max_length
+      films = scoped
+      films = films.where("width >= ?", min_width) if min_width.present?
+      films = films.where("width <= ?", max_width) if max_width.present?
+      films = films.where("length >= ?", min_length) if min_length.present?
+      films = films.where("length <= ?", max_length) if max_length.present?
+      films
+    else
+      scoped
+    end
   end
 
   def self.import(file)

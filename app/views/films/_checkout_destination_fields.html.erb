@@ -1,6 +1,8 @@
 <fieldset id= "checkout-destination-fields" class="destination-fields hide">
   <%= f.input :customer %>
   <%= f.input :sales_order_code %>
-  <%= f.input :custom_width  %>
-  <%= f.input :custom_length %>
+  <div class="inline-fields">
+    <%= f.input :custom_width, label: "Custom", placeholder: "Width", error: false, input_html: { class: "input-small" } %> x
+    <%= f.input :custom_length, label: false, placeholder: "Length", error: false, input_html: { class: "input-small" } %>
+  </div>
 </fieldset>

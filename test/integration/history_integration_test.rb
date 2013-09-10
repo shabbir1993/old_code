@@ -16,23 +16,16 @@ describe "History integration" do
       click_link "Film movements"
     end
 
+    it "contains the correct table" do
+      assert page.has_selector?("table.film-movements-history")
+    end
+
     it "records the movement of films created" do
       visit films_path(scope: "lamination")
-      machine = FactoryGirl.create(:machine)
-      chemist = FactoryGirl.create(:chemist)
-      operator = FactoryGirl.create(:operator)
       attrs = FactoryGirl.attributes_for(:master_film)
       click_link 'Enter film'
       fill_in 'Serial', with: attrs[:serial]
-      fill_in 'Formula', with: attrs[:formula]
-      fill_in 'Mix mass', with: attrs[:mix_mass]
-      select machine.code, from: 'Machine'
-      fill_in 'Film code', with: attrs[:film_code]
-      fill_in 'Thinky code', with: attrs[:thinky_code]
-      select chemist.name, from: 'Chemist'
-      select operator.name, from: 'Operator'
       click_button 'Add film'
-      save_screenshot('ss.png', full: true)
       within '.navbar' do
         click_link "History" 
       end
@@ -88,10 +81,18 @@ describe "History integration" do
       end
     end
   end
-  describe "fg film movements history" do
-    it "has the right title" do
-      visit fg_film_movements_history_path
-      page.has_title?("History").must_equal true
+
+  describe "fg film movements history page" do
+    it "contains the correct table" do
+      click_link 'FG movements'
+      assert page.has_selector?("table.fg-film-movements-history")
+    end
+  end
+
+  describe "master film history page" do
+    it "contains the correct table" do
+      click_link 'Master films'
+      assert page.has_selector?("table.master-films-history")
     end
   end
 end

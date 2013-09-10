@@ -1,0 +1,16 @@
+<tr>
+  <td class="serial"><%= master_film.serial %></td>
+  <td class="formula"><%= master_film.formula %></td>
+  <td class="mix_mass"><%= master_film.mix_mass %></td>
+  <td class="machine_code"><%= master_film.machine_code %></td>
+  <td class="film_code"><%= master_film.film_code %></td>
+  <td class="thinky_code"><%= master_film.thinky_code %></td>
+  <td class="chemist_name"><%= master_film.chemist_name %></td>
+  <td class="operator_name"><%= master_film.operator_name %></td>
+  <td class="effective_width"><%= master_film.effective_width %></td>
+  <td class="effective_length"><%= master_film.effective_length %></td>
+  <td class="effective_area"><%= number_with_precision(master_film.effective_area, precision: 2) %></td>
+  <td class="defect_count"><%= master_film.defect_count %></td>
+  <td class="updated_at"><%= master_film.updated_at.strftime("%m/%d/%y %H:%M") %></td>
+  <td class="created_at"><%= master_film.created_at.strftime("%m/%d/%y %H:%M") %></td>
+</tr>

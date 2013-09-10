@@ -27,6 +27,10 @@ body {
   max-height: 600px;
 }
 
+.modal-form a.add-fields {
+  margin-left: 180px;
+}
+
 .modal .form-actions {
   margin-bottom: 0;
 }
@@ -66,4 +70,8 @@ body {
 
 .chart {
   height: 800px;
+}
+
+td.serial {
+  min-width: 90px;
 }

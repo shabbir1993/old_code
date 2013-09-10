@@ -13,6 +13,6 @@
   <%= table_values_for(film.phase, film) %>
   <td class="reserved_for"><%= film.reserved_for %></td>
   <td class="note"><%= film.note %></td>
-  <td><%= l film.updated_at, format: :short %></td>
-  <td><%= l film.created_at, format: :short %></td>
+  <td><%= film.updated_at.strftime("%m/%d/%y %H:%M") %></td>
+  <td><%= film.created_at.strftime("%m/%d/%y %H:%M") %></td>
 </tr>

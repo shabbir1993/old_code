@@ -1,22 +1,22 @@
 class ChartsController < ApplicationController
-  def stock_film_types
+  def stock_film_type_totals
     all_film_types = Film.large_stock.joins(:master_film).pluck("master_films.film_code").uniq
 
     @data = all_film_types.map do |type|
       {
-        film_type: type || "None",
+        film_type: type.present? ? type : "None",
         count: Film.large_stock.joins(:master_film).where("master_films.film_code = ?", type).count,
         total_area: Film.large_stock.joins(:master_film).where("master_films.film_code = ?", type).sum("width * length / 144").to_i
       }
     end
   end
 
-  def stock_formulas
+  def stock_formula_totals
     all_film_formulas = Film.large_stock.joins(:master_film).pluck("master_films.formula").uniq
 
     @data = all_film_formulas.map do |formula|
       {
-        film_formula: formula || "None",
+        film_formula: formula.present? ? formula : "None",
         count: Film.large_stock.joins(:master_film).where("master_films.formula = ?", formula).count,
         total_area: Film.large_stock.joins(:master_film).where("master_films.formula = ?", formula).sum("width * length / 144").to_i
       }

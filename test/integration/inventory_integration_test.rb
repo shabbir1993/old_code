@@ -18,24 +18,23 @@ describe "Inventory integration" do
       machine = FactoryGirl.create(:machine)
       chemist = FactoryGirl.create(:chemist)
       operator = FactoryGirl.create(:operator)
-      attrs = FactoryGirl.attributes_for(:master_film)
       click_link 'Enter film'
-      fill_in 'Serial', with: attrs[:serial]
-      fill_in 'Formula', with: attrs[:formula]
-      fill_in 'Mix mass', with: attrs[:mix_mass]
+      fill_in 'Serial', with: "F1223-12"
+      fill_in 'Formula', with: "HA"
+      fill_in 'Mix mass', with: 101.1
       select machine.code, from: 'Machine'
-      fill_in 'Film code', with: attrs[:film_code]
-      fill_in 'Thinky code', with: attrs[:thinky_code]
+      fill_in 'Film code', with: "1234"
+      fill_in 'Thinky code', with: "1"
       select chemist.name, from: 'Chemist'
       select operator.name, from: 'Operator'
       click_button 'Add film'
       within("tr.success") do
-        page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
-        page.has_selector?('td.formula', text: attrs[:formula]).must_equal true
-        page.has_selector?('td.mix_mass', text: attrs[:mix_mass]).must_equal true
+        page.has_selector?('td.serial', text: "F1223-12").must_equal true
+        page.has_selector?('td.formula', text: "HA").must_equal true
+        page.has_selector?('td.mix_mass', text: "101.1").must_equal true
         page.has_selector?('td.machine_code', text: machine.code).must_equal true
-        page.has_selector?('td.film_code', text: attrs[:film_code]).must_equal true
-        page.has_selector?('td.thinky_code', text: attrs[:thinky_code]).must_equal true
+        page.has_selector?('td.film_code', text: "1234").must_equal true
+        page.has_selector?('td.thinky_code', text: "1").must_equal true
         page.has_selector?('td.chemist_name', text: chemist.name).must_equal true
         page.has_selector?('td.operator_name', text: operator.name).must_equal true
       end
@@ -53,15 +52,17 @@ describe "Inventory integration" do
         click_link 'Lamination'
       end
 
-      it "displays films on first page" do
-        page.has_selector?('tbody tr', count: 25).must_equal true
+      it "displays correct films on first page" do
+        Film.lamination.page(1).each do |film|
+          assert page.has_selector?('td.serial', text: film.serial)
+        end
       end
 
-      it "displays films on second page" do
-        within('.pagination') do
-          click_link '2'
+      it "displays correct films on second page" do
+        within('.pagination') { click_link '2' }
+        Film.lamination.page(2).each do |film|
+          assert page.has_selector?('td.serial', text: film.serial)
         end
-        page.has_selector?('tbody tr', count: 5).must_equal true
       end
     end
   end
@@ -108,7 +109,7 @@ describe "Inventory integration" do
 
       it "adds defects given valid attributes" do
         click_link "Add defect"
-        select 'White Spot', from: 'Defect type'
+        select 'White Spot', from: 'Defect'
         fill_in 'Count', with: 3
         click_button 'Update'
         within('tr.info', text: @inspection_film.serial) do
@@ -123,9 +124,8 @@ describe "Inventory integration" do
       end
     end
 
-    describe "edit form with defects" do
+    describe "edit form with a defect" do
       before do
-        FactoryGirl.create(:defect, count: 1, master_film: @inspection_film.master_film)
         FactoryGirl.create(:defect, count: 1, master_film: @inspection_film.master_film)
         within('tr', text: @inspection_film.serial) do
           click_link 'Edit'
@@ -134,10 +134,10 @@ describe "Inventory integration" do
 
       it "remove button removes defect" do
         click_link('remove', match: :first)
+        page.has_selector?('fieldset.defect_fields').must_equal false
         click_button 'Update'
-        save_screenshot('ss.png', full: true)
         within('tr', text: @inspection_film.serial) do
-          assert page.has_selector?('td.defect_count', text: '1')
+          assert page.has_selector?('td.defect_count', text: '0')
         end
       end
     end
@@ -146,8 +146,8 @@ describe "Inventory integration" do
   describe "stock tab with multiple films" do
     before do
       @stock_film_1 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
-      @stock_film_2 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
-      @stock_film_3 = FactoryGirl.create(:film, master_film: @stock_film_2.master_film, phase: "stock", width: 60, length: 60) 
+      @stock_film_2 = FactoryGirl.create(:film, phase: "stock", width: 40, length: 72) 
+      @stock_film_3 = FactoryGirl.create(:film, master_film: @stock_film_2.master_film, phase: "stock", width: 36, length: 100) 
       click_link 'Stock'
     end
 
@@ -160,12 +160,33 @@ describe "Inventory integration" do
     end
 
     it "displays the total sqft" do
-      page.has_selector?('.summary .total-sqft', text: '75').must_equal true
+      page.has_selector?('.summary .total-sqft', text: '70').must_equal true
     end
 
-    it "displays the films in the correct order" do
-      assert_operator page.all('.serial')[0].text, :<, page.all('.serial')[1].text
-      assert_operator page.all('.serial')[1].text, :>, page.all('.serial')[2].text
+    describe "searching for width between 40 and 60, length between 60 and 80" do
+      before do
+        fill_in "min-width", with: 40
+        fill_in "max-width", with: 60
+        fill_in "min-length", with: 60
+        fill_in "max-length", with: 80
+        click_button "Search"
+      end
+
+      it "retains the search inputs" do
+        find_field('min-width').value.must_equal "40"
+        find_field('max-width').value.must_equal "60"
+        find_field('min-length').value.must_equal "60"
+        find_field('max-length').value.must_equal "80"
+      end
+
+      it "displays films 1 and 2" do
+        assert page.has_selector?('td.serial', text: @stock_film_1.serial)
+        assert page.has_selector?('td.serial', text: @stock_film_2.serial)
+      end
+
+      it "does not display film 3" do
+        page.has_selector?('td.serial', text: @stock_film_3.serial).must_equal false
+      end
     end
 
     describe "split form" do
@@ -187,7 +208,6 @@ describe "Inventory integration" do
         fill_in 'film_master_film_attributes_films_attributes_2_width', with: 54
         fill_in 'film_master_film_attributes_films_attributes_2_length', with: 55
         click_button "Split"
-        save_screenshot('ss.png', full: true)
         within('tr.info') do
           assert page.has_selector?('td.serial', text: @stock_film_1.serial)
           assert page.has_selector?('td.width', text: 50)

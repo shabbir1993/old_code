@@ -12,12 +12,11 @@ class FilmsController < ApplicationController
   end
 
   def index
-    safe_scopes = %w(lamination inspection wip fg testing nc scrap large_stock
+    safe_scopes = %w(lamination inspection wip fg test nc scrap large_stock
                      small_stock)
     if safe_scopes.include? params[:scope]
-      scoped_films = Film.send(params[:scope])
-      @films = scoped_films.joins(:master_film).order('master_films.serial
-                                                      DESC, division ASC').page(params[:page])
+      scoped_films = Film.send(params[:scope]).search_dimensions(params[:"min-width"], params[:"max-width"], params[:"min-length"], params[:"max-length"])
+      @films = scoped_films.page(params[:page])
       @film_areas = scoped_films.map { |f| f.area ? f.area : 0 }
     end
   end

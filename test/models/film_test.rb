@@ -21,7 +21,7 @@ describe Film do
     film.invalid?(:phase).must_equal true
   end
 
-  describe "with phase set to lamination" do
+  describe "with phase set to stock" do
     before do 
       film.phase = "stock"
       film.width = 60
@@ -51,7 +51,7 @@ describe Film do
     end
   end
 
-  it "effective dimensions sets attributes if not nil" do
+  it "effective dimensions sets dimensions if not nil" do
     film.effective_width = 1
     film.effective_length = 2
     film.save!
@@ -83,6 +83,31 @@ describe Film do
     before do
       film.width = 60
       film.length = 60
+    end
+
+    it "search_dimensions finds it given correct params" do
+      film.save!
+      Film.search_dimensions(60, 60, 55, 65).must_include film
+    end
+
+    it "search_dimensions returns it given nil params" do
+      film.save!
+      Film.search_dimensions("", "", "", "").must_include film
+    end
+
+    it "search_dimensions returns it given correct partial params" do
+      film.save!
+      Film.search_dimensions(50, "", "", "").must_include film
+    end
+
+    it "search_dimensions wont find it it given incorrect params" do
+      film.save!
+      Film.search_dimensions(60, 60, 55, 59).wont_include film
+    end
+    
+    it "search_dimensions does not return it given incorrect partial params" do
+      film.save!
+      Film.search_dimensions("", "", "", 55).wont_include film
     end
 
     it "calculates the correct area given dimensions" do
@@ -170,6 +195,14 @@ describe Film do
     film.phase = "something-else"
     film.save!
     Film.phase("lamination").wont_include(film)
+  end
+
+  it "by_serial scope orders by serial" do
+    film_1 = FactoryGirl.create(:film)
+    film_2 = FactoryGirl.create(:film)
+    film_3 = FactoryGirl.create(:film, master_film: film_2.master_film)
+    Film.by_serial.first.must_equal film_2
+    Film.by_serial.last.must_equal film_1
   end
 
   it "small scope returns < 16sqft film" do

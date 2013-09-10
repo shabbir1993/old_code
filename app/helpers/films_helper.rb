@@ -2,13 +2,13 @@ module FilmsHelper
   def visible_columns_for(scope)
     case scope
     when "lamination"
-      ['Mix/g', 'Mach', 'Film Type', 'Thinky', 'Chemist', 'Operator']
+      ['Mix/g', 'Mach', 'ITO', 'Thinky', 'Chemist', 'Operator']
     when "inspection"
       ['Eff W', 'Eff L', 'Eff Area', 'Defects']
-    when "large_stock","small_stock", "nc", "scrap", "testing"
+    when "large_stock","small_stock", "nc", "scrap", "test"
       ['Shelf', 'Width', 'Length', 'Area']
     when "wip", "fg"
-      ['Shelf', 'Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',
+      ['Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',
        'Util', 'Width', 'Length', 'Area']
     else
       []
@@ -27,7 +27,7 @@ module FilmsHelper
       render "lamination_table_values", film: film
     when "inspection"
       render "inspection_table_values", film: film
-    when "stock", "nc", "scrap", "testing"
+    when "stock", "nc", "scrap", "test"
       render "backend_table_values", film: film
     when "wip", "fg"
       render "checkout_table_values", film: film
@@ -40,7 +40,7 @@ module FilmsHelper
       render "lamination_fields", f: f
     when "inspection"
       render "inspection_fields", f: f
-    when "stock", "nc", "scrap", "testing"
+    when "stock", "nc", "scrap", "test"
       render "backend_fields", f: f
     when "wip", "fg"
       render "checkout_fields", f: f

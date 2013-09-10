@@ -1,6 +1,8 @@
 <fieldset class="defect-fields">
-  <%= f.input :defect_type, collection: Defect.allowed_types, include_blank: true %>
-  <%= f.input :count, value: 1 %>
+  <div class="inline-fields">
+    <%= f.input :defect_type, label: "Defect", collection: Defect.allowed_types, include_blank: true, input_html: { class: "input-medium" } %>
+    <%= f.input :count, label: false, placeholder: "Count", error: false, input_html: { class: "input-mini" } %>
   <%= f.hidden_field :_destroy %>
   <%= link_to "remove", '#', class: "remove-fields" %>
+  </div>
 </fieldset>

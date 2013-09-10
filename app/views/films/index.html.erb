@@ -16,8 +16,8 @@
       <%= link_to "WIP", films_path(scope: 'wip') %></li>
     <li class="<%= "active" if params[:scope] == 'fg' %>">
       <%= link_to "FG", films_path(scope: 'fg') %></li>
-    <li class="<%= "active" if params[:scope] == 'testing' %>">
-      <%= link_to "Test", films_path(scope: 'testing') %></li>
+    <li class="<%= "active" if params[:scope] == 'test' %>">
+      <%= link_to "Test", films_path(scope: 'test') %></li>
     <li class="<%= "active" if params[:scope] == 'nc' %>">
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
@@ -31,6 +31,17 @@
     <br>
     <span>ip: <%= request.remote_ip %></span>
   </div>
+<% end %>
+
+<%= form_tag films_path, method: :get, html: { class: 'form-search' } do %>
+  <span>Width: </span>
+  <%= number_field_tag :"min-width", params[:"min-width"], class: "search-query input-mini" %> -
+  <%= number_field_tag :"max-width", params[:"max-width"], class: "search-query input-mini" %>
+  <span>Length: </span>
+  <%= number_field_tag :"min-length", params[:"min-length"], class: "search-query input-mini" %> -
+  <%= number_field_tag :"max-length", params[:"max-length"], class: "search-query input-mini" %>
+  <%= hidden_field_tag :scope, params[:scope] %>
+  <%= submit_tag "Search", name: nil, class: "btn" %>
 <% end %>
 
 <%= form_tag edit_multiple_films_path, method: :get, remote: true, id: "inventory-form" do %>

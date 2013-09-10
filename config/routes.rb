@@ -20,9 +20,10 @@ Pcms::Application.routes.draw do
 
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history
+  get 'history/master_films', to: 'history#master_films', as: :master_films_history
 
-  get 'charts/stock_film_types', to: 'charts#stock_film_types', as: :stock_film_types_chart
-  get 'charts/stock_formulas', to: 'charts#stock_formulas', as: :stock_formulas_chart
+  get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
+  get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart
 
   root to: 'films#index', defaults: { scope: "lamination" }
 end
