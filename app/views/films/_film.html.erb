@@ -2,11 +2,15 @@
 <tr id="<%= "film-#{film.id}" %>" class="<%= row_class %>">
   <td><%= check_box_tag "film_ids[]", film.id %></td>
   <td>
-  <%= link_to "Edit", edit_film_path(film), { :"data-toggle" => "modal",
-    :"data-target" => "#film-actions-modal" } %>
-  <%= link_to('Split', split_film_path(film), { :"data-toggle" => "modal",
-              :"data-target" => "#film-actions-modal" }) if film.phase ==
-              "stock" %>
+  <% if film.deleted == true %>
+    <%= link_to "Restore", restore_film_path(film), method: :put, remote: true %>
+  <% else %>
+    <%= link_to "Edit", edit_film_path(film), { :"data-toggle" => "modal",
+      :"data-target" => "#film-actions-modal" } %>
+    <%= link_to('Split', split_film_path(film), { :"data-toggle" => "modal",
+                :"data-target" => "#film-actions-modal" }) if film.phase ==
+                "stock" %>
+  <% end %>
   </td>
   <td class="serial"><%= film.serial %></td>
   <td class="formula"><%= film.formula %></td>

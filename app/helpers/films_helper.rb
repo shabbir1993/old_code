@@ -10,6 +10,8 @@ module FilmsHelper
     when "wip", "fg"
       ['Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',
        'Util', 'Width', 'Length', 'Area']
+    when "deleted"
+      ['Phase', 'Width', 'Length']
     else
       []
     end
@@ -31,6 +33,8 @@ module FilmsHelper
       render "backend_table_values", film: film
     when "wip", "fg"
       render "checkout_table_values", film: film
+    when "deleted"
+      render "deleted_table_values", film: film
     end
   end
 

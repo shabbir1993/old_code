@@ -1,8 +1,9 @@
 Pcms::Application.routes.draw do
-  resources :films, except: [:show, :destroy] do
+  resources :films, except: [:show] do
     member do
       get :split
       put :create_split
+      put :restore
     end
     collection do
       get :edit_multiple
@@ -24,6 +25,8 @@ Pcms::Application.routes.draw do
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
   get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart
+  get 'charts/fg_utilization', to: 'charts#fg_utilization', as: :fg_utilization_chart
+
 
   root to: 'films#index', defaults: { scope: "lamination" }
 end

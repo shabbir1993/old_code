@@ -1,0 +1,54 @@
+<script>
+  $(function () { 
+    $('#fg-utilization').highcharts({
+      chart: {
+        type: 'scatter'
+      },
+      title: {
+        text: 'FG utilization'
+      },
+      xAxis: {
+        type: 'datetime',
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat('%m/%d/%y', this.value);
+          }
+        }
+      },
+
+      yAxis: [{
+        title: {
+          text: 'Utilization'
+        },
+        labels: {
+          formatter: function() {
+            return this.value + '%';
+          }
+        }
+      }],
+
+      series: [{
+        data: [
+          <% @data.each do |r| %>
+            { x: <%= r[:datetime] %>, y: <%= r[:utilization] %>, serial: "<%= r[:serial] %>" },
+          <% end %>
+          ]
+      }],
+
+      tooltip: {
+        formatter: function() {
+          return '<b>'+ this.point.serial +'</b><br/>'+
+          Highcharts.dateFormat('%m/%d/%y', this.x) +'<br/>'+ 
+          this.y +'%';
+        }
+      },
+
+      legend: [{
+        enabled: false
+      }]
+    });
+  });
+</script>
+
+<div id="fg-utilization" class="chart"></div>
+

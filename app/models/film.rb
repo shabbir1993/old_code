@@ -2,7 +2,7 @@ class Film < ActiveRecord::Base
   attr_accessible :destination, :width, :length, :custom_width, :custom_length,
     :reserved_for, :note, :sales_order_code, :customer, :shelf,
     :master_film_attributes, :splits, :effective_width, :effective_length,
-    :phase
+    :phase, :deleted
 
   belongs_to :master_film
   has_many :film_movements
@@ -17,6 +17,7 @@ class Film < ActiveRecord::Base
 
   validates :phase, presence: true
 
+  default_scope where(deleted: false)
   scope :phase, lambda { |phase| where(phase: phase) }
   scope :by_serial, joins(:master_film).order('master_films.serial DESC, division ASC')
   scope :small, where('width*length/144 < ?', 16)
@@ -30,6 +31,7 @@ class Film < ActiveRecord::Base
   scope :test, phase("test").by_serial
   scope :nc, phase("nc").by_serial
   scope :scrap, phase("scrap").by_serial
+  scope :deleted, unscoped.where(deleted: true)
 
   def destination
   end

@@ -96,7 +96,7 @@ describe "Inventory integration" do
         fill_in 'Reserved for', with: "Example company"
         fill_in 'Note', with: "Example note"
         click_button 'Update'
-        page.has_selector?('tr.info', text: "#{@inspection_film.serial} moved to stock").must_equal true
+        page.has_selector?('tr.info', text: "#{@inspection_film.serial} has been moved to stock").must_equal true
         click_link 'Stock'
         within "tbody", text: @inspection_film.serial do
           page.has_selector?('td.width', text: "60").must_equal true
@@ -105,6 +105,14 @@ describe "Inventory integration" do
           page.has_selector?('td.reserved_for', text: "Example company").must_equal true
           page.has_selector?('td.note', text: "Example note").must_equal true
         end
+      end
+
+      it "has a working delete checkbox" do
+        check("Delete")
+        click_button "Update"
+        page.has_selector?('tr.info', text: "#{@inspection_film.serial} has been deleted").must_equal true
+        click_link 'Deleted'
+        page.has_selector?('td.serial', text: @inspection_film.serial)
       end
 
       it "adds defects given valid attributes" do
@@ -232,8 +240,8 @@ describe "Inventory integration" do
         click_button 'Move selected'
         select 'wip', from: 'Move to'
         click_button 'Move all'
-        page.has_selector?('tr.info', text: "#{@stock_film_1.serial} moved to wip").must_equal true
-        page.has_selector?('tr.info', text: "#{@stock_film_2.serial} moved to wip").must_equal true
+        page.has_selector?('tr.info', text: "#{@stock_film_1.serial} has been moved to wip").must_equal true
+        page.has_selector?('tr.info', text: "#{@stock_film_2.serial} has been moved to wip").must_equal true
         click_link 'WIP'
         page.has_selector?('tr td.serial', text: @stock_film_1.serial).must_equal true
         page.has_selector?('tr td.serial', text: @stock_film_2.serial).must_equal true
@@ -245,6 +253,20 @@ describe "Inventory integration" do
         page.has_selector?('td.serial', text: @stock_film_1.serial).must_equal true
         page.has_selector?('td.serial', text: @stock_film_1.serial).must_equal true
       end
+    end
+  end
+
+  describe "trash tab with deleted film" do
+    before do
+      @deleted_film = FactoryGirl.create(:film, deleted: true, phase: "stock")
+      click_link "Deleted"
+    end
+
+    it "restores film" do
+      within('tr', text: @deleted_film.serial) { click_link "Restore" }
+      page.has_selector?('tr.info', text: "#{@deleted_film.serial} has been moved to stock").must_equal true
+      click_link "Stock"
+      page.has_selector?('tr', text: @deleted_film.serial).must_equal true
     end
   end
 end

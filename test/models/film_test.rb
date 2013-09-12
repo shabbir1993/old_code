@@ -21,6 +21,11 @@ describe Film do
     film.invalid?(:phase).must_equal true
   end
 
+  it "sets deleted to false by default" do
+    film.save!
+    film.deleted.must_equal false
+  end
+
   describe "with phase set to stock" do
     before do 
       film.phase = "stock"
@@ -185,6 +190,12 @@ describe Film do
     film.sibling_count.must_equal (original_count + 2)
   end
 
+  it "default scope does not include deleted films" do
+    film.deleted = true
+    film.save!
+    Film.all.wont_include(film)
+  end
+
   it "phase scope returns specified phase film" do
     film.phase = "lamination"
     film.save!
@@ -231,5 +242,17 @@ describe Film do
     film.length = 40
     film.save!
     Film.large.wont_include(film)
+  end
+
+  it "deleted scope returns deleted film" do
+    film.deleted = true
+    film.save!
+    Film.deleted.must_include(film)
+  end
+
+  it "deleted scope does not return active film" do
+    film.deleted = false
+    film.save!
+    Film.deleted.wont_include(film)
   end
 end

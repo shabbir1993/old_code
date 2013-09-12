@@ -22,4 +22,15 @@ class ChartsController < ApplicationController
       }
     end
   end
+
+  def fg_utilization
+    all_movements_to_fg = FilmMovement.fg.joins(:film)
+    @data = FilmMovement.fg.map do |movement|
+      {
+        datetime: movement.created_at.to_i*1000, 
+        utilization: (movement.film.utilization*100 if movement.film.utilization), 
+        serial: movement.film.serial 
+      }
+    end
+  end
 end

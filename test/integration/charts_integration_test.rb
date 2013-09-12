@@ -19,5 +19,10 @@ describe "Charts integration" do
     click_link "Stock film type totals"
     assert page.has_selector?("div#stock-film-type-totals")
   end
+
+  it "has a fg utilization chart" do
+    click_link "FG utilization"
+    assert page.has_selector?("div#fg-utilization")
+  end
 end
 

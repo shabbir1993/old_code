@@ -3,7 +3,9 @@
   $("<%= "#edit_film_#{@film.id}" %>").prepend("<%= j render 'shared/error_messages', object: @film %>");
 <% else %>
   $('#film-actions-modal').modal('hide')
-  <% if params[:film][:destination].present? %>
+  <% if params[:film][:deleted] == '1' %>
+    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'deleted_film', film: @film, row_class: "info" %>");
+  <% elsif params[:film][:destination].present? %>
     $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', film: @film, row_class: "info" %>");
   <% else %>
     $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");

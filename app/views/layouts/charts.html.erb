@@ -6,6 +6,8 @@
       <%= link_to "Stock formula totals", stock_formula_totals_chart_path %></li>
     <li class="<%= "active" if params[:action] == 'stock_film_type_totals' %>">
       <%= link_to "Stock film type totals", stock_film_type_totals_chart_path %></li>
+    <li class="<%= "active" if params[:action] == 'fg_utlization' %>">
+      <%= link_to "FG utilization", fg_utilization_chart_path %></li>
   </ul>
 <% end %>
 

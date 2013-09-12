@@ -22,6 +22,9 @@
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
+    <li class="divider"></li>
+    <li class="<%= "active" if params[:scope] == 'deleted' %>">
+      <%= link_to "Deleted", films_path(scope: 'deleted') %></li>
   </ul>
   <div class="summary">
     <span class="count">count: <%= @film_areas.count %></span>
