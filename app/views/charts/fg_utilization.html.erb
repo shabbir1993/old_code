@@ -2,6 +2,7 @@
   $(function () { 
     $('#fg-utilization').highcharts({
       chart: {
+        zoomType: 'x',
         type: 'scatter'
       },
       title: {
@@ -28,12 +29,24 @@
       }],
 
       series: [{
+        color: 'rgba(119, 152, 191, .6)',
         data: [
           <% @data.each do |r| %>
-            { x: <%= r[:datetime] %>, y: <%= r[:utilization] %>, serial: "<%= r[:serial] %>" },
+            <% if r[:datetime] && r[:utilization] && r[:serial] %>
+              { x: <%= r[:datetime] %>, y: <%= r[:utilization] %>, serial: "<%= r[:serial] %>" },
+            <% end %>
           <% end %>
           ]
       }],
+
+      plotOptions: {
+        series: {
+          turboThreshold: 0,
+          marker: {
+            radius: 3
+          }
+        }
+      },
 
       tooltip: {
         formatter: function() {

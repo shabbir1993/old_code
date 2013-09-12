@@ -24,12 +24,12 @@ class ChartsController < ApplicationController
   end
 
   def fg_utilization
-    all_movements_to_fg = FilmMovement.fg.joins(:film)
-    @data = FilmMovement.fg.map do |movement|
+    all_movements_to_fg = FilmMovement.fg.includes(film: :master_film)
+    @data = all_movements_to_fg.map do |movement|
       {
         datetime: movement.created_at.to_i*1000, 
         utilization: (movement.film.utilization*100 if movement.film && movement.film.utilization), 
-        serial: (movement.film.serial if movement.film)
+        serial: (movement.film.master_film.serial if movement.film)
       }
     end
   end
