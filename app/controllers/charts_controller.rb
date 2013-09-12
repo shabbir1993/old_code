@@ -29,7 +29,7 @@ class ChartsController < ApplicationController
       {
         datetime: movement.created_at.to_i*1000, 
         utilization: (movement.film.utilization*100 if movement.film && movement.film.utilization), 
-        serial: movement.film.serial 
+        serial: (movement.film.serial if movement.film)
       }
     end
   end
