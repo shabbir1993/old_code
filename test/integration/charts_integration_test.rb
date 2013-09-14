@@ -24,5 +24,15 @@ describe "Charts integration" do
     click_link "FG utilization"
     assert page.has_selector?("div#fg-utilization")
   end
+  
+  it "has a master film yield chart" do
+    click_link "Master yield"
+    assert page.has_selector?("div#master-film-yield")
+  end
+
+  it "has a stock dimensions chart" do
+    click_link "Stock dimensions"
+    assert page.has_selector?("div#stock-dimensions")
+  end
 end
 

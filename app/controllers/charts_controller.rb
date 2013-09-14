@@ -33,4 +33,15 @@ class ChartsController < ApplicationController
       }
     end
   end
+
+  def master_film_yield
+    @data = MasterFilm.where("effective_width IS NOT NULL AND effective_length IS NOT NULL AND mix_mass IS NOT NULL AND machine_id IS NOT NULL").group_by(&:formula)
+  end
+
+  def stock_dimensions
+    all_film_dimensions = Film.phase("stock").large.includes(:master_film).count(:all, group: ['master_films.formula', :length, :width]).map do |k, v|
+      k << v
+    end
+    @data = all_film_dimensions.group_by(&:first)
+  end
 end

@@ -53,6 +53,11 @@ describe MasterFilm do
     master_film.invalid?(:serial).must_equal true
   end
 
+  it "has a lamination_at based on the serial" do
+    master_film.serial = "E0102-05"
+    master_film.laminated_at.must_equal Date.new(2012, 1, 2)
+  end
+
   it "calculates correct effective area given effective dimensions" do
     master_film.effective_width = 60
     master_film.effective_length = 60
@@ -69,6 +74,22 @@ describe MasterFilm do
     master_film.effective_width = 1
     master_film.effective_length = nil
     master_film.effective_area.must_equal nil
+  end
+
+  it "calculates correct yield given valid attributes" do
+    master_film.effective_width = 60
+    master_film.effective_length = 60
+    master_film.mix_mass = 100
+    master_film.machine = FactoryGirl.create(:machine, yield_constant: 0.5)
+    master_film.yield.must_equal 0.5
+  end
+
+  it "has nil yield given nil attributes" do
+    master_film.effective_width = nil
+    master_film.effective_length = nil
+    master_film.mix_mass = nil
+    master_film.machine = nil
+    master_film.yield.must_equal nil
   end
 
   it "calculates correct defect count" do

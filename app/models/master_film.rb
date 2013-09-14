@@ -24,6 +24,17 @@ class MasterFilm < ActiveRecord::Base
     effective_width*effective_length/144 if effective_width && effective_length
   end
 
+  def yield
+    (effective_area/mix_mass)/machine.yield_constant if effective_area && mix_mass && machine
+  end
+
+  def laminated_at
+    year = serial[0].ord + 1943
+    month = serial[1,2].to_i
+    day = serial[3,2].to_i
+    Date.new(year, month, day)
+  end
+
   def defect_count
     defects.sum(:count)
   end

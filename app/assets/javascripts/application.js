@@ -15,4 +15,5 @@
 //= require bootstrap-modal
 //= require bootstrap-alert
 //= require highcharts
+//= require highcharts-more
 //= require_tree .

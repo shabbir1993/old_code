@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130729214351) do
+ActiveRecord::Schema.define(:version => 20130913015232) do
 
   create_table "defects", :force => true do |t|
     t.string   "defect_type"
@@ -51,8 +51,9 @@ ActiveRecord::Schema.define(:version => 20130729214351) do
 
   create_table "machines", :force => true do |t|
     t.string   "code"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.decimal  "yield_constant"
   end
 
   create_table "master_films", :force => true do |t|

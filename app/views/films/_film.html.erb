@@ -14,7 +14,7 @@
   </td>
   <td class="serial"><%= film.serial %></td>
   <td class="formula"><%= film.formula %></td>
-  <%= table_values_for(film.phase, film) %>
+  <%= table_values_for(film.deleted, film.phase, film) %>
   <td class="reserved_for"><%= film.reserved_for %></td>
   <td class="note"><%= film.note %></td>
   <td><%= film.updated_at.strftime("%m/%d/%y %H:%M") %></td>

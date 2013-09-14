@@ -29,6 +29,7 @@ FactoryGirl.define do
 
   factory :machine do
     sequence(:code) { |n| "#{n}" }
+    yield_constant 0.4
   end
 
   factory :defect do

@@ -23,18 +23,20 @@ module FilmsHelper
     end.join.html_safe
   end
 
-  def table_values_for(phase, film)
-    case phase
-    when "lamination"
-      render "lamination_table_values", film: film
-    when "inspection"
-      render "inspection_table_values", film: film
-    when "stock", "nc", "scrap", "test"
-      render "backend_table_values", film: film
-    when "wip", "fg"
-      render "checkout_table_values", film: film
-    when "deleted"
+  def table_values_for(deleted, phase, film)
+    if deleted
       render "deleted_table_values", film: film
+    else
+      case phase
+      when "lamination"
+        render "lamination_table_values", film: film
+      when "inspection"
+        render "inspection_table_values", film: film
+      when "stock", "nc", "scrap", "test"
+        render "backend_table_values", film: film
+      when "wip", "fg"
+        render "checkout_table_values", film: film
+      end
     end
   end
 

@@ -1,6 +1,7 @@
 class Machine < ActiveRecord::Base
   attr_accessible :code 
   validates :code, presence: true
+  validates :yield_constant, presence: true
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
