@@ -13,7 +13,7 @@ class FilmsController < ApplicationController
 
   def index
     safe_scopes = %w(lamination inspection wip fg test nc scrap large_stock
-                     small_stock deleted)
+                     small_stock reserved_stock deleted)
     if safe_scopes.include? params[:scope]
       scoped_films = Film.send(params[:scope]).search_dimensions(params[:"min-width"], params[:"max-width"], params[:"min-length"], params[:"max-length"])
       @films = scoped_films.page(params[:page])

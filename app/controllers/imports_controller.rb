@@ -31,5 +31,10 @@ class ImportsController < ApplicationController
     FilmMovement.import(params[:file])
     redirect_to imports_path, notice: "Film movements imported."
   end
+
+  def import_phase_snapshots
+    PhaseSnapshot.import(params[:file])
+    redirect_to imports_path, notice: "Phase snapshots imported."
+  end
 end
 

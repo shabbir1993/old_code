@@ -1,0 +1,7 @@
+<% if @master_film.errors.any? %>
+  $("<%= "#edit_master_film_#{@master_film.id}" %> .error-messages").remove();
+  $("<%= "#edit_master_film_#{@master_film.id}" %>").prepend("<%= j render 'shared/error_messages', object: @master_film %>");
+<% else %>
+  $('#master-film-actions-modal').modal('hide')
+  $("<%= "#master-film-#{@master_film.id}" %>").replaceWith("<%= j render 'master_film', master_film: @master_film, row_class: "info" %>");
+<% end %>

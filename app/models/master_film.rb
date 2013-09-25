@@ -20,6 +20,8 @@ class MasterFilm < ActiveRecord::Base
   validates :serial, presence: true, uniqueness: { case_sensitive: false },
     format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }
 
+  scope :by_serial, order('serial DESC')
+
   def effective_area
     effective_width*effective_length/144 if effective_width && effective_length
   end
@@ -32,7 +34,7 @@ class MasterFilm < ActiveRecord::Base
     year = serial[0].ord + 1943
     month = serial[1,2].to_i
     day = serial[3,2].to_i
-    Date.new(year, month, day)
+    DateTime.new(year, month, day)
   end
 
   def defect_count

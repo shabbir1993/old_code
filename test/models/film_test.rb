@@ -244,6 +244,42 @@ describe Film do
     Film.large.wont_include(film)
   end
 
+  it "reserved scope returns films with non-empty reserved_for" do
+    film.reserved_for = "something"
+    film.save!
+    Film.reserved.must_include(film)
+  end
+
+  it "reserved scope does not return films with empty reserved_for" do
+    film.reserved_for = ""
+    film.save!
+    Film.reserved.wont_include(film)
+  end
+
+  it "reserved scope does not return films with nil reserved_for" do
+    film.reserved_for = nil
+    film.save!
+    Film.reserved.wont_include(film)
+  end
+
+  it "not_reserved scope returns films with empty reserved_for" do
+    film.reserved_for = ""
+    film.save!
+    Film.not_reserved.must_include(film)
+  end
+
+  it "not_reserved scope returns films with nil reserved_for" do
+    film.reserved_for = nil
+    film.save!
+    Film.not_reserved.must_include(film)
+  end
+
+  it "not_reserved scope does not return films with a reserved_for" do
+    film.reserved_for = "something"
+    film.save!
+    Film.not_reserved.wont_include(film)
+  end
+
   it "deleted scope returns deleted film" do
     film.deleted = true
     film.save!

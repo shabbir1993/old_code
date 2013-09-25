@@ -11,6 +11,8 @@
     <ul class="nav nav-list">
       <li class="<%= "active" if params[:scope] == 'small_stock' %>">
       <%= link_to "<16", films_path(scope: 'small_stock') %></li>
+      <li class="<%= "active" if params[:scope] == 'reserved_stock' %>">
+      <%= link_to "Reserved", films_path(scope: 'reserved_stock') %></li>
     </ul>
     <li class="<%= "active" if params[:scope] == 'wip' %>">
       <%= link_to "WIP", films_path(scope: 'wip') %></li>

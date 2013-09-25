@@ -41,7 +41,7 @@
             name: "<%= formula[0] %>",
             data: [
               <% formula[1].each do |r| %>
-                { x: <%= r.laminated_at.to_time.to_i*1000 %>, y: <%= r.yield*100 %> },
+                { x: <%= r.laminated_at.to_time.to_i*1000 %>, y: <%= r.yield*100 %>, serial: "<%= r.serial %>" },
               <% end %>
             ]},
           <% end %>
@@ -59,7 +59,7 @@
 
       tooltip: {
         formatter: function() {
-          return '<b>'+ this.point.name +'</b><br/>'+
+          return '<b>'+ this.point.serial +'</b><br/>'+
           Highcharts.dateFormat('%m/%d/%y', this.x) +'<br/>'+ 
           this.y +'%';
         }
@@ -69,4 +69,3 @@
 </script>
 
 <div id="master-film-yield" class="chart"></div>
-

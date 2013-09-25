@@ -12,6 +12,12 @@
       <%= link_to "Master yield", master_film_yield_chart_path %></li>
     <li class="<%= "active" if params[:action] == 'stock_dimensions' %>">
       <%= link_to "Stock dimensions", stock_dimensions_chart_path %></li>
+    <li class="<%= "active" if params[:action] == 'film_movement' %>">
+      <%= link_to "Film movement", film_movement_chart_path %></li>
+    <li class="<%= "active" if params[:action] == 'daily_fg_movement' %>">
+      <%= link_to "Daily FG movement", daily_fg_movement_chart_path %></li>
+    <li class="<%= "active" if params[:action] == 'stock_snapshots' %>">
+      <%= link_to "Stock snapshots", stock_snapshots_chart_path %></li>
   </ul>
 <% end %>
 

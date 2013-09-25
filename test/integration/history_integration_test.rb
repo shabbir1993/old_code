@@ -89,10 +89,24 @@ describe "History integration" do
     end
   end
 
-  describe "master film history page" do
+  describe "scrap movement history page" do
     it "contains the correct table" do
-      click_link 'Master films'
-      assert page.has_selector?("table.master-films-history")
+      click_link 'Scrap movements'
+      assert page.has_selector?("table.scrap-film-movements-history")
+    end
+  end
+
+  describe "reserved checkouts history page" do
+    it "contains the correct table" do
+      click_link 'Reserved checkouts'
+      assert page.has_selector?("table.reserved-checkouts-history")
+    end
+  end
+
+  describe "phase snapshot history page" do
+    it "contains the correct table" do
+      click_link 'Phase snapshots'
+      page.has_selector?("table.phase-snapshots-history").must_equal true
     end
   end
 end

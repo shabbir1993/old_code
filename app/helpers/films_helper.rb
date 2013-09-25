@@ -5,7 +5,7 @@ module FilmsHelper
       ['Mix/g', 'Mach', 'ITO', 'Thinky', 'Chemist', 'Operator']
     when "inspection"
       ['Eff W', 'Eff L', 'Eff Area', 'Defects']
-    when "large_stock","small_stock", "nc", "scrap", "test"
+    when "large_stock","small_stock", "reserved_stock", "nc", "scrap", "test"
       ['Shelf', 'Width', 'Length', 'Area']
     when "wip", "fg"
       ['Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',

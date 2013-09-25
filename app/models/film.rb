@@ -22,16 +22,19 @@ class Film < ActiveRecord::Base
   scope :by_serial, joins(:master_film).order('master_films.serial DESC, division ASC')
   scope :small, where('width*length/144 < ?', 16)
   scope :large, where('width*length/144 >= ? or width IS NULL or length IS NULL', 16)
+  scope :reserved, where("reserved_for <> ''")
+  scope :not_reserved, where("reserved_for IS NULL or reserved_for = ''")
   scope :lamination, phase("lamination").by_serial
   scope :inspection, phase("inspection").by_serial
-  scope :large_stock, phase("stock").large.by_serial
-  scope :small_stock, phase("stock").small.by_serial
+  scope :large_stock, phase("stock").large.not_reserved.by_serial
+  scope :small_stock, phase("stock").small.not_reserved.by_serial
+  scope :reserved_stock, phase("stock").reserved.by_serial
   scope :wip, phase("wip").by_serial
   scope :fg, phase("fg").by_serial
   scope :test, phase("test").by_serial
   scope :nc, phase("nc").by_serial
   scope :scrap, phase("scrap").by_serial
-  scope :deleted, unscoped.where(deleted: true)
+  scope :deleted, unscoped.where(deleted: true).by_serial
 
   def destination
   end

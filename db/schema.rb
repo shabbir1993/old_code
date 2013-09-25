@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913015232) do
+ActiveRecord::Schema.define(:version => 20130920162233) do
 
   create_table "defects", :force => true do |t|
     t.string   "defect_type"
@@ -69,6 +69,14 @@ ActiveRecord::Schema.define(:version => 20130913015232) do
     t.integer  "machine_id"
     t.decimal  "effective_width"
     t.decimal  "effective_length"
+  end
+
+  create_table "phase_snapshots", :force => true do |t|
+    t.string   "phase"
+    t.integer  "count"
+    t.decimal  "total_area"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -7,6 +7,7 @@ gem 'bootstrap-sass', '~> 2.3.0.1'
 gem 'pg', '0.14.1'
 gem "simple_form", "~> 2.1.0"
 gem "kaminari", "~> 0.14.1"
+gem 'newrelic_rpm'
 
 group :development do
   gem 'meta_request'
@@ -20,6 +21,7 @@ end
 
 group :test do
   gem "minitest", "4.6.1"
+  gem "mocha", "~> 0.14.0", require: false
   gem 'capybara', '2.1.0'
   gem "factory_girl_rails", "4.2.1"
   gem 'database_cleaner', "0.9.1"

@@ -1,0 +1,38 @@
+<% provide :title, "Engineering" %>
+<% content_for :sidebar do %>
+  <ul class="nav nav-list">
+    <li class="active">
+      <%= link_to "Master films", master_films_path %></li>
+  </ul>
+<% end %>
+
+<%= paginate @master_films %>
+<table class="master-films table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Serial</th>
+      <th>Formula</th>
+      <th>Mix/g</th>
+      <th>Mach</th>
+      <th>ITO</th>
+      <th>Thinky</th>
+      <th>Chemist</th>
+      <th>Operator</th>
+      <th>Eff W</th>
+      <th>Eff L</th>
+      <th>Eff Area</th>
+      <th>Defects</th>
+      <th>Updated</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @master_films %>
+  </tbody>
+</table>
+
+<div id="master-film-actions-modal" class="modal hide" tabindex="-1" role="dialog">
+  <div class="modal-body">
+  </div>
+</div>

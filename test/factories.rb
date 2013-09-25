@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :master_film do
-    sequence(:serial) { |n| "E#{ ('%04d' % n)[-4, 4] }-#{ ('%02d' % n)[-2, 2] }"}
+    today = Date.today
+    sequence(:serial) { |n| "E#{ today.strftime('%m') + today.strftime('%d') }-#{ ('%02d' % n)[-2, 2] }"}
   end
 
   factory :film do

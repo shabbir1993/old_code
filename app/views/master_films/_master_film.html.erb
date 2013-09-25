@@ -1,4 +1,7 @@
-<tr>
+<% row_class = "" if local_assigns[:row_class].nil? %>
+<tr id="<%= "master-film-#{master_film.id}" %>" class="<%= row_class %>">
+  <td><%= link_to "Edit", edit_master_film_path(master_film), 
+    { :"data-toggle" => "modal", :"data-target" => "#master-film-actions-modal" } %></td>
   <td class="serial"><%= master_film.serial %></td>
   <td class="formula"><%= master_film.formula %></td>
   <td class="mix_mass"><%= master_film.mix_mass %></td>

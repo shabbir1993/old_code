@@ -44,4 +44,21 @@ class ChartsController < ApplicationController
     end
     @data = all_film_dimensions.group_by(&:first)
   end
+
+  def film_movement
+    @data = FilmMovement.unscoped.sum(:area, group: ['"from"', '"to"']).each_with_object({}) do |((from, to), area), hash| 
+      hash[to] ||= {}
+      hash[to][from] = area
+    end
+  end
+  
+  def daily_fg_movement
+    @sf_data = FilmMovement.fg.reorder("DATE(created_at) ASC").sum(:area, group: "DATE(created_at)")
+    @count_data = FilmMovement.fg.reorder("DATE(created_at) ASC").count(:area, group: "DATE(created_at)")
+  end
+
+  def stock_snapshots
+    @stock_data = PhaseSnapshot.where(phase: "large_stock").select("count, total_area, created_at").order("created_at ASC")
+    @reserved_stock_data = PhaseSnapshot.where(phase: "reserved_stock").select("count, total_area, created_at").order("created_at ASC")
+  end
 end

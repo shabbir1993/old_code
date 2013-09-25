@@ -89,10 +89,14 @@ GEM
       callsite
       rack-contrib
       railties
+    metaclass (0.0.1)
     mime-types (1.23)
     mini_portile (0.5.1)
     minitest (4.6.1)
+    mocha (0.14.0)
+      metaclass (~> 0.0.1)
     multi_json (1.7.7)
+    newrelic_rpm (3.6.7.159)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     pg (0.14.1)
@@ -171,6 +175,8 @@ DEPENDENCIES
   launchy (~> 2.2.0)
   meta_request
   minitest (= 4.6.1)
+  mocha (~> 0.14.0)
+  newrelic_rpm
   pg (= 0.14.1)
   poltergeist!
   rails (= 3.2.11)

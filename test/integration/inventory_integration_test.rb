@@ -4,7 +4,7 @@ describe "Inventory integration" do
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     http_login
-    visit films_path(scope: "lamination")
+    click_link "Inventory"
   end
 
   it "has the right title" do
@@ -93,7 +93,6 @@ describe "Inventory integration" do
         fill_in 'film_effective_length', with: 70
         select 'stock', from: 'Move to'
         fill_in 'Shelf', with: "M1"
-        fill_in 'Reserved for', with: "Example company"
         fill_in 'Note', with: "Example note"
         click_button 'Update'
         page.has_selector?('tr.info', text: "#{@inspection_film.serial} has been moved to stock").must_equal true
@@ -102,7 +101,6 @@ describe "Inventory integration" do
           page.has_selector?('td.width', text: "60").must_equal true
           page.has_selector?('td.length', text: "70").must_equal true
           page.has_selector?('td.shelf', text: "M1").must_equal true
-          page.has_selector?('td.reserved_for', text: "Example company").must_equal true
           page.has_selector?('td.note', text: "Example note").must_equal true
         end
       end
@@ -113,40 +111,6 @@ describe "Inventory integration" do
         page.has_selector?('tr.info', text: "#{@inspection_film.serial} has been deleted").must_equal true
         click_link 'Deleted'
         page.has_selector?('td.serial', text: @inspection_film.serial)
-      end
-
-      it "adds defects given valid attributes" do
-        click_link "Add defect"
-        select 'White Spot', from: 'Defect'
-        fill_in 'Count', with: 3
-        click_button 'Update'
-        within('tr.info', text: @inspection_film.serial) do
-          assert page.has_selector?('td.defect_count', text: '3')
-        end
-      end
-
-      it "displays error messages given invalid defect attributes" do
-        click_link "Add defect"
-        click_button 'Update'
-        page.has_selector?('.error-messages', text: "can't be blank").must_equal true
-      end
-    end
-
-    describe "edit form with a defect" do
-      before do
-        FactoryGirl.create(:defect, count: 1, master_film: @inspection_film.master_film)
-        within('tr', text: @inspection_film.serial) do
-          click_link 'Edit'
-        end
-      end
-
-      it "remove button removes defect" do
-        click_link('remove', match: :first)
-        page.has_selector?('fieldset.defect_fields').must_equal false
-        click_button 'Update'
-        within('tr', text: @inspection_film.serial) do
-          assert page.has_selector?('td.defect_count', text: '0')
-        end
       end
     end
   end
