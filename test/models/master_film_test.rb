@@ -107,12 +107,12 @@ describe MasterFilm do
   it "chemist_name returns chemist's name" do
     chemist = FactoryGirl.create(:chemist)
     master_film.chemist_id = chemist.id
-    master_film.chemist_name.must_equal master_film.chemist.name
+    master_film.chemist_full_name.must_equal master_film.chemist.full_name
   end
 
   it "operator_name returns operator's name" do
     operator = FactoryGirl.create(:operator)
     master_film.operator_id = operator.id
-    master_film.operator_name.must_equal master_film.operator.name
+    master_film.operator_full_name.must_equal master_film.operator.full_name
   end
 end

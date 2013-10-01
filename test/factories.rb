@@ -16,8 +16,10 @@ FactoryGirl.define do
   end
 
   factory :user do
-    sequence(:email) { |n| "user#{n}@example.com" }
-    sequence(:name) { |n| "Example Person #{n}" }
+    sequence(:username) { |n| "user#{n}" }
+    sequence(:full_name) { |n| "Example Person #{n}" }
+    password "foobar"
+    password_confirmation "foobar"
 
     factory :chemist do
       chemist true
@@ -25,6 +27,14 @@ FactoryGirl.define do
 
     factory :operator do
       operator true
+    end
+
+    factory :supervisor do
+      role_level 1
+    end
+
+    factory :admin do
+      role_level 2
     end
   end
 

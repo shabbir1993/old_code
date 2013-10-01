@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130920162233) do
+ActiveRecord::Schema.define(:version => 20130930181734) do
 
   create_table "defects", :force => true do |t|
     t.string   "defect_type"
@@ -80,12 +80,15 @@ ActiveRecord::Schema.define(:version => 20130920162233) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.string   "name"
-    t.boolean  "chemist",    :default => false
-    t.boolean  "operator",   :default => false
+    t.string   "username"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "full_name"
+    t.boolean  "chemist",         :default => false
+    t.boolean  "operator",        :default => false
+    t.string   "password_digest"
+    t.boolean  "active",          :default => true
+    t.integer  "role_level",      :default => 0
   end
 
 end

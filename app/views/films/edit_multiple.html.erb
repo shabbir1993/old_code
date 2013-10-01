@@ -8,8 +8,6 @@
     <% end %>
   </ul>
   <%= f.input :destination, collection: @valid_destinations, include_blank: true, label: "Move to" %>
-  <div class="form-actions">
-    <%= submit_tag "Move all", class: "btn btn-success" %>
-    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-  </div>
+  <%= submit_tag "Move all", class: "btn btn-success" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 <% end %>

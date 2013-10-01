@@ -8,7 +8,7 @@ class Film < ActiveRecord::Base
   has_many :film_movements
 
   delegate :formula, :mix_mass, :film_code, :thinky_code, :machine_code,
-    :chemist_name, :operator_name, :effective_width, :effective_length,
+    :chemist_full_name, :operator_full_name, :effective_width, :effective_length,
     :effective_area, :defect_count, to: :master_film
 
   accepts_nested_attributes_for :master_film

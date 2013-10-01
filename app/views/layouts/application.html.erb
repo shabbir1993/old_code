@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="container-fluid header">
+  <div class="header">
     <%= render "layouts/navbar" %>
     <% flash.each do |name, msg| %>
       <div class="alert alert-<%= name == :notice ? "success" : "error" %>">
@@ -19,7 +19,7 @@
   <div class="sidebar-fixed">
     <%= yield :sidebar %>
   </div>
-  <div class="container-fluid main">
+  <div class="main">
     <%= yield %>
   </div>
 </body>

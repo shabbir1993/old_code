@@ -1,22 +1,20 @@
 <h3 class="text-center">Split</h3>
 <%= simple_form_for @film, remote: true, url: create_split_film_path, html: { class: 'form-horizontal modal-form' } do |f| %>
   <div class="inline-fields original-film">
-    <%= f.input :width, label: @film.serial, placeholder: "Width", error: false, input_html: { class: "input-small" } %> x
-    <%= f.input :length, label: false, placeholder: "Length", input_html: { class: "input-small" } %>
+    <%= f.input :width, label: @film.serial, placeholder: "Width", error: false, input_html: { class: "input-sm" } %> x
+    <%= f.input :length, label: false, placeholder: "Length", input_html: { class: "input-sm" } %>
   </div>
   <%= f.fields_for :master_film do |mff| %>
     <%= mff.fields_for :films do |ff| %>
       <% if ff.object.new_record? %>
         <div class="inline-fields split-film">
-          <%= ff.input :width, label: false, placeholder: "Width", error: false, input_html: { class: "input-small" } %> x
-          <%= ff.input :length, label: false, placeholder: "Length", error: false, input_html: { class: "input-small" } %>
+          <%= ff.input :width, label: false, placeholder: "Width", error: false, input_html: { class: "input-sm" } %> x
+          <%= ff.input :length, label: false, placeholder: "Length", error: false, input_html: { class: "input-sm" } %>
           <%= ff.hidden_field :phase, value: @film.phase %>
         </div>
       <% end %>
     <% end %>
   <% end %>
-  <div class="form-actions">
-    <%= f.button :submit, "Split", class: "btn btn-success" %>
-    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-  </div>
+  <%= f.button :submit, "Split", class: "btn btn-success" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 <% end %>

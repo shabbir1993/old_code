@@ -1,8 +1,9 @@
 require 'test_helper'
 
 describe "Charts integration" do
+  let(:user) { FactoryGirl.create(:user) }
   before do 
-    http_login
+    log_in(user)
     click_link "Charts"
   end
 

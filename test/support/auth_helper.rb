@@ -1,14 +1,6 @@
-def http_login(user = 'frodo', pw = 'thering')
-  if page.driver.respond_to?(:basic_auth)
-      page.driver.basic_auth(user, pw)
-  elsif page.driver.respond_to?(:basic_authorize)
-      page.driver.basic_authorize(user, pw)
-  elsif page.driver.respond_to?(:browser) && page.driver.browser.respond_to?(:basic_authorize)
-      page.driver.browser.basic_authorize(user, pw)
-  elsif page.driver.respond_to?(:headers=) # poltergeist
-    page.driver.headers = { "Authorization" => ActionController::HttpAuthentication::Basic.encode_credentials(user, pw) }
-  else
-      raise "I don't know how to log in!"
-  end
-  visit root_path
+def log_in(user)
+  visit login_path
+  fill_in "Username", with: user.username
+  fill_in "Password", with: user.password
+  click_button "Log in"
 end

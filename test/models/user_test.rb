@@ -3,14 +3,26 @@ require 'test_helper'
 describe User do
   let (:user) { FactoryGirl.build(:user) }
 
-  it "requires a email" do
-    user.email = nil
-    user.invalid?(:email).must_equal true
+  it "requires a username" do
+    user.username = nil
+    user.invalid?(:username).must_equal true
   end
 
-  it "requires a name" do
-    user.name = nil
-    user.invalid?(:name).must_equal true
+  it "requires a full name" do
+    user.full_name = nil
+    user.invalid?(:full_name).must_equal true
+  end
+  
+  it "knows whether or not user is supervisor" do
+    user.role_level = 1
+    user.is_supervisor?.must_equal true
+    user.role_level = 2
+    user.is_supervisor?.must_equal true
+  end
+
+  it "knows whether or not user is admin" do
+    user.role_level = 2
+    user.is_admin?.must_equal true
   end
 
   it "defaults chemist to false" do
@@ -19,6 +31,10 @@ describe User do
 
   it "defaults operator to false" do
     user.operator.must_equal false
+  end
+
+  it "defaults active to true" do
+    user.active.must_equal true
   end
 
   it "chemists scope should include chemists" do

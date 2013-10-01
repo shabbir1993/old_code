@@ -1,7 +1,7 @@
 <tr>
   <td class="serial"><%= fg_film_movement.film.serial if fg_film_movement.film %></td>
   <td class="from"><%= fg_film_movement.from %></td>
-  <td class="user_name"><%= fg_film_movement.user.name if fg_film_movement.user %></td>
+  <td class="user_name"><%= fg_film_movement.user.full_name if fg_film_movement.user %></td>
   <td class="customer"><%= fg_film_movement.film.customer if fg_film_movement.film %></td>
   <td class="sales_order_code"><%= fg_film_movement.film.sales_order_code if fg_film_movement.film %></td>
   <td class="custom_width"><%= fg_film_movement.film.custom_width if fg_film_movement.film %></td>

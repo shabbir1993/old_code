@@ -5,11 +5,9 @@
   <%= f.input :machine_id, collection: Machine.all, value_method: :id, label_method: :code %>
   <%= f.input :film_code %>
   <%= f.input :thinky_code %>
-  <%= f.input :chemist_id, collection: User.chemists, value_method: :id, label_method: :name %>
-  <%= f.input :operator_id, collection: User.operators, value_method: :id, label_method: :name %>
+  <%= f.input :chemist_id, collection: User.chemists, value_method: :id, label_method: :full_name %>
+  <%= f.input :operator_id, collection: User.operators, value_method: :id, label_method: :full_name %>
   <%= render("defects_fieldset", f: f) %>
-  <div class="form-actions">
-    <%= f.button :submit, "Update", class: "btn btn-success" %>
-    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-  </div>
+  <%= f.button :submit, "Update", class: "btn btn-success" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 <% end %>

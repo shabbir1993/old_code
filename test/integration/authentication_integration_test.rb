@@ -6,38 +6,83 @@ describe "Authentication integration" do
       page.driver.options[:headers] = {'REMOTE_ADDR' => "127.0.0.1"}
     end
 
-    describe "with correct http authentication" do
-      before { http_login }
+    describe "login" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        visit login_path
+      end
+
+      it "has the right title" do
+        page.has_title?("Login").must_equal true
+      end
+
+      it "logs user in with valid information" do
+        fill_in "Username", with: user.username
+        fill_in "Password", with: user.password
+        click_button "Log in"
+        page.has_selector?(".navbar-brand", text: "PCMS").must_equal true
+      end
+
+      it "does not log in user with invalid information" do
+        fill_in "Username", with: "invalid_username"
+        fill_in "Password", with: "invalid_password"
+        click_button "Log in"
+        page.has_selector?(".navbar-brand", text: "PCMS").must_equal false
+        page.has_selector?(".alert", text: "Invalid login").must_equal true
+      end
+    end
+
+    describe "with user authentication" do
+      let(:user) { FactoryGirl.create(:user) }
+      before { log_in(user) }
 
       it "allows access to inventory page" do
         visit root_path
         click_link "Inventory"
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
 
       it "allows access to history page" do
         visit root_path
         click_link "History"
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
 
       it "allows access to charts page" do
         visit root_path
         click_link "Charts"
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
+
+      it "does not link to admin page" do
+        visit root_path
+        page.has_selector?(".navbar a", text: "Admin").must_equal false
+      end
+
+      it "logout link logs user out" do
+        within('.navbar') do
+          click_link "Logout"
+        end
+        page.has_selector?('legend', text: "Login").must_equal true
+      end
+    end
+
+    describe "with admin authentication" do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before { log_in(admin) }
 
       it "allows access to admin page" do
         visit root_path
         click_link "Admin"
-        page.has_selector?(".navbar .brand", text: "PCMS").must_equal true
+        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
     end
 
-    it "denies access with invalid http auth" do
-      http_login('invaliduser', 'wrongpw')
-      visit root_path
-      page.has_selector?(".navbar .brand", text: "PCMS").must_equal false
+    describe "without authentication" do
+      it "redirects to login page" do
+        visit root_path
+        page.has_selector?("legend", text: "Login").must_equal true
+      end
     end
   end
 

@@ -1,11 +1,12 @@
 require 'test_helper'
 
 describe "Engineering integration" do
+  let(:user) { FactoryGirl.create(:user) }
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     @master_film = FactoryGirl.create(:master_film)
     FactoryGirl.create(:master_film)
-    http_login
+    log_in(user)
     click_link "Engineering"
   end
 

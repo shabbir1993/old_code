@@ -14,8 +14,8 @@ class MasterFilm < ActiveRecord::Base
     reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
-  delegate :name, to: :chemist, prefix: true, allow_nil: true
-  delegate :name, to: :operator, prefix: true, allow_nil: true
+  delegate :full_name, to: :chemist, prefix: true, allow_nil: true
+  delegate :full_name, to: :operator, prefix: true, allow_nil: true
 
   validates :serial, presence: true, uniqueness: { case_sensitive: false },
     format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }

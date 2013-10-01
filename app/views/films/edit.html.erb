@@ -3,14 +3,16 @@
   <%= edit_fields_for @film.phase, f %>
   <%= f.input :reserved_for, as: :string %>
   <%= f.input :note, input_html: { rows: 3 } %>
-  <%= f.input :destination, collection: @film.valid_destinations, include_blank: true, label: "Move to", class: "destination-select" %>
-  <%= render 'backend_destination_fields', f: f if %w(inspection wip fg).include?(@film.phase) %>
-  <%= render 'checkout_destination_fields', f: f if %w(inspection stock).include?(@film.phase) %>
-  <div class="form-actions">
-    <%= f.button :submit, "Update", class: "btn btn-success" %>
-    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+  <% if current_user.is_supervisor? %>
+    <%= f.input :destination, collection: @film.valid_destinations, include_blank: true, label: "Move to", class: "destination-select" %>
+    <%= render 'backend_destination_fields', f: f if %w(inspection wip fg).include?(@film.phase) %>
+    <%= render 'checkout_destination_fields', f: f if %w(inspection stock).include?(@film.phase) %>
+  <% end %>
+  <%= f.button :submit, "Update", class: "btn btn-success" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <% if current_user.is_admin? %>
     <div class="inline-fields pull-right">
       <%= f.input :deleted, label: false, inline_label: "Delete" %>
     </div>
-  </div>
+  <% end %>
 <% end %>

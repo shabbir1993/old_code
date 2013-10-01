@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'rails', '3.2.11'
 gem 'jquery-rails', '2.0.2'
 gem 'bcrypt-ruby', '3.0.1'
-gem 'bootstrap-sass', '~> 2.3.0.1'
 gem 'pg', '0.14.1'
 gem "simple_form", "~> 2.1.0"
 gem "kaminari", "~> 0.14.1"

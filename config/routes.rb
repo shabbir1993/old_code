@@ -13,6 +13,10 @@ Pcms::Application.routes.draw do
 
   resources :master_films, only: [:index, :edit, :update]
 
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  get 'logout', to: 'sessions#destroy'
+
   get 'imports', to: 'imports#home'
   post 'import_master_films', to: 'imports#import_master_films'
   post 'import_films', to: 'imports#import_films'
@@ -21,6 +25,8 @@ Pcms::Application.routes.draw do
   post 'import_defects', to: 'imports#import_defects'
   post 'import_film_movements', to: 'imports#import_film_movements'
   post 'import_phase_snapshots', to: 'imports#import_phase_snapshots'
+
+  resources :users, except: [:show, :destroy]
 
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history

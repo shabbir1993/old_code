@@ -1,0 +1,30 @@
+<%= paginate @users %>
+<table class="users table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Chemist</th>
+      <th>Operator</th>
+      <th>Active</th>
+    </tr>
+    <tr>
+      <th colspan="100%">
+        <%= link_to "New user", new_user_path, { class: "new-film-link text-center", :"data-toggle" => "modal", :"data-target" => "#user-actions-modal" } %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @users %>
+  </tbody>
+</table>
+
+<div id="user-actions-modal" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>

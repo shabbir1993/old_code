@@ -1,12 +1,13 @@
-<div class="navbar navbar-static-top">
-  <div class="navbar-inner">
-    <span class="brand">PCMS</span>
-    <ul class="nav">
-      <li><%= link_to "Inventory", films_path(scope: "lamination") %></li>
-      <li><%= link_to "Engineering", master_films_path %></li>
-      <li><%= link_to "History", film_movements_history_path %></li>
-      <li><%= link_to "Charts", stock_formula_totals_chart_path %></li>
+<div class="navbar navbar-default navbar-static-top">
+  <span class="navbar-brand">PCMS</span>
+  <ul class="nav navbar-nav">
+    <li><%= link_to "Inventory", films_path(scope: "lamination") %></li>
+    <li><%= link_to "Engineering", master_films_path %></li>
+    <li><%= link_to "History", film_movements_history_path %></li>
+    <li><%= link_to "Charts", stock_formula_totals_chart_path %></li>
+    <% if current_user.is_admin? %>
       <li><%= link_to "Admin", imports_path %></li>
-    </ul>
-  </div>
+    <% end %>
+    <li><%= link_to "Logout", logout_path %></li>
+  </ul>
 </div>

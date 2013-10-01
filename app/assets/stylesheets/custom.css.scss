@@ -1,5 +1,3 @@
-@import "bootstrap";
-
 body {
   min-height: 600px;
 }
@@ -13,7 +11,7 @@ body {
   }
 }
 
-.header.container-fluid {
+.header{
   padding: 0;
   margin-bottom: 10px;
 }
@@ -29,10 +27,6 @@ body {
 
 .modal-form a.add-fields {
   margin-left: 180px;
-}
-
-.modal .form-actions {
-  margin-bottom: 0;
 }
 
 .modal .control-group {
@@ -51,8 +45,8 @@ body {
   margin-left: 0
 }
 
-.form-actions .inline-fields .controls {
-  margin-left: 0
+.destination-fields {
+  display: none;
 }
 
 .new-film-link {

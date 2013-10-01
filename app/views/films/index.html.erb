@@ -24,9 +24,11 @@
       <%= link_to "NC", films_path(scope: 'nc') %></li>
     <li class="<%= "active" if params[:scope] == 'scrap' %>">
       <%= link_to "Scrap", films_path(scope: 'scrap') %></li>
-    <li class="divider"></li>
-    <li class="<%= "active" if params[:scope] == 'deleted' %>">
-      <%= link_to "Deleted", films_path(scope: 'deleted') %></li>
+    <% if current_user.is_admin? %>
+      <li class="divider"></li>
+      <li class="<%= "active" if params[:scope] == 'deleted' %>">
+        <%= link_to "Deleted", films_path(scope: 'deleted') %></li>
+    <% end %>
   </ul>
   <div class="summary">
     <span class="count">count: <%= @film_areas.count %></span>
@@ -38,7 +40,7 @@
   </div>
 <% end %>
 
-<%= form_tag films_path, method: :get, html: { class: 'form-search' } do %>
+<%= form_tag films_path, method: :get, class: 'form-inline' do %>
   <span>Width: </span>
   <%= number_field_tag :"min-width", params[:"min-width"], class: "search-query input-mini" %> -
   <%= number_field_tag :"max-width", params[:"max-width"], class: "search-query input-mini" %>
@@ -46,11 +48,11 @@
   <%= number_field_tag :"min-length", params[:"min-length"], class: "search-query input-mini" %> -
   <%= number_field_tag :"max-length", params[:"max-length"], class: "search-query input-mini" %>
   <%= hidden_field_tag :scope, params[:scope] %>
-  <%= submit_tag "Search", name: nil, class: "btn" %>
+  <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>
 
 <%= form_tag edit_multiple_films_path, method: :get, remote: true, id: "inventory-form" do %>
-  <%= submit_tag "Move selected", class: "btn" %>
+  <%= submit_tag "Move selected", class: "btn btn-default" %>
   <%= paginate @films %>
   <table class="inventory table table-striped">
     <thead>
@@ -65,7 +67,7 @@
         <th>Updated</th>
         <th>Created</th>
       </tr>
-      <% if params[:scope] == "lamination" %>
+      <% if params[:scope] == "lamination" && current_user.is_supervisor? %>
         <tr>
           <th colspan="100%">
             <%= link_to "Enter film", new_film_path, { class: "new-film-link text-center", :"data-toggle" => "modal", :"data-target" => "#film-actions-modal" } %>
@@ -79,7 +81,11 @@
   </table>
 <% end %>
 
-<div id="film-actions-modal" class="modal hide" tabindex="-1" role="dialog">
-  <div class="modal-body">
+<div id="film-actions-modal" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-class ImportsController < ApplicationController
+class ImportsController < AdminController
   def home
   end
 

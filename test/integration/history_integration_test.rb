@@ -1,9 +1,10 @@
 require 'test_helper'
 
 describe "History integration" do
+  let(:supervisor) { FactoryGirl.create(:supervisor) }
   before do 
     Capybara.current_driver = Capybara.javascript_driver
-    http_login
+    log_in(supervisor)
     click_link "History"
   end
 

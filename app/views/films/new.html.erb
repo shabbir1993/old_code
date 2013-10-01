@@ -6,10 +6,8 @@
   <%= f.input :machine_id, collection: Machine.all, label_method: :code, value_method: :id %>
   <%= f.input :film_code %>
   <%= f.input :thinky_code %>
-  <%= f.input :chemist_id, collection: User.chemists, label_method: :name, value_method: :id %>
-  <%= f.input :operator_id, collection: User.operators, label_method: :name, value_method: :id %>
-  <div class="form-actions">
-    <%= f.button :submit, "Add film", class: "btn btn-success" %>
-    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-  </div>
+  <%= f.input :chemist_id, collection: User.chemists, label_method: :full_name, value_method: :id %>
+  <%= f.input :operator_id, collection: User.operators, label_method: :full_name, value_method: :id %>
+  <%= f.button :submit, "Add film", class: "btn btn-success" %>
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 <% end %>
