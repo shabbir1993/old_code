@@ -1,65 +1,66 @@
 class Film < ActiveRecord::Base
-  attr_accessible :destination, :width, :length, :custom_width, :custom_length,
-    :reserved_for, :note, :sales_order_code, :customer, :shelf,
-    :master_film_attributes, :splits, :effective_width, :effective_length,
-    :phase, :deleted
+
+  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :line_item_id, :master_film_attributes
+  attr_reader :destination
 
   belongs_to :master_film
+  belongs_to :line_item
   has_many :film_movements
 
-  delegate :formula, :mix_mass, :film_code, :thinky_code, :machine_code,
-    :chemist_full_name, :operator_full_name, :effective_width, :effective_length,
-    :effective_area, :defect_count, to: :master_film
-
   accepts_nested_attributes_for :master_film
+
+  delegate :formula, :effective_width, :effective_length, :effective_area, to: :master_film
+  delegate :sales_order_code, to: :line_item, allow_nil: true
 
   before_create :set_division
 
   validates :phase, presence: true
 
-  default_scope where(deleted: false)
-  scope :phase, lambda { |phase| where(phase: phase) }
-  scope :by_serial, joins(:master_film).order('master_films.serial DESC, division ASC')
-  scope :small, where('width*length/144 < ?', 16)
-  scope :large, where('width*length/144 >= ? or width IS NULL or length IS NULL', 16)
-  scope :reserved, where("reserved_for <> ''")
-  scope :not_reserved, where("reserved_for IS NULL or reserved_for = ''")
-  scope :lamination, phase("lamination").by_serial
-  scope :inspection, phase("inspection").by_serial
-  scope :large_stock, phase("stock").large.not_reserved.by_serial
-  scope :small_stock, phase("stock").small.not_reserved.by_serial
-  scope :reserved_stock, phase("stock").reserved.by_serial
-  scope :wip, phase("wip").by_serial
-  scope :fg, phase("fg").by_serial
-  scope :test, phase("test").by_serial
-  scope :nc, phase("nc").by_serial
-  scope :scrap, phase("scrap").by_serial
-  scope :deleted, unscoped.where(deleted: true).by_serial
+  has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
+                  :meta => { columns_changed: Proc.new { |film| film.changed },
+                             phase_change: Proc.new { |film| film.changes[:phase] } }
 
-  def destination
-  end
+  include PgSearch
+  pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
+    :using => { tsearch: { prefix: true } },
+    associated_against: {
+      master_film: [:serial, :formula]
+    }
 
-  def destination=(to_phase)
-    if to_phase.present?
-      from_phase = to_phase == "lamination" ? "raw material" : phase
-      self.phase = to_phase
-      movement = film_movements.build(from: from_phase, to: to_phase, area: area)
-      movement.save!
+  default_scope { where(deleted: false) }
+  scope :phase, ->(phase) { where(phase: phase) }
+  scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
+  scope :small, -> { where('width*length/144 < ?', 16) }
+  scope :large, -> { where('width*length/144 >= ? or width IS NULL or length IS NULL', 16) }
+  scope :reserved, -> { where("line_item_id IS NOT NULL") }
+  scope :not_reserved, -> { where("line_item_id IS NULL") }
+  scope :lamination, -> { phase("lamination").by_serial }
+  scope :inspection, -> { phase("inspection").by_serial }
+  scope :large_stock, -> { phase("stock").large.not_reserved.by_serial }
+  scope :small_stock, -> { phase("stock").small.not_reserved.by_serial }
+  scope :reserved_stock, -> { phase("stock").reserved.by_serial }
+  scope :wip, -> { phase("wip").by_serial }
+  scope :fg, -> { phase("fg").by_serial }
+  scope :test, -> { phase("test").by_serial }
+  scope :nc, -> { phase("nc").by_serial }
+  scope :scrap, -> { phase("scrap").by_serial }
+  scope :deleted, -> { unscoped.where(deleted: true).by_serial }
+
+  def destination=(destination)
+    if destination.present?
+      self.phase = destination
+      self.line_item_id = nil unless %w(stock wip fg).include?(destination)
     end
   end
-
-  def effective_width=(width)
-    if width.present?
-      self.width = width
-      master_film.effective_width = width
-    end
+  
+  def effective_width=(effective_width)
+    self.width = effective_width
+    master_film.effective_width = effective_width
   end
 
-  def effective_length=(length)
-    if length.present?
-      self.length = length
-      master_film.effective_length = length
-    end
+  def effective_length=(effective_length)
+    self.length = effective_length
+    master_film.effective_length = effective_length
   end
 
   def serial
@@ -67,15 +68,7 @@ class Film < ActiveRecord::Base
   end
 
   def area
-    width * length / 144 if width && length
-  end
-
-  def custom_area
-    custom_width * custom_length / 144 if custom_width && custom_length
-  end
-
-  def utilization
-    custom_area / area if custom_area && area
+    (width * length / 144).round(2) if width && length
   end
 
   def valid_destinations
@@ -115,23 +108,23 @@ class Film < ActiveRecord::Base
 
   def self.search_dimensions(min_width, max_width, min_length, max_length)
     if min_width || max_width || min_length || max_length
-      films = scoped
+      films = all
       films = films.where("width >= ?", min_width) if min_width.present?
       films = films.where("width <= ?", max_width) if max_width.present?
       films = films.where("length >= ?", min_length) if min_length.present?
       films = films.where("length <= ?", max_length) if max_length.present?
       films
     else
-      scoped
+      all
     end
   end
 
-  def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
-      record = Film.new(row.to_hash, without_protection: true)
-      record.save!(validate: false)
+  def self.text_search(query)
+    if query.present?
+      #reorder is workaround for pg_search issue 88
+      reorder('').search(query)
+    else
+      all
     end
-    ActiveRecord::Base.connection.execute("SELECT setval('films_id_seq',
-                                          (SELECT MAX(id) FROM films));") 
   end
 end

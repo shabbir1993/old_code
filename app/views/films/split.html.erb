@@ -1,1 +1,40 @@
-<%= render 'split_form' %>
+<%= modal_form_for @film, url: create_split_film_path do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">Split</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group original-film">
+      <%= f.label :width, @film.serial, class: "col-md-2 control-label" %>
+      <div class="col-md-4">
+        <%= f.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+      </div>
+    </div>
+    <fieldset class="panel panel-warning">
+      <div class="panel-heading"><h6 class="panel-title text-center">New splits</h6></div>
+      <div class="panel-body">
+        <%= f.fields_for :master_film do |mff| %>
+          <%= mff.fields_for :films do |ff| %>
+            <% if ff.object.new_record? %>
+              <div class="form-group">
+                <div class="col-md-offset-2 col-md-4">
+                  <%= ff.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+                </div>
+                <div class="col-md-4">
+                  <%= ff.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+                </div>
+                <%= ff.hidden_field :phase, value: @film.phase %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Split", class: "btn btn-success" %>
+  </div>
+<% end %>

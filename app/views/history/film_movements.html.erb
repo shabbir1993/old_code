@@ -1,16 +1,17 @@
 <%= paginate @film_movements %>
-<table class="film-movements-history table table-striped">
-  <thead>
-    <tr>
-      <th>Serial</th>
-      <th>From</th>
-      <th>To</th>
-      <th>User</th>
-      <th>Area</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "film_movement", collection: @film_movements %>
-  </tbody>
-</table>
+
+<% content_for :table_header do %>
+  <tr>
+    <th>Serial</th>
+    <th>Movement</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render partial: "film_movement", collection: @film_movements %>
+<% end %>
+
+
+<%= render "shared/table" %>

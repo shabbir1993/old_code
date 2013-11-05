@@ -1,0 +1,10 @@
+<li class="list-group-item">
+  <h4 class="list-group-item-heading"><%= title %></h4>
+  <%= form_tag path, { multipart: true } do %>
+    <div class="form-group">
+      <%= file_field_tag :file %>
+      <p class="help-block">Select a CSV file with headers.</p>
+    </div>
+    <%= submit_tag "Import", class: "btn btn-success" %>
+  <% end %>
+</li>

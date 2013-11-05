@@ -1,0 +1,21 @@
+<%= form_tag films_path, method: :get, class: 'form-inline search' do %>
+  <div class="form-group">
+    <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Width" %>
+    <%= number_field_tag :"min-width", params[:"min-width"], placeholder: "min", step: "any", class: "form-control input-sm" %>
+  </div>
+  <div class="form-group">
+    <%= number_field_tag :"max-width", params[:"max-width"], placeholder: "max", step: "any", class: "form-control input-sm" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Length" %>
+    <%= number_field_tag :"min-length", params[:"min-length"], placeholder: "min", step: "any", class: "form-control input-sm" %>
+  </div>
+  <div class="form-group">
+    <%= number_field_tag :"max-length", params[:"max-length"], placeholder: "max", step: "any", class: "form-control input-sm" %>
+  </div>
+  <%= hidden_field_tag :scope, params[:scope] %>
+  <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+<% end %>

@@ -1,18 +1,12 @@
 <% provide :title, "History" %>
 
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="<%= "active" if params[:action] == 'film_movements' %>">
-      <%= link_to "Film movements", film_movements_history_path %></li>
-    <li class="<%= "active" if params[:action] == 'fg_film_movements' %>">
-      <%= link_to "FG movements", fg_film_movements_history_path %></li>
-    <li class="<%= "active" if params[:action] == 'scrap_film_movements' %>">
-      <%= link_to "Scrap movements", scrap_film_movements_history_path %></li>
-    <li class="<%= "active" if params[:action] == 'reserved_checkouts' %>">
-      <%= link_to "Reserved checkouts", reserved_checkouts_history_path %></li>
-    <li class="<%= "active" if params[:action] == 'phase_snapshots' %>">
-      <%= link_to "Phase snapshots", phase_snapshots_history_path %></li>
-  </ul>
+<% content_for :nav_list do %>
+  <%= link_to "Film movements", film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'film_movements'}" %>
+  <%= link_to "FG movements", fg_film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'fg_film_movements'}" %>
+  <%= link_to "Scrap movements", scrap_film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'scrap_film_movements'}" %>
+  <%= link_to "Resizes", film_resizes_history_path, class: "list-group-item#{" active" if params[:action] == 'film_resizes'}" %>
+  <%= link_to "Deletes", film_deletes_history_path, class: "list-group-item#{" active" if params[:action] == 'film_deletes'}" %>
+  <%= link_to "Phase snapshots", phase_snapshots_history_path, class: "list-group-item#{" active" if params[:action] == 'phase_snapshots'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

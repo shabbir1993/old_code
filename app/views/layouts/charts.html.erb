@@ -1,24 +1,14 @@
 <% provide :title, "Charts" %>
 
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="<%= "active" if params[:action] == 'stock_formula_totals' %>">
-      <%= link_to "Stock formula totals", stock_formula_totals_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'stock_film_type_totals' %>">
-      <%= link_to "Stock film type totals", stock_film_type_totals_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'fg_utlization' %>">
-      <%= link_to "FG utilization", fg_utilization_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'master_film_yield' %>">
-      <%= link_to "Master yield", master_film_yield_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'stock_dimensions' %>">
-      <%= link_to "Stock dimensions", stock_dimensions_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'film_movement' %>">
-      <%= link_to "Film movement", film_movement_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'daily_fg_movement' %>">
-      <%= link_to "Daily FG movement", daily_fg_movement_chart_path %></li>
-    <li class="<%= "active" if params[:action] == 'stock_snapshots' %>">
-      <%= link_to "Stock snapshots", stock_snapshots_chart_path %></li>
-  </ul>
+<% content_for :nav_list do %>
+  <%= link_to "Stock formula totals", stock_formula_totals_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_formula_totals'}" %>
+  <%= link_to "Stock film type totals", stock_film_type_totals_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_film_type_totals'}" %>
+  <%= link_to "FG utilization", fg_utilization_chart_path, class: "list-group-item#{" active" if params[:action] == 'fg_utlization'}" %>
+  <%= link_to "Master yield", master_film_yield_chart_path, class: "list-group-item#{" active" if params[:action] == 'master_film_yield'}" %>
+  <%= link_to "Stock dimensions", stock_dimensions_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_dimensions'}" %>
+  <%= link_to "Film movement", film_movement_chart_path, class: "list-group-item#{" active" if params[:action] == 'film_movement'}" %>
+  <%= link_to "Daily FG movement", daily_fg_movement_chart_path, class: "list-group-item#{" active" if params[:action] == 'daily_fg_movement'}" %>
+  <%= link_to "Stock snapshots", stock_snapshots_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_snapshots'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

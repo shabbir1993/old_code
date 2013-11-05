@@ -2,6 +2,12 @@ FactoryGirl.define do
   factory :master_film do
     today = Date.today
     sequence(:serial) { |n| "E#{ today.strftime('%m') + today.strftime('%d') }-#{ ('%02d' % n)[-2, 2] }"}
+
+    factory :master_film_with_child do
+      after(:create) do |master_film|
+        FactoryGirl.create(:film, master_film: master_film)
+      end
+    end
   end
 
   factory :film do
@@ -9,10 +15,16 @@ FactoryGirl.define do
     master_film
   end
 
-  factory :film_movement do
-    from "stock"
-    to "wip"
-    film
+  factory :sales_order do
+    sequence(:code) { |n| "PT#{ '%03d' % n }P" }
+    customer "FOOBAR"
+  end
+
+  factory :line_item do
+    custom_width 55
+    custom_length 80
+    quantity 2
+    sales_order
   end
 
   factory :user do

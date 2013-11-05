@@ -9,6 +9,15 @@ describe MasterFilm do
     Defect.count.must_equal before_count + 1
   end
 
+  it "destroys nested defects" do
+    master_film.save!
+    defect = FactoryGirl.create(:defect, master_film_id: master_film.id)
+    master_film.reload.defects.length.must_equal 1
+    master_film.defects_attributes = [FactoryGirl.attributes_for(:defect, id: defect.id, _destroy: '1')]
+    master_film.save!
+    master_film.reload.defects.length.must_equal 0
+  end
+
   it "creates nested films given required attributes" do
     before_count = Film.count
     FactoryGirl.create(:master_film, films_attributes: [{ width: 1, length: 2, phase: "stock" }])
@@ -53,7 +62,20 @@ describe MasterFilm do
     master_film.invalid?(:serial).must_equal true
   end
 
-  it "has a lamination_at based on the serial" do
+  it "active scope includes master films with active children" do
+    film = FactoryGirl.create(:film, master_film: master_film, deleted: false)
+    MasterFilm.active.must_include master_film
+  end
+
+  it "active scope does not include master films without active children" do
+    film = FactoryGirl.create(:film, master_film: master_film, deleted: true)
+    MasterFilm.active.wont_include master_film
+  end
+
+  it "by_serial scope orders by serial" do
+  end
+
+  it "has a laminated_at based on the serial" do
     master_film.serial = "E0102-05"
     master_film.laminated_at.must_equal Date.new(2012, 1, 2)
   end
@@ -102,17 +124,5 @@ describe MasterFilm do
     machine = FactoryGirl.create(:machine)
     master_film.machine_id = machine.id
     master_film.machine_code.must_equal master_film.machine.code
-  end
-
-  it "chemist_name returns chemist's name" do
-    chemist = FactoryGirl.create(:chemist)
-    master_film.chemist_id = chemist.id
-    master_film.chemist_full_name.must_equal master_film.chemist.full_name
-  end
-
-  it "operator_name returns operator's name" do
-    operator = FactoryGirl.create(:operator)
-    master_film.operator_id = operator.id
-    master_film.operator_full_name.must_equal master_film.operator.full_name
   end
 end

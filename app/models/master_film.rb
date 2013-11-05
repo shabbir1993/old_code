@@ -1,33 +1,30 @@
 class MasterFilm < ActiveRecord::Base
   attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,
-    :thinky_code, :chemist_id, :operator_id, :effective_width,
+    :thinky_code, :chemist, :operator, :effective_width,
     :effective_length, :films_attributes, :defects_attributes
 
   has_many :films
   has_many :defects
   belongs_to :machine
-  belongs_to :chemist, class_name: "User"
-  belongs_to :operator, class_name: "User"
 
   accepts_nested_attributes_for :defects, allow_destroy: true
   accepts_nested_attributes_for :films, 
     reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
-  delegate :full_name, to: :chemist, prefix: true, allow_nil: true
-  delegate :full_name, to: :operator, prefix: true, allow_nil: true
 
   validates :serial, presence: true, uniqueness: { case_sensitive: false },
-    format: { with: /^[A-Z]\d{4}-\d{2}$/, on: :create }
+    format: { with: /\A[A-Z]\d{4}-\d{2}\z/, on: :create }
 
-  scope :by_serial, order('serial DESC')
+  scope :active, -> { joins(:films).where(films: { deleted: false }) }
+  scope :by_serial, -> { order('serial DESC') }
 
   def effective_area
-    effective_width*effective_length/144 if effective_width && effective_length
+    (effective_width*effective_length/144).round(2) if effective_width && effective_length
   end
 
   def yield
-    (effective_area/mix_mass)/machine.yield_constant if effective_area && mix_mass && machine
+    ((effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
   end
 
   def laminated_at
@@ -41,11 +38,9 @@ class MasterFilm < ActiveRecord::Base
     defects.sum(:count)
   end
 
-  def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
-      record = MasterFilm.new(row.to_hash, without_protection: true)
-      record.save!(validate: false)
-    end
-    ActiveRecord::Base.connection.execute("SELECT setval('master_films_id_seq', (SELECT MAX(id) FROM master_films));")
+private
+
+  def user_for_paper_trail
+    current_user ? current_user.full_name : nil
   end
 end

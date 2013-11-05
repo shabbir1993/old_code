@@ -1,6 +1,7 @@
-<% row_class = "" if local_assigns[:row_class].nil? %>
-<tr id="<%= "film-#{film.id}" %>" class="<%= row_class %>">
+<tr id="<%= "film-#{film.id}" %>" class="alert alert-info">
+  <td></td>
+  <td></td>
   <td colspan="100%">
-    <%= "#{film.serial} has been moved to #{film.phase}" %>
+    <%= "#{film.serial} #{content_tag(:span, nil, class: 'glyphicon glyphicon-arrow-right')} #{content_tag(:strong, destination)}".html_safe %>
   </td>
 </tr>

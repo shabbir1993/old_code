@@ -1,75 +1,105 @@
+$icon-font-path: "/assets/";
+$grid-gutter-width: 16px;
+
 body {
   min-height: 600px;
 }
 
-.sidebar-fixed {
-  position: absolute;
-  width: 160px;
-  
-  .btn {
-    margin-left: 15px;
-  }
-}
-
-.header{
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-.main {
-  margin-left: 160px;
-}
-
-.modal-body {
-  padding: 0;
-  max-height: 600px;
-}
-
-.modal-form a.add-fields {
-  margin-left: 180px;
-}
-
-.modal .control-group {
-  margin-bottom: 10px;
-}
-
-.control-group.hidden {
+.pagination.pagination-sm {
   margin: 0;
-}
-
-.inline-fields .control-group {
-  display: inline-block
-}
-
-.inline-fields .control-group:not(:first-child) .controls {
-  margin-left: 0
-}
-
-.destination-fields {
-  display: none;
-}
-
-.new-film-link {
-  padding-top: 9px;
-  display: block;
-  height: 30px;
-  border-style: dashed;
-  border-width: 1px;
-
-  &:hover {
-    background-color: #FCF8E3;
-  }
-}
-
-.pagination {
-  float: right;
-  margin: 10px 0;
 }
 
 .chart {
   height: 800px;
 }
 
+td.select-box {
+  width: 22px;
+}
+
+td.actions {
+  width: 44px;
+}
+
 td.serial {
   min-width: 90px;
 }
+
+td.note {
+  max-width: 200px; // keeps from overflowing right
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table tbody tr.info td {
+  background-color: #d9edf7;
+  border-color: #c3dbe7;
+}
+
+.table-hover tbody tr.info:hover td {
+  background-color: #c4e3f3;
+  border-color: #b1d0e0;
+}
+
+.sidebar {
+  position: absolute;
+  width: 160px;
+}
+
+.main {
+  margin-left: 180px;
+  padding-right: 10px;
+}
+
+.ul, ol {
+  padding: 0;
+}
+
+.panel-group {
+  margin-top: 5px;
+}
+
+.search {
+  margin-bottom: 10px;
+
+  .form-control {
+    width: 100px;
+  }
+}
+
+.jumbotron.login {
+  position: absolute;
+  width: 400px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+.destination-fields {
+  display: none;
+}
+
+.modal .panel {
+  margin-bottom: 0;
+}
+
+.modal-footer {
+  .form-group {
+    width: 300px;
+    float: left;
+  }
+
+  .checkbox {
+    text-align: left
+  }
+}
+
+.datepicker {z-index: 1151 !important;}
+
+.label a {
+  color: #dddddd
+}
+

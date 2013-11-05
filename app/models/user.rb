@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :active, :role_level
+  attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level
 
   has_secure_password
 
@@ -8,8 +8,13 @@ class User < ActiveRecord::Base
   validates :username, presence: true
   validates :full_name, presence: true
 
-  scope :chemists, where(chemist: true)
-  scope :operators, where(operator:true)
+  def self.chemists
+    User.where(chemist: true).pluck(:full_name)
+  end
+
+  def self.operators
+    User.where(operator: true).pluck(:full_name)
+  end
 
   def is_supervisor?
     role_level >= 1
@@ -19,11 +24,16 @@ class User < ActiveRecord::Base
     role_level >= 2
   end
 
-  def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
-      record = User.new(row.to_hash, without_protection: true)
-      record.save!(validate: false)
+  def role_title
+    case role_level
+    when 0
+      "User"
+    when 1
+      "Supervisor"
+    when 2
+      "Admin"
+    else
+      "Undefined"
     end
-    ActiveRecord::Base.connection.execute("SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));")
   end
 end

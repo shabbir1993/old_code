@@ -1,9 +1,0 @@
-<%= f.fields_for :master_film do |mff| %>
-  <%= mff.input :formula %>
-  <%= mff.input :mix_mass %>
-  <%= mff.input :machine_id, collection: Machine.all, value_method: :id, label_method: :code %>
-  <%= mff.input :film_code %>
-  <%= mff.input :thinky_code %>
-  <%= mff.input :chemist_id, collection: User.chemists, value_method: :id, label_method: :full_name %>
-  <%= mff.input :operator_id, collection: User.operators, value_method: :id, label_method: :full_name %>
-<% end %>

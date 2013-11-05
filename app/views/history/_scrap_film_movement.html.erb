@@ -1,6 +1,5 @@
 <tr>
-  <td class="serial"><%= scrap_film_movement.film.serial if scrap_film_movement.film %></td>
-  <td class="from"><%= scrap_film_movement.from %></td>
-  <td class="user_name"><%= scrap_film_movement.user.name if scrap_film_movement.user %></td>
-  <td class="created_at"><%= scrap_film_movement.created_at.strftime("%m/%d/%y %H:%M") %></td>
+  <td class="serial"><%= Film.unscoped.find(scrap_film_movement.item_id).serial %></td>
+  <td class="whodunnit"><%= scrap_film_movement.whodunnit %></td>
+  <td class="created_at"><%= scrap_film_movement.created_at.strftime("%F") %></td>
 </tr>

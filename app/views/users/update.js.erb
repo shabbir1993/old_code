@@ -1,7 +1,0 @@
-<% if @user.errors.any? %>
-  $("<%= "#edit_user_#{@user.id}" %> .error-messages").remove();
-  $("<%= "#edit_user_#{@user.id}" %>").prepend("<%= j render 'shared/error_messages', object: @user %>");
-<% else %>
-  $('#user-actions-modal').modal('hide')
-  $("<%= "#user-#{@user.id}" %>").replaceWith("<%= j render 'user', user: @user, row_class: "info" %>");
-<% end %>

@@ -1,0 +1,7 @@
+<% provide :title, "Engineering" %>
+
+<% content_for :nav_list do %>
+  <%= link_to "Master films", master_films_path, class: "list-group-item active" %>
+<% end %>
+
+<%= render template: "layouts/application" %>

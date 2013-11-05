@@ -1,0 +1,3 @@
+<%= render layout: 'shared/modal_form_submit', locals: { object: @user } do %>
+  $("<%= "#user-#{@user.id}" %>").replaceWith("<%= j render 'user', user: @user, row_class: "info" %>");
+<% end %>

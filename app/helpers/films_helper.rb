@@ -1,55 +1,29 @@
 module FilmsHelper
-  def visible_columns_for(scope)
-    case scope
-    when "lamination"
-      ['Mix/g', 'Mach', 'ITO', 'Thinky', 'Chemist', 'Operator']
-    when "inspection"
-      ['Eff W', 'Eff L', 'Eff Area', 'Defects']
-    when "large_stock","small_stock", "reserved_stock", "nc", "scrap", "test"
-      ['Shelf', 'Width', 'Length', 'Area']
-    when "wip", "fg"
-      ['Customer', 'SO#', 'Custom W', 'Custom L', 'Custom Area',
-       'Util', 'Width', 'Length', 'Area']
-    when "deleted"
-      ['Phase', 'Width', 'Length']
+  def column_headers(scope, phase)
+    if scope == "deleted"
+      headers = %w(Phase Width Length)
     else
-      []
+      headers = PhaseDefinitions.table_columns(phase).keys 
     end
-  end
-
-  def column_headers_for(scope)
-    visible_columns_for(scope).map do |header|
+    headers.map do |header|
       content_tag(:th, header)
     end.join.html_safe
   end
 
-  def table_values_for(deleted, phase, film)
-    if deleted
-      render "deleted_table_values", film: film
+  def column_values(film)
+    if film.deleted?
+      values = %w(phase width length)
     else
-      case phase
-      when "lamination"
-        render "lamination_table_values", film: film
-      when "inspection"
-        render "inspection_table_values", film: film
-      when "stock", "nc", "scrap", "test"
-        render "backend_table_values", film: film
-      when "wip", "fg"
-        render "checkout_table_values", film: film
-      end
+      values = PhaseDefinitions.table_columns(film.phase).values
     end
+    values.map do |value|
+      content_tag(:td, film.send(value), class: value)
+    end.join.html_safe
   end
 
   def edit_fields_for(phase, f)
-    case phase
-    when "lamination"
-      render "lamination_fields", f: f
-    when "inspection"
-      render "inspection_fields", f: f
-    when "stock", "nc", "scrap", "test"
-      render "backend_fields", f: f
-    when "wip", "fg"
-      render "checkout_fields", f: f
-    end
+    PhaseDefinitions.edit_fields(phase).map do |fields|
+      render fields, f: f
+    end.join.html_safe
   end
 end

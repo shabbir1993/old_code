@@ -1,0 +1,28 @@
+<%= modal_form_for @sales_order do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
+  </div>
+  <div class="modal-body">
+    <%= f.text_field :customer, label: "Customer", class: "form-control" %>
+    <%= f.text_field :ship_to, label: "Ship to", class: "form-control" %>
+    <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>
+    <%= render "shared/date_field", f: f, name: :due_date, label: "Due" %>
+    <fieldset class="panel panel-warning">
+      <div class="panel-heading"><h6 class="panel-title text-center">Line items</h6></div>
+      <div class="panel-body">
+        <%= f.fields_for :line_items do |lif| %>
+          <%= render 'line_item_fields', f: lif %>
+        <% end %>
+        <div class="add-fields-link-wrapper form-group">
+          <div class="col-md-offset-2 col-md-8">
+            <%= link_to_add_fields "Add line item", f, :line_items %>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Update", class: "btn btn-success" %>
+  </div>
+<% end %>

@@ -14,7 +14,7 @@ describe "Admin integration" do
 
   it "has an imports page" do
     click_link "Import data"
-    assert page.has_selector?("h2", text: "Import films").must_equal true
+    assert page.has_selector?("a.active", text: "Import data").must_equal true
   end
 
   describe "users page" do
@@ -37,6 +37,8 @@ describe "Admin integration" do
         fill_in "Full name", with: "New User"
         fill_in "Username", with: "newuser"
         fill_in "Password", with: "foobar"
+        fill_in "Password confirmation", with: "foobar"
+        select "User", from: "Role"
         check "Chemist"
         check "Operator"
         click_button "Create user"
@@ -45,7 +47,6 @@ describe "Admin integration" do
           page.has_selector?("td.username", text: "newuser")
           page.has_selector?("td.chemist", text: "true")
           page.has_selector?("td.operator", text: "true")
-          page.has_selector?("td.active", text: "true")
         end
       end
       it "displays error messages given invalid attributes" do
@@ -55,20 +56,15 @@ describe "Admin integration" do
     end
 
     describe "edit user form" do
-      before do
-        within('tr', text: @user.username) do
-          click_link 'Edit'
-        end
-      end
+      before { click_link "user-#{@user.id}-edit" }
 
       it "edits existing users given valid attributes" do
-        fill_in "Full name", with: "New Name"
         fill_in "Username", with: "newusername"
-        fill_in "Password", with: "foobaz"
+        select "Supervisor", from: "Role"
         click_button "Update"
         within('tr.info') do
-          page.has_selector?('td', text: "New Name").must_equal true
-          page.has_selector?('td', text: "newusername").must_equal true
+          page.has_selector?('.username', text: "newusername").must_equal true
+          page.has_selector?('.role_title', text: "Supervisor").must_equal true
         end 
       end
 
@@ -76,6 +72,11 @@ describe "Admin integration" do
         fill_in "Username", with: " "
         click_button "Update"
         page.has_selector?('.error-messages', text: "can't be blank").must_equal true
+      end
+
+      it "destroys user" do
+        click_link "Delete"
+        page.has_selector?('.alert-success', text: "#{@user.full_name} deleted").must_equal true
       end
     end
   end

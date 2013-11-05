@@ -1,0 +1,9 @@
+<tr>
+  <td class="serial"><%= Film.unscoped.find(film_delete.item_id).serial %></td>
+  <td class="action">
+  <%= film_delete.changeset[:deleted][1] ? "Deleted" : "Restored" %>
+  </td>
+  <td class="whodunnit"><%= film_delete.whodunnit %></td>
+  <td class="created_at"><%= film_delete.created_at.strftime("%F") %></td>
+</tr>
+

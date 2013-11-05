@@ -1,42 +1,34 @@
-<% provide :title, "Engineering" %>
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="active">
-      <%= link_to "Master films", master_films_path %></li>
-  </ul>
+<%= paginate @master_films %>
+
+<% content_for :table_header do %>
+  <tr>
+    <th></th>
+    <th>Serial</th>
+    <th>Formula</th>
+    <th>Mix/g</th>
+    <th>Mach</th>
+    <th>ITO</th>
+    <th>Thinky</th>
+    <th>Chemist</th>
+    <th>Operator</th>
+    <th>Eff W</th>
+    <th>Eff L</th>
+    <th>Eff Area</th>
+    <th>Defects</th>
+    <th>Updated</th>
+    <th>Created</th>
+  </tr>
+  <% if current_user.is_supervisor? %>
+    <tr>
+      <th colspan="100%">
+        <%= link_to "Enter film", new_master_film_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } %>
+      </td>
+    </tr>
+  <% end %>
 <% end %>
 
-<%= paginate @master_films %>
-<table class="master-films table table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Serial</th>
-      <th>Formula</th>
-      <th>Mix/g</th>
-      <th>Mach</th>
-      <th>ITO</th>
-      <th>Thinky</th>
-      <th>Chemist</th>
-      <th>Operator</th>
-      <th>Eff W</th>
-      <th>Eff L</th>
-      <th>Eff Area</th>
-      <th>Defects</th>
-      <th>Updated</th>
-      <th>Created</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render @master_films %>
-  </tbody>
-</table>
+<% content_for :table_body do %>
+  <%= render @master_films %>
+<% end %>
 
-<div id="master-film-actions-modal" class="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-      </div>
-    </div>
-  </div>
-</div>
+<%= render "shared/table" %>

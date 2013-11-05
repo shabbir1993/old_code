@@ -1,6 +1,0 @@
-<fieldset>
-  <%= f.fields_for :defects do |df| %>
-    <%= render 'defect_fields', f: df %>
-  <% end %>
-  <%= link_to_add_fields "Add defect", f, :defects %>
-</fieldset>

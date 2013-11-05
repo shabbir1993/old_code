@@ -1,12 +1,6 @@
 <tr>
-  <td class="serial"><%= fg_film_movement.film.serial if fg_film_movement.film %></td>
-  <td class="from"><%= fg_film_movement.from %></td>
-  <td class="user_name"><%= fg_film_movement.user.full_name if fg_film_movement.user %></td>
-  <td class="customer"><%= fg_film_movement.film.customer if fg_film_movement.film %></td>
-  <td class="sales_order_code"><%= fg_film_movement.film.sales_order_code if fg_film_movement.film %></td>
-  <td class="custom_width"><%= fg_film_movement.film.custom_width if fg_film_movement.film %></td>
-  <td class="custom_length"><%= fg_film_movement.film.custom_length if fg_film_movement.film %></td>
-  <td class="custom_area"><%= number_with_precision(fg_film_movement.film.custom_area, precision: 2) if fg_film_movement.film %></td>
-  <td class="utilization"><%= number_to_percentage(fg_film_movement.film.utilization*100, precision: 2) if fg_film_movement.film %></td>
-  <td class="created_at"><%= fg_film_movement.created_at.strftime("%m/%d/%y %H:%M") %></td>
+  <td class="serial"><%= Film.unscoped.find(fg_film_movement.item_id).serial %></td>
+  <td class="sales_order"><%= fg_film_movement.next ? fg_film_movement.next.reify.sales_order_code : Film.find(fg_film_movement.item_id).sales_order_code %></td>
+  <td class="whodunnit"><%= fg_film_movement.whodunnit %></td>
+  <td class="created_at"><%= fg_film_movement.created_at.strftime("%F") %></td>
 </tr>

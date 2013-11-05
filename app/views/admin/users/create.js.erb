@@ -1,0 +1,4 @@
+<%= render layout: 'shared/modal_form_submit', locals: { object: @user } do %>
+  $('#forms-modal').modal('hide');
+  $('.main tbody').prepend("<%= j render 'user', user: @user, row_class: "success"  %>");
+<% end %>

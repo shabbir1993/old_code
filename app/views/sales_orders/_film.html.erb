@@ -1,0 +1,13 @@
+<% li_class ||= case film.phase %>
+<% when "fg" %>
+  <% "label-success" %>
+<% when "wip" %>
+  <% "label-warning" %>
+<% else %>
+  <% "label-danger" %>
+<% end %>
+
+<li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{li_class}" %>">
+  <%= film.serial %><%= " unassigned" if film.line_item == nil %>
+  <%= link_to("", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign", class: "glyphicon glyphicon-remove" }) unless film.line_item == nil %>
+</li>

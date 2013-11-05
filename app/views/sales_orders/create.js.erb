@@ -1,0 +1,3 @@
+<%= render layout: 'shared/modal_form_submit', locals: { object: @sales_order } do %>
+  $('.main .panel-group').prepend("<%= j render 'sales_order', sales_order: @sales_order, panel_class: "panel-success" %>");
+<% end %>

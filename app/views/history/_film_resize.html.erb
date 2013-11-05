@@ -1,0 +1,11 @@
+<tr>
+  <td class="serial"><%= Film.unscoped.find(film_resize.item_id).serial %></td>
+  <td class="width_change">
+    <%= "#{film_resize.changeset[:width][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:width][1].to_s}".html_safe if film_resize.changeset[:width] %>
+  </td>
+  <td class="length_change">
+    <%= "#{film_resize.changeset[:length][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:length][1].to_s}".html_safe if film_resize.changeset[:length] %>
+  </td>
+  <td class="whodunnit"><%= film_resize.whodunnit %></td>
+  <td class="created_at"><%= film_resize.created_at.strftime("%F") %></td>
+</tr>

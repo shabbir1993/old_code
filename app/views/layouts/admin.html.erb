@@ -1,12 +1,8 @@
 <% provide :title, "Admin" %>
 
-<% content_for :sidebar do %>
-  <ul class="nav nav-list">
-    <li class="<%= "active" if params[:action] == 'home' %>">
-      <%= link_to "Import data", imports_path %></li>
-    <li class="<%= "active" if params[:action] == 'index' %>">
-      <%= link_to "Users", users_path %></li>
-  </ul>
+<% content_for :nav_list do %>
+  <%= link_to "Import data", imports_path, class: "list-group-item#{" active" if params[:controller].split('/').last == 'imports'}" %>
+  <%= link_to "Users", users_path, class: "list-group-item#{" active" if params[:controller].split('/').last == 'users'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

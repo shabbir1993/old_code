@@ -36,9 +36,9 @@ describe "Authentication integration" do
       let(:user) { FactoryGirl.create(:user) }
       before { log_in(user) }
 
-      it "allows access to inventory page" do
+      it "allows access to production page" do
         visit root_path
-        click_link "Inventory"
+        click_link "Production"
         page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
 
@@ -54,6 +54,12 @@ describe "Authentication integration" do
         page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
 
+      it "allows access to orders page" do
+        visit root_path
+        click_link "Orders"
+        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
+      end
+
       it "does not link to admin page" do
         visit root_path
         page.has_selector?(".navbar a", text: "Admin").must_equal false
@@ -63,7 +69,7 @@ describe "Authentication integration" do
         within('.navbar') do
           click_link "Logout"
         end
-        page.has_selector?('legend', text: "Login").must_equal true
+        page.has_title?("Login").must_equal true
       end
     end
 
@@ -81,7 +87,7 @@ describe "Authentication integration" do
     describe "without authentication" do
       it "redirects to login page" do
         visit root_path
-        page.has_selector?("legend", text: "Login").must_equal true
+        page.has_title?("Login").must_equal true
       end
     end
   end

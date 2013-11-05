@@ -1,22 +1,18 @@
 <% row_class = "" if local_assigns[:row_class].nil? %>
+
 <tr id="<%= "film-#{film.id}" %>" class="<%= row_class %>">
-  <td><%= check_box_tag "film_ids[]", film.id %></td>
-  <td>
+  <td class="select-box"><%= check_box_tag "film_ids[]", film.id, false, class: "film-select" unless film.deleted? %></td>
+  <td class="actions">
   <% if film.deleted == true %>
-    <%= link_to "Restore", restore_film_path(film), method: :put, remote: true %>
+    <%= link_to "", restore_film_path(film), method: :patch, remote: true, id: "film-#{film.id}-restore", class: "glyphicon glyphicon-wrench" %>
   <% else %>
-    <%= link_to "Edit", edit_film_path(film), { :"data-toggle" => "modal",
-      :"data-target" => "#film-actions-modal" } %>
-    <%= link_to('Split', split_film_path(film), { :"data-toggle" => "modal",
-                :"data-target" => "#film-actions-modal" }) if film.phase ==
-                "stock" %>
+    <%= link_to '', edit_film_path(film), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "film-#{film.id}-edit", class: "glyphicon glyphicon-edit" } %>
+    <%= link_to '', split_film_path(film), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "film-#{film.id}-split", class: "glyphicon glyphicon-fullscreen" } if film.phase == "stock" %>
   <% end %>
   </td>
-  <td class="serial"><%= film.serial %></td>
-  <td class="formula"><%= film.formula %></td>
-  <%= table_values_for(film.deleted, film.phase, film) %>
-  <td class="reserved_for"><%= film.reserved_for %></td>
+  <td class="serial">
+    <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
+  </td>
+  <%= column_values(film) %>
   <td class="note"><%= film.note %></td>
-  <td><%= film.updated_at.strftime("%m/%d/%y %H:%M") %></td>
-  <td><%= film.created_at.strftime("%m/%d/%y %H:%M") %></td>
 </tr>

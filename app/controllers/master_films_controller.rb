@@ -1,6 +1,18 @@
 class MasterFilmsController < ApplicationController
+  def new
+    @master_film = MasterFilm.new
+    render layout: false
+  end
+
+  def create
+    @master_film = MasterFilm.new(params[:master_film])
+    if @master_film.save
+      @film = @master_film.films.create(phase: "lamination")
+    end
+  end
+
   def index
-    @master_films = MasterFilm.by_serial.page(params[:page])
+    @master_films = MasterFilm.active.by_serial.page(params[:page])
   end
 
   def edit

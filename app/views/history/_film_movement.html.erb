@@ -1,8 +1,8 @@
 <tr>
-  <td class="serial"><%= film_movement.film.serial if film_movement.film %></td>
-  <td class="from"><%= film_movement.from %></td>
-  <td class="to"><%= film_movement.to %></td>
-  <td class="user_name"><%= film_movement.user.full_name if film_movement.user %></td>
-  <td class="area"><%= number_with_precision(film_movement.area, precision: 2) %></td>
-  <td class="created_at"><%= film_movement.created_at.strftime("%m/%d/%y %H:%M") %></td>
+  <td class="serial"><%= Film.unscoped.find(film_movement.item_id).serial %></td>
+  <td class="movement">
+  <%= film_movement.changeset[:phase][0] || "raw material" %> <span class="glyphicon glyphicon-arrow-right"></span> <%= film_movement.changeset[:phase][1] %>
+  </td>
+  <td class="whodunnit"><%= film_movement.whodunnit %></td>
+  <td class="created_at"><%= film_movement.created_at.strftime("%F") %></td>
 </tr>

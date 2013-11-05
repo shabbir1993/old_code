@@ -1,37 +1,43 @@
 Pcms::Application.routes.draw do
-  resources :films, except: [:show] do
+  resources :films, except: [:new, :create, :show, :destroy] do
     member do
       get :split
-      put :create_split
-      put :restore
+      patch :create_split
+      patch :restore
+      patch :unassign
     end
     collection do
       get :edit_multiple
-      put :update_multiple
+      patch :update_multiple
     end
   end
 
-  resources :master_films, only: [:index, :edit, :update]
+  resources :master_films, except: [:show, :destroy]
+
+  resources :sales_orders, except: [:show, :destroy]
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'
 
-  get 'imports', to: 'imports#home'
-  post 'import_master_films', to: 'imports#import_master_films'
-  post 'import_films', to: 'imports#import_films'
-  post 'import_users', to: 'imports#import_users'
-  post 'import_machines', to: 'imports#import_machines'
-  post 'import_defects', to: 'imports#import_defects'
-  post 'import_film_movements', to: 'imports#import_film_movements'
-  post 'import_phase_snapshots', to: 'imports#import_phase_snapshots'
+  scope module: "admin" do
+    get 'imports', to: 'imports#forms'
+    post 'import_master_films', to: 'imports#import_master_films'
+    post 'import_films', to: 'imports#import_films'
+    post 'import_users', to: 'imports#import_users'
+    post 'import_machines', to: 'imports#import_machines'
+    post 'import_defects', to: 'imports#import_defects'
+    post 'import_film_movements', to: 'imports#import_film_movements'
+    post 'import_phase_snapshots', to: 'imports#import_phase_snapshots'
 
-  resources :users, except: [:show, :destroy]
+    resources :users, except: :show
+  end
 
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history
   get 'history/scrap_film_movements', to: 'history#scrap_film_movements', as: :scrap_film_movements_history
-  get 'history/reserved_checkouts', to: 'history#reserved_checkouts', as: :reserved_checkouts_history
+  get 'history/film_resizes', to: 'history#film_resizes', as: :film_resizes_history
+  get 'history/film_deletes', to: 'history#film_deletes', as: :film_deletes_history
   get 'history/phase_snapshots', to: 'history#phase_snapshots', as: :phase_snapshots_history
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart

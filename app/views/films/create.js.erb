@@ -1,8 +1,0 @@
-<% if @master_film.errors.any? %>
-  $('#new_master_film .error-messages').remove();
-  $('#new_master_film').prepend("<%= j render 'shared/error_messages', object:
-                                @master_film %>");
-<% else %>
-  $('#film-actions-modal').modal('hide');
-  $('.inventory tbody').prepend("<%= j render 'film', film: @master_film.films.first, row_class: "success"  %>");
-<% end %>

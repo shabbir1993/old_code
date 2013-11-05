@@ -1,13 +1,25 @@
-<%= simple_form_for :film, url: update_multiple_films_path, method: :put, remote: true, html: { class: 'form-horizontal modal-form' } do |f| %>
-  <ul>
-    <% @films.each do |film| %>
-      <li>
+<%= modal_form_for :film, url: update_multiple_films_path, method: :patch do |f| %>
+  <div class="modal-header">
+    <ul class="list-inline">
+      <% @films.each do |film| %>
+        <li>
         <%= hidden_field_tag "film_ids[]", film.id %>
         <h4><%= film.serial %></h4>
-      </li>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="modal-body">
+    <% if @films.all? { |f| %w(stock test nc scrap).include? f.phase } %>
+      <%= render "shelf_fields", f: f %>
     <% end %>
-  </ul>
-  <%= f.input :destination, collection: @valid_destinations, include_blank: true, label: "Move to" %>
-  <%= submit_tag "Move all", class: "btn btn-success" %>
-  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <% if @films.all? { |f| %w(stock wip fg).include? f.phase } %>
+      <%= f.collection_select :line_item_id, LineItem.unfilled, :id, :select_text, { include_blank: true }, class: "form-control" %>
+    <% end %>
+    <%= render 'movement_fields', f: f, films: @films %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= submit_tag "Move all", class: "btn btn-success" %>
+  </div>
 <% end %>

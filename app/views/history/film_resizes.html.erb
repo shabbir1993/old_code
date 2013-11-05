@@ -1,0 +1,18 @@
+<%= paginate @film_resizes %>
+
+<% content_for :table_header do %>
+  <tr>
+    <th>Serial</th>
+    <th>Width</th>
+    <th>Length</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render partial: "film_resize", collection: @film_resizes %>
+<% end %>
+
+
+<%= render "shared/table" %>

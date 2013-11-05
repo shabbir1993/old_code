@@ -3,6 +3,11 @@ require 'test_helper'
 describe Film do
   let(:film) { FactoryGirl.build(:film) }
 
+  it "sets deleted to false by default" do
+    film.save!
+    film.deleted.must_equal false
+  end
+
   it "can change nested master film attributes" do
     film.save!
     film.update_attributes( master_film_attributes: { film_code: "new code" })
@@ -21,42 +26,63 @@ describe Film do
     film.invalid?(:phase).must_equal true
   end
 
-  it "sets deleted to false by default" do
+  it "destination sets phase" do
+    film.destination = "new-phase"
     film.save!
-    film.deleted.must_equal false
+    film.phase.must_equal "new-phase"
   end
 
-  describe "with phase set to stock" do
-    before do 
-      film.phase = "stock"
-      film.width = 60
-      film.length = 60
+  it "destination removes line item unless stock wip or fg" do
+    film.line_item_id = 1
+    film.destination = "nc"
+    film.save!
+    film.line_item_id.must_equal nil
+  end
+
+  describe "paper trail" do
+    before { film.save! }
+
+    it "creates a version with correct metadata when phase is updated" do
+      initial_phase = film.phase
+      film.update_attributes!(phase: "inspection")
+      version = film.versions.last
+      version.columns_changed.must_include "phase"
+      version.phase_change.must_include initial_phase
+      version.phase_change.must_include "inspection"
     end
 
-    it "destination setter sets phase if not empty" do
-      film.destination = "wip"
-      film.save!
-      film.phase.must_equal "wip"
+    it "creates a version with correct metadata when shelf is updated" do
+      film.update_attributes!(shelf: "N1")
+      version = film.versions.last
+      version.columns_changed.must_include "shelf"
     end
 
-    it "destination setter does not set phase if empty" do
-      film.destination = ""
-      film.save!
-      film.phase.must_equal "stock"
+    it "creates a version with correct metadata when width is updated" do
+      film.update_attributes!(width: 5)
+      version = film.versions.last
+      version.columns_changed.must_include "width"
     end
 
-    it "destination setter creates a new film movement with correct attributes" do
-      movement_count = film.film_movements.count
-      film.destination = "wip"
-      film.save!
-      film.film_movements.count.must_equal movement_count + 1
-      film.film_movements.first.from.must_equal "stock"
-      film.film_movements.first.to.must_equal "wip"
-      film.film_movements.first.area.must_equal 25
+    it "creates a version with correct metadata when length is updated" do
+      film.update_attributes!(length: 5)
+      version = film.versions.last
+      version.columns_changed.must_include "length"
+    end
+
+    it "creates a version with correct metadata when deleted is updated" do
+      film.update_attributes!(deleted: true)
+      version = film.versions.last
+      version.columns_changed.must_include "deleted"
+    end
+
+    it "does not create a version when note is updated" do
+      film.update_attributes!(note: "foobar")
+      version = film.versions.last
+      version.columns_changed.wont_include "note"
     end
   end
 
-  it "effective dimensions sets dimensions if not nil" do
+  it "effective dimensions also sets dimensions" do
     film.effective_width = 1
     film.effective_length = 2
     film.save!
@@ -66,22 +92,24 @@ describe Film do
     film.effective_length.must_equal 2
   end
 
-  it "effective dimensions does not set attributes if nil" do
-    film.width = 3
-    film.length = 3
-    film.master_film.effective_width = 3
-    film.master_film.effective_length = 3
-    film.effective_width = nil
-    film.effective_length = nil
-    film.save!
-    film.width.must_equal 3
-    film.length.must_equal 3
-    film.master_film.effective_width.must_equal 3
-    film.master_film.effective_length.must_equal 3
-  end
-
   it "valid_destinations must return an array" do
     film.valid_destinations.must_be_instance_of Array
+  end
+
+  describe "text search" do
+    before do
+      film.note = "foobar"
+      film.shelf = "A1"
+      film.save!
+    end
+
+    it "returns matching films" do
+      Film.text_search("foobar A1").must_include film
+    end
+
+    it "does not return non-matching films" do
+      Film.text_search("foobaz A1").wont_include film
+    end
   end
 
   describe "given dimensions" do
@@ -127,45 +155,6 @@ describe Film do
     it "has nil area given nil width" do
       film.width = nil
       film.area.must_equal nil
-    end
-  end
-
-  describe "given custom dimensions" do
-    before do
-      film.custom_width = 60
-      film.custom_length = 60
-    end
-      
-    it "calculates correct custom area given custom dimensions" do
-      film.custom_area.must_equal 25
-    end
-
-    it "has nil custom area given nil custom length" do
-      film.custom_length = nil
-      film.custom_area.must_equal nil
-    end
-
-    it "has nil custom area given nil custom width" do
-      film.custom_width = nil
-      film.custom_area.must_equal nil
-    end
-  end
-
-  describe "given dimensions, effective dimensions & custom dimensions" do
-    before do
-      film.width = 60
-      film.length = 60
-      film.custom_width = 48
-      film.custom_length = 48
-    end
-
-    it "calculates correct utilization" do
-      film.utilization.must_equal 0.64
-    end
-
-    it "has nil utilization given nil measurement" do
-      film.custom_width = nil
-      film.utilization.must_equal nil
     end
   end
 
@@ -244,38 +233,26 @@ describe Film do
     Film.large.wont_include(film)
   end
 
-  it "reserved scope returns films with non-empty reserved_for" do
-    film.reserved_for = "something"
+  it "reserved scope returns film assigned to line item" do
+    film.line_item = FactoryGirl.create(:line_item)
     film.save!
     Film.reserved.must_include(film)
   end
 
-  it "reserved scope does not return films with empty reserved_for" do
-    film.reserved_for = ""
+  it "reserved scope does not return unassigned films" do
+    film.line_item_id = nil
     film.save!
     Film.reserved.wont_include(film)
   end
 
-  it "reserved scope does not return films with nil reserved_for" do
-    film.reserved_for = nil
-    film.save!
-    Film.reserved.wont_include(film)
-  end
-
-  it "not_reserved scope returns films with empty reserved_for" do
-    film.reserved_for = ""
+  it "not_reserved scope returns unassigned films" do
+    film.line_item_id = nil
     film.save!
     Film.not_reserved.must_include(film)
   end
 
-  it "not_reserved scope returns films with nil reserved_for" do
-    film.reserved_for = nil
-    film.save!
-    Film.not_reserved.must_include(film)
-  end
-
-  it "not_reserved scope does not return films with a reserved_for" do
-    film.reserved_for = "something"
+  it "not_reserved scope does not return assigned films" do
+    film.line_item = FactoryGirl.create(:line_item)
     film.save!
     Film.not_reserved.wont_include(film)
   end

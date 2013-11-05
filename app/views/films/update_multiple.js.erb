@@ -1,6 +1,10 @@
-$('#film-actions-modal').modal('hide');
+$('#forms-modal').modal('hide');
 <% if params[:film][:destination].present? %>
   <% @films.each do |film| %>
-    $("<%= "tr#film-#{film.id}" %>").replaceWith("<%= j render 'moved_film', film: film, row_class: "info" %>");
+    $("<%= "#film-#{film.id}" %>").replaceWith("<%= j render 'moved_film', film: film, destination: film.phase %>");
+  <% end %>
+<% else %>
+  <% @films.each do |film| %>
+    $("<%= "#film-#{film.id}" %>").replaceWith("<%= j render 'film', film: film, row_class: "info" %>");
   <% end %>
 <% end %>

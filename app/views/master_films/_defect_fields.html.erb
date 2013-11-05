@@ -1,8 +1,13 @@
-<fieldset class="defect-fields">
-  <div class="inline-fields">
-    <%= f.input :defect_type, label: "Defect", collection: Defect.allowed_types, include_blank: true, input_html: { class: "input-medium" } %>
-    <%= f.input :count, label: false, placeholder: "Count", error: false, input_html: { class: "input-mini" } %>
-  <%= f.hidden_field :_destroy %>
-  <%= link_to "remove", '#', class: "remove-fields" %>
+<fieldset class="form-group defect-fields">
+  <%= f.label :defect_type, "Type", class: "control-label col-md-2" %>
+  <div class="col-md-5">
+    <%= f.select :defect_type, Defect.allowed_types, { prompt: "Select defect..." }, { class: "form-control", default: true } %>
   </div>
+  <div class="col-md-3">
+    <%= f.number_field :count, placeholder: "Count", class: "form-control", default: true %>
+  </div>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to '#', class: "remove-fields" do %>
+    <span class="glyphicon glyphicon-minus"></span>remove
+  <% end %>
 </fieldset>

@@ -1,0 +1,27 @@
+<% provide :title, "Production" %>
+
+<% content_for :nav_list do %>
+  <%= link_to "Lamination", films_path(scope: 'lamination'), class: "list-group-item#{" active" if params[:scope] == 'lamination'}" %>
+  <%= link_to "Inspection", films_path(scope: 'inspection'), class: "list-group-item#{" active" if params[:scope] == 'inspection'}" %>
+  <%= link_to films_path(scope: 'large_stock'), class: "list-group-item#{" active" if params[:scope] == 'large_stock'}" do %>
+    <span class="glyphicon glyphicon-list-alt"></span> Available
+  <% end %>
+  <%= link_to films_path(scope: 'small_stock'), class: "list-group-item#{" active" if params[:scope] == 'small_stock'}" do %>
+    <span class="glyphicon glyphicon-list-alt"></span> <16
+  <% end %>
+  <%= link_to films_path(scope: 'reserved_stock'), class: "list-group-item#{" active" if params[:scope] == 'reserved_stock'}" do %>
+    <span class="glyphicon glyphicon-list-alt"></span> Reserved
+  <% end %>
+  <%= link_to "WIP", films_path(scope: 'wip'), class: "list-group-item#{" active" if params[:scope] == 'wip'}" %>
+  <%= link_to "FG", films_path(scope: 'fg'), class: "list-group-item#{" active" if params[:scope] == 'fg'}" %>
+  <%= link_to "Test", films_path(scope: 'test'), class: "list-group-item#{" active" if params[:scope] == 'test'}" %>
+  <%= link_to "NC", films_path(scope: 'nc'), class: "list-group-item#{" active" if params[:scope] == 'nc'}" %>
+  <%= link_to "Scrap", films_path(scope: 'scrap'), class: "list-group-item#{" active" if params[:scope] == 'scrap'}" %>
+  <% if current_user.is_admin? %>
+    <%= link_to films_path(scope: 'deleted'), class: "list-group-item#{" active" if params[:scope] == 'deleted'}" do %>
+      <span class="glyphicon glyphicon-trash"></span> Deleted
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render template: "layouts/application" %>

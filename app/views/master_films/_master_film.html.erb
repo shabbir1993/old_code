@@ -1,15 +1,15 @@
 <% row_class = "" if local_assigns[:row_class].nil? %>
 <tr id="<%= "master-film-#{master_film.id}" %>" class="<%= row_class %>">
-  <td><%= link_to "Edit", edit_master_film_path(master_film), 
-    { :"data-toggle" => "modal", :"data-target" => "#master-film-actions-modal" } %></td>
+  <td><%= link_to "", edit_master_film_path(master_film), 
+    { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "masterfilm-#{master_film.id}-edit", class: "glyphicon glyphicon-edit" } %></td>
   <td class="serial"><%= master_film.serial %></td>
   <td class="formula"><%= master_film.formula %></td>
   <td class="mix_mass"><%= master_film.mix_mass %></td>
   <td class="machine_code"><%= master_film.machine_code %></td>
   <td class="film_code"><%= master_film.film_code %></td>
   <td class="thinky_code"><%= master_film.thinky_code %></td>
-  <td class="chemist_name"><%= master_film.chemist_full_name %></td>
-  <td class="operator_name"><%= master_film.operator_full_name %></td>
+  <td class="chemist"><%= master_film.chemist %></td>
+  <td class="operator"><%= master_film.operator %></td>
   <td class="effective_width"><%= master_film.effective_width %></td>
   <td class="effective_length"><%= master_film.effective_length %></td>
   <td class="effective_area"><%= number_with_precision(master_film.effective_area, precision: 2) %></td>

@@ -7,19 +7,24 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="header">
-    <%= render "layouts/navbar" %>
-    <% flash.each do |name, msg| %>
-      <div class="alert alert-<%= name == :notice ? "success" : "error" %>">
-        <a class="close" data-dismiss="alert">x</a>
-        <%= msg  %>
+  <%= render "layouts/navbar" if current_user.present? %>
+  <% flash.each do |name, msg| %>
+    <div class="alert alert-<%= name == :notice ? "success" : "warning" %>">
+      <a class="close" data-dismiss="alert">x</a>
+      <%= msg %>
+    </div>
+  <% end %>
+  <% if current_user.present? %>
+    <div class="sidebar">
+      <div class="list-group">
+        <%= yield :nav_list %>
       </div>
-    <% end %>
-  </div>
-  <div class="sidebar-fixed">
-    <%= yield :sidebar %>
-  </div>
+    </div>
+    <div id="forms-modal" class="modal">
+    </div>
+  <% end %>
   <div class="main">
+    <%= yield :search_form %>
     <%= yield %>
   </div>
 </body>

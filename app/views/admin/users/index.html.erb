@@ -1,0 +1,24 @@
+<%= paginate @users %>
+
+<% content_for :table_header do %>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Username</th>
+    <th>Role</th>
+    <th>Chemist</th>
+    <th>Operator</th>
+    <th>Active</th>
+  </tr>
+  <tr>
+    <th colspan="100%">
+      <%= link_to "New user", new_user_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => ".modal" } %>
+    </th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render @users %>
+<% end %>
+
+<%= render "shared/table" %>

@@ -1,23 +1,10 @@
 class FilmsController < ApplicationController
-  def new
-    @master_film = MasterFilm.new
-    render layout: false
-  end
-
-  def create
-    @master_film = MasterFilm.new(params[:master_film])
-    if @master_film.save
-      @film = @master_film.films.create(destination: "lamination")
-    end
-  end
-
   def index
     safe_scopes = %w(lamination inspection wip fg test nc scrap large_stock
                      small_stock reserved_stock deleted)
-    if safe_scopes.include? params[:scope]
-      scoped_films = Film.send(params[:scope]).search_dimensions(params[:"min-width"], params[:"max-width"], params[:"min-length"], params[:"max-length"])
-      @films = scoped_films.page(params[:page])
-      @film_areas = scoped_films.map { |f| f.area ? f.area : 0 }
+    if safe_scopes.include? params[:scope] || params[:scope].nil?
+      films = Film.send(params[:scope]).search_dimensions(params[:"min-width"], params[:"max-width"], params[:"min-length"], params[:"max-length"]).text_search(params[:query])
+      @films = films.page(params[:page])
     end
   end
 
@@ -28,22 +15,19 @@ class FilmsController < ApplicationController
 
   def update
     @film = Film.find(params[:id])
-    @film.update_attributes(params[:film])
+    @film.assign_attributes(params[:film])
+    @film.save
   end 
 
   def edit_multiple
     @films = Film.find(params[:film_ids])
-    @valid_destinations = @films.map(&:valid_destinations).reduce(:&)
     render layout: false
   end
 
   def update_multiple
     @films = Film.find(params[:film_ids])
-    @valid_destinations = @films.map(&:valid_destinations).reduce(:&)
-    if params[:film][:destination].present?
-      @films.each do |film|
-        film.update_attributes(params[:film])
-      end
+    @films.each do |film|
+      film.update_attributes(params[:film].reject { |k,v| v.blank? })
     end
   end
 
@@ -64,5 +48,16 @@ class FilmsController < ApplicationController
   def restore
     @film = Film.unscoped.find(params[:id])
     @film.update_attributes(deleted: false)
+  end
+
+  def unassign
+    @film = Film.find(params[:id])
+    @film.update_attributes(line_item_id: nil)
+  end
+
+private
+
+  def user_for_paper_trail
+    current_user ? current_user.full_name : nil
   end
 end

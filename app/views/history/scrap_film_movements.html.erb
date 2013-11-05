@@ -1,14 +1,15 @@
 <%= paginate @scrap_film_movements %>
-<table class="scrap-film-movements-history table table-striped">
-  <thead>
-    <tr>
-      <th>Serial</th>
-      <th>From</th>
-      <th>User</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "scrap_film_movement", collection: @scrap_film_movements %>
-  </tbody>
-</table>
+
+<% content_for :table_header do %>
+  <tr>
+    <th>Serial</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render partial: "scrap_film_movement", collection: @scrap_film_movements %>
+<% end %>
+
+<%= render "shared/table" %>

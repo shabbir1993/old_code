@@ -1,113 +1,91 @@
 require 'test_helper'
 
 describe "History integration" do
-  let(:supervisor) { FactoryGirl.create(:supervisor) }
   before do 
-    Capybara.current_driver = Capybara.javascript_driver
-    log_in(supervisor)
+    @user = FactoryGirl.create(:user)
+    log_in(@user)
     click_link "History"
   end
 
   it "has the right title" do
-      page.has_title?("History").must_equal true
+    page.has_title?("History").must_equal true
   end
 
-  describe "film movements history" do
+  describe "Film movement page after phase update" do
     before do
-      click_link "Film movements"
+      @film = FactoryGirl.create(:film, phase: "lamination")
+      @date = DateTime.now
+      @film.update_attributes(phase: "inspection")
+      click_link "Film movement"
     end
 
-    it "contains the correct table" do
-      assert page.has_selector?("table.film-movements-history")
+    it "displays the serial, movement, user, and date" do
+      page.has_selector?('.serial', text: @film.serial).must_equal true
+      page.has_selector?('.movement', text: "lamination inspection").must_equal true
+      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
+  end
 
-    it "records the movement of films created" do
-      visit films_path(scope: "lamination")
-      attrs = FactoryGirl.attributes_for(:master_film)
-      click_link 'Enter film'
-      fill_in 'Serial', with: attrs[:serial]
-      click_button 'Add film'
-      within '.navbar' do
-        click_link "History" 
-      end
-      click_link "Film movements"
-      within 'table.film-movements-history' do
-        page.has_selector?('td.serial', text: attrs[:serial]).must_equal true
-        page.has_selector?('td.from', text: "raw material").must_equal true
-        page.has_selector?('td.to', text: "lamination").must_equal true
-        page.has_selector?('td.area', text: "").must_equal true
-      end
-    end
-
-    it "records the movement of films moved" do
-      film = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60)
-      visit films_path(scope: "large_stock")
-      within('tr', text: film.serial) do
-        click_link 'Edit'
-      end
-      select 'wip', from: 'Move to'
-      click_button "Update"
-      within '.navbar' do
-        click_link "History" 
-      end
-      click_link "Film movements"
-      within 'table.film-movements-history' do
-        page.has_selector?('td.serial', text: film.serial).must_equal true
-        page.has_selector?('td.from', text: "stock").must_equal true
-        page.has_selector?('td.to', text: "wip").must_equal true
-        page.has_selector?('td.area', text: "25").must_equal true
-      end
+  describe "FG movement page after phase update to fg" do
+    before do
+      @sales_order = FactoryGirl.create(:sales_order) 
+      line_item = FactoryGirl.create(:line_item, sales_order: @sales_order)
+      @film = FactoryGirl.create(:film, phase: "wip", line_item: line_item)
+      @date = DateTime.now
+      @film.update_attributes(phase: "fg")
+      click_link "FG movements"
     end
     
-    it "records the movement of bulk moved films" do
-      stock_film_1 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
-      stock_film_2 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
-      visit films_path(scope: "large_stock")
-      within('tr', text: stock_film_1.serial) { check 'film_ids_' }
-      within('tr', text: stock_film_2.serial) { check 'film_ids_' }
-      click_button 'Move selected'
-      select 'wip', from: 'Move to'
-      click_button 'Move all'
-      sleep 1
-      within '.navbar' do
-        click_link "History" 
-      end
-      click_link "Film movements"
-      within 'table.film-movements-history' do
-        page.has_selector?('td.serial', text: stock_film_1.serial).must_equal true
-        page.has_selector?('td.serial', text: stock_film_2.serial).must_equal true
-        page.has_selector?('td.from', text: "stock", count: 2).must_equal true
-        page.has_selector?('td.to', text: "wip", count: 2).must_equal true
-        page.has_selector?('td.area', text: "25", count: 2).must_equal true
-      end
+    it "displays the serial, movement, user, and date" do
+      page.has_selector?('.serial', text: @film.serial).must_equal true
+      page.has_selector?('.sales_order', text: @sales_order.code).must_equal true
+      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
 
-  describe "fg film movements history page" do
-    it "contains the correct table" do
-      click_link 'FG movements'
-      assert page.has_selector?("table.fg-film-movements-history")
+  describe "scrap movement page after phase update to scrap" do
+    before do
+      @film = FactoryGirl.create(:film, phase: "nc")
+      @date = DateTime.now
+      @film.update_attributes(phase: "scrap")
+      click_link "Scrap movements"
+    end
+    
+    it "displays the serial, movement, user, and date" do
+      page.has_selector?('.serial', text: @film.serial).must_equal true
+      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
 
-  describe "scrap movement history page" do
-    it "contains the correct table" do
-      click_link 'Scrap movements'
-      assert page.has_selector?("table.scrap-film-movements-history")
+  describe "resizes page after width update" do
+    before do
+      @film = FactoryGirl.create(:film, width: 50, length: 70, phase: "stock")
+      @date = DateTime.now
+      @film.update_attributes(width: 40)
+      click_link "Resizes"
+    end
+
+    it "displays the serial, dimension change, @user and date" do
+      page.has_selector?('.serial', text: @film.serial).must_equal true
+      page.has_selector?('.width_change', text: "50.0 40.0").must_equal true
+      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
-
-  describe "reserved checkouts history page" do
-    it "contains the correct table" do
-      click_link 'Reserved checkouts'
-      assert page.has_selector?("table.reserved-checkouts-history")
+  
+  describe "deletes page after delete and restore" do
+    before do
+      @film = FactoryGirl.create(:film)
+      @date = DateTime.now
+      @film.update_attributes(deleted: true)
+      @film.update_attributes(deleted: false)
+      click_link "Deletes"
     end
-  end
 
-  describe "phase snapshot history page" do
-    it "contains the correct table" do
-      click_link 'Phase snapshots'
-      page.has_selector?("table.phase-snapshots-history").must_equal true
+    it "displays the serial, actions, user and date" do
+      page.has_selector?('.serial', text: @film.serial).must_equal true
+      page.has_selector?('.action', text: "Deleted").must_equal true
+      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
+      page.has_selector?('.action', text: "Restored").must_equal true
     end
   end
 end

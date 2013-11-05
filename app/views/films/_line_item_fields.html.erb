@@ -1,0 +1,1 @@
+<%= f.collection_select :line_item_id, @film.line_item ? LineItem.unfilled.to_set << @film.line_item : LineItem.unfilled, :id, :select_text, { include_blank: true }, class: "form-control" %>

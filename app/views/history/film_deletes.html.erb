@@ -1,0 +1,18 @@
+<%= paginate @film_deletes %>
+
+<% content_for :table_header do %>
+  <tr>
+    <th>Serial</th>
+    <th>Action</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render partial: "film_delete", collection: @film_deletes %>
+<% end %>
+
+
+<%= render "shared/table" %>
+

@@ -24,6 +24,10 @@ describe User do
     user.role_level = 2
     user.is_admin?.must_equal true
   end
+  
+  it "defaults role level to 0" do
+    user.role_level.must_equal 0
+  end
 
   it "defaults chemist to false" do
     user.chemist.must_equal false
@@ -33,31 +37,35 @@ describe User do
     user.operator.must_equal false
   end
 
-  it "defaults active to true" do
-    user.active.must_equal true
-  end
+  describe "as chemist but not operator" do
+    before do
+      user.chemist = true
+      user.operator = false
+      user.save!
+    end
 
-  it "chemists scope should include chemists" do
-    user.chemist = true
-    user.save!
-    User.chemists.must_include user
-  end 
+    it "name is included in the chemist list" do
+      User.chemists.must_include user.full_name
+    end 
 
-  it "chemists scope should not include non-chemists" do
-    user.chemist = false
-    user.save!
-    User.chemists.wont_include user
+    it "name is not included in operator list" do
+      User.operators.wont_include user.full_name
+    end
   end
   
-  it "operators scope should include operators" do
-    user.operator = true
-    user.save!
-    User.operators.must_include user
-  end 
+  describe "as chemist but not operator" do
+    before do
+      user.chemist = false
+      user.operator = true
+      user.save!
+    end
 
-  it "operators scope should not include non-operators" do
-    user.operator = false
-    user.save!
-    User.operators.wont_include user
+    it "name is included in operator list" do
+      User.operators.must_include user.full_name
+    end 
+
+    it "name is not included in chemist list" do
+      User.chemists.wont_include user.full_name
+    end
   end
 end 

@@ -24,14 +24,6 @@ class ChartsController < ApplicationController
   end
 
   def fg_utilization
-    all_movements_to_fg = FilmMovement.fg.includes(film: :master_film)
-    @data = all_movements_to_fg.map do |movement|
-      {
-        datetime: movement.created_at.to_i*1000, 
-        utilization: (movement.film.utilization*100 if movement.film && movement.film.utilization), 
-        serial: (movement.film.master_film.serial if movement.film)
-      }
-    end
   end
 
   def master_film_yield
@@ -46,15 +38,9 @@ class ChartsController < ApplicationController
   end
 
   def film_movement
-    @data = FilmMovement.unscoped.sum(:area, group: ['"from"', '"to"']).each_with_object({}) do |((from, to), area), hash| 
-      hash[to] ||= {}
-      hash[to][from] = area
-    end
   end
   
   def daily_fg_movement
-    @sf_data = FilmMovement.fg.reorder("DATE(created_at) ASC").sum(:area, group: "DATE(created_at)")
-    @count_data = FilmMovement.fg.reorder("DATE(created_at) ASC").count(:area, group: "DATE(created_at)")
   end
 
   def stock_snapshots

@@ -1,0 +1,18 @@
+<%= modal_form_for @user do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">New user</h4>
+  </div>
+  <div class="modal-body">
+    <%= f.text_field :full_name, class: "form-control" %>
+    <%= f.text_field :username, class: "form-control" %>
+    <%= f.password_field :password, class: "form-control" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
+    <%= f.select :role_level, [['User', 0], ['Supervisor', 1], ['Admin', 2]], {}, { label: "Role", class: "form-control" } %>
+    <%= f.check_box :chemist %>
+    <%= f.check_box :operator %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Create user", class: "btn btn-success" %>
+  </div>
+<% end %>
