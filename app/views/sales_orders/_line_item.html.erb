@@ -1,6 +1,7 @@
 <li id="<%= "line-item-#{line_item.id}" %>" class="line-item list-group-item">
   <%= line_item.custom_width %> x <%= line_item.custom_length %> 
   Qty: <%= line_item.quantity %><br>
+  Type: <%= line_item.product_type %><br>
   Wires: <%= line_item.wire_length %><br>
   Busbars: <%= line_item.busbar_type %><br>
   Note: <%= line_item.note %>

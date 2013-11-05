@@ -15,6 +15,12 @@
       <span class="glyphicon glyphicon-minus"></span>remove
     <% end %>
   </div>
+  <div class="col-md-10 col-md-offset-2">
+    <div class="form-group">
+      <%= f.inline_radio :product_type, "Film", "Film" %>
+      <%= f.inline_radio :product_type, "Glass", "Glass" %>
+    </div>
+  </div>
   <%= f.text_field :wire_length, placeholder: "Wires", label: false, class: "form-control" %>
   <div class="col-md-10 col-md-offset-2">
     <div class="form-group">
