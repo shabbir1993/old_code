@@ -54,10 +54,4 @@ class FilmsController < ApplicationController
     @film = Film.find(params[:id])
     @film.update_attributes(line_item_id: nil)
   end
-
-private
-
-  def user_for_paper_trail
-    current_user ? current_user.full_name : nil
-  end
 end

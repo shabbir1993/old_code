@@ -29,4 +29,8 @@ private
   def check_admin
     redirect_to root_url if !current_user.is_admin?
   end
+
+  def user_for_paper_trail
+    current_user ? current_user.full_name : nil
+  end
 end

@@ -37,10 +37,4 @@ class MasterFilm < ActiveRecord::Base
   def defect_count
     defects.sum(:count)
   end
-
-private
-
-  def user_for_paper_trail
-    current_user ? current_user.full_name : nil
-  end
 end
