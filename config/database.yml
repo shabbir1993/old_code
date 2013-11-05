@@ -3,7 +3,6 @@ development:
   encoding: unicode
   database: pcms_development
   pool: 5
-  username: hangsu
   password: 
   host: localhost
 
@@ -12,6 +11,5 @@ test:
   encoding: unicode
   database: pcms_test
   pool: 5
-  username: hangsu
   password:
   host: localhost
