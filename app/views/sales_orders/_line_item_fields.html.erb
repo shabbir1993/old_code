@@ -2,10 +2,10 @@
   <div class="form-group">
     <%= label_tag :line_item, "Line item", class: "control-label col-md-2" %>
     <div class="col-md-3">
-      <%= f.number_field :custom_width, placeholder: "Width", class: "form-control", default: true %>
+      <%= f.number_field :custom_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
     </div>
     <div class="col-md-3">
-      <%= f.number_field :custom_length, placeholder: "Length", class: "form-control", default: true %>
+      <%= f.number_field :custom_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
     </div>
     <div class="col-md-2">
       <%= f.number_field :quantity, placeholder: "Qty", class: "form-control", default: true %>
