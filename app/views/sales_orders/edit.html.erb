@@ -22,6 +22,7 @@
     </fieldset>
   </div>
   <div class="modal-footer">
+    <%= link_to "Delete", @sales_order, method: :delete, class: "btn btn-danger pull-left" %>
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <%= f.submit "Update", class: "btn btn-success" %>
   </div>

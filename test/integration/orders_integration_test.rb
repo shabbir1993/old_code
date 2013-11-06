@@ -98,6 +98,11 @@ describe "Orders integration" do
         click_button "Update"
         page.has_selector?(".error-messages", text: "can't be blank").must_equal true
       end
+
+      it "has a working delete button" do
+        click_link "Delete"
+        page.has_selector?('.alert-success', text: "#{@sales_order.code} deleted").must_equal true
+      end
     end
 
     describe "with line item panels extended" do

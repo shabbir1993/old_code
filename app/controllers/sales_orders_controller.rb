@@ -21,4 +21,10 @@ class SalesOrdersController < ApplicationController
     @sales_order = SalesOrder.find(params[:id])
     @sales_order.update_attributes(params[:sales_order])
   end
+
+  def destroy
+    @sales_order = SalesOrder.find(params[:id])
+    @sales_order.destroy
+    redirect_to sales_orders_path, notice: "Sales order #{@sales_order.code} deleted."
+  end
 end

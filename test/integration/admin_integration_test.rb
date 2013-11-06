@@ -74,7 +74,7 @@ describe "Admin integration" do
         page.has_selector?('.error-messages', text: "can't be blank").must_equal true
       end
 
-      it "destroys user" do
+      it "has a working delete button" do
         click_link "Delete"
         page.has_selector?('.alert-success', text: "#{@user.full_name} deleted").must_equal true
       end
