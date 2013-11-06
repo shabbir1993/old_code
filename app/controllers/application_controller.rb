@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_filter :restrict_by_ip, :authorize
+  before_filter :authorize
 
   protect_from_forgery
 
@@ -19,7 +19,11 @@ private
   helper_method :current_user
 
   def authorize
-    redirect_to login_url if current_user.nil?
+    if current_user
+      restrict_by_ip unless current_user.is_admin?
+    else
+      redirect_to login_url
+    end
   end
 
   def check_supervisor

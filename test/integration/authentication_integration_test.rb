@@ -71,6 +71,11 @@ describe "Authentication integration" do
         end
         page.has_title?("Login").must_equal true
       end
+
+      it "denies access with invalid IP" do
+        page.driver.options[:headers] = {'REMOTE_ADDR' => "1.2.3.4"}
+        proc { visit root_path }.must_raise(ActionController::RoutingError)
+      end
     end
 
     describe "with admin authentication" do
@@ -82,6 +87,11 @@ describe "Authentication integration" do
         click_link "Admin"
         page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
       end
+
+      it "does not deny access with invalid IP" do
+        page.driver.options[:headers] = {'REMOTE_ADDR' => "1.2.3.4"}
+        proc { visit root_path }.must_be_silent
+      end
     end
 
     describe "without authentication" do
@@ -92,8 +102,4 @@ describe "Authentication integration" do
     end
   end
 
-  it "denies access with invalid IP" do
-    page.driver.options[:headers] = {'REMOTE_ADDR' => "1.2.3.4"}
-    proc { visit root_path }.must_raise(ActionController::RoutingError)
-  end
 end
