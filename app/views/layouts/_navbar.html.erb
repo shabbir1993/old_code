@@ -10,5 +10,5 @@
       <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", imports_path %></li>
     <% end %>
   </ul>
-  <p class="navbar-text navbar-right">Logged in as <%= current_user.full_name %> | <%= link_to "Logout", logout_path, class: "navbar-link" %></p>
+  <p class="navbar-text navbar-right">Logged in as <%= current_user.full_name %> | <%= link_to "Logout", logout_path, id: "logout", class: "navbar-link" %></p>
 </div>
