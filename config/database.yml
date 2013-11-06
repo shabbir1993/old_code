@@ -13,3 +13,6 @@ test:
   pool: 5
   password:
   host: localhost
+  
+production:
+  adapter: postgresql
