@@ -1,3 +1,23 @@
+<%= form_tag movement_summary_chart_path, method: :get, class: 'form-inline search' do %>
+  <div class="form-group">
+    <div class="col-md-8">
+      <div class="input-group">
+        <%= text_field_tag :start_date, nil, class: "form-control bootstrap-datepicker", default: true %>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-8">
+      <div class="input-group">
+        <%= text_field_tag :end_date, nil, class: "form-control bootstrap-datepicker", default: true %>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
+    </div>
+  </div>
+  <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+<% end %>
+
 <table class="table table-bordered">
   <thead>
     <tr>
