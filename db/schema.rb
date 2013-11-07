@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131105153333) do
+ActiveRecord::Schema.define(version: 20131107145209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20131105153333) do
     t.text     "object_changes"
     t.string   "columns_changed",              array: true
     t.string   "phase_change",                 array: true
+    t.decimal  "area"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree

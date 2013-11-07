@@ -47,4 +47,10 @@ class ChartsController < ApplicationController
     @stock_data = PhaseSnapshot.where(phase: "large_stock").select("count, total_area, created_at").order("created_at ASC")
     @reserved_stock_data = PhaseSnapshot.where(phase: "reserved_stock").select("count, total_area, created_at").order("created_at ASC")
   end
+
+  def movement_summary
+    data = PaperTrail::Version.where("'phase' = ANY (columns_changed)").select("phase_change, area").group_by(&:phase_change)
+    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| v.area.to_f } ]] }]
+    @phases_in_order = %w(lamination inspection stock wip fg test nc scrap)
+  end
 end

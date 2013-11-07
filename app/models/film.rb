@@ -18,7 +18,10 @@ class Film < ActiveRecord::Base
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
                   :meta => { columns_changed: Proc.new { |film| film.changed },
-                             phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] } }
+                             phase_change: Proc.new { |film| film.changes[:phase] || 
+                                                      [film.phase, film.phase] },
+                             area: Proc.new { |film| film.area } }
+
 
   include PgSearch
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 

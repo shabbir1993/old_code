@@ -9,6 +9,7 @@
   <%= link_to "Film movement", film_movement_chart_path, class: "list-group-item#{" active" if params[:action] == 'film_movement'}" %>
   <%= link_to "Daily FG movement", daily_fg_movement_chart_path, class: "list-group-item#{" active" if params[:action] == 'daily_fg_movement'}" %>
   <%= link_to "Stock snapshots", stock_snapshots_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_snapshots'}" %>
+  <%= link_to "Movement summary", movement_summary_chart_path, class: "list-group-item#{" active" if params[:action] == 'movement_summary'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

@@ -48,6 +48,7 @@ Pcms::Application.routes.draw do
   get 'charts/film_movement', to: 'charts#film_movement', as: :film_movement_chart
   get 'charts/daily_fg_movement', to: 'charts#daily_fg_movement', as: :daily_fg_movement_chart
   get 'charts/stock_snapshots', to: 'charts#stock_snapshots', as: :stock_snapshots_chart
+  get 'charts/movement_summary', to: 'charts#movement_summary', as: :movement_summary_chart
 
 
   root to: 'films#index', defaults: { scope: "lamination" }

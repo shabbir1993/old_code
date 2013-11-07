@@ -1,0 +1,60 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <td></td>
+      <% @phases_in_order.each do |p| %>
+        <td><strong><%= p %></strong></td>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>lamination</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["lamination", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>inspection</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["inspection", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>stock</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["stock", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>wip</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["wip", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>fg</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["fg", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>test</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["test", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>nc</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["nc", p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td><strong>scrap</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[["scrap", p]] %></td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
