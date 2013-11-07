@@ -2,7 +2,7 @@
   <div class="form-group">
     <div class="col-md-8">
       <div class="input-group">
-        <%= text_field_tag :start_date, nil, class: "form-control bootstrap-datepicker", default: true %>
+        <%= text_field_tag :start_date, params[:start_date], class: "form-control bootstrap-datepicker", default: true %>
         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
       </div>
     </div>
@@ -10,7 +10,7 @@
   <div class="form-group">
     <div class="col-md-8">
       <div class="input-group">
-        <%= text_field_tag :end_date, nil, class: "form-control bootstrap-datepicker", default: true %>
+        <%= text_field_tag :end_date, params[:end_date], class: "form-control bootstrap-datepicker", default: true %>
         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
       </div>
     </div>
