@@ -32,6 +32,10 @@ describe SalesOrder do
     sales_order.invalid?(:customer).must_equal true
   end
 
+  it "defaults ship_date to nil" do
+    sales_order.ship_date.must_equal nil
+  end
+
   it "creates nested line items" do
     before_count = LineItem.count
     FactoryGirl.create(:sales_order, line_items_attributes: [FactoryGirl.attributes_for(:line_item)])
@@ -52,6 +56,29 @@ describe SalesOrder do
       FactoryGirl.create(:sales_order, code: code)
     end
     SalesOrder.by_code.pluck(:code).must_equal ["PE321P", "PT123P", "SE555N"]
+  end
+
+  describe "with shipped and open sales orders" do
+    before do
+      @shipped_order = FactoryGirl.create(:sales_order, ship_date: Date.today)
+      @unshipped_order = FactoryGirl.create(:sales_order, ship_date: nil)
+    end
+
+    it "shipped order is included in shipped scope" do
+      SalesOrder.shipped.must_include @shipped_order
+    end
+
+    it "unshipped order is not included in shipped scope" do
+      SalesOrder.unshipped.wont_include @shipped_order
+    end
+
+    it "unshipped order is included in open scope" do
+      SalesOrder.unshipped.must_include @unshipped_order
+    end
+
+    it "shipped order is not included in open scope" do
+      SalesOrder.shipped.wont_include @unshipped_order
+    end
   end
 
   describe "saved in database" do

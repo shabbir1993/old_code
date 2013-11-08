@@ -18,6 +18,8 @@
         <div class="progress-bar progress-bar-danger" style="<%= "width: #{sales_order.total_assigned_film_percent("stock") }%" %>"></div>
       </div>
     <% end %>
+    <%= link_to "", ship_sales_order_path(sales_order), method: :patch, remote: true, id: "sales-order-#{sales_order.id}-ship", class: "glyphicon glyphicon-plane pull-right" %>
+    <br>
   </div>
   <ul id="<%= "collapse-#{sales_order.id}" %>" class="list-group panel-collapse collapse">
     <%= render partial: "line_item", collection: sales_order.line_items %>

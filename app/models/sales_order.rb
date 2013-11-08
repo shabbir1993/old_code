@@ -1,5 +1,5 @@
 class SalesOrder < ActiveRecord::Base
-  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :line_items_attributes
+  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :line_items_attributes
 
   has_many :line_items, dependent: :destroy
   
@@ -10,6 +10,8 @@ class SalesOrder < ActiveRecord::Base
   validates :customer, presence: true
 
   scope :by_code, -> { order('substring(code from length (code)) DESC, substring(code from 3 for 3) DESC') }
+  scope :shipped, -> { where('ship_date is not null') }
+  scope :unshipped, -> { where(ship_date: nil) }
 
   def total_quantity
     line_items.sum(:quantity)

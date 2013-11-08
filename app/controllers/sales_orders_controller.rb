@@ -1,6 +1,6 @@
 class SalesOrdersController < ApplicationController
   def index
-    @sales_orders = SalesOrder.by_code.page(params[:page])
+    @sales_orders = SalesOrder.send(params[:scope]).by_code.page(params[:page])
   end
   
   def new
@@ -25,6 +25,11 @@ class SalesOrdersController < ApplicationController
   def destroy
     @sales_order = SalesOrder.find(params[:id])
     @sales_order.destroy
-    redirect_to sales_orders_path, notice: "Sales order #{@sales_order.code} deleted."
+    redirect_to sales_orders_path(scope: 'unshipped'), notice: "Sales order #{@sales_order.code} deleted."
+  end
+
+  def ship
+    @sales_order = SalesOrder.find(params[:id])
+    @sales_order.update_attributes(ship_date: Date.today)
   end
 end

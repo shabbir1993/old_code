@@ -14,7 +14,11 @@ Pcms::Application.routes.draw do
 
   resources :master_films, except: [:show, :destroy]
 
-  resources :sales_orders, except: [:show]
+  resources :sales_orders, except: [:show] do
+    member do
+      patch :ship
+    end
+  end
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'

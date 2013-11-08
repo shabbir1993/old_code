@@ -57,13 +57,19 @@ describe "Orders integration" do
     end
   end
 
-  describe "with a partially filled order" do
+  describe "with existing order" do
     before do
       @sales_order = FactoryGirl.create(:sales_order)
       @line_item = FactoryGirl.create(:line_item, quantity: 3, sales_order: @sales_order)
       @film_1 = FactoryGirl.create(:film, phase: "stock", line_item: @line_item)
       @film_2 = FactoryGirl.create(:film, phase: "fg", line_item: @line_item)
       click_link "Orders"
+    end
+
+    it "has a working ship button" do
+      click_link "sales-order-#{@sales_order.id}-ship"
+      page.has_selector?("#sales-order-#{@sales_order.id}", 
+                         text: "#{@sales_order.code} shipped").must_equal true
     end
 
     describe "edit sales order form" do
