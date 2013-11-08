@@ -16,6 +16,10 @@ class LineItem < ActiveRecord::Base
     end
   end
 
+  def shipped
+    sales_order.ship_date?
+  end
+
   def select_text
     "#{custom_width} x #{custom_length} - #{sales_order.code} (#{product_type}) - #{sales_order.customer}"
   end

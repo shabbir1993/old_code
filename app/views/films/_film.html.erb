@@ -12,6 +12,9 @@
   </td>
   <td class="serial">
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
+    <% if film.line_item && film.line_item.shipped && film.phase != "fg" %>
+      <span class="glyphicon glyphicon-warning-sign"></span>
+    <% end %>
   </td>
   <%= column_values(film) %>
   <td class="note"><%= film.note %></td>

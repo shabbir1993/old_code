@@ -23,6 +23,16 @@ describe LineItem do
     line_item.invalid?(:quantity).must_equal true
   end
 
+  it "is shipped if sales order is shipped" do
+    line_item.sales_order.ship_date = Date.today
+    line_item.shipped.must_equal true
+  end
+
+  it "is not shipped if sales order is not shipped" do
+    line_item.sales_order.ship_date = nil
+    line_item.shipped.must_equal false
+  end
+
   describe "saved in database" do
     before { line_item.save! }
 
