@@ -48,6 +48,7 @@ class Film < ActiveRecord::Base
   scope :nc, -> { phase("nc").by_serial }
   scope :scrap, -> { phase("scrap").by_serial }
   scope :deleted, -> { unscoped.where(deleted: true).by_serial }
+  scope :by_area, -> { order('width*length ASC') }
 
   def destination=(destination)
     if destination.present?
@@ -116,7 +117,7 @@ class Film < ActiveRecord::Base
       films = films.where("width <= ?", max_width) if max_width.present?
       films = films.where("length >= ?", min_length) if min_length.present?
       films = films.where("length <= ?", max_length) if max_length.present?
-      films
+      films.by_area
     else
       all
     end

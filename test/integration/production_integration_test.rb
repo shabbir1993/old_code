@@ -115,6 +115,8 @@ describe "Production integration" do
           page.has_selector?('td.serial', text: @small_film_1.serial).must_equal true
         end
 
+        it "displays the searched films ordered by width/length"
+
         it "does not display other films" do
           page.has_selector?('td.serial', text: @small_film_2.serial).must_equal false
           page.has_selector?('td.serial', text: @small_film_3.serial).must_equal false
