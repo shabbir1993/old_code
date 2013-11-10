@@ -12,7 +12,7 @@ class MasterFilmsController < ApplicationController
   end
 
   def index
-    master_films = MasterFilm.active.by_serial
+    master_films = MasterFilm.active.by_serial.includes(:machine, :defects)
     @master_films = master_films.page(params[:page])
     respond_to do |format|
       format.html

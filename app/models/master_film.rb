@@ -7,6 +7,8 @@ class MasterFilm < ActiveRecord::Base
   has_many :defects
   belongs_to :machine
 
+  after_save :update_defects_sum
+
   accepts_nested_attributes_for :defects, allow_destroy: true
   accepts_nested_attributes_for :films, 
     reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
@@ -47,5 +49,11 @@ class MasterFilm < ActiveRecord::Base
                 mf.effective_length, mf.effective_area, mf.yield, mf.defect_count] 
       end
     end
+  end
+
+private
+  
+  def update_defects_sum
+    update_column(:defects_sum, defects.sum(:count))
   end
 end

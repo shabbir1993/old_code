@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131107220819) do
+ActiveRecord::Schema.define(version: 20131110204952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20131107220819) do
   end
 
   create_table "master_films", force: true do |t|
-    t.string   "serial",           null: false
+    t.string   "serial",                       null: false
     t.string   "formula"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20131107220819) do
     t.decimal  "effective_length"
     t.string   "operator"
     t.string   "chemist"
+    t.integer  "defects_sum",      default: 0, null: false
   end
 
   create_table "phase_snapshots", force: true do |t|
