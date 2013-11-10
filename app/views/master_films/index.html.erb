@@ -1,5 +1,7 @@
 <%= paginate @master_films %>
 
+<%= link_to "Export", master_films_path(format: "csv"), id: "master-films-export", class: "btn btn-default" %>
+
 <% content_for :table_header do %>
   <tr>
     <th></th>
@@ -16,7 +18,6 @@
     <th>Eff Area</th>
     <th>Yield</th>
     <th>Defects</th>
-    <th>Updated</th>
     <th>Created</th>
   </tr>
   <% if current_user.is_supervisor? %>

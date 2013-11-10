@@ -24,7 +24,7 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def yield
-    ((effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
+    (100*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
   end
 
   def laminated_at
@@ -36,5 +36,16 @@ class MasterFilm < ActiveRecord::Base
 
   def defect_count
     defects.sum(:count)
+  end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area Yield Defects)
+      all.each do |mf|
+        csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, 
+                mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, 
+                mf.effective_length, mf.effective_area, mf.yield, mf.defect_count] 
+      end
+    end
   end
 end

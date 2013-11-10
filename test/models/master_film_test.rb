@@ -103,7 +103,7 @@ describe MasterFilm do
     master_film.effective_length = 60
     master_film.mix_mass = 100
     master_film.machine = FactoryGirl.create(:machine, yield_constant: 0.5)
-    master_film.yield.must_equal 0.5
+    master_film.yield.must_equal 50.00
   end
 
   it "has nil yield given nil attributes" do
