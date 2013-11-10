@@ -18,7 +18,7 @@ class MasterFilm < ActiveRecord::Base
   validates :serial, presence: true, uniqueness: { case_sensitive: false },
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/, on: :create }
 
-  scope :active, -> { joins(:films).where(films: { deleted: false }) }
+  scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
 
   def effective_area
