@@ -114,9 +114,10 @@ describe MasterFilm do
     master_film.yield.must_equal nil
   end
 
-  it "calculates sum of defects count" do
+  it "calculates sum of defects count after save" do
     master_film.save!
     2.times { master_film.defects.create!(defect_type: "white spot", count: 2) }
+    master_film.save!
     master_film.defects_sum.must_equal 4
   end
 

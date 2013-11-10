@@ -80,7 +80,7 @@ describe "Engineering integration" do
       fill_in 'Count', with: 3
       click_button 'Update'
       within('tr.info', text: @master_film.serial) do
-        assert page.has_selector?('td.defect_count', text: '3')
+        assert page.has_selector?('td.defects_sum', text: '3')
       end
     end
 
@@ -106,7 +106,7 @@ describe "Engineering integration" do
       page.has_selector?('fieldset.defect-fields').must_equal false
       click_button 'Update'
       within('tr.info', text: @master_film.serial) do
-        assert page.has_selector?('td.defect_count', text: '0')
+        assert page.has_selector?('td.defects_sum', text: '0')
       end
     end
   end
