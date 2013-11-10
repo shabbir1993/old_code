@@ -12,10 +12,11 @@ class MasterFilmsController < ApplicationController
   end
 
   def index
-    @master_films = MasterFilm.active.by_serial.page(params[:page])
+    master_films = MasterFilm.active.by_serial
+    @master_films = master_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { send_data @master_films.to_csv }
+      format.csv { send_data master_films.limit(500).to_csv }
     end
   end
 
