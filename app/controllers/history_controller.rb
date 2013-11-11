@@ -4,7 +4,7 @@ class HistoryController < ApplicationController
   end
 
   def fg_film_movements
-    @fg_film_movements = PaperTrail::Version.where("phase_change[2] = 'fg'").page(params[:page])
+    @fg_film_movements = PaperTrail::Version.where("phase_change[2] = 'fg' AND phase_change[1] <> 'fg'").page(params[:page])
   end
 
   def scrap_film_movements
