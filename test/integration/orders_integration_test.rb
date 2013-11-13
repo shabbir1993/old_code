@@ -22,14 +22,13 @@ describe "Orders integration" do
       fill_in "Ship to", with: "Location"
       fill_in "Released", with: "2013-01-21"
       fill_in "Due", with: "2013-03-31"
-      # to close datepicker
       click_link "Add line item"
       fill_in "Width", with: 50
       fill_in "Length", with: 80
       fill_in "Qty", with: 3
       choose "Glass"
       fill_in "Wires", with: "1M"
-      choose "D. long"
+      fill_in "Busbars", with: "A"
       fill_in "Note", with: "New note"
       click_button "Add sales order"
       within ".panel-success" do
@@ -46,7 +45,7 @@ describe "Orders integration" do
         page.has_content?("Qty: 3")
         page.has_content?("Glass")
         page.has_content?("Wires: 1M")
-        page.has_content?("Busbars: Double long")
+        page.has_content?("Busbars: A")
         page.has_content?("New note")
       end
     end
@@ -107,7 +106,8 @@ describe "Orders integration" do
 
       it "has a working delete button" do
         click_link "Delete"
-        page.has_selector?('.alert-success', text: "#{@sales_order.code} deleted").must_equal true
+        page.has_selector?("#sales-order-#{@sales_order.id}", 
+                           text: "#{@sales_order.code} deleted").must_equal true
       end
     end
 

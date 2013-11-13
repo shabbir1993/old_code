@@ -7,6 +7,7 @@
     <%= f.text_field :ship_to, label: "Ship to", class: "form-control" %>
     <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>
     <%= render "shared/date_field", f: f, name: :due_date, label: "Due" %>
+    <%= f.text_area :note, label: "Note", class: "form-control" %>
     <fieldset class="panel panel-warning">
       <div class="panel-heading"><h6 class="panel-title text-center">Line items</h6></div>
       <div class="panel-body">
@@ -22,7 +23,7 @@
     </fieldset>
   </div>
   <div class="modal-footer">
-    <%= link_to "Delete", @sales_order, method: :delete, class: "btn btn-danger pull-left" %>
+    <%= link_to "Delete", @sales_order, method: :delete, remote: true, class: "btn btn-danger pull-left" %>
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <%= f.submit "Update", class: "btn btn-success" %>
   </div>

@@ -24,7 +24,7 @@ describe LineItem do
   end
 
   it "is shipped if sales order is shipped" do
-    line_item.sales_order.ship_date = Date.today
+    line_item.sales_order.ship_date = Time.zone.today
     line_item.shipped.must_equal true
   end
 

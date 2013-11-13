@@ -14,7 +14,7 @@ describe "History integration" do
   describe "Film movement page after phase update" do
     before do
       @film = FactoryGirl.create(:film, phase: "lamination")
-      @date = DateTime.now
+      @date = Time.zone.now
       @film.update_attributes(phase: "inspection")
       click_link "Film movement"
     end
@@ -31,7 +31,7 @@ describe "History integration" do
       @sales_order = FactoryGirl.create(:sales_order) 
       line_item = FactoryGirl.create(:line_item, sales_order: @sales_order)
       @film = FactoryGirl.create(:film, phase: "wip", line_item: line_item)
-      @date = DateTime.now
+      @date = Time.zone.now
       @film.update_attributes(phase: "fg")
       click_link "FG movements"
     end
@@ -46,7 +46,7 @@ describe "History integration" do
   describe "scrap movement page after phase update to scrap" do
     before do
       @film = FactoryGirl.create(:film, phase: "nc")
-      @date = DateTime.now
+      @date = Time.zone.now
       @film.update_attributes(phase: "scrap")
       click_link "Scrap movements"
     end
@@ -60,7 +60,7 @@ describe "History integration" do
   describe "resizes page after width update" do
     before do
       @film = FactoryGirl.create(:film, width: 50, length: 70, phase: "stock")
-      @date = DateTime.now
+      @date = Time.zone.now
       @film.update_attributes(width: 40)
       click_link "Resizes"
     end
@@ -75,7 +75,7 @@ describe "History integration" do
   describe "deletes page after delete and restore" do
     before do
       @film = FactoryGirl.create(:film)
-      @date = DateTime.now
+      @date = Time.zone.now
       @film.update_attributes(deleted: true)
       @film.update_attributes(deleted: false)
       click_link "Deletes"

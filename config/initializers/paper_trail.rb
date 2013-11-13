@@ -2,6 +2,9 @@ module PaperTrail
   class Version < ActiveRecord::Base
     attr_accessible :columns_changed, :phase_change, :area
 
-    default_scope { order('created_at DESC') }
+    scope :history, -> { joins('INNER JOIN films ON films.id = versions.item_id')
+      .where( films: { deleted: false })
+      .order('versions.created_at DESC') }
+
   end
 end

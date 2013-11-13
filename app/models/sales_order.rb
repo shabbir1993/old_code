@@ -1,5 +1,5 @@
 class SalesOrder < ActiveRecord::Base
-  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :line_items_attributes
+  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes
 
   has_many :line_items, dependent: :destroy
   

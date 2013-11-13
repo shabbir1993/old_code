@@ -50,7 +50,7 @@ class ChartsController < ApplicationController
 
   def movement_summary
     if params[:start_date] && params[:end_date]
-      data = PaperTrail::Version.where("created_at BETWEEN ? AND ?", params[:start_date], params[:end_date])
+      data = PaperTrail::Version.where("created_at BETWEEN ? AND ?", Time.zone.parse(params[:start_date]), Time.zone.parse(params[:end_date]))
     else
       data = PaperTrail::Version.all
     end

@@ -60,7 +60,7 @@ describe SalesOrder do
 
   describe "with shipped and open sales orders" do
     before do
-      @shipped_order = FactoryGirl.create(:sales_order, ship_date: Date.today)
+      @shipped_order = FactoryGirl.create(:sales_order, ship_date: Time.zone.today)
       @unshipped_order = FactoryGirl.create(:sales_order, ship_date: nil)
     end
 

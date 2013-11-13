@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :master_film do
-    today = Date.today
+    today = Time.zone.today
     sequence(:serial) { |n| "E#{ today.strftime('%m') + today.strftime('%d') }-#{ ('%02d' % n)[-2, 2] }"}
 
     factory :master_film_with_child do

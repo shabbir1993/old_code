@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131110204952) do
+ActiveRecord::Schema.define(version: 20131112234801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,17 +25,15 @@ ActiveRecord::Schema.define(version: 20131110204952) do
   end
 
   create_table "films", force: true do |t|
-    t.integer  "division"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "master_film_id",                 null: false
-    t.string   "phase",                          null: false
-    t.text     "note"
-    t.string   "shelf"
-    t.decimal  "width"
-    t.decimal  "length"
-    t.boolean  "deleted",        default: false
-    t.integer  "line_item_id"
+    t.integer "division"
+    t.integer "master_film_id",                 null: false
+    t.string  "phase",                          null: false
+    t.text    "note"
+    t.string  "shelf"
+    t.decimal "width"
+    t.decimal "length"
+    t.boolean "deleted",        default: false
+    t.integer "line_item_id"
   end
 
   create_table "line_items", force: true do |t|
@@ -91,6 +89,7 @@ ActiveRecord::Schema.define(version: 20131110204952) do
     t.date     "release_date"
     t.string   "ship_to"
     t.date     "ship_date"
+    t.text     "note"
   end
 
   create_table "users", force: true do |t|

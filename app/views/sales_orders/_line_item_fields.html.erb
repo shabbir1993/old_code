@@ -22,14 +22,6 @@
     </div>
   </div>
   <%= f.text_field :wire_length, placeholder: "Wires", label: false, class: "form-control" %>
-  <div class="col-md-10 col-md-offset-2">
-    <div class="form-group">
-      <%= f.inline_radio :busbar_type, "Single short", "S. short" %>
-      <%= f.inline_radio :busbar_type, "Single long", "S. long" %>
-      <%= f.inline_radio :busbar_type, "Double short", "D. short" %>
-      <%= f.inline_radio :busbar_type, "Double long", "D. long" %>
-      <%= f.inline_radio :busbar_type, "Other", "Other" %>
-    </div>
-  </div>
+  <%= f.text_field :busbar_type, placeholder: "Busbar", label: false, class: "form-control" %>
   <%= f.text_area :note, placeholder: "Note", label: false, class: "form-control" %>
 </fieldset>

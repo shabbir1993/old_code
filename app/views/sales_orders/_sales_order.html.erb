@@ -10,6 +10,8 @@
       <strong><br></strong>
       <span>Ship to: <strong><%= sales_order.ship_to || "N/A" %></strong></span>
       <span class="pull-right">Due: <strong><%= sales_order.due_date || "N/A" %></strong></span>
+      <strong><br></strong>
+      <span>Note: <strong><%= sales_order.note || "N/A" %></strong></span>
     </h4>
     <% if sales_order.line_items.any? %>
       <div class="progress">

@@ -41,8 +41,9 @@ class FilmsController < ApplicationController
 
   def create_split
     @film = Film.find(params[:id])
-    @film.update_attributes(params[:film])
-    @splits = @film.sibling_films.where("created_at > ?", 2.seconds.ago)
+    @film.assign_attributes(params[:film])
+    @film.save
+    @splits = @film.sibling_films.where("id > ((SELECT MAX(id) FROM films) - 10)")
   end
 
   def restore
