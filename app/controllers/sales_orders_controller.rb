@@ -1,4 +1,6 @@
 class SalesOrdersController < ApplicationController
+  before_filter :check_admin, only: [:destroy, :return]
+
   def index
     @sales_orders = SalesOrder.send(params[:scope]).by_code.page(params[:page])
   end
@@ -30,5 +32,10 @@ class SalesOrdersController < ApplicationController
   def ship
     @sales_order = SalesOrder.find(params[:id])
     @sales_order.update_attributes(ship_date: Time.zone.today)
+  end
+
+  def return
+    @sales_order = SalesOrder.find(params[:id])
+    @sales_order.update_attributes(ship_date: nil)
   end
 end

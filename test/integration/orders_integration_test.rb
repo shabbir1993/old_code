@@ -98,12 +98,6 @@ describe "Orders integration" do
         end
       end
 
-      it "Displays error messages given invalid attributes" do
-        fill_in "Customer", with: ""
-        click_button "Update"
-        page.has_selector?(".error-messages", text: "can't be blank").must_equal true
-      end
-
       it "has a working delete button" do
         click_link "Delete"
         page.has_selector?("#sales-order-#{@sales_order.id}", 

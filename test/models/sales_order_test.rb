@@ -27,11 +27,6 @@ describe SalesOrder do
     sales_order.invalid?(:code).must_equal true
   end
 
-  it "requires a customer" do
-    sales_order.customer = nil
-    sales_order.invalid?(:customer).must_equal true
-  end
-
   it "defaults ship_date to nil" do
     sales_order.ship_date.must_equal nil
   end

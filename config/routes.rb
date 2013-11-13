@@ -17,6 +17,7 @@ Pcms::Application.routes.draw do
   resources :sales_orders, except: [:show] do
     member do
       patch :ship
+      patch :return
     end
   end
 
