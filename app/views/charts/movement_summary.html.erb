@@ -29,6 +29,13 @@
   </thead>
   <tbody>
     <tr>
+      <td><strong>raw</strong></td>
+      <% @phases_in_order.each do |p| %>
+        <td><%= @data[[nil, p]] %></td>
+      <% end %>
+    </tr>
+    <tr>
+    <tr>
       <td><strong>lamination</strong></td>
       <% @phases_in_order.each do |p| %>
         <td><%= @data[["lamination", p]] %></td>

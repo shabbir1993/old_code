@@ -33,7 +33,6 @@ describe "Engineering integration" do
       machine = FactoryGirl.create(:machine)
       chemist = FactoryGirl.create(:chemist)
       operator = FactoryGirl.create(:operator)
-      save_screenshot('ss.png')
       click_link 'Enter film'
       fill_in 'Serial', with: "F1223-12"
       fill_in 'Formula', with: "HA"

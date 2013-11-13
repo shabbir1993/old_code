@@ -56,6 +56,6 @@ class ChartsController < ApplicationController
     end
     data = data.where("'phase' = ANY (columns_changed)").select("phase_change, area").group_by(&:phase_change)
     @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| v.area.to_f } ]] }]
-    @phases_in_order = %w(lamination inspection stock wip fg test nc scrap)
+    @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 end
