@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   has_many :film_movements
 
-  validates :username, presence: true
-  validates :full_name, presence: true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :full_name, presence: true, uniqueness: { case_sensitive: false }
 
   def self.chemists
     User.where(chemist: true).pluck(:full_name)

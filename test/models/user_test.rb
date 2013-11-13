@@ -3,15 +3,14 @@ require 'test_helper'
 describe User do
   let (:user) { FactoryGirl.build(:user) }
 
-  it "requires a username" do
-    user.username = nil
-    user.invalid?(:username).must_equal true
-  end
-
   it "requires a full name" do
     user.full_name = nil
     user.invalid?(:full_name).must_equal true
   end
+
+  it "rejects duplicate full names"
+  
+  it "rejects duplicate usernames"
   
   it "knows whether or not user is supervisor" do
     user.role_level = 1
