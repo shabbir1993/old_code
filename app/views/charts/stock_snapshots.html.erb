@@ -51,7 +51,7 @@
           name: 'Reserved',
           data: [
           <% @reserved_stock_data.each do |point| %>
-            [<%= point[:created_at].to_i*1000 %>, <%= point[:total_area] %>],
+            [<%= point[:created_at].to_i*1000 %>, <%= point[:total_area].to_i %>],
           <% end %>
           ]
         },
@@ -60,7 +60,7 @@
           name: 'Available',
           data: [
           <% @stock_data.each do |point| %>
-            [<%= point[:created_at].to_i*1000 %>, <%= point[:total_area] %>],
+            [<%= point[:created_at].to_i*1000 %>, <%= point[:total_area].to_i %>],
           <% end %>
           ]
         }
