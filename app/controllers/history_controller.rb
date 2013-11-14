@@ -16,6 +16,6 @@ class HistoryController < ApplicationController
   end
 
   def film_deletes
-    @film_deletes = PaperTrail::Version.history.where("'deleted' = ANY (columns_changed)").page(params[:page])
+    @film_deletes = PaperTrail::Version.order('versions.created_at DESC').where("'deleted' = ANY (columns_changed)").page(params[:page])
   end
 end

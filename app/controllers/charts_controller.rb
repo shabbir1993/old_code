@@ -23,24 +23,15 @@ class ChartsController < ApplicationController
     end
   end
 
-  def fg_utilization
-  end
-
   def master_film_yield
     @data = MasterFilm.where("effective_width IS NOT NULL AND effective_length IS NOT NULL AND mix_mass IS NOT NULL AND machine_id IS NOT NULL").group_by(&:formula)
   end
 
   def stock_dimensions
-    all_film_dimensions = Film.phase("stock").large.includes(:master_film).count(:all, group: ['master_films.formula', :length, :width]).map do |k, v|
+    all_film_dimensions = Film.large_stock.includes(:master_film).count(:all, group: ['master_films.formula', :length, :width]).map do |k, v|
       k << v
     end
     @data = all_film_dimensions.group_by(&:first)
-  end
-
-  def film_movement
-  end
-  
-  def daily_fg_movement
   end
 
   def stock_snapshots
@@ -55,7 +46,7 @@ class ChartsController < ApplicationController
       data = PaperTrail::Version.all
     end
     data = data.where("'phase' = ANY (columns_changed)").select("phase_change, area").group_by(&:phase_change)
-    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| v.area.to_f.round(2) } ]] }]
+    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| v.area || 0 }.to_f ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 end
