@@ -8,7 +8,7 @@ class SalesOrder < ActiveRecord::Base
   validates :code, presence: true, uniqueness: { case_sensitive: false },
     format: { with: /\A[A-Z]{2}\d{3}[A-Z]\z/, on: :create }
 
-  scope :by_code, -> { order('substring(code from length (code)) DESC, substring(code from 3 for 3) DESC') }
+  scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
   scope :shipped, -> { where('ship_date is not null') }
   scope :unshipped, -> { where(ship_date: nil) }
 
