@@ -1,6 +1,6 @@
 class Film < ActiveRecord::Base
 
-  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :master_film_attributes
+  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_attributes
   attr_reader :destination
 
   belongs_to :master_film
@@ -75,6 +75,14 @@ class Film < ActiveRecord::Base
 
   def area
     (width * length / 144).round(2) if width && length
+  end
+
+  def order_with_count
+    if order_fill_count == 1
+      sales_order_code
+    else
+      sales_order_code + " x " + order_fill_count.to_s
+    end
   end
 
   def valid_destinations

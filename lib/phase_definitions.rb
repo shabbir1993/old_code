@@ -14,14 +14,14 @@ module PhaseDefinitions
         'Length' => 'length',
         'Area' => 'area',
         'Shelf' => 'shelf',
-        'Reserved' => 'sales_order_code'
+        'Reserved' => 'order_with_count'
       }
     when "fg", "wip"
       {
         'Width' => 'width',
         'Length' => 'length',
         'Area' => 'area',
-        'Order' => 'sales_order_code'
+        'Order' => 'order_with_count'
       }
     when "nc", "scrap", "test"
       {
