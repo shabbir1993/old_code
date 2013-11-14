@@ -28,7 +28,8 @@ class Film < ActiveRecord::Base
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
     :using => { tsearch: { prefix: true } },
     associated_against: {
-      master_film: [:serial, :formula]
+      master_film: [:serial, :formula],
+      sales_order: [:code]
     }
 
   default_scope { where(deleted: false) }
