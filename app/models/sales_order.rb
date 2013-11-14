@@ -2,6 +2,7 @@ class SalesOrder < ActiveRecord::Base
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes
 
   has_many :line_items, dependent: :destroy
+  has_many :films
   
   accepts_nested_attributes_for :line_items, allow_destroy: true
   
@@ -17,10 +18,10 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_assigned_film_count(phase)
-    line_items.sum { |l| l.assigned_film_count(phase) }
+    films.where(phase: phase).sum { |f| f.order_fill_count }
   end
 
   def total_assigned_film_percent(phase)
-    line_items.sum {|l| l.assigned_film_count(phase) }*100/total_quantity
+    total_assigned_film_count(phase)*100/total_quantity
   end
 end

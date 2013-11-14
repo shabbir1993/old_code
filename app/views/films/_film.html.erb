@@ -12,7 +12,7 @@
   </td>
   <td class="serial">
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
-    <% if film.line_item && film.line_item.shipped && film.phase != "fg" %>
+    <% if film.sales_order && film.sales_order.ship_date? && film.phase != "fg" %>
       <span class="glyphicon glyphicon-warning-sign"></span>
     <% end %>
   </td>

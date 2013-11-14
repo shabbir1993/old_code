@@ -89,10 +89,10 @@ describe SalesOrder do
     describe "with line items and assigned films" do
       before do
         line_item_1 = FactoryGirl.create(:line_item, quantity: 2, sales_order_id: sales_order.id)
-        line_item_2 = FactoryGirl.create(:line_item, quantity: 2, sales_order_id: sales_order.id)
-        FactoryGirl.create(:film, line_item: line_item_1, phase: "stock")
-        FactoryGirl.create(:film, line_item: line_item_2, phase: "stock")
-        FactoryGirl.create(:film, line_item: line_item_2, phase: "wip")
+        line_item_1 = FactoryGirl.create(:line_item, quantity: 2, sales_order_id: sales_order.id)
+        FactoryGirl.create(:film, sales_order: sales_order, phase: "stock")
+        FactoryGirl.create(:film, sales_order: sales_order, phase: "stock")
+        FactoryGirl.create(:film, sales_order: sales_order, phase: "wip")
       end
 
       it "calculates total films assigned by phase" do

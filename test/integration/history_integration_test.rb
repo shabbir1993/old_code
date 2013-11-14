@@ -29,8 +29,7 @@ describe "History integration" do
   describe "FG movement page after phase update to fg" do
     before do
       @sales_order = FactoryGirl.create(:sales_order) 
-      line_item = FactoryGirl.create(:line_item, sales_order: @sales_order)
-      @film = FactoryGirl.create(:film, phase: "wip", line_item: line_item)
+      @film = FactoryGirl.create(:film, phase: "wip", sales_order: @sales_order)
       @date = Time.zone.now
       @film.update_attributes(phase: "fg")
       click_link "FG movements"

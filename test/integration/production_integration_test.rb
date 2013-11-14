@@ -126,9 +126,9 @@ describe "Production integration" do
 
     describe "reserved stock tab" do
       before do
-        @line_item = FactoryGirl.create(:line_item)
+        @sales_order = FactoryGirl.create(:sales_order)
         @reserved_film = FactoryGirl.create(:film, phase: "stock", width: 72, 
-                                            length: 110, line_item: @line_item)
+                                            length: 110, sales_order: @sales_order)
         click_link "Reserved"
       end
 
@@ -212,7 +212,7 @@ describe "Production integration" do
         @available_film_1 = FactoryGirl.create(:film, phase: "stock", width: 60, length: 60) 
         @available_film_2 = FactoryGirl.create(:film, phase: "stock", width: 40, length: 72) 
         @available_film_3 = FactoryGirl.create(:film, phase: "stock", width: 36, length: 100) 
-        @line_item = FactoryGirl.create :line_item
+        @sales_order = FactoryGirl.create :sales_order
         click_link 'Available'
       end
 
@@ -229,16 +229,16 @@ describe "Production integration" do
 
         it "updates and moves multiple films" do
           select 'wip', from: 'film_destination'
-          select @line_item.sales_order_code, from: 'film_line_item_id'
+          select @sales_order.code, from: 'film_sales_order_id'
           click_button 'Move all'
           page.has_selector?('tr.alert-info', text: "#{@available_film_1.serial} wip").must_equal true
           page.has_selector?('tr.alert-info', text: "#{@available_film_2.serial} wip").must_equal true
           click_link 'WIP'
           within('tr', text: @available_film_1.serial) do
-            page.has_selector?('td.line_item', text: @line_item.sales_order_code)
+            page.has_selector?('td.line_item', text: @sales_order.code)
           end
           within('tr', text: @available_film_2.serial) do
-            page.has_selector?('td.line_item', text: @line_item.sales_order_code)
+            page.has_selector?('td.line_item', text: @sales_order.code)
           end
         end
       end

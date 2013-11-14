@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131113163816) do
+ActiveRecord::Schema.define(version: 20131114164348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,14 +26,16 @@ ActiveRecord::Schema.define(version: 20131113163816) do
 
   create_table "films", force: true do |t|
     t.integer "division"
-    t.integer "master_film_id",                 null: false
-    t.string  "phase",                          null: false
+    t.integer "master_film_id",                   null: false
+    t.string  "phase",                            null: false
     t.text    "note"
     t.string  "shelf"
     t.decimal "width"
     t.decimal "length"
-    t.boolean "deleted",        default: false
+    t.boolean "deleted",          default: false
     t.integer "line_item_id"
+    t.integer "sales_order_id"
+    t.integer "order_fill_count", default: 1
   end
 
   create_table "line_items", force: true do |t|

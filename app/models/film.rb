@@ -1,20 +1,22 @@
 class Film < ActiveRecord::Base
 
-  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :line_item_id, :master_film_attributes
+  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :master_film_attributes
   attr_reader :destination
 
   belongs_to :master_film
+  belongs_to :sales_order
   belongs_to :line_item
   has_many :film_movements
 
   accepts_nested_attributes_for :master_film
 
   delegate :formula, :effective_width, :effective_length, :effective_area, to: :master_film
-  delegate :sales_order_code, to: :line_item, allow_nil: true
+  delegate :code, to: :sales_order, prefix: true, allow_nil: true
 
   before_create :set_division
 
   validates :phase, presence: true
+  validates :order_fill_count, numericality: { greater_than: 0 }
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
                   :meta => { columns_changed: Proc.new { |film| film.changed },
@@ -35,8 +37,8 @@ class Film < ActiveRecord::Base
   scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
   scope :small, -> { where('width*length/144 < ?', 16) }
   scope :large, -> { where('width*length/144 >= ? or width IS NULL or length IS NULL', 16) }
-  scope :reserved, -> { where("line_item_id IS NOT NULL") }
-  scope :not_reserved, -> { where("line_item_id IS NULL") }
+  scope :reserved, -> { where("sales_order_id IS NOT NULL") }
+  scope :not_reserved, -> { where("sales_order_id IS NULL") }
   scope :lamination, -> { phase("lamination").by_serial }
   scope :inspection, -> { phase("inspection").by_serial }
   scope :large_stock, -> { phase("stock").large.not_reserved.by_serial }
@@ -53,7 +55,7 @@ class Film < ActiveRecord::Base
   def destination=(destination)
     if destination.present?
       self.phase = destination
-      self.line_item_id = nil unless %w(stock wip fg).include?(destination)
+      self.sales_order_id = nil unless %w(stock wip fg).include?(destination)
     end
   end
   

@@ -14,7 +14,7 @@
       <%= render "shelf_fields", f: f %>
     <% end %>
     <% if @films.all? { |f| %w(stock wip fg).include? f.phase } %>
-      <%= f.collection_select :line_item_id, LineItem.unfilled, :id, :select_text, { include_blank: true }, class: "form-control" %>
+      <%= f.collection_select :sales_order_id, SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control" %>
     <% end %>
     <%= render 'movement_fields', f: f, films: @films %>
   </div>

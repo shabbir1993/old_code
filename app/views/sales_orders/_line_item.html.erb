@@ -5,12 +5,4 @@
   Wires: <%= line_item.wire_length %><br>
   Busbars: <%= line_item.busbar_type %><br>
   Note: <%= line_item.note %>
-  <ul class="list-inline">
-    <%= render partial: "film", collection: line_item.films %>
-  </ul>
-  <div class="progress">
-    <div class="progress-bar progress-bar-success" style="<%= "width: #{line_item.assigned_film_percent("fg") }%" %>"></div>
-    <div class="progress-bar progress-bar-warning" style="<%= "width: #{line_item.assigned_film_percent("wip") }%" %>"></div>
-    <div class="progress-bar progress-bar-danger" style="<%= "width: #{line_item.assigned_film_percent("stock") }%" %>"></div>
-  </div>
 </li>

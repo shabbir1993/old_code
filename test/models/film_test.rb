@@ -33,10 +33,10 @@ describe Film do
   end
 
   it "destination removes line item unless stock wip or fg" do
-    film.line_item_id = 1
+    film.sales_order_id = 1
     film.destination = "nc"
     film.save!
-    film.line_item_id.must_equal nil
+    film.sales_order_id.must_equal nil
   end
 
   describe "paper trail" do
@@ -234,7 +234,7 @@ describe Film do
   end
 
   it "reserved scope returns film assigned to line item" do
-    film.line_item = FactoryGirl.create(:line_item)
+    film.sales_order = FactoryGirl.create(:sales_order)
     film.save!
     Film.reserved.must_include(film)
   end
@@ -252,7 +252,7 @@ describe Film do
   end
 
   it "not_reserved scope does not return assigned films" do
-    film.line_item = FactoryGirl.create(:line_item)
+    film.sales_order = FactoryGirl.create(:sales_order)
     film.save!
     Film.not_reserved.wont_include(film)
   end

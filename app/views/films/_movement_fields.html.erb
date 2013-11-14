@@ -10,7 +10,7 @@
       </fieldset>
       <fieldset class="line-item-fields destination-fields">
         <% if films.all? { |f| %w(inspection nc scrap test).include? f.phase } %>
-          <%= render("line_item_fields", f: f) %>
+          <%= render("sales_order_fields", f: f) %>
         <% end %>
       </fieldset>
     </div>

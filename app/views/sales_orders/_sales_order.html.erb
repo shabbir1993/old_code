@@ -20,7 +20,10 @@
         <div class="progress-bar progress-bar-danger" style="<%= "width: #{sales_order.total_assigned_film_percent("stock") }%" %>"></div>
       </div>
     <% end %>
-      <span class="pull-left">Shipped: <strong><%= sales_order.ship_date || "N/A" %></strong></span>
+    <ul class="list-inline">
+      <%= render partial: "film", collection: sales_order.films %>
+    </ul>
+    <span class="pull-left">Shipped: <strong><%= sales_order.ship_date || "N/A" %></strong></span>
     <%= link_to "", ship_sales_order_path(sales_order), method: :patch, remote: true, id: "sales-order-#{sales_order.id}-ship", class: "glyphicon glyphicon-plane pull-right" if sales_order.ship_date.nil? %>
     <%= link_to "", return_sales_order_path(sales_order), method: :patch, remote: true, id: "sales-order-#{sales_order.id}-ship", class: "glyphicon glyphicon-share-alt pull-right" if sales_order.ship_date.present? && current_user.is_admin? %>
     <br>

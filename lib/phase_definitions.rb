@@ -40,9 +40,9 @@ module PhaseDefinitions
     when "inspection"
       %w(effective_dimension_fields)
     when "stock"
-      %w(dimension_fields shelf_fields line_item_fields)
+      %w(dimension_fields shelf_fields sales_order_fields)
     when "fg", "wip"
-      %w(dimension_fields line_item_fields)
+      %w(dimension_fields sales_order_fields)
     when "nc", "scrap", "test"
       %w(dimension_fields shelf_fields)
     else

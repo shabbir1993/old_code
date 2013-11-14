@@ -53,6 +53,6 @@ class FilmsController < ApplicationController
 
   def unassign
     @film = Film.find(params[:id])
-    @film.update_attributes(line_item_id: nil)
+    @film.update_attributes(sales_order_id: nil)
   end
 end

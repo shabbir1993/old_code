@@ -60,8 +60,8 @@ describe "Orders integration" do
     before do
       @sales_order = FactoryGirl.create(:sales_order)
       @line_item = FactoryGirl.create(:line_item, quantity: 3, sales_order: @sales_order)
-      @film_1 = FactoryGirl.create(:film, phase: "stock", line_item: @line_item)
-      @film_2 = FactoryGirl.create(:film, phase: "fg", line_item: @line_item)
+      @film_1 = FactoryGirl.create(:film, phase: "stock", sales_order: @sales_order)
+      @film_2 = FactoryGirl.create(:film, phase: "fg", sales_order: @sales_order)
       click_link "Orders"
     end
 
@@ -113,10 +113,8 @@ describe "Orders integration" do
       end
 
       it "displays assigned films" do
-        within("#line-item-#{@line_item.id}") do
-          page.has_content?(@film_1.serial).must_equal true
-          page.has_content?(@film_2.serial).must_equal true
-        end
+        page.has_content?(@film_1.serial).must_equal true
+        page.has_content?(@film_2.serial).must_equal true
       end
 
       it "unassigns film by button click" do

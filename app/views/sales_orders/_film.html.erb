@@ -8,6 +8,6 @@
 <% end %>
 
 <li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{li_class}" %>">
-  <%= film.serial %><%= " unassigned" if film.line_item == nil %>
-  <%= link_to("", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign", class: "glyphicon glyphicon-remove" }) unless film.line_item == nil %>
+  <%= film.serial %><%= " unassigned" if film.sales_order == nil %>
+  <%= link_to("", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign", class: "glyphicon glyphicon-remove" }) unless film.sales_order == nil %>
 </li>
