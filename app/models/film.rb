@@ -5,7 +5,6 @@ class Film < ActiveRecord::Base
 
   belongs_to :master_film
   belongs_to :sales_order
-  belongs_to :line_item
   has_many :film_movements
 
   accepts_nested_attributes_for :master_film
