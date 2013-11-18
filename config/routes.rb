@@ -16,7 +16,8 @@ Pcms::Application.routes.draw do
 
   resources :sales_orders, except: [:show] do
     member do
-      patch :ship
+      get :edit_ship_date
+      patch :update_ship_date
       patch :return
     end
   end

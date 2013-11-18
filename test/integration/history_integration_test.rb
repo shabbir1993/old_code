@@ -22,7 +22,6 @@ describe "History integration" do
     it "displays the serial, movement, user, and date" do
       page.has_selector?('.serial', text: @film.serial).must_equal true
       page.has_selector?('.movement', text: "lamination inspection").must_equal true
-      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
 
@@ -38,7 +37,6 @@ describe "History integration" do
     it "displays the serial, movement, user, and date" do
       page.has_selector?('.serial', text: @film.serial).must_equal true
       page.has_selector?('.sales_order', text: @sales_order.code).must_equal true
-      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
 
@@ -52,7 +50,6 @@ describe "History integration" do
     
     it "displays the serial, movement, user, and date" do
       page.has_selector?('.serial', text: @film.serial).must_equal true
-      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
 
@@ -67,7 +64,6 @@ describe "History integration" do
     it "displays the serial, dimension change, @user and date" do
       page.has_selector?('.serial', text: @film.serial).must_equal true
       page.has_selector?('.width_change', text: "50.0 40.0").must_equal true
-      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
     end
   end
   
@@ -83,7 +79,6 @@ describe "History integration" do
     it "displays the serial, actions, user and date" do
       page.has_selector?('.serial', text: @film.serial).must_equal true
       page.has_selector?('.action', text: "Deleted").must_equal true
-      page.has_selector?('.created_at', text: @date.strftime("%F")).must_equal true
       page.has_selector?('.action', text: "Restored").must_equal true
     end
   end

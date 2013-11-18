@@ -15,8 +15,7 @@ class FilmsController < ApplicationController
 
   def update
     @film = Film.find(params[:id])
-    @film.assign_attributes(params[:film])
-    @film.save
+    @film.update_attributes(params[:film])
   end 
 
   def edit_multiple
@@ -32,18 +31,14 @@ class FilmsController < ApplicationController
   end
 
   def split
-    session[:return_to] ||= request.referer
     @film = Film.find(params[:id])
-    master_film = @film.master_film
-    9.times { master_film.films.build }
     render layout: false
   end
 
   def create_split
     @film = Film.find(params[:id])
-    @film.assign_attributes(params[:film])
-    @film.save
-    @splits = @film.sibling_films.where("id > ((SELECT MAX(id) FROM films) - 10)")
+    @film.update_attributes(params[:film])
+    @split = @film.master_film.films.create(params[:film][:split])
   end
 
   def restore

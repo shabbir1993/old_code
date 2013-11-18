@@ -136,30 +136,24 @@ describe "Production integration" do
         before { click_link "film-#{@reserved_film.id}-split" }
       
         it "splits film and displays in correct order" do
-          within('div.original-film') do
-            fill_in 'Width', with: 50
-            fill_in 'Length', with: 51
+          within('.original-fields') do
+            fill_in 'Width', with: 30
+            fill_in 'Length', with: 35
           end
-          fill_in 'film_master_film_attributes_films_attributes_1_width', with: 52
-          fill_in 'film_master_film_attributes_films_attributes_1_length', with: 53
-          fill_in 'film_master_film_attributes_films_attributes_2_width', with: 54
-          fill_in 'film_master_film_attributes_films_attributes_2_length', with: 55
+          within('.split-fields') do
+            fill_in 'Width', with: 25
+            fill_in 'Length', with: 40
+          end
           click_button "Split"
           within('tr.info') do
             page.has_selector?('td.serial', text: @reserved_film.serial).must_equal true
-            page.has_selector?('td.width', text: 50).must_equal true
-            page.has_selector?('td.length', text: 51).must_equal true
+            page.has_selector?('td.width', text: 30).must_equal true
+            page.has_selector?('td.length', text: 35).must_equal true
           end
           within('tr.success', text: "#{@reserved_film.master_film.serial}-2") do
-            page.has_selector?('td.width', text: 52).must_equal true
-            page.has_selector?('td.length', text: 53).must_equal true
+            page.has_selector?('td.width', text: 25).must_equal true
+            page.has_selector?('td.length', text: 40).must_equal true
           end
-          within('tr.success', text: "#{@reserved_film.master_film.serial}-3") do
-            page.has_selector?('td.width', text: 54).must_equal true
-            page.has_selector?('td.length', text: 55).must_equal true
-          end
-          assert_operator page.all('tr.success td.serial')[0].text, 
-            :<, page.all('tr.success td.serial')[1].text
         end
       end
     end

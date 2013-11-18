@@ -4,7 +4,12 @@ class HistoryController < ApplicationController
   end
 
   def fg_film_movements
-    @fg_film_movements = PaperTrail::Version.history.where("phase_change[2] = 'fg' AND phase_change[1] <> 'fg'").page(params[:page])
+    fg_film_movements = PaperTrail::Version.history.where("phase_change[2] = 'fg' AND phase_change[1] <> 'fg'")
+    @fg_film_movements = fg_film_movements.page(params[:page])
+    respond_to do |format|
+      format.html
+      format.csv { send_data fg_film_movements.fg_film_movements_to_csv }
+    end
   end
 
   def scrap_film_movements

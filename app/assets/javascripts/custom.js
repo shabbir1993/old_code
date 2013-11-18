@@ -17,7 +17,7 @@ jQuery(function() {
   });
 
   // resets modal data when closed
-  $('.modal').on('hidden.bs.modal', function () {
+  $('body').on('hidden.bs.modal', '.modal', function () {
       $(this).removeData('bs.modal');
   });
 

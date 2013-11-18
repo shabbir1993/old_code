@@ -4,5 +4,5 @@
   <%= film_movement.changeset[:phase][0] || "raw material" %> <span class="glyphicon glyphicon-arrow-right"></span> <%= film_movement.changeset[:phase][1] %>
   </td>
   <td class="whodunnit"><%= film_movement.whodunnit %></td>
-  <td class="created_at"><%= film_movement.created_at.strftime("%F") %></td>
+  <td class="created_at"><%= film_movement.datetime_display %></td>
 </tr>

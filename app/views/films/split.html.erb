@@ -1,37 +1,51 @@
-<%= modal_form_for @film, url: create_split_film_path do |f| %>
+<%= modal_form_for @film, url: create_split_film_path, dialog_class: 'wide' do |f| %>
   <div class="modal-header">
     <h4 class="modal-title text-center">Split</h4>
   </div>
-  <div class="modal-body">
-    <div class="form-group original-film">
-      <%= f.label :width, @film.serial, class: "col-md-2 control-label" %>
-      <div class="col-md-4">
-        <%= f.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-      </div>
-      <div class="col-md-4">
-        <%= f.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-      </div>
+  <div class="modal-body row">
+    <div class=col-md-6>
+      <fieldset class="panel panel-warning original-fields">
+        <div class="panel-heading"><h6 class="panel-title text-center"><%= @film.serial %></h6></div>
+        <div class="panel-body">
+          <div class="form-group">
+            <%= f.label :width, "Dimensions", class: "col-md-2 control-label" %>
+            <div class="col-md-4">
+              <%= f.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+            </div>
+            <div class="col-md-4">
+              <%= f.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+            </div>
+          </div>
+          <%= f.text_field :shelf, class: "form-control" %>
+          <%= render("sales_order_fields", f: f) %>
+          <%= f.text_area :note, class: "form-control" %>
+          <%= f.select :destination, @film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
+        </div>
+      </fieldset>
     </div>
-    <fieldset class="panel panel-warning">
-      <div class="panel-heading"><h6 class="panel-title text-center">New splits</h6></div>
-      <div class="panel-body">
-        <%= f.fields_for :master_film do |mff| %>
-          <%= mff.fields_for :films do |ff| %>
-            <% if ff.object.new_record? %>
-              <div class="form-group">
-                <div class="col-md-offset-2 col-md-4">
-                  <%= ff.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-                </div>
-                <div class="col-md-4">
-                  <%= ff.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-                </div>
-                <%= ff.hidden_field :phase, value: @film.phase %>
+    <div class=col-md-6>
+      <fieldset class="panel panel-warning split-fields">
+        <div class="panel-heading"><h6 class="panel-title text-center">New piece</h6></div>
+        <div class="panel-body">
+          <%= f.fields_for :split do |sf| %>
+            <div class="form-group">
+              <%= sf.label :width, "Dimensions", class: "col-md-2 control-label" %>
+              <div class="col-md-4">
+                <%= sf.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
               </div>
-            <% end %>
+              <div class="col-md-4">
+                <%= sf.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+              </div>
+            </div>
+            <%= sf.text_field :shelf, class: "form-control" %>
+            <%= render("sales_order_fields", f: sf) %>
+            <%= sf.text_area :note, class: "form-control" %>
+            <%= sf.hidden_field :phase, value: @film.phase %>
+            <%= sf.select :destination, @film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
           <% end %>
-        <% end %>
-      </div>
-    </fieldset>
+        </div>
+      </fieldset>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

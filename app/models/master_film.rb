@@ -10,8 +10,7 @@ class MasterFilm < ActiveRecord::Base
   after_save :update_defects_sum
 
   accepts_nested_attributes_for :defects, allow_destroy: true
-  accepts_nested_attributes_for :films, 
-    reject_if: proc { |attr| attr['width'].blank? || attr['length'].blank? }
+  accepts_nested_attributes_for :films
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 

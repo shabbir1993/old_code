@@ -24,12 +24,6 @@ describe MasterFilm do
     Film.count.must_equal before_count + 1
   end
 
-  it "rejects nested films without required attributes" do
-    before_count = Defect.count
-    FactoryGirl.create(:master_film, films_attributes: [{ phase: "stock" }])
-    Film.count.must_equal before_count
-  end
-
   it "requires a serial" do
     master_film.serial = nil
     master_film.invalid?(:serial).must_equal true

@@ -1,8 +1,11 @@
 <%= paginate @fg_film_movements %>
 
+<%= link_to "Export", fg_film_movements_history_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
+
 <% content_for :table_header do %>
   <tr>
     <th>Serial</th>
+    <th>Dimensions</th>
     <th>Order</th>
     <th>User</th>
     <th>Date</th>

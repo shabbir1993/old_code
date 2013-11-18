@@ -3,7 +3,7 @@ module ApplicationHelper
     options[:builder] = ModalFormBuilder
     options[:remote] = true
     options[:html] = { class: 'form-horizontal modal-form' }
-    content_tag(:div, class: "modal-dialog") do
+    content_tag(:div, class: "modal-dialog #{options[:dialog_class]}") do
       content_tag(:div, class: "modal-content") do
         form_for(object, options, &block)
       end

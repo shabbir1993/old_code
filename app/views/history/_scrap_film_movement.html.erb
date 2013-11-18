@@ -1,5 +1,5 @@
 <tr>
   <td class="serial"><%= Film.unscoped.find(scrap_film_movement.item_id).serial %></td>
   <td class="whodunnit"><%= scrap_film_movement.whodunnit %></td>
-  <td class="created_at"><%= scrap_film_movement.created_at.strftime("%F") %></td>
+  <td class="created_at"><%= scrap_film_movement.datetime_display %></td>
 </tr>

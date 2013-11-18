@@ -1,0 +1,3 @@
+<%= render layout: 'shared/modal_form_submit', locals: { object: @sales_order } do %>
+  $("<%= "#sales-order-#{@sales_order.id}" %>").html("<%= "#{@sales_order.code} shipped." %>");
+<% end %>

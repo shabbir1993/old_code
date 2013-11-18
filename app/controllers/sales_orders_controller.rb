@@ -29,9 +29,14 @@ class SalesOrdersController < ApplicationController
     @sales_order.destroy
   end
 
-  def ship
+  def edit_ship_date
     @sales_order = SalesOrder.find(params[:id])
-    @sales_order.update_attributes(ship_date: Time.zone.today)
+    render layout: false
+  end
+
+  def update_ship_date
+    @sales_order = SalesOrder.find(params[:id])
+    @sales_order.update_attributes(params[:sales_order])
   end
 
   def return

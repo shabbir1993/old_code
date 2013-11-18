@@ -1,6 +1,22 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @film } do %>
-  $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");
-  <% @splits.reverse.each do |split| %>
-    $("<%= "#film-#{@film.id}" %>").after("<%= j render 'film', film: split, row_class: "success" %>");
+<% if @film.errors.any? || @split.errors.any? %>
+  <% if @film.errors.any? %>
+    $('.split-fields .panel-body .error-messages').remove();
+    $('.original-fields .panel-body').prepend("<%= j render 'shared/error_messages', object: @film %>");
+  <% end %>
+  <% if @split.errors.any? %>
+    $('.split-fields .panel-body .error-messages').remove();
+    $('.split-fields .panel-body').prepend("<%= j render 'shared/error_messages', object: @split %>");
+  <% end %>
+<% else %>
+  $('#forms-modal').modal('hide')
+  <% if params[:film][:destination].present? %>
+    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', film: @film, destination: @film.phase %>");
+  <% else %>
+    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");
+  <% end %>
+  <% if params[:film][:split][:destination].present? %>
+    $("<%= "#film-#{@film.id}" %>").after("<%= j render 'moved_film', film: @split, destination: @split.phase %>");
+  <% else %>
+    $("<%= "#film-#{@film.id}" %>").after("<%= j render 'film', film: @split, row_class: "success" %>");
   <% end %>
 <% end %>

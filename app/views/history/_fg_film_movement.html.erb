@@ -1,6 +1,7 @@
 <tr>
   <td class="serial"><%= Film.unscoped.find(fg_film_movement.item_id).serial %></td>
-  <td class="sales_order"><%= fg_film_movement.next ? fg_film_movement.next.reify.sales_order_code : Film.find(fg_film_movement.item_id).sales_order_code %></td>
+  <td class="dimensions"><%= "#{fg_film_movement.after.width} x #{fg_film_movement.after.length}" %></td>
+  <td class="sales_order"><%= fg_film_movement.after.sales_order_code %></td>
   <td class="whodunnit"><%= fg_film_movement.whodunnit %></td>
-  <td class="created_at"><%= fg_film_movement.created_at.strftime("%F") %></td>
+  <td class="created_at"><%= fg_film_movement.datetime_display %></td>
 </tr>
