@@ -146,10 +146,10 @@ class Film < ActiveRecord::Base
     area_was = nil
     area_is = nil
     if width_was && length_was
-      area_was = width_was*length_was*144
+      area_was = width_was*length_was/144
     end
     if width && length
-      area_is = width*length*144
+      area_is = width*length/144
     end
     [area_was, area_is]
   end

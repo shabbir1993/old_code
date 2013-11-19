@@ -6,6 +6,9 @@
   <td class="length_change">
     <%= "#{film_resize.changeset[:length][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:length][1].to_s}".html_safe if film_resize.changeset[:length] %>
   </td>
+  <td class="area_diff">
+    <%= "#{film_resize.area_diff.round(2)}" %>
+  </td>
   <td class="whodunnit"><%= film_resize.whodunnit %></td>
   <td class="created_at"><%= film_resize.datetime_display %></td>
 </tr>
