@@ -19,8 +19,8 @@ class Film < ActiveRecord::Base
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
                   :meta => { columns_changed: Proc.new { |film| film.changed },
-                             phase_change: Proc.new { |film| film.changes[:phase] || 
-                                                      [film.phase, film.phase] },
+                             phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] },
+                             area_change: Proc.new { |film| film.area_change },
                              area: Proc.new { |film| film.area } }
 
 
@@ -140,5 +140,17 @@ class Film < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def area_change
+    area_was = nil
+    area_is = nil
+    if width_was && length_was
+      area_was = width_was*length_was*144
+    end
+    if width && length
+      area_is = width*length*144
+    end
+    [area_was, area_is]
   end
 end

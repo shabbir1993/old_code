@@ -48,7 +48,6 @@ Pcms::Application.routes.draw do
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
   get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart
-  get 'charts/master_film_yield', to: 'charts#master_film_yield', as: :master_film_yield_chart
   get 'charts/stock_dimensions', to: 'charts#stock_dimensions', as: :stock_dimensions_chart
   get 'charts/stock_snapshots', to: 'charts#stock_snapshots', as: :stock_snapshots_chart
   get 'charts/movement_summary', to: 'charts#movement_summary', as: :movement_summary_chart
