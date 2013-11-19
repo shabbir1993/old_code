@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131119190331) do
+ActiveRecord::Schema.define(version: 20131119201022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,7 +115,6 @@ ActiveRecord::Schema.define(version: 20131119190331) do
     t.text     "object_changes"
     t.string   "columns_changed",              array: true
     t.string   "phase_change",                 array: true
-    t.decimal  "area"
     t.decimal  "area_change",                  array: true
     t.integer  "split_id"
   end
