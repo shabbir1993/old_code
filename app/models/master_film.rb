@@ -46,6 +46,17 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
+  def self.search(start_serial, end_serial)
+    master_films = all
+    if start_serial
+      master_films = master_films.where("serial >= ?", start_serial)
+    end
+    if end_serial
+      master_films = master_films.where("serial <= ?", end_serial)
+    end
+    master_films
+  end
+
 private
   
   def update_defects_sum

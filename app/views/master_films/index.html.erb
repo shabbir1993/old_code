@@ -1,3 +1,5 @@
+<%= render 'search_form' %>
+
 <%= paginate @master_films %>
 
 <%= link_to "Export", master_films_path(format: "csv"), id: "master-films-export", class: "btn btn-default" %>
