@@ -3,6 +3,8 @@ module PaperTrail
     attr_accessible :columns_changed, :phase_change, :area_change, :split_id
 
     scope :history, -> { joins('INNER JOIN films ON films.id = versions.item_id').where( films: { deleted: false }).order('versions.created_at DESC') } 
+    scope :before_date, ->(date) { where("created_at <= ?", date) } 
+    scope :after_date, ->(date) { where("created_at >= ?", date) } 
     scope :resizes_and_splits, -> { where("('width' = ANY (columns_changed) OR 'length' = ANY (columns_changed)) AND (phase_change[1] <> 'inspection' OR phase_change[1] is NULL)") }
 
     def after
@@ -19,6 +21,17 @@ module PaperTrail
       else
         created_at.strftime("%F %R")
       end
+    end
+
+    def self.search_date_range(start_date, end_date)
+      versions = all
+      if start_date.present?
+        versions = versions.after_date(Time.zone.parse(start_date))
+      end
+      if end_date.present?
+        versions = versions.before_date(Time.zone.parse(end_date))
+      end
+      versions
     end
 
     def self.fg_film_movements_to_csv(options = {})

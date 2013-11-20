@@ -1,5 +1,23 @@
 <%= paginate @film_deletes %>
 
+<%= form_tag film_deletes_history_path, method: :get, class: 'form-inline search' do %>
+  <div class="row">
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :start_date, params[:start_date], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
+    </div>
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :end_date, params[:end_date], placeholder: "End", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+      </div>
+    </div>
+    <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
+  </div>
+<% end %>
+
 <% content_for :table_header do %>
   <tr>
     <th>Serial</th>
