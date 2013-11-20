@@ -42,7 +42,7 @@ class ChartsController < ApplicationController
       data = PaperTrail::Version.all
     end
     data = data.where("'phase' = ANY (columns_changed)").select("phase_change, area_change").group_by(&:phase_change)
-    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| (v.area_change ? v.area_change[1] : nil) || 0 }.to_f ]] }]
+    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| (v.area_change ? v.area_change[1] : nil) || 0 }.to_f.round(2) ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 end
