@@ -24,7 +24,7 @@ class ChartsController < ApplicationController
   end
 
   def stock_dimensions
-    all_film_dimensions = Film.large_stock.includes(:master_film).count(:all, group: ['master_films.formula', :length, :width]).map do |k, v|
+    all_film_dimensions = Film.phase("stock").large.not_reserved.includes(:master_film).count(:all, group: ['master_films.formula', :length, :width]).map do |k, v|
       k << v
     end
     @data = all_film_dimensions.group_by(&:first)

@@ -17,7 +17,7 @@ class HistoryController < ApplicationController
   end
 
   def film_resizes
-    @film_resizes = PaperTrail::Version.history.where("('width' = ANY (columns_changed) OR 'length' = ANY (columns_changed)) AND area_change[1] is not NULL AND area_change[2] is not NULL").page(params[:page])
+    @film_resizes = PaperTrail::Version.resizes_and_splits.history.page(params[:page])
   end
 
   def film_deletes
