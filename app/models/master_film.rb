@@ -1,7 +1,7 @@
 class MasterFilm < ActiveRecord::Base
   attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,
     :thinky_code, :chemist, :operator, :effective_width,
-    :effective_length, :films_attributes, :defects_attributes
+    :effective_length, :note, :films_attributes, :defects_attributes
 
   has_many :films
   has_many :defects

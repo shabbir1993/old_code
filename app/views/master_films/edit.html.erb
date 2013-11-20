@@ -19,6 +19,7 @@
     <%= f.text_field :thinky_code, class: "form-control" %>
     <%= f.select :chemist, User.chemists, { prompt: "Choose chemist..." }, class: "form-control" %>
     <%= f.select :operator, User.operators, { prompt: "Choose operator..." }, class: "form-control" %>
+    <%= f.text_area :note, class: "form-control" %>
     <fieldset class="panel panel-warning">
       <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
       <div class="panel-body">
