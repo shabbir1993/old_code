@@ -1,0 +1,7 @@
+<%= form_tag sales_orders_path, method: :get, class: 'form-inline search' do %>
+  <div class="form-group">
+    <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
+  </div>
+  <%= hidden_field_tag :scope, params[:scope] %>
+  <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+<% end %>

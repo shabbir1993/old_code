@@ -1,3 +1,5 @@
+<%= render 'search_form' %>
+
 <%= paginate @sales_orders %>
 
 <%= link_to "Enter sales order", new_sales_order_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } if params[:scope] == 'unshipped' %>
