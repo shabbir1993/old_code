@@ -1,0 +1,22 @@
+<div class="panel-group">
+  <% @data.each do |s| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="<%= "#collapse-#{s[0]}" %>">
+            <%= s[0] %>
+          </a>
+        </h4>
+      </div>
+      <div id="<%= "collapse-#{s[0]}" %>" class="panel-collapse collapse">
+        <div class="panel-body">
+          <% s[1].each do |f| %>
+            <div>
+            <strong><%= "#{f.serial}" %></strong> ~~ <%= "#{f.width} x #{f.length}" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -41,4 +41,8 @@ class ChartsController < ApplicationController
     @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| (v.area_change ? v.area_change[1] : nil) || 0 }.to_f.round(2) ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
+
+  def inventory
+    @data = Film.phase("stock").large.order("shelf ASC").group_by(&:shelf)
+  end
 end

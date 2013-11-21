@@ -6,6 +6,7 @@
   <%= link_to "Stock dimensions", stock_dimensions_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_dimensions'}" %>
   <%= link_to "Stock snapshots", stock_snapshots_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_snapshots'}" %>
   <%= link_to "Movement summary", movement_summary_chart_path, class: "list-group-item#{" active" if params[:action] == 'movement_summary'}" %>
+  <%= link_to "Inventory", inventory_chart_path, class: "list-group-item#{" active" if params[:action] == 'inventory'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>
