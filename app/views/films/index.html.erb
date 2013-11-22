@@ -2,6 +2,8 @@
 
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
   <%= submit_tag "Move selected", id: "film-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
+  <span>Count: <strong><%= @count %></strong></span>
+  <span>Area: <strong><%= @total_area %></strong></span>
 
   <%= paginate @films %>
 
