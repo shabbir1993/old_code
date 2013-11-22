@@ -13,6 +13,7 @@ class Film < ActiveRecord::Base
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
 
   before_create :set_division
+  before_save :upcase_shelf
 
   validates :phase, presence: true
   validates :order_fill_count, numericality: { greater_than: 0 }
@@ -82,6 +83,10 @@ class Film < ActiveRecord::Base
     else
       sales_order_code + " x " + order_fill_count.to_s
     end
+  end
+
+  def upcase_shelf
+    shelf.upcase!
   end
 
   def valid_destinations

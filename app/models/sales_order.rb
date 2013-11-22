@@ -7,7 +7,7 @@ class SalesOrder < ActiveRecord::Base
   accepts_nested_attributes_for :line_items, allow_destroy: true
   
   validates :code, presence: true, uniqueness: { case_sensitive: false },
-    format: { with: /\A[A-Z]{2}\d{3}[A-Z]\z/, on: :create }
+    format: { with: /\A[A-Z]{2}\d{3}[A-Z]\z/ }
 
   include PgSearch
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 

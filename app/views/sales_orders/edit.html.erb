@@ -3,6 +3,7 @@
     <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
   </div>
   <div class="modal-body">
+    <%= f.text_field :code, class: "form-control" if current_user.is_admin? %>
     <%= f.text_field :customer, label: "Customer", class: "form-control" %>
     <%= f.text_field :ship_to, label: "Ship to", class: "form-control" %>
     <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>

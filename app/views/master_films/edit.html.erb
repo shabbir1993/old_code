@@ -3,6 +3,7 @@
     <h4 class="modal-title text-center"><%= @master_film.serial %></h4>
   </div>
   <div class="modal-body">
+    <%= f.text_field :serial, class: "form-control" if current_user.is_admin? %>
     <div class="form-group">
       <%= f.label :effective_width, "Effective", class: "col-md-2 control-label" %>
       <div class="col-md-4">

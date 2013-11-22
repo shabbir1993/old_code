@@ -15,7 +15,7 @@ class MasterFilm < ActiveRecord::Base
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
   validates :serial, presence: true, uniqueness: { case_sensitive: false },
-    format: { with: /\A[A-Z]\d{4}-\d{2}\z/, on: :create }
+    format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
