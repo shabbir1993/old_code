@@ -86,7 +86,7 @@ class Film < ActiveRecord::Base
   end
 
   def upcase_shelf
-    shelf.upcase!
+    shelf.upcase! if shelf.present?
   end
 
   def valid_destinations
