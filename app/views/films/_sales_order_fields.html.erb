@@ -4,6 +4,6 @@
     <%= f.collection_select :sales_order_id, @film.sales_order ? SalesOrder.unshipped.to_set << @film.sales_order : SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control", default: true %>
   </div>
   <div class="col-md-3">
-    <%= f.number_field :order_fill_count, placeholder: "Count", value: 1, class: "form-control", default: true %>
+    <%= f.number_field :order_fill_count, placeholder: "Count", class: "form-control", default: true %>
   </div>
 </div>
