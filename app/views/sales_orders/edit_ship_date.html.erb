@@ -3,7 +3,15 @@
     <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
   </div>
   <div class="modal-body">
-    <%= render "shared/date_field", f: f, name: :ship_date, value: Time.zone.today, label: "Shipped" %>
+    <div class="form-group">
+      <%= f.label :ship_date, "Shipped", class: "col-md-2 control-label" %>
+      <div class="col-md-8">
+        <div class="input-group">
+          <%= f.text_field :ship_date, class: "form-control bootstrap-datepicker", value: Time.zone.today, default: true %>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

@@ -1,10 +1,8 @@
-<% value = "" if local_assigns[:value].nil? %>
-
 <div class="form-group">
   <%= f.label name, label, class: "col-md-2 control-label" %>
   <div class="col-md-8">
     <div class="input-group">
-      <%= f.text_field name, class: "form-control bootstrap-datepicker", default: true, value: value %>
+      <%= f.text_field name, class: "form-control bootstrap-datepicker", default: true %>
       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
     </div>
   </div>
