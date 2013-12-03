@@ -32,8 +32,8 @@ class Film < ActiveRecord::Base
       sales_order: [:code]
     }
 
-  default_scope { where(deleted: false) }
-  scope :phase, ->(phase) { where(phase: phase) }
+  default_scope { where(tenant_id: Tenant.current_id) }
+  scope :phase, ->(phase) { active.where(phase: phase) }
   scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
   scope :small, -> { where('width*length/144 < ?', 16) }
   scope :large, -> { where('width*length/144 >= ? or width IS NULL or length IS NULL', 16) }
@@ -49,7 +49,8 @@ class Film < ActiveRecord::Base
   scope :test, -> { phase("test").by_serial }
   scope :nc, -> { phase("nc").by_serial }
   scope :scrap, -> { phase("scrap").by_serial }
-  scope :deleted, -> { unscoped.where(deleted: true).by_serial }
+  scope :deleted, -> { where(deleted: true).by_serial }
+  scope :active, -> { where(deleted: false) }
   scope :by_area, -> { order('width*length ASC') }
 
   def destination=(destination)

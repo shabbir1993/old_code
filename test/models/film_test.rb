@@ -179,12 +179,6 @@ describe Film do
     film.sibling_count.must_equal (original_count + 2)
   end
 
-  it "default scope does not include deleted films" do
-    film.deleted = true
-    film.save!
-    Film.all.wont_include(film)
-  end
-
   it "phase scope returns specified phase film" do
     film.phase = "lamination"
     film.save!

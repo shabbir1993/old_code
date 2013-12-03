@@ -1,5 +1,5 @@
 <tr>
-  <td class="serial"><%= Film.unscoped.find(fg_film_movement.item_id).serial %> <span class="label label-default"><%= fg_film_movement.reify.formula %></span></td>
+  <td class="serial"><%= Film.find(fg_film_movement.item_id).serial %> <span class="label label-default"><%= fg_film_movement.reify.formula %></span></td>
   <td class="dimensions"><%= "#{fg_film_movement.after.width} x #{fg_film_movement.after.length}" %></td>
   <td class="sales_order"><%= fg_film_movement.after.sales_order_code %></td>
   <td class="whodunnit"><%= fg_film_movement.whodunnit %></td>

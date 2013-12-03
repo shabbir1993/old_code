@@ -45,7 +45,7 @@ class FilmsController < ApplicationController
   end
 
   def restore
-    @film = Film.unscoped.find(params[:id])
+    @film = Film.find(params[:id])
     @film.update_attributes(deleted: false)
   end
 

@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :authorize
+  around_filter :scope_current_tenant
+  around_filter :set_tenant_time_zone, :if => :current_tenant
 
   protect_from_forgery
 
@@ -12,9 +14,25 @@ private
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.unscoped.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
+  
+  def current_tenant
+    @current_tenant ||= current_user.tenant if current_user
+  end
+  helper_method :current_tenant
+
+  def scope_current_tenant
+    Tenant.current_id = current_tenant.id if current_tenant
+    yield
+  ensure
+    Tenant.current_id = nil
+  end
+
+  def set_tenant_time_zone(&block)
+    Time.use_zone(current_tenant.time_zone, &block)
+  end
 
   def authorize
     if current_user

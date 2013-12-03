@@ -13,6 +13,7 @@ class SalesOrder < ActiveRecord::Base
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 
+  default_scope { where(tenant_id: Tenant.current_id) }
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
   scope :shipped, -> { where('ship_date is not null') }
   scope :unshipped, -> { where(ship_date: nil) }

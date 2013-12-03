@@ -1,5 +1,5 @@
 <tr>
-  <td class="serial"><%= Film.unscoped.find(film_resize.item_id).serial %></td>
+  <td class="serial"><%= Film.find(film_resize.item_id).serial %></td>
   <td class="width_change">
     <%= "#{film_resize.changeset[:width][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:width][1].to_s}".html_safe if film_resize.changeset[:width] %>
   </td>

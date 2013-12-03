@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131203014500) do
+ActiveRecord::Schema.define(version: 20131203072215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.integer "line_item_id"
     t.integer "sales_order_id"
     t.integer "order_fill_count", default: 1
+    t.integer "tenant_id"
   end
+
+  add_index "films", ["tenant_id"], name: "index_films_on_tenant_id", using: :btree
 
   create_table "line_items", force: true do |t|
     t.integer  "sales_order_id", null: false
@@ -56,7 +59,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "yield_constant"
+    t.integer  "tenant_id"
   end
+
+  add_index "machines", ["tenant_id"], name: "index_machines_on_tenant_id", using: :btree
 
   create_table "master_films", force: true do |t|
     t.string   "serial",                       null: false
@@ -73,7 +79,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.string   "chemist"
     t.integer  "defects_sum",      default: 0, null: false
     t.text     "note"
+    t.integer  "tenant_id"
   end
+
+  add_index "master_films", ["tenant_id"], name: "index_master_films_on_tenant_id", using: :btree
 
   create_table "phase_snapshots", force: true do |t|
     t.string   "phase",      null: false
@@ -81,7 +90,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.decimal  "total_area", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tenant_id"
   end
+
+  add_index "phase_snapshots", ["tenant_id"], name: "index_phase_snapshots_on_tenant_id", using: :btree
 
   create_table "sales_orders", force: true do |t|
     t.string   "code",         null: false
@@ -93,10 +105,14 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.string   "ship_to"
     t.date     "ship_date"
     t.text     "note"
+    t.integer  "tenant_id"
   end
 
+  add_index "sales_orders", ["tenant_id"], name: "index_sales_orders_on_tenant_id", using: :btree
+
   create_table "tenants", force: true do |t|
-    t.string "name", null: false
+    t.string "name",      null: false
+    t.string "time_zone"
   end
 
   create_table "users", force: true do |t|
@@ -108,7 +124,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.boolean  "operator",        default: false
     t.string   "password_digest"
     t.integer  "role_level",      default: 0
+    t.integer  "tenant_id"
   end
+
+  add_index "users", ["tenant_id"], name: "index_users_on_tenant_id", using: :btree
 
   create_table "versions", force: true do |t|
     t.string   "item_type",       null: false
@@ -121,8 +140,10 @@ ActiveRecord::Schema.define(version: 20131203014500) do
     t.string   "columns_changed",              array: true
     t.string   "phase_change",                 array: true
     t.decimal  "area_change",                  array: true
+    t.integer  "tenant_id"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+  add_index "versions", ["tenant_id"], name: "index_versions_on_tenant_id", using: :btree
 
 end

@@ -1,5 +1,5 @@
 <tr>
-  <td class="serial"><%= Film.unscoped.find(film_movement.item_id).serial %></td>
+  <td class="serial"><%= Film.find(film_movement.item_id).serial %></td>
   <td class="movement">
   <%= film_movement.changeset[:phase][0] || "raw material" %> <span class="glyphicon glyphicon-arrow-right"></span> <%= film_movement.changeset[:phase][1] %>
   </td>
