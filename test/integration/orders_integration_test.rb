@@ -18,35 +18,19 @@ describe "Orders integration" do
 
     it "creates a sales order given valid attributes" do
       fill_in "SO#", with: "PT123P"
-      fill_in "Customer", with: "POLYTRON"
-      fill_in "Ship to", with: "Location"
-      fill_in "Released", with: "2013-01-21"
-      fill_in "Due", with: "2013-03-31"
       click_link "Add line item"
       fill_in "Width", with: 50
       fill_in "Length", with: 80
       fill_in "Qty", with: 3
-      choose "Glass"
-      fill_in "Wires", with: "1M"
-      fill_in "Busbars", with: "A"
-      fill_in "Note", with: "New note"
       click_button "Add sales order"
       within ".panel-success" do
         page.has_content?('PT123P').must_equal true
-        page.has_content?('POLYTRON').must_equal true
-        page.has_content?('Location').must_equal true
-        page.has_content?('Released: 2013-01-21').must_equal true
-        page.has_content?('Due: 2013-03-31').must_equal true
-      end
-      click_link "PT123P"
-      within ".line-item" do
-        page.has_content?("50")
-        page.has_content?("80")
-        page.has_content?("Qty: 3")
-        page.has_content?("Glass")
-        page.has_content?("Wires: 1M")
-        page.has_content?("Busbars: A")
-        page.has_content?("New note")
+        click_link "PT123P"
+        within ".line-item" do
+          page.has_content?("50")
+          page.has_content?("80")
+          page.has_content?("Qty: 3")
+        end
       end
     end
 
@@ -65,11 +49,7 @@ describe "Orders integration" do
       click_link "Orders"
     end
 
-    it "has a working ship button" do
-      click_link "sales-order-#{@sales_order.id}-ship"
-      page.has_selector?("#sales-order-#{@sales_order.id}", 
-                         text: "#{@sales_order.code} shipped").must_equal true
-    end
+    it "has a working ship button"
 
     describe "edit sales order form" do
       before do
@@ -98,11 +78,7 @@ describe "Orders integration" do
         end
       end
 
-      it "has a working delete button" do
-        click_link "Delete"
-        page.has_selector?("#sales-order-#{@sales_order.id}", 
-                           text: "#{@sales_order.code} deleted").must_equal true
-      end
+      it "has a working delete button with admin auth"
     end
 
     describe "with line item panels extended" do

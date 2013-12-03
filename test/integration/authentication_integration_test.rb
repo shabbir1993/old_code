@@ -90,7 +90,7 @@ describe "Authentication integration" do
 
       it "does not deny access with invalid IP" do
         page.driver.options[:headers] = {'REMOTE_ADDR' => "1.2.3.4"}
-        proc { visit root_path }.must_be_silent
+        visit root_path
       end
     end
 
