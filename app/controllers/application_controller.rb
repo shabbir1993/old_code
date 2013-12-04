@@ -9,6 +9,7 @@ private
 
   def restrict_by_ip
     allowed_ips = ["66.226.220.106",   #PI Dallas
+                   "120.33.232.194",   #PE Fujian
                    "127.0.0.1"]        #localhost
     raise ActionController::RoutingError.new('Bad IP') unless allowed_ips.include?(request.remote_ip)
   end

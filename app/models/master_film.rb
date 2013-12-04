@@ -14,7 +14,7 @@ class MasterFilm < ActiveRecord::Base
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
-  validates :serial, presence: true, uniqueness: { case_sensitive: false },
+  validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_id },
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   default_scope { where(tenant_id: Tenant.current_id) }
