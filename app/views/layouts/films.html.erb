@@ -7,7 +7,7 @@
     <span class="glyphicon glyphicon-list-alt"></span> Available
   <% end %>
   <%= link_to films_path(scope: 'small_stock'), class: "list-group-item#{" active" if params[:scope] == 'small_stock'}" do %>
-    <span class="glyphicon glyphicon-list-alt"></span> <16
+    <span class="glyphicon glyphicon-list-alt"></span> Small
   <% end %>
   <%= link_to films_path(scope: 'reserved_stock'), class: "list-group-item#{" active" if params[:scope] == 'reserved_stock'}" do %>
     <span class="glyphicon glyphicon-list-alt"></span> Reserved

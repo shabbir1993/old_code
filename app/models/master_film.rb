@@ -22,11 +22,11 @@ class MasterFilm < ActiveRecord::Base
   scope :by_serial, -> { order('serial DESC') }
 
   def effective_area
-    (effective_width*effective_length/144).round(2) if effective_width && effective_length
+    (effective_width*effective_length/Tenant.find(Tenant.current_id).area_divisor).round(2) if effective_width && effective_length
   end
 
   def yield
-    (100*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
+    (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
   end
 
   def laminated_at

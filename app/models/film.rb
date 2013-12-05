@@ -35,8 +35,8 @@ class Film < ActiveRecord::Base
   default_scope { where(tenant_id: Tenant.current_id) }
   scope :phase, ->(phase) { active.where(phase: phase) }
   scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
-  scope :small, -> { where('width*length/144 < ?', 16) }
-  scope :large, -> { where('width*length/144 >= ? or width IS NULL or length IS NULL', 16) }
+  scope :small, -> { where("width*length/#{Tenant.find(Tenant.current_id).area_divisor} < ?", Tenant.find(Tenant.current_id).small_area_cutoff) }
+  scope :large, -> { where("width*length/#{Tenant.find(Tenant.current_id).area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.find(Tenant.current_id).small_area_cutoff) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
   scope :lamination, -> { phase("lamination").by_serial }
@@ -75,7 +75,7 @@ class Film < ActiveRecord::Base
   end
 
   def area
-    (width * length / 144).round(2) if width && length
+    (width * length / Tenant.find(Tenant.current_id).area_divisor).round(2) if width && length
   end
 
   def order_with_count
@@ -151,10 +151,10 @@ class Film < ActiveRecord::Base
     area_was = nil
     area_is = nil
     if width_was && length_was
-      area_was = width_was*length_was/144
+      area_was = width_was*length_was/Tenant.find(Tenant.current_id).area_divisor
     end
     if width && length
-      area_is = width*length/144
+      area_is = width*length/Tenant.find(Tenant.current_id).area_divisor
     end
     [area_was, area_is]
   end

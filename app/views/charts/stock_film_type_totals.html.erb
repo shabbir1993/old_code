@@ -17,7 +17,7 @@
         }
       }, {
         title: {
-          text: 'SQFT'
+          text: 'Area'
         }
       }],
 
@@ -34,7 +34,7 @@
         pointPlacement: 0.2
         }, {
         yAxis: 1,
-        name: 'SQFT',
+        name: 'Area',
         data: <%= raw(@data.map{ |i| i[:total_area] }.flatten.to_json) %>,
         pointPlacement: -0.2
       }]

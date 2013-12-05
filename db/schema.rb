@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131204073627) do
+ActiveRecord::Schema.define(version: 20131205035610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,8 +111,11 @@ ActiveRecord::Schema.define(version: 20131204073627) do
   add_index "sales_orders", ["tenant_id"], name: "index_sales_orders_on_tenant_id", using: :btree
 
   create_table "tenants", force: true do |t|
-    t.string "name",      null: false
-    t.string "time_zone"
+    t.string  "name",                              null: false
+    t.string  "time_zone"
+    t.decimal "area_divisor",      default: 144.0, null: false
+    t.decimal "small_area_cutoff", default: 16.0,  null: false
+    t.decimal "yield_multiplier",  default: 1.0,   null: false
   end
 
   create_table "users", force: true do |t|
