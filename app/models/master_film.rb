@@ -25,6 +25,20 @@ class MasterFilm < ActiveRecord::Base
   def effective_area
     (effective_width*effective_length/Tenant.find(Tenant.current_id).area_divisor).round(2) if effective_width && effective_length
   end
+  
+  def effective_width=(effective_width)
+    if films.count == 1 && !films.first.width.present?
+      films.first.width = effective_width
+    end
+    self.effective_width = effective_width
+  end
+
+  def effective_length=(effective_length)
+    if films.count == 1 && !films.first.length.present?
+      films.first.length = effective_length
+    end
+    self.effective_length = effective_length
+  end
 
   def yield
     (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
