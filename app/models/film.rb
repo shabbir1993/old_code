@@ -26,7 +26,7 @@ class Film < ActiveRecord::Base
 
   include PgSearch
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
-    :using => { tsearch: { prefix: true } },
+    :using => :tsearch,
     associated_against: {
       master_film: [:serial, :formula],
       sales_order: [:code]
