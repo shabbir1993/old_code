@@ -4,6 +4,15 @@
   </div>
   <div class="modal-body">
     <%= f.text_field :serial, class: "form-control" %>
+    <div class="form-group">
+      <%= f.label :effective_width, "Effective", class: "col-md-2 control-label" %>
+      <div class="col-md-4">
+        <%= f.number_field :effective_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :effective_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+      </div>
+    </div>
     <%= f.text_field :formula, class: "form-control" %>
     <%= f.number_field :mix_mass, step: "any", class: "form-control" %>
     <%= f.collection_select :machine_id, Machine.all, :id, :code, {}, class: "form-control" %>
@@ -12,6 +21,19 @@
     <%= f.select :chemist, User.chemists, { prompt: "Choose chemist..." }, class: "form-control" %>
     <%= f.select :operator, User.operators, { prompt: "Choose operator..." }, class: "form-control" %>
     <%= f.text_area :note, class: "form-control" %>
+    <fieldset class="panel panel-warning">
+      <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
+      <div class="panel-body">
+        <%= f.fields_for :defects do |df| %>
+          <%= render 'defect_fields', f: df %>
+        <% end %>
+        <div class="add-fields-link-wrapper form-group">
+          <div class="col-md-offset-2 col-md-8">
+            <%= link_to_add_fields "Add defect", f, :defects %>
+          </div>
+        </div>
+      </div>
+    </fieldset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

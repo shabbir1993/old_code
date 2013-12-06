@@ -7,6 +7,7 @@ class MasterFilm < ActiveRecord::Base
   has_many :defects
   belongs_to :machine
 
+  before_save :upcase_attributes
   after_save :update_defects_sum
 
   accepts_nested_attributes_for :defects, allow_destroy: true
@@ -45,6 +46,13 @@ class MasterFilm < ActiveRecord::Base
                 mf.effective_length, mf.effective_area, mf.yield, mf.defects_sum] 
       end
     end
+  end
+  
+  def upcase_attributes
+    formula.upcase! if formula.present?
+    film_code.upcase! if film_code.present?
+    thinky_code.upcase! if thinky_code.present?
+    serial.upcase! if serial.present?
   end
 
   def self.search(start_serial, end_serial)
