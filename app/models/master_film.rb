@@ -7,7 +7,7 @@ class MasterFilm < ActiveRecord::Base
   has_many :defects
   belongs_to :machine
 
-  before_save :upcase_attributes
+  before_validation :upcase_attributes
   after_save :update_defects_sum
 
   accepts_nested_attributes_for :defects, allow_destroy: true
