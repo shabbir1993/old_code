@@ -54,13 +54,25 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
+    defect_types = defects.pluck(:defect_type).uniq
     CSV.generate(options) do |csv|
-      csv << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area Yield Defects)
-      all.each do |mf|
-        csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, 
+      header = %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area Yield Defects) + defect_types
+      csv << header
+      all.includes(:defects).each do |mf|
+        row = [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, 
                 mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, 
-                mf.effective_length, mf.effective_area, mf.yield, mf.defects_sum] 
+                mf.effective_length, mf.effective_area, mf.yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
+        csv << row
       end
+    end
+  end
+
+  def defect_count(type)
+    defects_of_type = defects.where(defect_type: type)
+    if defects_of_type.any?
+      defects_of_type.sum(:count)
+    else
+      0
     end
   end
   
