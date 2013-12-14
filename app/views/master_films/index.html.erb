@@ -3,6 +3,7 @@
 <%= paginate @master_films %>
 
 <%= link_to "Export", master_films_path(start_serial: params[:start_serial], end_serial: params[:end_serial], format: "csv"), id: "master-films-export", class: "btn btn-default" %>
+<%= link_to "Export defects", export_defects_master_films_path(start_serial: params[:start_serial], end_serial: params[:end_serial], format: "csv"), id: "defects-export", class: "btn btn-default" %>
 
 <% content_for :table_header do %>
   <tr>

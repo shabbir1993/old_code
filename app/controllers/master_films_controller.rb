@@ -29,4 +29,12 @@ class MasterFilmsController < ApplicationController
     @master_film = MasterFilm.find(params[:id])
     @master_film.update_attributes(params[:master_film])
   end 
+
+  def export_defects
+    master_films = MasterFilm.active.search(params[:start_serial], params[:end_serial]).by_serial.includes(:machine)
+    defects = master_films.defects
+    respond_to do |format|
+      format.csv { send_data defects.to_csv }
+    end
+  end
 end

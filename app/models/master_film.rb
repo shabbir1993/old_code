@@ -82,6 +82,11 @@ class MasterFilm < ActiveRecord::Base
     master_films
   end
 
+  def self.defects
+    master_film_ids = all.pluck(:id)
+    Defect.where("master_film_id IN (?)", master_film_ids)
+  end
+
 private
   
   def update_defects_sum
