@@ -7,6 +7,10 @@ class FilmsController < ApplicationController
       @films = films.page(params[:page])
       @count = films.count
       @total_area = films.sum { |f| f.area || 0 }
+      respond_to do |format|
+        format.html
+        format.csv { send_data films.to_csv }
+      end
     end
   end
 

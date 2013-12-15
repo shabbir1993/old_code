@@ -158,4 +158,13 @@ class Film < ActiveRecord::Base
     end
     [area_was, area_is]
   end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << %w(Serial Width Length Shelf SO Phase Note)
+      all.includes(:sales_order).each do |f|
+        csv << [f.serial, f.width, f.length, f.shelf, f.sales_order_code, f.phase, f.note]
+      end
+    end
+  end
 end

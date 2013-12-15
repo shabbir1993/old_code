@@ -2,6 +2,7 @@
 
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
   <%= submit_tag "Move selected", id: "film-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
+  <%= link_to "Export", films_path(scope: params[:scope], query: params[:query], :'min-width' => params[:"min-width"], :'min-length' => params[:"min-length"], :'max-width' => params[:"max-width"], :'max-length' => params[:"max-length"], format: "csv"), id: "master-films-export", class: "btn btn-default" %>
   <span>Count: <strong><%= @count %></strong></span>
   <span>Area: <strong><%= @total_area %></strong></span>
 
