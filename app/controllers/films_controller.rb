@@ -9,7 +9,7 @@ class FilmsController < ApplicationController
       @total_area = films.sum { |f| f.area || 0 }
       respond_to do |format|
         format.html
-        format.csv { send_data films.to_csv }
+        format.csv { send_data films.to_csv(encoding: 'UTF-8') }
       end
     end
   end

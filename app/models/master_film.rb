@@ -28,16 +28,14 @@ class MasterFilm < ActiveRecord::Base
   
   def effective_width=(effective_width)
     if films.count == 1 && films.first.width.nil?
-      #this only works on create
-      films.first.width = effective_width
+      films.first.update_attributes(width: effective_width)
     end
     self[:effective_width] = effective_width
   end
 
   def effective_length=(effective_length)
     if films.count == 1 && films.first.length.nil?
-      #this only works on create
-      films.first.length = effective_length
+      films.first.update_attributes(length: effective_length)
     end
     self[:effective_length] = effective_length
   end
