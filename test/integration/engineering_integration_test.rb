@@ -2,64 +2,11 @@ require 'test_helper'
 
 describe "Engineering integration" do
   let(:user) { FactoryGirl.create(:user) }
+  let(:supervisor) {FactoryGirl.create(:supervisor) }
 
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     @master_film = FactoryGirl.create(:master_film_with_child)
-    log_in(user)
-    click_link "Engineering"
-  end
-
-  it "has the right title" do
-    page.has_title?("Engineering").must_equal true
-  end
-
-  it "lists master films" do
-    3.times { FactoryGirl.create(:master_film_with_child) }
-    click_link "Engineering"
-    MasterFilm.all.each do |master_film|
-      page.has_selector?('td.serial', text: master_film.serial).must_equal true
-    end
-  end
-
-  describe "with supervisor authentication" do
-    let(:supervisor) {FactoryGirl.create(:supervisor) }
-    before do
-      log_in(supervisor)
-      click_link "Engineering"
-    end
-
-    it "creates a new master film given valid attributes" do
-      machine = FactoryGirl.create(:machine)
-      chemist = FactoryGirl.create(:chemist)
-      operator = FactoryGirl.create(:operator)
-      click_link 'Enter film'
-      fill_in 'Serial', with: "F1223-12"
-      fill_in 'Formula', with: "HA"
-      fill_in 'Mix mass', with: 101.1
-      select machine.code, from: 'Machine'
-      fill_in 'Film code', with: "1234"
-      fill_in 'Thinky code', with: "1"
-      select chemist.full_name, from: 'Chemist'
-      select operator.full_name, from: 'Operator'
-      click_button 'Add film'
-      within("tr.success") do
-        page.has_selector?('td.serial', text: "F1223-12").must_equal true
-        page.has_selector?('td.formula', text: "HA").must_equal true
-        page.has_selector?('td.mix_mass', text: "101.1").must_equal true
-        page.has_selector?('td.machine_code', text: machine.code).must_equal true
-        page.has_selector?('td.film_code', text: "1234").must_equal true
-        page.has_selector?('td.thinky_code', text: "1").must_equal true
-        page.has_selector?('td.chemist', text: chemist.full_name).must_equal true
-        page.has_selector?('td.operator', text: operator.full_name).must_equal true
-      end
-    end
-
-    it "displays error messages given invalid attributes" do
-      click_link 'Enter film'
-      click_button 'Add film'
-      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
-    end
   end
 
   describe "edit form" do

@@ -3,5 +3,7 @@ class Machine < ActiveRecord::Base
   validates :code, presence: true
   validates :yield_constant, presence: true
 
+  belongs_to :tenant
+
   default_scope { where(tenant_id: Tenant.current_id) }
 end
