@@ -23,10 +23,9 @@ class Film < ActiveRecord::Base
                              phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] },
                              area_change: Proc.new { |film| film.area_change } }
 
-
   include PgSearch
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
-    :using => :tsearch,
+    :using => { tsearch: { prefix: true } },
     associated_against: {
       master_film: [:serial, :formula],
       sales_order: [:code]
