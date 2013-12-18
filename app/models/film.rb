@@ -5,6 +5,7 @@ class Film < ActiveRecord::Base
 
   belongs_to :master_film
   belongs_to :sales_order
+  belongs_to :tenant
   has_many :film_movements
 
   accepts_nested_attributes_for :master_film
@@ -160,9 +161,9 @@ class Film < ActiveRecord::Base
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << %w(Serial Formula Width Length Area Shelf SO Phase Note)
+      csv << %w(Serial Formula Width Length Area Shelf SO Phase)
       all.each do |f|
-        csv << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase, f.note]
+        csv << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
       end
     end
   end

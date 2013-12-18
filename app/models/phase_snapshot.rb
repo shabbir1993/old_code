@@ -12,8 +12,8 @@ class PhaseSnapshot < ActiveRecord::Base
   end
 
   def self.take_snapshot(tenant, phase)
-    count = Film.send(phase).where(tenant_id: tenant.id).count
-    total_area = Film.send(phase).where(tenant_id: tenant.id).to_a.sum { |f| f.area.to_f }
+    count = Film.unscoped.send(phase).where(tenant_id: tenant.id).count
+    total_area = Film.unscoped.send(phase).where(tenant_id: tenant.id).to_a.sum { |f| f.area.to_f }
     self.create!(phase: phase, count: count, total_area: total_area, tenant_id: tenant.id)
   end
 end

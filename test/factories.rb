@@ -2,10 +2,12 @@ FactoryGirl.define do
   factory :master_film do
     today = Time.zone.today
     sequence(:serial) { |n| "E0101-#{'%02d' % n}"}
+    tenant
 
     factory :master_film_with_child do
       after(:create) do |master_film|
-        FactoryGirl.create(:film, master_film: master_film)
+        FactoryGirl.create(:film, master_film: master_film, 
+                                  tenant: master_film.tenant)
       end
     end
   end
@@ -13,6 +15,7 @@ FactoryGirl.define do
   factory :film do
     phase "lamination"
     master_film
+    tenant
   end
 
   factory :sales_order do

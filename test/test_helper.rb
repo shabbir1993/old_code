@@ -38,4 +38,15 @@ class HelperTest < MiniTest::Spec
   register_spec_type(/Helper$/, self)
 end
 
+# turns on papertrail
+def with_versioning
+  was_enabled = PaperTrail.enabled?
+  PaperTrail.enabled = true
+  begin
+    yield
+  ensure
+    PaperTrail.enabled = was_enabled
+  end
+end
+
 require 'mocha/setup'

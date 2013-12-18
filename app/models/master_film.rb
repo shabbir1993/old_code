@@ -6,6 +6,7 @@ class MasterFilm < ActiveRecord::Base
   has_many :films
   has_many :defects
   belongs_to :machine
+  belongs_to :tenant
 
   before_validation :upcase_attributes
   after_save :update_defects_sum

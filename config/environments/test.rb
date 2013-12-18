@@ -33,4 +33,9 @@ Pcms::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Turn off paper_trail
+  config.after_initialize do
+    PaperTrail.enabled = false
+  end
 end
