@@ -126,7 +126,7 @@ class Film < ActiveRecord::Base
   end
 
   def self.search_dimensions(min_width, max_width, min_length, max_length)
-    if min_width || max_width || min_length || max_length
+    if min_width.present? || max_width.present? || min_length.present? || max_length.present?
       films = all
       films = films.where("width >= ?", min_width) if min_width.present?
       films = films.where("width <= ?", max_width) if max_width.present?
@@ -141,7 +141,7 @@ class Film < ActiveRecord::Base
   def self.text_search(query)
     if query.present?
       #reorder is workaround for pg_search issue 88
-      reorder('').search(query)
+      reorder('').search(query).order('id DESC')
     else
       all
     end

@@ -25,15 +25,15 @@ describe "Master film entry integration" do
       select 'White Spot', from: 'Type'
       fill_in 'Count', with: 2
       click_button 'Add film'
-      within("tr") do
-        assert page.has_selector?('td.serial', text: "F1223-12")
-        assert page.has_selector?('td.defects_sum', text: '2')
+      within("tr.success") do
+        page.has_selector?('td.serial', text: "F1223-12").must_equal true
+        page.has_selector?('td.defects_sum', text: '2').must_equal true
       end
     end
 
     it "displays error messages given invalid attributes" do
       click_button 'Add film'
-      assert page.has_selector?('.error-messages', text: "can't be blank")
+      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
     end
   end
 end

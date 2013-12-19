@@ -26,15 +26,15 @@ describe "Master film edit integration" do
       fill_in 'Count', with: 1
       click_button 'Update'
       within("#master-film-#{@master_film.id}", text: @master_film.serial) do
-        assert page.has_selector?('td.note', text: "New note")
-        assert page.has_selector?('td.defects_sum', text: '1')
+        page.has_selector?('td.note', text: "New note").must_equal true
+        page.has_selector?('td.defects_sum', text: '1').must_equal true
       end
     end
 
     it "displays error messages given invalid defect attributes" do
       click_link "Add defect"
       click_button 'Update'
-      assert page.has_selector?('.error-messages', text: "can't be blank")
+      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
     end
   end
 end
