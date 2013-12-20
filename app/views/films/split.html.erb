@@ -38,7 +38,15 @@
               </div>
             </div>
             <%= sf.text_field :shelf, class: "form-control" %>
-            <%= render("sales_order_fields", f: sf) %>
+            <div class="form-group">
+              <%= sf.label :sales_order_id, "SO", class: "control-label col-md-2" %>
+              <div class="col-md-5">
+                <%= sf.collection_select :sales_order_id, @film.sales_order ? SalesOrder.unshipped.to_set << @film.sales_order : SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control", default: true %>
+              </div>
+              <div class="col-md-3">
+                <%= sf.number_field :order_fill_count, value: 1, placeholder: "Count", class: "form-control", default: true %>
+              </div>
+            </div>
             <%= sf.text_area :note, class: "form-control" %>
             <%= sf.hidden_field :phase, value: @film.phase %>
             <%= sf.select :destination, @film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>

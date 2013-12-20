@@ -12,32 +12,6 @@ describe "Production integration" do
       click_link "Production"
     end
 
-    it "has the right title" do
-      page.has_title?("Production").must_equal true
-    end
-
-    describe "lamination tab with many films" do
-      before do 
-        30.times { FactoryGirl.create(:film) }
-        click_link 'Lamination'
-      end
-
-      describe "pagination" do
-        it "displays correct films on first page" do
-          Film.lamination.page(1).each do |film|
-            page.has_selector?('td.serial', text: film.serial).must_equal true
-          end
-        end
-
-        it "displays correct films on second page" do
-          within('.pagination') { click_link '2' }
-          Film.lamination.page(2).each do |film|
-            page.has_selector?('td.serial', text: film.serial).must_equal true
-          end
-        end
-      end
-    end
-
     describe "inspection tab with one film" do
       before do
         @inspection_film = FactoryGirl.create(:film, phase: "inspection")

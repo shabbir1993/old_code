@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe "Master film edit integration" do
-
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     @tenant = FactoryGirl.create(:tenant)
@@ -35,6 +34,24 @@ describe "Master film edit integration" do
       click_link "Add defect"
       click_button 'Update'
       page.has_selector?('.error-messages', text: "can't be blank").must_equal true
+    end
+
+    it "does not have a serial field" do
+      page.has_selector?('input#master_film_serial').must_equal false
+    end
+  end
+
+  describe "edit form with admin authentication" do
+    let(:admin) { FactoryGirl.create(:admin, tenant: @tenant) }
+
+    before do
+      log_in(admin)
+      click_link "Engineering"
+      click_link "masterfilm-#{@master_film.id}-edit"
+    end
+
+    it "has a serial field" do
+      page.has_selector?('input#master_film_serial').must_equal true
     end
   end
 end

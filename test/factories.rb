@@ -14,8 +14,10 @@ FactoryGirl.define do
 
   factory :film do
     phase "lamination"
-    master_film
     tenant
+    after(:build) do |film|
+      film.master_film = FactoryGirl.create(:master_film, tenant: film.tenant) unless film.master_film.present?
+    end
   end
 
   factory :sales_order do
@@ -66,6 +68,6 @@ FactoryGirl.define do
   end
 
   factory :tenant do
-    name "FOO"
+    sequence(:name) { |n| "Tenant #{n}"}
   end
 end 

@@ -43,8 +43,11 @@ class FilmsController < ApplicationController
 
   def create_split
     @film = Film.find(params[:id])
-    if @film.update_attributes(params[:film])
-      @split = @film.master_film.films.create(params[:film][:split])
+    @film.assign_attributes(params[:film])
+    @split = @film.master_film.films.build(params[:film][:split])
+    if @film.valid? && @split.valid?
+      @film.save
+      @split.save
     end
   end
 
