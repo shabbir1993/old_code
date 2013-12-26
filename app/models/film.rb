@@ -79,10 +79,12 @@ class Film < ActiveRecord::Base
   end
 
   def order_with_count
-    if order_fill_count == 1
-      sales_order_code
-    else
-      sales_order_code + " x " + order_fill_count.to_s
+    if sales_order_code
+      if order_fill_count == 1
+        sales_order_code
+      else
+        sales_order_code + " x " + order_fill_count.to_s
+      end
     end
   end
 
