@@ -25,8 +25,8 @@ describe "Film split integration" do
         select "wip", from: "film_split_destination"
       end
       click_button 'Split'
-      page.has_selector?("#film-#{@film.id} .note", text: "Split happens").must_equal true
-      page.has_selector?("tr", text: "#{@film.serial.next} wip").must_equal true
+      assert page.has_selector?("#film-#{@film.id} .note", text: "Split happens")
+      assert page.has_selector?("tr", text: "#{@film.serial.next} wip")
     end
 
     it "shows error messages given invalid inputs" do
@@ -37,8 +37,8 @@ describe "Film split integration" do
         fill_in 'film_split_order_fill_count', with: ""
       end
       click_button 'Split'
-      page.has_selector?('.original-fields .error-messages').must_equal true
-      page.has_selector?('.split-fields .error-messages').must_equal true
+      assert page.has_selector?('.original-fields .error-messages')
+      assert page.has_selector?('.split-fields .error-messages')
     end
   end
 end

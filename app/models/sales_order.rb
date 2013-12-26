@@ -3,6 +3,7 @@ class SalesOrder < ActiveRecord::Base
 
   has_many :line_items, dependent: :destroy
   has_many :films
+  belongs_to :tenant
   
   accepts_nested_attributes_for :line_items, allow_destroy: true
   

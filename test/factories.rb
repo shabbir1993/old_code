@@ -22,6 +22,13 @@ FactoryGirl.define do
 
   factory :sales_order do
     sequence(:code) { |n| "PT#{ '%03d' % n }P" }
+    tenant
+
+    factory :sales_order_with_line_item do
+      after(:create) do |sales_order|
+        FactoryGirl.create(:line_item, sales_order: sales_order)
+      end
+    end
   end
 
   factory :line_item do

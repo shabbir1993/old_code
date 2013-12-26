@@ -5,9 +5,6 @@ describe "Master film entry integration" do
   before do 
     Capybara.current_driver = Capybara.javascript_driver
     @tenant = FactoryGirl.create(:tenant)
-    @machine = FactoryGirl.create(:machine, tenant: @tenant)
-    @chemist = FactoryGirl.create(:chemist, tenant: @tenant)
-    @operator = FactoryGirl.create(:operator, tenant: @tenant)
   end
 
   describe "Film entry form with supervisor authentication" do
