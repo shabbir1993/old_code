@@ -50,7 +50,7 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def new_effective_area
-    films.map { |f| f.area.to_f }.sum
+    films.usable.map { |f| f.area.to_f }.sum
   end
 
   def laminated_at

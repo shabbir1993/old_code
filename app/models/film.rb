@@ -52,6 +52,7 @@ class Film < ActiveRecord::Base
   scope :deleted, -> { where(deleted: true).by_serial }
   scope :active, -> { where(deleted: false) }
   scope :by_area, -> { order('width*length ASC') }
+  scope :usable, -> { where("phase <> 'scrap' AND phase <> 'nc'") }
 
   def destination=(destination)
     if destination.present?
