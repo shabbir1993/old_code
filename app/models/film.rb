@@ -1,6 +1,6 @@
 class Film < ActiveRecord::Base
 
-  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_attributes
+  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :order_fill_count
   attr_reader :destination
 
   belongs_to :master_film

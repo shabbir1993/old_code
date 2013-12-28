@@ -33,8 +33,6 @@ Pcms::Application.routes.draw do
     post 'import_users', to: 'imports#import_users'
     post 'import_machines', to: 'imports#import_machines'
     post 'import_defects', to: 'imports#import_defects'
-    post 'import_film_movements', to: 'imports#import_film_movements'
-    post 'import_phase_snapshots', to: 'imports#import_phase_snapshots'
 
     resources :users, except: :show
   end

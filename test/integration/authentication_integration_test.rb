@@ -12,10 +12,6 @@ describe "Authentication integration" do
         visit login_path
       end
 
-      it "has the right title" do
-        page.has_title?("Login").must_equal true
-      end
-
       it "logs user in with valid information" do
         fill_in "Username", with: user.username
         fill_in "Password", with: user.password
@@ -35,30 +31,6 @@ describe "Authentication integration" do
     describe "with user authentication" do
       let(:user) { FactoryGirl.create(:user) }
       before { log_in(user) }
-
-      it "allows access to production page" do
-        visit root_path
-        click_link "Production"
-        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
-      end
-
-      it "allows access to history page" do
-        visit root_path
-        click_link "History"
-        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
-      end
-
-      it "allows access to charts page" do
-        visit root_path
-        click_link "Charts"
-        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
-      end
-
-      it "allows access to orders page" do
-        visit root_path
-        click_link "Orders"
-        page.has_selector?(".navbar .navbar-brand", text: "PCMS").must_equal true
-      end
 
       it "does not link to admin page" do
         visit root_path
@@ -101,5 +73,4 @@ describe "Authentication integration" do
       end
     end
   end
-
 end

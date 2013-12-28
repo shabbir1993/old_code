@@ -41,8 +41,16 @@ class MasterFilm < ActiveRecord::Base
     self[:effective_length] = effective_length
   end
 
-  def yield
+  def old_yield
     (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
+  end
+
+  def new_yield
+    (100*Tenant.find(Tenant.current_id).yield_multiplier*(new_effective_area/mix_mass)/machine.yield_constant).round(2) if new_effective_area && mix_mass && machine
+  end
+
+  def new_effective_area
+    films.map { |f| f.area.to_f }.sum
   end
 
   def laminated_at
