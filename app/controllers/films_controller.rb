@@ -6,7 +6,7 @@ class FilmsController < ApplicationController
       films = Film.send(params[:scope]).text_search(params[:query]).search_dimensions(params[:"min-width"], params[:"max-width"], params[:"min-length"], params[:"max-length"])
       @films = films.page(params[:page])
       @count = films.count
-      @total_area = films.sum { |f| f.area || 0 }
+      @total_area = films.total_area
       respond_to do |format|
         format.html
         format.csv { send_data films.to_csv(encoding: 'UTF-8') }

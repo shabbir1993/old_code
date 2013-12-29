@@ -23,7 +23,7 @@ class MasterFilm < ActiveRecord::Base
   scope :by_serial, -> { order('serial DESC') }
 
   def yield
-    (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
+    (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
   end
 
   def effective_area

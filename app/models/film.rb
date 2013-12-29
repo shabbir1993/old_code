@@ -63,7 +63,7 @@ class Film < ActiveRecord::Base
   end
 
   def area
-    (width * length / Tenant.find(Tenant.current_id).area_divisor).round(2) if width && length
+    (width * length / tenant.area_divisor) if width && length
   end
 
   def upcase_shelf
@@ -91,6 +91,10 @@ class Film < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def self.total_area
+    select("width, length, films.tenant_id").map{ |f| f.area.to_f }.sum
   end
 
   def set_division
@@ -123,10 +127,10 @@ class Film < ActiveRecord::Base
     area_was = nil
     area_is = nil
     if width_was && length_was
-      area_was = width_was*length_was/Tenant.find(Tenant.current_id).area_divisor
+      area_was = width_was*length_was/tenant.area_divisor
     end
     if width && length
-      area_is = width*length/Tenant.find(Tenant.current_id).area_divisor
+      area_is = width*length/tenant.area_divisor
     end
     [area_was, area_is]
   end

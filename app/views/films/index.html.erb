@@ -4,7 +4,7 @@
   <%= submit_tag "Move selected", id: "film-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
   <%= link_to "Export", films_path(scope: params[:scope], query: params[:query], :'min-width' => params[:"min-width"], :'min-length' => params[:"min-length"], :'max-width' => params[:"max-width"], :'max-length' => params[:"max-length"], format: "csv"), id: "master-films-export", class: "btn btn-default" %>
   <span>Count: <strong><%= @count %></strong></span>
-  <span>Area: <strong><%= @total_area %></strong></span>
+  <span>Area: <strong><%= number_with_precision(@total_area, precision: 2) %></strong></span>
 
   <%= paginate @films %>
 

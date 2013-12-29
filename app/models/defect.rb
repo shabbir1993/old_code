@@ -2,8 +2,6 @@ class Defect < ActiveRecord::Base
   attr_accessible :defect_type, :count
   belongs_to :master_film
 
-  delegate :serial, to: :master_film, prefix: true, allow_nil: true
-
   validates :defect_type, presence: true
   validates :count, numericality: { greater_than: 0 }
 
