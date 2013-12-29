@@ -1,10 +1,11 @@
+<% if @film.invalid? || @split.invalid? %>
+  $('.error-messages').remove();
   <% if @film.errors.any? %>
-    $('.split-fields .panel-body .error-messages').remove();
     $('.original-fields .panel-body').prepend("<%= j render 'shared/error_messages', object: @film %>");
   <% end %>
   <% if @split.errors.any? %>
-    $('.split-fields .panel-body .error-messages').remove();
     $('.split-fields .panel-body').prepend("<%= j render 'shared/error_messages', object: @split %>");
+  <% end %>
 <% else %>
   $('#forms-modal').modal('hide')
   <% if params[:film][:destination].present? %>

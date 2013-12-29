@@ -5,51 +5,24 @@
   <div class="modal-body row">
     <div class=col-md-6>
       <fieldset class="panel panel-warning original-fields">
-        <div class="panel-heading"><h6 class="panel-title text-center"><%= @film.serial %></h6></div>
+        <div class="panel-heading">
+          <h6 class="panel-title text-center"><%= @film.serial %></h6>
+        </div>
         <div class="panel-body">
-          <div class="form-group">
-            <%= f.label :width, "Dimensions", class: "col-md-2 control-label" %>
-            <div class="col-md-4">
-              <%= f.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-            </div>
-            <div class="col-md-4">
-              <%= f.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-            </div>
-          </div>
-          <%= f.text_field :shelf, class: "form-control" %>
-          <%= render("sales_order_fields", f: f) %>
-          <%= f.text_area :note, class: "form-control" %>
-          <%= f.select :destination, @film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
+          <%= render 'film_fields', f: f, film: @film %>
         </div>
       </fieldset>
     </div>
     <div class=col-md-6>
       <fieldset class="panel panel-warning split-fields">
-        <div class="panel-heading"><h6 class="panel-title text-center">New piece</h6></div>
+        <div class="panel-heading">
+          <h6 class="panel-title text-center">New piece</h6>
+        </div>
         <div class="panel-body">
-          <%= f.fields_for :split do |sf| %>
-            <div class="form-group">
-              <%= sf.label :width, "Dimensions", class: "col-md-2 control-label" %>
-              <div class="col-md-4">
-                <%= sf.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-              </div>
-              <div class="col-md-4">
-                <%= sf.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-              </div>
-            </div>
-            <%= sf.text_field :shelf, class: "form-control" %>
-            <div class="form-group">
-              <%= sf.label :sales_order_id, "SO", class: "control-label col-md-2" %>
-              <div class="col-md-5">
-                <%= sf.collection_select :sales_order_id, @film.sales_order ? SalesOrder.unshipped.to_set << @film.sales_order : SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control", default: true %>
-              </div>
-              <div class="col-md-3">
-                <%= sf.number_field :order_fill_count, value: 1, placeholder: "Count", class: "form-control", default: true %>
-              </div>
-            </div>
-            <%= sf.text_area :note, class: "form-control" %>
-            <%= sf.hidden_field :phase, value: @film.phase %>
-            <%= sf.select :destination, @film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
+          <%= f.fields_for :split, @split do |sf| %>
+            <%= sf.hidden_field :phase %>
+            <%= sf.hidden_field :master_film_id, value: @film.master_film_id %>
+            <%= render 'film_fields', f: sf, film: @split %>
           <% end %>
         </div>
       </fieldset>

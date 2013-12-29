@@ -3,9 +3,7 @@
     <h4 class="modal-title text-center"><%= @film.serial %></h4>
   </div>
   <div class="modal-body">
-    <%= edit_fields_for(@film.phase, f) %>
-    <%= f.text_area :note, class: "form-control" %>
-    <%= render 'movement_fields', f: f, films: [@film] %>
+    <%= render 'film_fields', f: f, film: @film %>
   </div>
   <div class="modal-footer">
     <% if current_user.is_admin? %>

@@ -1,13 +1,3 @@
 <% if current_user.is_supervisor? %>
-  <fieldset class="panel panel-warning movement">
-    <div class="panel-heading"><h6 class="panel-title text-center">Movement</h6></div>
-    <div class="panel-body">
-      <%= f.select :destination, films.map(&:valid_destinations).reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
-      <fieldset class="shelf-fields destination-fields">
-        <% if films.all? { |f| %w(inspection wip fg).include? f.phase } %>
-          <%= render("shelf_fields", f: f) %>
-        <% end %>
-      </fieldset>
-    </div>
-  </fieldset>
+  <%= f.select :destination, films.map(&:valid_destinations).reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
 <% end %>

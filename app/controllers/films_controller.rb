@@ -38,13 +38,16 @@ class FilmsController < ApplicationController
 
   def split
     @film = Film.find(params[:id])
+    @split = Film.new(phase: @film.phase)
     render layout: false
   end
 
   def create_split
     @film = Film.find(params[:id])
     @film.assign_attributes(params[:film])
-    @split = @film.master_film.films.build(params[:film][:split])
+    @split = Film.new(params[:film][:split])
+    # to trigger validation
+    @split.valid?
     if @film.valid? && @split.valid?
       @film.save
       @split.save

@@ -35,22 +35,10 @@ jQuery(function() {
     event.preventDefault();
   });
 
-  $('#forms-modal').on('change', '#film_destination', function(event) {
-    var shelf_destinations = ["stock", "test", "nc", "scrap"]
-    var line_item_destinations = ["stock", "wip"]
-    $('.destination-fields').hide();
-    if ($.inArray($(this).val(), shelf_destinations) !== -1) {
-      $('.shelf-fields').show();
-    } 
-    if ($.inArray($(this).val(), line_item_destinations) !== -1) {
-      $('.line-item-fields').show();
-    }
-  });
-
   // enables edit multiple button
   $("input.film-select").click(function() {
     var unchecked = $('input.film-select:checked').length;
-    if (unchecked >= 2) {
+    if (unchecked >= 1) {
       $('#film-edit-multiple').removeAttr('disabled');
     }
     else {

@@ -1,7 +1,6 @@
 class MasterFilm < ActiveRecord::Base
   attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,
-    :thinky_code, :chemist, :operator, :effective_width,
-    :effective_length, :note, :films_attributes, :defects_attributes
+    :thinky_code, :chemist, :operator, :note, :films_attributes, :defects_attributes
 
   has_many :films
   has_many :defects
@@ -23,33 +22,11 @@ class MasterFilm < ActiveRecord::Base
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
 
-  def effective_area
-    (effective_width*effective_length/Tenant.find(Tenant.current_id).area_divisor).round(2) if effective_width && effective_length
-  end
-  
-  def effective_width=(effective_width)
-    if films.count == 1 && films.first.width.nil?
-      films.first.update_attributes(width: effective_width)
-    end
-    self[:effective_width] = effective_width
-  end
-
-  def effective_length=(effective_length)
-    if films.count == 1 && films.first.length.nil?
-      films.first.update_attributes(length: effective_length)
-    end
-    self[:effective_length] = effective_length
-  end
-
-  def old_yield
+  def yield
     (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant).round(2) if effective_area && mix_mass && machine
   end
 
-  def new_yield
-    (100*Tenant.find(Tenant.current_id).yield_multiplier*(new_effective_area/mix_mass)/machine.yield_constant).round(2) if new_effective_area && mix_mass && machine
-  end
-
-  def new_effective_area
+  def effective_area
     films.usable.map { |f| f.area.to_f }.sum
   end
 
@@ -63,12 +40,11 @@ class MasterFilm < ActiveRecord::Base
   def self.to_csv(options = {})
     defect_types = defects.pluck(:defect_type).uniq
     CSV.generate(options) do |csv|
-      header = %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area OldYield NewYield Defects) + defect_types
+      header = %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator Area Yield Defects) + defect_types
       csv << header
       all.includes(:defects).each do |mf|
         row = [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, 
-                mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, 
-                mf.effective_length, mf.effective_area, mf.old_yield, mf.new_yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
+                mf.thinky_code, mf.chemist, mf.operator, mf.effective_area, mf.yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
         csv << row
       end
     end

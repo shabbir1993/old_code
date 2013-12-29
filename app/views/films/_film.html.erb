@@ -16,6 +16,14 @@
       <span class="glyphicon glyphicon-warning-sign"></span>
     <% end %>
   </td>
-  <%= column_values(film) %>
+  <td class="width"><%= film.width %></td>
+  <td class="length"><%= film.length %></td>
+  <td class="area"><%= film.area %></td>
+  <td class="shelf"><%= film.shelf %></td>
+  <td class="order"><%= film.sales_order_code %>
+    <% if film.order_fill_count > 1 && film.sales_order.present? %>
+      <span class="badge"><%= film.order_fill_count %></span>
+    <% end %>
+  </td>
   <td class="note"><%= film.note %></td>
 </tr>

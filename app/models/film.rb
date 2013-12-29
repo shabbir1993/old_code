@@ -1,14 +1,11 @@
 class Film < ActiveRecord::Base
 
-  attr_accessible :width, :length, :note, :shelf, :effective_width, :effective_length, :phase, :destination, :deleted, :sales_order_id, :order_fill_count
+  attr_accessible :width, :length, :note, :shelf, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_id
   attr_reader :destination
 
   belongs_to :master_film
   belongs_to :sales_order
   belongs_to :tenant
-  has_many :film_movements
-
-  accepts_nested_attributes_for :master_film
 
   delegate :formula, :effective_width, :effective_length, :effective_area, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
@@ -52,7 +49,7 @@ class Film < ActiveRecord::Base
   scope :deleted, -> { where(deleted: true).by_serial }
   scope :active, -> { where(deleted: false) }
   scope :by_area, -> { order('width*length ASC') }
-  scope :usable, -> { where("phase <> 'scrap' AND phase <> 'nc'") }
+  scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
 
   def destination=(destination)
     if destination.present?
@@ -61,32 +58,12 @@ class Film < ActiveRecord::Base
     end
   end
   
-  def effective_width=(effective_width)
-    self.width = effective_width
-    master_film.effective_width = effective_width
-  end
-
-  def effective_length=(effective_length)
-    self.length = effective_length
-    master_film.effective_length = effective_length
-  end
-
   def serial
     master_film.serial + "-" + division.to_s
   end
 
   def area
     (width * length / Tenant.find(Tenant.current_id).area_divisor).round(2) if width && length
-  end
-
-  def order_with_count
-    if sales_order_code
-      if order_fill_count == 1
-        sales_order_code
-      else
-        sales_order_code + " x " + order_fill_count.to_s
-      end
-    end
   end
 
   def upcase_shelf
@@ -116,16 +93,8 @@ class Film < ActiveRecord::Base
     end
   end
 
-  def sibling_films
-    Film.where(master_film_id: master_film_id)
-  end
-
-  def sibling_count
-    sibling_films.count
-  end
-
   def set_division
-    self.division ||= sibling_films.count + 1
+    self.division ||= (master_film.films.pluck(:division).max.to_i) + 1
   end
 
   def self.search_dimensions(min_width, max_width, min_length, max_length)
