@@ -18,6 +18,11 @@ FactoryGirl.define do
     after(:build) do |film|
       film.master_film = FactoryGirl.create(:master_film, tenant: film.tenant) unless film.master_film.present?
     end
+
+    factory :film_with_dimensions do
+      width 60
+      length 100
+    end
   end
 
   factory :sales_order do

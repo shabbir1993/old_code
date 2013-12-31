@@ -1,4 +1,5 @@
 class Film < ActiveRecord::Base
+  include Exportable
 
   attr_accessible :width, :length, :note, :shelf, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_id
   attr_reader :destination
@@ -7,13 +8,14 @@ class Film < ActiveRecord::Base
   belongs_to :sales_order
   belongs_to :tenant
 
-  delegate :formula, :effective_width, :effective_length, :effective_area, to: :master_film
+  delegate :formula, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
 
   before_create :set_division
   before_save :upcase_shelf
 
   validates :phase, presence: true
+  validates :width, :length, presence: true, unless: lambda { |film| film.in_front_end? }
   validates :order_fill_count, numericality: { greater_than: 0 }
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
@@ -50,13 +52,6 @@ class Film < ActiveRecord::Base
   scope :active, -> { where(deleted: false) }
   scope :by_area, -> { order('width*length ASC') }
   scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
-
-  def destination=(destination)
-    if destination.present?
-      self.phase = destination
-      self.sales_order_id = nil unless %w(stock wip fg).include?(destination)
-    end
-  end
   
   def serial
     master_film.serial + "-" + division.to_s
@@ -64,6 +59,27 @@ class Film < ActiveRecord::Base
 
   def area
     (width * length / tenant.area_divisor) if width && length
+  end
+
+  def destination=(destination)
+    if destination.present?
+      write_attribute(:phase, destination)
+      write_attribute(:sales_order_id, nil) unless %w(stock wip fg).include?(destination)
+    end
+  end
+
+  def width=(width)
+    master_film.update_attributes(effective_width: width) if in_front_end?
+    write_attribute(:width, width)
+  end
+
+  def length=(length)
+    master_film.update_attributes(effective_length: length) if in_front_end?
+    write_attribute(:length, length)
+  end
+
+  def in_front_end?
+    %(lamination inspection).include?(phase)
   end
 
   def upcase_shelf
@@ -135,12 +151,11 @@ class Film < ActiveRecord::Base
     [area_was, area_is]
   end
 
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << %w(Serial Formula Width Length Area Shelf SO Phase)
-      all.each do |f|
-        csv << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
-      end
+  def self.data_for_export
+    data = [] << %w(Serial Formula Width Length Area Shelf SO Phase)
+    all.map do |f|
+      data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
     end
+    data
   end
 end

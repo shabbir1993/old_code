@@ -1,6 +1,7 @@
 class MasterFilm < ActiveRecord::Base
-  attr_accessible :serial, :formula, :mix_mass, :film_code, :machine_id,
-    :thinky_code, :chemist, :operator, :note, :films_attributes, :defects_attributes
+  include Exportable
+
+  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :note, :defects_attributes
 
   has_many :films
   has_many :defects
@@ -11,7 +12,6 @@ class MasterFilm < ActiveRecord::Base
   after_save :update_defects_sum
 
   accepts_nested_attributes_for :defects, allow_destroy: true
-  accepts_nested_attributes_for :films
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
@@ -23,7 +23,7 @@ class MasterFilm < ActiveRecord::Base
   scope :by_serial, -> { order('serial DESC') }
 
   def yield
-    (100*Tenant.find(Tenant.current_id).yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
+    (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
   end
 
   def effective_area
@@ -35,19 +35,6 @@ class MasterFilm < ActiveRecord::Base
     month = serial[1,2].to_i
     day = serial[3,2].to_i
     DateTime.new(year, month, day)
-  end
-
-  def self.to_csv(options = {})
-    defect_types = defects.pluck(:defect_type).uniq
-    CSV.generate(options) do |csv|
-      header = %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator Area Yield Defects) + defect_types
-      csv << header
-      all.includes(:defects).each do |mf|
-        row = [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, 
-                mf.thinky_code, mf.chemist, mf.operator, mf.effective_area, mf.yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
-        csv << row
-      end
-    end
   end
 
   def defect_count(type)
@@ -82,8 +69,18 @@ class MasterFilm < ActiveRecord::Base
     Defect.where("master_film_id IN (?)", master_film_ids)
   end
 
-private
-  
+  def self.defect_types
+    defects.pluck(:defect_type).uniq
+  end
+
+  def self.data_for_export
+    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area Yield Defects) + defect_types
+    all.map do |mf|
+      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.effective_area, mf.yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
+    end
+    data
+  end
+
   def update_defects_sum
     update_column(:defects_sum, defects.sum(:count))
   end

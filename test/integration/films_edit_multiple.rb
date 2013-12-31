@@ -4,8 +4,8 @@ describe "Films edit multiple integration" do
   before do
     Capybara.current_driver = Capybara.javascript_driver
     @tenant = FactoryGirl.create(:tenant)
-    @film1 = FactoryGirl.create(:film, phase: "stock", tenant: @tenant)
-    @film2 = FactoryGirl.create(:film, phase: "stock", tenant: @tenant)
+    @film1 = FactoryGirl.create(:film_with_dimensions, phase: "stock", tenant: @tenant)
+    @film2 = FactoryGirl.create(:film_with_dimensions, phase: "stock", tenant: @tenant)
   end
 
   describe "edit multiple form with supervisor auth" do
