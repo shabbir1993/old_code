@@ -38,4 +38,16 @@ class SalesOrder < ActiveRecord::Base
   def total_assigned_film_percent(phase)
     total_assigned_film_count(phase)*100/total_quantity
   end
+
+  def total_custom_area
+    line_items.map{ |li| li.custom_area.to_i }.sum
+  end
+
+  def total_assigned_area
+    films.map{ |f| f.area.to_i }.sum
+  end
+
+  def utilization
+    100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
+  end
 end

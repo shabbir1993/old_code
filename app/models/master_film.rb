@@ -7,7 +7,6 @@ class MasterFilm < ActiveRecord::Base
   attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :note, :defects
 
   has_many :films
-  has_many :table_defects, :foreign_key => 'master_film_id', :class_name => "Defect"
   belongs_to :machine
   belongs_to :tenant
 
@@ -77,14 +76,5 @@ class MasterFilm < ActiveRecord::Base
       data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length] + all_types.map{ |type| mf.defect_count(type) }
     end
     data
-  end
-
-  def defects_to_hash
-    table_defects.inject({}) { |hsh, defect| hsh[defect.defect_type] = defect.count; hsh }
-  end
-
-  def copy_defects_to_hstore
-    assign_attributes(defects: self.defects_to_hash)
-    save!(validate: false)
   end
 end
