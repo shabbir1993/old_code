@@ -71,9 +71,10 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def self.data_for_export
-    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Yield) + defect_types
+    all_types = defect_types
+    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL) + all_types
     all.each do |mf|
-      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.yield] + defect_types.map{ |type| mf.defect_count(type) }
+      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length] + all_types.map{ |type| mf.defect_count(type) }
     end
     data
   end

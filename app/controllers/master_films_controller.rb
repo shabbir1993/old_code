@@ -16,7 +16,7 @@ class MasterFilmsController < ApplicationController
     @master_films = master_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { send_data master_films.limit(200).to_csv }
+      format.csv { send_data master_films.to_csv }
     end
   end
 
