@@ -8,4 +8,8 @@ class LineItem < ActiveRecord::Base
   validates :custom_width, presence: true
   validates :custom_length, presence: true
   validates :quantity, numericality: { greater_than: 0 }
+
+  def custom_area
+    (custom_width*custom_length / Tenant.current_area_divisor) if custom_width && custom_length
+  end
 end

@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131205035610) do
+ActiveRecord::Schema.define(version: 20140101215624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "defects", force: true do |t|
     t.string   "defect_type",    null: false
@@ -65,7 +66,7 @@ ActiveRecord::Schema.define(version: 20131205035610) do
   add_index "machines", ["tenant_id"], name: "index_machines_on_tenant_id", using: :btree
 
   create_table "master_films", force: true do |t|
-    t.string   "serial",                       null: false
+    t.string   "serial",                        null: false
     t.string   "formula"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -77,11 +78,13 @@ ActiveRecord::Schema.define(version: 20131205035610) do
     t.decimal  "effective_length"
     t.string   "operator"
     t.string   "chemist"
-    t.integer  "defects_sum",      default: 0, null: false
+    t.integer  "defects_sum",      default: 0,  null: false
     t.text     "note"
-    t.integer  "tenant_id",                    null: false
+    t.integer  "tenant_id",                     null: false
+    t.hstore   "defects",          default: {}, null: false
   end
 
+  add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
   add_index "master_films", ["tenant_id"], name: "index_master_films_on_tenant_id", using: :btree
 
   create_table "phase_snapshots", force: true do |t|

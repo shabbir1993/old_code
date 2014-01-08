@@ -15,18 +15,33 @@
     <fieldset class="panel panel-warning">
       <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
       <div class="panel-body">
-        <%= f.fields_for :defects do |df| %>
-          <%= render 'defect_fields', f: df %>
+        <%= f.fields_for :defects do |d| %>
+          <% @master_film.defects.try(:each) do |key, value| %>
+            <fieldset class="form-group defect-fields">
+              <%= f.label :defect_type, "Type", class: "control-label col-md-2" %>
+              <div class="col-md-5">
+                <%= select_tag key, options_for_select(MasterFilm::DEFECT_TYPES, key), required: true, prompt: "Select defect...", class: "dynamic-attr-key form-control" %>
+              </div>
+              <div class="col-md-3">
+                <%= d.number_field key, value: value, required: true, placeholder: "Count", class: "dynamic-attr-value form-control", default: true %>
+              </div>
+              <%= link_to '#', class: "remove-hstore-fields" do %>
+                <span class="glyphicon glyphicon-minus"></span>remove
+              <% end %>
+            </fieldset>
+          <% end %>
         <% end %>
         <div class="add-fields-link-wrapper form-group">
           <div class="col-md-offset-2 col-md-8">
-            <%= link_to_add_fields "Add defect", f, :defects %>
+            <%= link_to('#', class: "add-hstore-fields", data: { fields: render("new_defect_fields").gsub("\n", "") }) do %>
+              <%= content_tag(:span, nil, class: "glyphicon glyphicon-plus") + "Add defect" %>
+            <% end %>
           </div>
         </div>
       </div>
     </fieldset>
   </div>
-  <div class= "modal-footer">
+  <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <%= f.submit "Update", class: "btn btn-success" %>
   </div>

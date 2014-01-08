@@ -1,0 +1,12 @@
+<fieldset class="form-group defect-fields">
+  <%= label_tag "Type", nil, class: "control-label col-md-2" %>
+  <div class="col-md-5">
+    <%= select_tag 'key', options_for_select(MasterFilm::DEFECT_TYPES), prompt: "Select defect...", class: "dynamic-attr-key form-control", name: '', id: 'master_film_defects_key' %>
+  </div>
+  <div class="col-md-3">
+    <%= number_field_tag 'value', nil, placeholder: "Count", class: "dynamic-attr-value form-control", name: '', id: '' %>
+  </div>
+  <%= link_to '#', class: "remove-hstore-fields" do %>
+    <span class="glyphicon glyphicon-minus"></span>remove
+  <% end %>
+</fieldset>

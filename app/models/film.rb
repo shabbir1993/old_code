@@ -1,5 +1,6 @@
 class Film < ActiveRecord::Base
   include Exportable
+  include Importable
 
   attr_accessible :width, :length, :note, :shelf, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_id
   attr_reader :destination
@@ -15,7 +16,7 @@ class Film < ActiveRecord::Base
   before_save :upcase_shelf
 
   validates :phase, presence: true
-  validates :width, :length, presence: true, unless: lambda { |film| film.in_front_end? }
+  validates :width, :length, presence: true, unless: lambda { |film| Phase.new(film.phase).front_end? }
   validates :order_fill_count, numericality: { greater_than: 0 }
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
@@ -34,10 +35,16 @@ class Film < ActiveRecord::Base
   default_scope { where(tenant_id: Tenant.current_id) }
   scope :phase, ->(phase) { active.where(phase: phase) }
   scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
-  scope :small, -> { where("width*length/#{Tenant.find(Tenant.current_id).area_divisor} < ?", Tenant.find(Tenant.current_id).small_area_cutoff) }
-  scope :large, -> { where("width*length/#{Tenant.find(Tenant.current_id).area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.find(Tenant.current_id).small_area_cutoff) }
+  scope :small, -> { where("width*length/#{Tenant.current_area_divisor} < ?", Tenant.current_small_area_cutoff) }
+  scope :large, -> { where("width*length/#{Tenant.current_area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.current_small_area_cutoff) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
+  scope :deleted, -> { where(deleted: true).by_serial }
+  scope :active, -> { where(deleted: false) }
+  scope :by_area, -> { order('width*length ASC') }
+  scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
+
+  #tabs
   scope :lamination, -> { phase("lamination").by_serial }
   scope :inspection, -> { phase("inspection").by_serial }
   scope :large_stock, -> { phase("stock").large.not_reserved.by_serial }
@@ -48,17 +55,13 @@ class Film < ActiveRecord::Base
   scope :test, -> { phase("test").by_serial }
   scope :nc, -> { phase("nc").by_serial }
   scope :scrap, -> { phase("scrap").by_serial }
-  scope :deleted, -> { where(deleted: true).by_serial }
-  scope :active, -> { where(deleted: false) }
-  scope :by_area, -> { order('width*length ASC') }
-  scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
   
   def serial
     master_film.serial + "-" + division.to_s
   end
 
   def area
-    (width * length / tenant.area_divisor) if width && length
+    (width * length / Tenant.current_area_divisor) if width && length
   end
 
   def destination=(destination)
@@ -69,44 +72,17 @@ class Film < ActiveRecord::Base
   end
 
   def width=(width)
-    master_film.update_attributes(effective_width: width) if in_front_end?
+    master_film.update_attributes(effective_width: width) if Phase.new(phase).front_end?
     write_attribute(:width, width)
   end
 
   def length=(length)
-    master_film.update_attributes(effective_length: length) if in_front_end?
+    master_film.update_attributes(effective_length: length) if Phase.new(phase).front_end?
     write_attribute(:length, length)
-  end
-
-  def in_front_end?
-    %(lamination inspection).include?(phase)
   end
 
   def upcase_shelf
     shelf.upcase! if shelf.present?
-  end
-
-  def valid_destinations
-    case phase
-    when "lamination"
-      ["inspection"]
-    when "inspection"
-      %w{stock wip test nc}
-    when "stock"
-      %w{wip test nc}
-    when "wip"
-      %w{fg stock test nc}
-    when "fg"
-      %w{wip stock test nc}
-    when "test"
-      %w{stock nc}
-    when "nc"
-      %w{scrap stock test}
-    when "scrap"
-      %w{stock nc test}
-    else
-      []
-    end
   end
 
   def self.total_area
@@ -143,17 +119,17 @@ class Film < ActiveRecord::Base
     area_was = nil
     area_is = nil
     if width_was && length_was
-      area_was = width_was*length_was/tenant.area_divisor
+      area_was = width_was*length_was/Tenant.current_area_divisor
     end
     if width && length
-      area_is = width*length/tenant.area_divisor
+      area_is = width*length/Tenant.current_area_divisor
     end
     [area_was, area_is]
   end
 
   def self.data_for_export
     data = [] << %w(Serial Formula Width Length Area Shelf SO Phase)
-    all.map do |f|
+    all.each do |f|
       data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
     end
     data

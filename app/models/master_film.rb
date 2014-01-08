@@ -1,17 +1,17 @@
 class MasterFilm < ActiveRecord::Base
   include Exportable
+  include Importable
 
-  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :note, :defects_attributes
+  DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
+
+  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :note, :defects
 
   has_many :films
-  has_many :defects
+  has_many :table_defects, :foreign_key => 'master_film_id', :class_name => "Defect"
   belongs_to :machine
   belongs_to :tenant
 
   before_validation :upcase_attributes
-  after_save :update_defects_sum
-
-  accepts_nested_attributes_for :defects, allow_destroy: true
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
@@ -38,12 +38,7 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def defect_count(type)
-    defects_of_type = defects.where(defect_type: type)
-    if defects_of_type.any?
-      defects_of_type.sum(:count)
-    else
-      0
-    end
+    defects[type].to_i
   end
   
   def upcase_attributes
@@ -51,6 +46,10 @@ class MasterFilm < ActiveRecord::Base
     film_code.upcase! if film_code.present?
     thinky_code.upcase! if thinky_code.present?
     serial.upcase! if serial.present?
+  end
+
+  def defects_sum
+    defects.values.map(&:to_i).sum
   end
 
   def self.search(start_serial, end_serial)
@@ -64,24 +63,27 @@ class MasterFilm < ActiveRecord::Base
     master_films
   end
 
-  def self.defects
-    master_film_ids = all.pluck(:id)
-    Defect.where("master_film_id IN (?)", master_film_ids)
-  end
-
   def self.defect_types
-    defects.pluck(:defect_type).uniq
+    types = all.inject([]) do |arry, mf|
+      arry + mf.defects.keys
+    end
+    types.uniq
   end
 
   def self.data_for_export
-    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Area Yield Defects) + defect_types
-    all.map do |mf|
-      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.effective_area, mf.yield, mf.defects_sum] + defect_types.map{ |type| mf.defect_count(type) }
+    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Yield) + defect_types
+    all.each do |mf|
+      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.yield] + defect_types.map{ |type| mf.defect_count(type) }
     end
     data
   end
 
-  def update_defects_sum
-    update_column(:defects_sum, defects.sum(:count))
+  def defects_to_hash
+    table_defects.inject({}) { |hsh, defect| hsh[defect.defect_type] = defect.count; hsh }
+  end
+
+  def copy_defects_to_hstore
+    assign_attributes(defects: self.defects_to_hash)
+    save!(validate: false)
   end
 end

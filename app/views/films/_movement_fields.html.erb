@@ -1,3 +1,0 @@
-<% if current_user.is_supervisor? %>
-  <%= f.select :destination, films.map(&:valid_destinations).reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
-<% end %>

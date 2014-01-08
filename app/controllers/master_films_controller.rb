@@ -16,7 +16,7 @@ class MasterFilmsController < ApplicationController
     @master_films = master_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { send_data master_films.limit(100).to_csv }
+      format.csv { send_data master_films.limit(200).to_csv }
     end
   end
 
@@ -26,6 +26,7 @@ class MasterFilmsController < ApplicationController
   end
 
   def update
+    params[:master_film][:defects] ||= {}
     @master_film = MasterFilm.find(params[:id])
     @master_film.update_attributes(params[:master_film])
   end 

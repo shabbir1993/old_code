@@ -19,7 +19,7 @@ describe "Master film entry integration" do
     it "creates a new master film with defects given valid attributes" do
       fill_in 'Serial', with: "F1223-12"
       click_link "Add defect"
-      select 'White Spot', from: 'Type'
+      select 'White Spot', from: 'master_film_defects_key'
       fill_in 'Count', with: 2
       click_button 'Add film'
       within("tr.success") do

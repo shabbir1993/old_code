@@ -1,4 +1,6 @@
 class Defect < ActiveRecord::Base
+  include Importable
+
   attr_accessible :defect_type, :count
   belongs_to :master_film
 

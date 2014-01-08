@@ -19,5 +19,5 @@
 </div>
 <%= f.text_area :note, class: "form-control" %>
 <% if current_user.is_supervisor? %>
-  <%= f.select :destination, film.valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
+  <%= f.select :destination, Phase.new(film.phase).valid_destinations, { prompt: "Move to..." }, { class: "form-control", label: false } %>
 <% end %>
