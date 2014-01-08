@@ -40,11 +40,11 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_custom_area
-    line_items.map{ |li| li.custom_area.to_i }.sum
+    line_items.map{ |li| li.quantity*li.custom_area.to_f }.sum
   end
 
   def total_assigned_area
-    films.map{ |f| f.area.to_i }.sum
+    films.map{ |f| f.area.to_f }.sum
   end
 
   def utilization
