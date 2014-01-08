@@ -17,7 +17,6 @@ describe "Return sales order integration" do
     end
 
     it "returns shipped sales order" do
-      save_screenshot("ss.png")
       click_link "sales-order-#{@sales_order.id}-return"
       assert page.has_content?("#{@sales_order.code} returned")
     end
