@@ -129,7 +129,7 @@ class Film < ActiveRecord::Base
 
   def self.data_for_export
     data = [] << %w(Serial Formula Width Length Area Shelf SO Phase)
-    all.each do |f|
+    all.limit(5000).each do |f|
       data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
     end
     data
