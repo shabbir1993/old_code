@@ -32,7 +32,6 @@ Pcms::Application.routes.draw do
     post 'import_films', to: 'imports#import_films'
     post 'import_users', to: 'imports#import_users'
     post 'import_machines', to: 'imports#import_machines'
-    post 'import_defects', to: 'imports#import_defects'
 
     resources :users, except: :show
   end

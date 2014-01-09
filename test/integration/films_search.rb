@@ -4,13 +4,13 @@ describe "Films search integration" do
   before do 
     @tenant = FactoryGirl.create(:tenant)
     @film1 = FactoryGirl.create(:film, phase: "stock", shelf: "A", 
-                                width: 50, length: 80, tenant: @tenant)
+                                width: 55, length: 85, tenant: @tenant)
     @film2 = FactoryGirl.create(:film, phase: "stock", shelf: "A", 
                                 width: 55, length: 80, tenant: @tenant)
     @film3 = FactoryGirl.create(:film, phase: "stock", shelf: "A", 
                                 width: 50, length: 85, tenant: @tenant)
     @film4 = FactoryGirl.create(:film, phase: "stock", shelf: "C", 
-                                width: 50, length: 80, tenant: @tenant)
+                                width: 55, length: 85, tenant: @tenant)
   end
 
   describe "searching for text and dimension ranges with supervisor auth" do
@@ -21,10 +21,8 @@ describe "Films search integration" do
       click_link "Production"
       click_link "Available"
       fill_in "query", with: "A"
-      fill_in "min-width", with: 48
-      fill_in "max-width", with: 52
-      fill_in "min-length", with: 78
-      fill_in "max-length", with: 82
+      fill_in "min_width", with: 52
+      fill_in "min_length", with: 83
       click_button "Search"
     end
 

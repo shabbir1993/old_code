@@ -12,13 +12,13 @@
     <tr>
       <th></th>
       <th></th>
-      <th>Serial</th>
-      <th>Width</th>
-      <th>Length</th>
-      <th>Area</th>
-      <th>Shelf</th>
-      <th>SO</th>
-      <th>Note</th>
+      <th><%= sort_link 'serial' %></th>
+      <th><%= sort_link 'width' %></th>
+      <th><%= sort_link 'length' %></th>
+      <th><%= sort_link 'area' %></th>
+      <th><%= sort_link 'shelf' %></th>
+      <th><%= sort_link 'sales_order_code', "SO" %></th>
+      <th><%= sort_link 'note' %></th>
     </tr>
   <% end %>
 

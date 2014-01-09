@@ -34,32 +34,35 @@ class Film < ActiveRecord::Base
 
   default_scope { where(tenant_id: Tenant.current_id) }
   scope :phase, ->(phase) { active.where(phase: phase) }
-  scope :by_serial, -> { joins(:master_film).order('master_films.serial DESC, division ASC') }
   scope :small, -> { where("width*length/#{Tenant.current_area_divisor} < ?", Tenant.current_small_area_cutoff) }
   scope :large, -> { where("width*length/#{Tenant.current_area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.current_small_area_cutoff) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
-  scope :deleted, -> { where(deleted: true).by_serial }
   scope :active, -> { where(deleted: false) }
-  scope :by_area, -> { order('width*length ASC') }
   scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
+  scope :min_width, ->(width = 0) { where("width >= ?", width) }
+  scope :min_length, ->(length = 0) { where("length >= ?", length) }
 
   #tabs
-  scope :lamination, -> { phase("lamination").by_serial }
-  scope :inspection, -> { phase("inspection").by_serial }
-  scope :large_stock, -> { phase("stock").large.not_reserved.by_serial }
-  scope :small_stock, -> { phase("stock").small.not_reserved.by_serial }
-  scope :reserved_stock, -> { phase("stock").reserved.by_serial }
-  scope :wip, -> { phase("wip").by_serial }
-  scope :fg, -> { phase("fg").by_serial }
-  scope :test, -> { phase("test").by_serial }
-  scope :nc, -> { phase("nc").by_serial }
-  scope :scrap, -> { phase("scrap").by_serial }
+  scope :select_fields, -> { joins("LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id")
+    .joins("LEFT OUTER JOIN sales_orders ON sales_orders.id = films.sales_order_id")
+    .select("films.*, master_films.serial || '-' || films.division as serial, width*length/#{Tenant.current_area_divisor} as area, sales_orders.code as sales_order_code") }
+  scope :lamination, -> { select_fields.phase("lamination") }
+  scope :inspection, -> { select_fields.phase("inspection") }
+  scope :large_stock, -> { select_fields.phase("stock").large.not_reserved }
+  scope :small_stock, -> { select_fields.phase("stock").small.not_reserved }
+  scope :reserved_stock, -> { select_fields.phase("stock").reserved }
+  scope :wip, -> { select_fields.phase("wip") }
+  scope :fg, -> { select_fields.phase("fg") }
+  scope :test, -> { select_fields.phase("test") }
+  scope :nc, -> { select_fields.phase("nc") }
+  scope :scrap, -> { select_fields.phase("scrap") }
+  scope :deleted, -> { select_fields.where(deleted: true) }
   
   def serial
     master_film.serial + "-" + division.to_s
   end
-
+  
   def area
     (width * length / Tenant.current_area_divisor) if width && length
   end
@@ -86,30 +89,17 @@ class Film < ActiveRecord::Base
   end
 
   def self.total_area
-    select("width, length, films.tenant_id").map{ |f| f.area.to_f }.sum
+    all.map{ |f| f.area.to_f }.sum
   end
 
   def set_division
     self.division ||= (master_film.films.pluck(:division).max.to_i) + 1
   end
 
-  def self.search_dimensions(min_width, max_width, min_length, max_length)
-    if min_width.present? || max_width.present? || min_length.present? || max_length.present?
-      films = all
-      films = films.where("width >= ?", min_width) if min_width.present?
-      films = films.where("width <= ?", max_width) if max_width.present?
-      films = films.where("length >= ?", min_length) if min_length.present?
-      films = films.where("length <= ?", max_length) if max_length.present?
-      films.by_area
-    else
-      all
-    end
-  end
-
-  def self.text_search(query)
+  def self.search_text(query)
     if query.present?
       #reorder is workaround for pg_search issue 88
-      reorder('').search(query).order('id DESC')
+      reorder('').search(query)
     else
       all
     end

@@ -20,4 +20,13 @@ module ApplicationHelper
       content_tag(:span, nil, class: "glyphicon glyphicon-plus") + name
     end
   end
+
+  def sort_link(column, title = nil)
+    title ||= column.titleize
+    arrow_direction = sort_direction == "asc" ? "up" : "down" if sort_direction.present?
+    icon = column == sort_column ? content_tag(:span, nil, class: "glyphicon glyphicon-chevron-#{arrow_direction}").html_safe : ""
+    direction = (column == sort_column && sort_direction == "desc") ? "asc" : "desc"
+    new_params = params.merge({ sort: column, direction: direction })
+    link_to(title, new_params) + icon
+  end
 end

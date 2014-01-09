@@ -16,10 +16,5 @@ class Admin::ImportsController < AdminController
     Machine.import_csv(params[:file])
     redirect_to imports_path, notice: "Machines imported."
   end
-
-  def import_defects
-    Defect.import_csv(params[:file])
-    redirect_to imports_path, notice: "Defects imported."
-  end
 end
 
