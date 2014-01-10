@@ -32,7 +32,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_assigned_film_count(phase)
-    films.where(phase: phase).sum { |f| f.order_fill_count }
+    films.where(phase: phase).sum(:order_fill_count)
   end
 
   def total_assigned_film_percent(phase)

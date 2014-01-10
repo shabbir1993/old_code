@@ -1,10 +1,10 @@
 <tr>
   <td class="serial"><%= Film.find(film_resize.item_id).serial %></td>
   <td class="width_change">
-    <%= "#{film_resize.changeset[:width][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:width][1].to_s}".html_safe if film_resize.changeset[:width] %>
+    <%= "#{film_resize.changeset[:width][0].to_s} <i class='fa fa-arrow-right'></i> #{film_resize.changeset[:width][1].to_s}".html_safe if film_resize.changeset[:width] %>
   </td>
   <td class="length_change">
-    <%= "#{film_resize.changeset[:length][0].to_s} <span class='glyphicon glyphicon-arrow-right'></span> #{film_resize.changeset[:length][1].to_s}".html_safe if film_resize.changeset[:length] %>
+    <%= "#{film_resize.changeset[:length][0].to_s} <i class='fa fa-arrow-right'></i> #{film_resize.changeset[:length][1].to_s}".html_safe if film_resize.changeset[:length] %>
   </td>
   <td class="area_diff">
     <%= "#{film_resize.area_diff.round(2)}" %>

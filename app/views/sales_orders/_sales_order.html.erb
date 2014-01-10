@@ -1,7 +1,9 @@
 <% panel_class = "panel-default" if local_assigns[:panel_class].nil? %>
 <li id="<%= "sales-order-#{sales_order.id}" %>" class="<%= "panel #{panel_class}" %>">
   <div class="panel-heading">
-    <%= link_to "", edit_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "sales-order-#{sales_order.id}-edit", class: "glyphicon glyphicon-edit pull-left" } %>
+    <%= link_to edit_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "sales-order-#{sales_order.id}-edit", class: "pull-left" } do %>
+      <i class="fa fa-edit"></i>
+    <% end %>
     <h4 class="panel-title">
       <a class="accordion-toggle" data-toggle="collapse" href="<%= "#collapse-#{sales_order.id}" %>">
         <%= sales_order.code %> - <%= sales_order.customer %>
@@ -26,8 +28,16 @@
     <span class="pull-left">Utilization: <strong><%= number_to_percentage(sales_order.utilization, precision: 2) || "N/A" %></strong></span>
     <span><strong><br/></strong></span>
     <span class="pull-left">Shipped: <strong><%= sales_order.ship_date || "N/A" %></strong></span>
-    <%= link_to "", edit_ship_date_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "sales-order-#{sales_order.id}-ship", class: "glyphicon glyphicon-plane pull-right" } if sales_order.ship_date.nil? %>
-    <%= link_to "", return_sales_order_path(sales_order), method: :patch, remote: true, id: "sales-order-#{sales_order.id}-return", class: "glyphicon glyphicon-share-alt pull-right" if sales_order.ship_date.present? && current_user.is_admin? %>
+    <% if sales_order.ship_date.nil? %>
+      <%= link_to edit_ship_date_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "sales-order-#{sales_order.id}-ship", class: "pull-right" } do %>
+        <i class="fa fa-truck fa-flip-horizontal"></i>
+      <% end %>
+    <% end %>
+    <% if sales_order.ship_date.present? && current_user.is_admin? %>
+      <%= link_to return_sales_order_path(sales_order), method: :patch, remote: true, id: "sales-order-#{sales_order.id}-return", class: "pull-right" do %>
+        <i class="fa fa-reply"></i>
+      <% end %>
+    <% end %>
     <br>
   </div>
   <ul id="<%= "collapse-#{sales_order.id}" %>" class="list-group panel-collapse collapse">

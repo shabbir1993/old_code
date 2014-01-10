@@ -46,7 +46,13 @@ class Film < ActiveRecord::Base
   #tabs
   scope :select_fields, -> { joins("LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id")
     .joins("LEFT OUTER JOIN sales_orders ON sales_orders.id = films.sales_order_id")
-    .select("films.*, master_films.serial || '-' || films.division as serial, width*length/#{Tenant.current_area_divisor} as area, sales_orders.code as sales_order_code") }
+    .select("films.*, 
+             master_films.serial || '-' || films.division as serial, 
+             width*length/#{Tenant.current_area_divisor} as area, 
+             sales_orders.code as sales_order_code, 
+             substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal as second_width, 
+             substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal as second_length,
+             substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal*substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal/#{Tenant.current_area_divisor} as second_area") }
   scope :lamination, -> { select_fields.phase("lamination") }
   scope :inspection, -> { select_fields.phase("inspection") }
   scope :large_stock, -> { select_fields.phase("stock").large.not_reserved }
@@ -103,6 +109,13 @@ class Film < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def self.search_dimensions(min_width, min_length)
+    results = all
+    results = results.where("width >= :min_width OR substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal >= :min_width", min_width: min_width) if min_width.present?
+    results = results.where("length >= :min_length OR substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal >= :min_length", min_length: min_length) if min_length.present?
+    results
   end
 
   def area_change

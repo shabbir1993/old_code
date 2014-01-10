@@ -16,6 +16,11 @@
       <th><%= sort_link 'width' %></th>
       <th><%= sort_link 'length' %></th>
       <th><%= sort_link 'area' %></th>
+      <% if params[:min_width] || params[:min_length] %>
+        <th><%= sort_link 'second_width', "2nd W" %></th>
+        <th><%= sort_link 'second_length', "2nd L" %></th>
+        <th><%= sort_link 'second_area', "2nd Area" %></th>
+      <% end %>
       <th><%= sort_link 'shelf' %></th>
       <th><%= sort_link 'sales_order_code', "SO" %></th>
       <th><%= sort_link 'note' %></th>

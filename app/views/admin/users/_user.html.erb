@@ -1,6 +1,10 @@
 <% row_class = "" if local_assigns[:row_class].nil? %>
 <tr id="<%= "user-#{user.id}" %>" class="<%= row_class %>">
-  <td><%= link_to "", edit_user_path(user), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "user-#{user.id}-edit", class: "glyphicon glyphicon-edit" } %></td>
+  <td>
+    <%= link_to edit_user_path(user), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "user-#{user.id}-edit" } do %>
+      <i class="fa fa-edit"></i>
+    <% end %>
+  </td>
   <td class="full_name"><%= user.full_name %></td>
   <td class="username"><%= user.username %></td>
   <td class="role_title"><%= user.role_title %></td>
