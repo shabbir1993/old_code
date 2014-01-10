@@ -25,19 +25,7 @@
   <td class="length"><%= film.length %></td>
   <td class="area">
     <%= number_with_precision(film.area, precision: 2) %> 
-    <%= content_tag(:i, nil, class: "fa fa-plus") if film.second_area? %>
   </td>
-  <% if params[:min_width] || params[:min_length] %>
-    <td class="second_width">
-      <%= film.second_width %>
-    </td>
-    <td class="second_length">
-      <%= film.second_length %>
-    </td>
-    <td class="second_area">
-      <%= number_with_precision(film.second_area, precision: 2) %> 
-    </td>
-  <% end %>
   <td class="shelf"><%= film.shelf %></td>
   <td class="order"><%= film.sales_order_code %>
     <% if film.order_fill_count > 1 && film.sales_order.present? %>

@@ -11,6 +11,7 @@ class FilmsController < ApplicationController
                   .order(sort_column + " " + sort_direction)
       @films = films.page(params[:page])
       @count = films.count
+      @total_area = films.total_area
       respond_to do |format|
         format.html
         format.csv { send_data films.to_csv }
