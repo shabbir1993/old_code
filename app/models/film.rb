@@ -2,6 +2,9 @@ class Film < ActiveRecord::Base
   include Exportable
   include Importable
 
+  SECOND_WIDTH_SQL = "substring(films.note from '([0-9]+([.][0-9]+)?)[ ]*[xX][ ]*([0-9]+([.][0-9]+)?)')::decimal"
+  SECOND_LENGTH_SQL = "substring(films.note from '(?:[0-9]+(?:[.][0-9]+)?)[ ]*[xX][ ]*([0-9]+([.][0-9]+)?)')::decimal"
+
   attr_accessible :width, :length, :note, :shelf, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_id
   attr_reader :destination
 
@@ -50,9 +53,9 @@ class Film < ActiveRecord::Base
              master_films.serial || '-' || films.division as serial, 
              width*length/#{Tenant.current_area_divisor} as area, 
              sales_orders.code as sales_order_code, 
-             substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal as second_width, 
-             substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal as second_length,
-             substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal*substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal/#{Tenant.current_area_divisor} as second_area") }
+             #{SECOND_WIDTH_SQL} as second_width, 
+             #{SECOND_LENGTH_SQL} as second_length,
+             #{SECOND_WIDTH_SQL}*#{SECOND_LENGTH_SQL}/#{Tenant.current_area_divisor} as second_area") }
   scope :lamination, -> { select_fields.phase("lamination") }
   scope :inspection, -> { select_fields.phase("inspection") }
   scope :large_stock, -> { select_fields.phase("stock").large.not_reserved }
@@ -113,8 +116,8 @@ class Film < ActiveRecord::Base
 
   def self.search_dimensions(min_width, min_length)
     results = all
-    results = results.where("width >= :min_width OR substring(films.note from '([0-9]+(\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal >= :min_width", min_width: min_width) if min_width.present?
-    results = results.where("length >= :min_length OR substring(films.note from '(?:[0-9]+(?:\.[0-9]+)?)[ ]*[xX][ ]*([0-9]+(\.[0-9]+)?)')::decimal >= :min_length", min_length: min_length) if min_length.present?
+    results = results.where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: min_width) if min_width.present?
+    results = results.where("length >= :min_length OR #{SECOND_LENGTH_SQL} >= :min_length", min_length: min_length) if min_length.present?
     results
   end
 
