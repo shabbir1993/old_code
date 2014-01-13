@@ -50,12 +50,12 @@ class ChartsController < ApplicationController
     data = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date])
     data = data.by_code.reverse
     @data = data
-    @average = data.sum{ |d| d.utilization.to_f }/data.count
+    @average = data.sum{ |d| d.utilization.to_f }/data.count if data.count != 0
   end
 
   def yield
     data = MasterFilm.where("serial BETWEEN ? AND ?", params[:start_serial], params[:end_serial]).by_serial.reverse
     @data = data.map{ |d| { serial: d.serial, yield: d.yield } }
-    @average = data.sum{ |d| d.yield.to_f }/data.count
+    @average = data.sum{ |d| d.yield.to_f }/data.count if data.count != 0
   end
 end
