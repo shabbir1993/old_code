@@ -13,7 +13,7 @@
     <%= f.text_field :shelf, class: "form-control" %>
     <%= f.collection_select :sales_order_id, SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control" %>
     <% if current_user.is_supervisor? %>
-      <%= f.select :destination, @films.map{ |f| Phase.new(f.phase) }.uniq.map(&:valid_destinations).reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
+      <%= f.select :destination, @films.map{ |f| PhaseDefinitions.destinations_for(f.phase) }.uniq.reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
     <% end %>
   </div>
   <div class="modal-footer">

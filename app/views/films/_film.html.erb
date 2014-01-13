@@ -21,10 +21,21 @@
   <td class="serial">
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
   </td>
-  <td class="width"><%= film.width %></td>
-  <td class="length"><%= film.length %></td>
+  <td class="width">
+    <%= film.width %>
+    <%= (tag('br') + film.second_width.to_s) if film.try(:second_width) %>
+  </td>
+  <td class="length">
+    <%= film.length %>
+    <%= (tag('br') + film.second_length.to_s) if film.try(:second_length) %>
+  </td>
   <td class="area">
     <%= number_with_precision(film.area, precision: 2) %> 
+    <%= "<span class='label label-warning'>#{number_to_percentage(UtilizationCalculator.calculate(film.width, film.length, params[:min_width].to_f, params[:min_length].to_f), precision: 2)}</span>".html_safe if params[:min_width] && params[:min_length] %> 
+    <% if film.try(:second_area) %>
+      <%= (tag('br') + number_with_precision(film.second_area, precision: 2)) %>
+      <%= "<span class='label label-warning'>#{number_to_percentage(UtilizationCalculator.calculate(film.second_width, film.second_length, params[:min_width].to_f, params[:min_length].to_f), precision: 2)}</span>".html_safe if params[:min_width] && params[:min_length] %> 
+    <% end %>
   </td>
   <td class="shelf"><%= film.shelf %></td>
   <td class="order"><%= film.sales_order_code %>

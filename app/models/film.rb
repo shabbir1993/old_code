@@ -19,7 +19,7 @@ class Film < ActiveRecord::Base
   before_save :upcase_shelf
 
   validates :phase, presence: true
-  validates :width, :length, presence: true, unless: lambda { |film| Phase.new(film.phase).front_end? }
+  validates :width, :length, presence: true, unless: lambda { |film| PhaseDefinitions.front_end?(film.phase) }
   validates :order_fill_count, numericality: { greater_than: 0 }
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
@@ -73,7 +73,7 @@ class Film < ActiveRecord::Base
   end
   
   def area
-    (width * length / Tenant.current_area_divisor) if width && length
+    AreaCalculator.calculate(width, length, tenant.area_divisor)
   end
 
   def destination=(destination)
@@ -84,12 +84,12 @@ class Film < ActiveRecord::Base
   end
 
   def width=(width)
-    master_film.update_attributes(effective_width: width) if Phase.new(phase).front_end?
+    master_film.update_attributes(effective_width: width) if PhaseDefinitions.front_end?(phase)
     write_attribute(:width, width)
   end
 
   def length=(length)
-    master_film.update_attributes(effective_length: length) if Phase.new(phase).front_end?
+    master_film.update_attributes(effective_length: length) if PhaseDefinitions.front_end?(phase)
     write_attribute(:length, length)
   end
 
@@ -105,6 +105,12 @@ class Film < ActiveRecord::Base
     self.division ||= (master_film.films.pluck(:division).max.to_i) + 1
   end
 
+  def projected_utilization(film_width, film_length, custom_width, custom_length)
+    if custom_width && custom_length && film_width && film_length && custom_width <= film_width && custom_length <= film_length
+      100*(custom_width*custom_length/tenant.area_divisor)/(film_width*film_length/tenant.area_divisor)
+    end
+  end
+
   def self.search_text(query)
     if query.present?
       #reorder is workaround for pg_search issue 88
@@ -116,8 +122,12 @@ class Film < ActiveRecord::Base
 
   def self.search_dimensions(min_width, min_length)
     results = all
-    results = results.where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: min_width) if min_width.present?
-    results = results.where("length >= :min_length OR #{SECOND_LENGTH_SQL} >= :min_length", min_length: min_length) if min_length.present?
+    if min_width && min_length
+      results = results.where("width >= :min_width AND length >= :min_length OR #{SECOND_WIDTH_SQL} >= :min_width AND #{SECOND_LENGTH_SQL} >= :min_length", { min_width: min_width, min_length: min_length } )
+    else
+      results = results.where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: min_width) if min_width.present?
+      results = results.where("length >= :min_length OR #{SECOND_LENGTH_SQL} >= :min_length", min_length: min_length) if min_length.present?
+    end
     results
   end
 

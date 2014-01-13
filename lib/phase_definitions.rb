@@ -1,10 +1,7 @@
-class Phase
-  def initialize(name)
-    @name = name
-  end
+module PhaseDefinitions
 
-  def valid_destinations
-    case @name
+  def self.destinations_for(phase)
+    case phase
     when "lamination"
       ["inspection"]
     when "inspection"
@@ -24,7 +21,7 @@ class Phase
     end
   end
 
-  def front_end?
-    %(lamination inspection).include?(@name)
+  def self.front_end?(phase)
+    %(lamination inspection).include?(phase)
   end
 end
