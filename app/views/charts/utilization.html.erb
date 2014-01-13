@@ -1,0 +1,62 @@
+<%= form_tag utilization_chart_path, method: :get, class: 'form-inline search' do %>
+  <div class="row">
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :start_date, params[:start_date], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>
+    </div>
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :end_date, params[:end_date], placeholder: "End", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>
+    </div>
+    <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
+  </div>
+<% end %>
+
+<script>
+  $(function () {
+    $('#utilization').highcharts({
+      chart: {
+        type: 'scatter',
+        zoomType: 'x'
+      },
+      title: {
+        text: 'Utilization'
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+          rotation: 90
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Utilization'
+        }
+      },
+      series: [
+        {
+          yAxis: 0,
+          name: 'Utilization',
+          data: [
+          <% @data.each do |point| %>
+            ["<%= point.code %>", <%= point.utilization %>],
+          <% end %>
+          ]
+        }, {
+          type: 'line',
+          name: 'Average',
+          data: [[0, <%= @average %>], [<%= @data.count %>, <%= @average %>]],
+          marker: {
+            enabled: false
+          }
+        }
+      ]
+    });
+  });
+</script>
+<div id="utilization" class="chart"></div>

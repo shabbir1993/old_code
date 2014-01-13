@@ -48,6 +48,8 @@ Pcms::Application.routes.draw do
   get 'charts/stock_snapshots', to: 'charts#stock_snapshots', as: :stock_snapshots_chart
   get 'charts/movement_summary', to: 'charts#movement_summary', as: :movement_summary_chart
   get 'charts/inventory', to: 'charts#inventory', as: :inventory_chart
+  get 'charts/utilization', to: 'charts#utilization', as: :utilization_chart
+  get 'charts/yield', to: 'charts#yield', as: :yield_chart
 
 
   root to: 'films#index', defaults: { scope: "lamination" }

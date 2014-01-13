@@ -105,12 +105,6 @@ class Film < ActiveRecord::Base
     self.division ||= (master_film.films.pluck(:division).max.to_i) + 1
   end
 
-  def projected_utilization(film_width, film_length, custom_width, custom_length)
-    if custom_width && custom_length && film_width && film_length && custom_width <= film_width && custom_length <= film_length
-      100*(custom_width*custom_length/tenant.area_divisor)/(film_width*film_length/tenant.area_divisor)
-    end
-  end
-
   def self.search_text(query)
     if query.present?
       #reorder is workaround for pg_search issue 88
@@ -122,7 +116,7 @@ class Film < ActiveRecord::Base
 
   def self.search_dimensions(min_width, min_length)
     results = all
-    if min_width && min_length
+    if min_width.present? && min_length.present?
       results = results.where("width >= :min_width AND length >= :min_length OR #{SECOND_WIDTH_SQL} >= :min_width AND #{SECOND_LENGTH_SQL} >= :min_length", { min_width: min_width, min_length: min_length } )
     else
       results = results.where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: min_width) if min_width.present?

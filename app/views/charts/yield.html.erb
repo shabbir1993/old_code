@@ -1,0 +1,54 @@
+<%= form_tag yield_chart_path, method: :get, class: 'form-inline search' do %>
+    <div class="form-group">
+      <%= text_field_tag :start_serial, params[:start_serial], placeholder: "Start Serial", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= text_field_tag :end_serial, params[:end_serial], placeholder: "End Serial", class: "form-control" %>
+    </div>
+    <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+<% end %>
+
+<script>
+  $(function () {
+    $('#yield').highcharts({
+      chart: {
+        type: 'scatter',
+        zoomType: 'x'
+      },
+      title: {
+        text: 'Yield'
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+          rotation: 90
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Yield'
+        }
+      },
+      series: [
+        {
+          yAxis: 0,
+          name: 'Yield',
+          data: [
+          <% @data.each do |point| %>
+            ["<%= point[:serial] %>", <%= point[:yield] %>],
+          <% end %>
+          ]
+        }, {
+          type: 'line',
+          name: 'Average',
+          data: [[0, <%= @average %>], [<%= @data.count %>, <%= @average %>]],
+          marker: {
+            enabled: false
+          }
+        }
+      ]
+    });
+  });
+</script>
+<div id="yield" class="chart"></div>
