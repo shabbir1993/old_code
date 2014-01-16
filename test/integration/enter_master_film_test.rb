@@ -1,14 +1,11 @@
 require 'test_helper'
 
-describe "Master film entry integration" do
+class EnterMasterFilmTest < ActionDispatch::IntegrationTest
 
-  before do 
-    Capybara.current_driver = Capybara.javascript_driver
-    @tenant = FactoryGirl.create(:tenant)
-  end
+  before { use_javascript_driver }
 
   describe "Film entry form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor, tenant: @tenant) }
+    let(:supervisor) { FactoryGirl.create(:supervisor) }
 
     before do
       log_in(supervisor)
@@ -23,14 +20,14 @@ describe "Master film entry integration" do
       fill_in 'Count', with: 2
       click_button 'Add film'
       within("tr.success") do
-        page.has_selector?('td.serial', text: "F1223-12").must_equal true
-        page.has_selector?('td.defects_sum', text: '2').must_equal true
+        assert page.has_selector?('.serial', text: "F1223-12")
+        assert page.has_selector?('.defects_sum', text: '2')
       end
     end
 
     it "displays error messages given invalid attributes" do
       click_button 'Add film'
-      page.has_selector?('.error-messages', text: "can't be blank").must_equal true
+      assert page.has_selector?('.error-messages')
     end
   end
 end

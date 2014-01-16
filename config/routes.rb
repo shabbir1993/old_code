@@ -39,7 +39,6 @@ Pcms::Application.routes.draw do
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history
   get 'history/scrap_film_movements', to: 'history#scrap_film_movements', as: :scrap_film_movements_history
-  get 'history/film_resizes', to: 'history#film_resizes', as: :film_resizes_history
   get 'history/film_deletes', to: 'history#film_deletes', as: :film_deletes_history
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
@@ -50,6 +49,7 @@ Pcms::Application.routes.draw do
   get 'charts/inventory', to: 'charts#inventory', as: :inventory_chart
   get 'charts/utilization', to: 'charts#utilization', as: :utilization_chart
   get 'charts/yield', to: 'charts#yield', as: :yield_chart
+  get 'charts/area_shipped', to: 'charts#area_shipped', as: :area_shipped_chart
 
 
   root to: 'films#index', defaults: { scope: "lamination" }

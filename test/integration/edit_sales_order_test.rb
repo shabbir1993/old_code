@@ -1,15 +1,14 @@
 require 'test_helper'
 
-describe "Edit sales order integration" do
+class EditSalesOrderTest < ActionDispatch::IntegrationTest
 
   before do 
-    Capybara.current_driver = Capybara.javascript_driver
-    @tenant = FactoryGirl.create(:tenant)
-    @sales_order = FactoryGirl.create(:sales_order_with_line_item, tenant: @tenant)
+    use_javascript_driver
+    @sales_order = FactoryGirl.create(:sales_order_with_line_item)
   end
 
   describe "edit sales order form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor, tenant: @tenant) }
+    let(:supervisor) { FactoryGirl.create(:supervisor) }
 
     before do
       log_in(supervisor)
@@ -24,7 +23,7 @@ describe "Edit sales order integration" do
       within "#sales-order-#{@sales_order.id}" do
         assert page.has_content?("New customer")
         click_link @sales_order.code
-        assert page.has_selector?(".line-item", text: "Busbars: Foo")
+        assert page.has_content?("Busbars: Foo")
       end
     end
 
@@ -40,7 +39,7 @@ describe "Edit sales order integration" do
   end
 
   describe "edit sales order form with admin authentication" do
-    let(:admin) { FactoryGirl.create(:admin, tenant: @tenant) }
+    let(:admin) { FactoryGirl.create(:admin) }
 
     before do
       log_in(admin)

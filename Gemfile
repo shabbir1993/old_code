@@ -18,12 +18,14 @@ gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 
 group :test do
   gem "minitest", "~> 4.7"
-  gem "mocha", "~> 0.14.0", require: false
   gem 'capybara', '2.1.0'
-  gem "factory_girl_rails", "4.2.1"
-  gem 'database_cleaner', "1.1.1"
   gem "turn", "~> 0.9.6"
   gem "poltergeist", "~> 1.4.1"
+  gem "timecop", "~> 0.7.1"
+end
+
+group :development, :test do
+  gem "factory_girl_rails", "4.2.1"
 end
 
 group :production do

@@ -42,7 +42,7 @@
         }, {
           type: 'line',
           name: 'Average',
-          data: [[0, <%= @average %>], [<%= @data.count %>, <%= @average %>]],
+          data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
           marker: {
             enabled: false
           }

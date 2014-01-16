@@ -1,14 +1,14 @@
 require 'test_helper'
 
-describe "Film split integration" do
+class SplitFilmTest < ActionDispatch::IntegrationTest
+
   before do
-    Capybara.current_driver = Capybara.javascript_driver
-    @tenant = FactoryGirl.create(:tenant)
-    @film = FactoryGirl.create(:film_with_dimensions, phase: "stock", tenant: @tenant)
+    use_javascript_driver
+    @film = FactoryGirl.create(:film_with_dimensions, phase: "stock")
   end
 
   describe "split form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor, tenant: @tenant) }
+    let(:supervisor) { FactoryGirl.create(:supervisor) }
 
     before do 
       log_in(supervisor)
@@ -28,11 +28,11 @@ describe "Film split integration" do
         select "wip", from: "film_split_destination"
       end
       click_button 'Split'
-      within("tr", text: "#{@film.serial}") do
+      within("#film-#{@film.id}") do
         assert page.has_content?("30")
         assert page.has_content?("40")
       end
-      page.has_selector?("tr", text: "#{@film.serial.next} wip")
+      assert page.has_selector?("tr", text: "#{@film.serial.next} wip")
     end
 
     it "shows error messages given invalid inputs" do

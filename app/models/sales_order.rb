@@ -40,7 +40,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_custom_area
-    line_items.map{ |li| li.quantity*li.custom_area.to_f }.sum
+    line_items.map{ |li| li.total_area.to_f }.sum
   end
 
   def total_assigned_area
@@ -49,5 +49,9 @@ class SalesOrder < ActiveRecord::Base
 
   def utilization
     100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
+  end
+
+  def total_custom_area_by_product_type(type)
+    line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
   end
 end

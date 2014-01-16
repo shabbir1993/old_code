@@ -2,7 +2,6 @@ FactoryGirl.define do
   factory :master_film do
     today = Time.zone.today
     sequence(:serial) { |n| "E0101-#{'%02d' % n}"}
-    tenant
 
     factory :master_film_with_child do
       after(:create) do |master_film|
@@ -14,7 +13,6 @@ FactoryGirl.define do
 
   factory :film do
     phase "lamination"
-    tenant
     after(:build) do |film|
       film.master_film = FactoryGirl.create(:master_film, tenant: film.tenant) unless film.master_film.present?
     end
@@ -27,7 +25,6 @@ FactoryGirl.define do
 
   factory :sales_order do
     sequence(:code) { |n| "PT#{ '%03d' % n }P" }
-    tenant
 
     factory :sales_order_with_line_item do
       after(:create) do |sales_order|
@@ -48,7 +45,6 @@ FactoryGirl.define do
     sequence(:full_name) { |n| "Example Person #{n}" }
     password "foobar"
     password_confirmation "foobar"
-    tenant
 
     factory :chemist do
       chemist true
@@ -70,13 +66,6 @@ FactoryGirl.define do
   factory :machine do
     sequence(:code) { |n| "#{n}" }
     yield_constant 0.4
-    tenant
-  end
-
-  factory :defect do
-    defect_type "White Spot"
-    count 2
-    master_film
   end
 
   factory :tenant do

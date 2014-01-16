@@ -1,41 +1,51 @@
-ENV["RAILS_ENV"] = "test"
+ENV["RAILS_ENV"] ||= "test"
 require File.expand_path('../../config/environment', __FILE__)
-require "capybara/rails"
+require 'rails/test_help'
+require 'minitest/spec'
+require 'capybara/rails'
 require 'capybara/poltergeist'
-require "active_support/testing/setup_and_teardown"
-
-#removes sql from test output
-ActiveRecord::Base.logger = nil
-
-DatabaseCleaner.strategy = :truncation
 
 Dir[Rails.root.join("test/support/**/*.rb")].each {|f| require f}
 
-class MiniTest::Spec
-  before { DatabaseCleaner.clean }
+class ActiveSupport::TestCase
+  ActiveRecord::Migration.check_pending!
+
+  extend MiniTest::Spec::DSL
+
+  class << self
+    remove_method :describe
+  end
+
+  before do
+    setup_tenant
+  end
 end
 
-class IntegrationTest < MiniTest::Spec
-  include Rails.application.routes.url_helpers
+class ActionDispatch::IntegrationTest
   include Capybara::DSL
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, js_errors: false, inspector: true)
-  end
   Capybara.javascript_driver = :poltergeist
-  Capybara.default_wait_time = 5
 
-  def teardown
+  after do
     Capybara.reset_sessions!
     Capybara.use_default_driver
   end
-
-  register_spec_type(/integration$/, self)
 end
 
-class HelperTest < MiniTest::Spec
-  include ActiveSupport::Testing::SetupAndTeardown
-  include ActionView::TestCase::Behavior
-  register_spec_type(/Helper$/, self)
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  @@shared_connection = nil
+
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end
+
+# Forces all threads to share the same connection. This works on
+# # Capybara because it starts the web server in a thread.
+ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+
+def use_javascript_driver
+  Capybara.current_driver = Capybara.javascript_driver
 end
 
 # turns on papertrail
@@ -48,5 +58,3 @@ def with_versioning
     PaperTrail.enabled = was_enabled
   end
 end
-
-require 'mocha/setup'

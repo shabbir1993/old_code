@@ -1,14 +1,11 @@
 require 'test_helper'
 
-describe "Sales order entry integration" do
+class EnterSalesOrderTest < ActionDispatch::IntegrationTest
 
-  before do 
-    Capybara.current_driver = Capybara.javascript_driver
-    @tenant = FactoryGirl.create(:tenant)
-  end
+  before { use_javascript_driver }
 
   describe "Sales order entry form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor, tenant: @tenant) }
+    let(:supervisor) { FactoryGirl.create(:supervisor) }
 
     before do
       log_in(supervisor)
@@ -30,7 +27,7 @@ describe "Sales order entry integration" do
 
     it "displays error messages given invalid attributes" do
       click_button 'Add sales order'
-      assert page.has_selector?('.error-messages', text: "can't be blank")
+      assert page.has_selector?('.error-messages')
     end
   end
 end

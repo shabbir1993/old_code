@@ -24,8 +24,7 @@ class Film < ActiveRecord::Base
 
   has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
                   :meta => { columns_changed: Proc.new { |film| film.changed },
-                             phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] },
-                             area_change: Proc.new { |film| film.area_change } }
+                             phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] } }
 
   include PgSearch
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
@@ -123,18 +122,6 @@ class Film < ActiveRecord::Base
       results = results.where("length >= :min_length OR #{SECOND_LENGTH_SQL} >= :min_length", min_length: min_length) if min_length.present?
     end
     results
-  end
-
-  def area_change
-    area_was = nil
-    area_is = nil
-    if width_was && length_was
-      area_was = width_was*length_was/Tenant.current_area_divisor
-    end
-    if width && length
-      area_is = width*length/Tenant.current_area_divisor
-    end
-    [area_was, area_is]
   end
 
   def self.data_for_export

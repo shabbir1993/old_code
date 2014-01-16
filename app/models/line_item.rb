@@ -12,4 +12,8 @@ class LineItem < ActiveRecord::Base
   def custom_area
     (custom_width*custom_length / Tenant.current_area_divisor) if custom_width && custom_length
   end
+
+  def total_area
+    custom_area*quantity
+  end
 end

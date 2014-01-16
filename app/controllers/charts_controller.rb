@@ -58,4 +58,12 @@ class ChartsController < ApplicationController
     @data = data.map{ |d| { serial: d.serial, yield: d.yield } }
     @average = data.sum{ |d| d.yield.to_f }/data.count if data.count != 0
   end
+
+  def area_shipped
+    data = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).group_by(&:ship_date)
+    @film_shipped = data.map{ |k,v| [k, v.map{ |s| s.total_custom_area_by_product_type("Film") }.sum ] }
+    @glass_shipped = data.map{ |k,v| [k, v.map{ |s| s.total_custom_area_by_product_type("Glass") }.sum ] }
+    @total_film_shipped = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).map{ |s| s.total_custom_area_by_product_type("Film") }.sum
+    @total_glass_shipped = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).map{ |s| s.total_custom_area_by_product_type("Glass") }.sum
+  end
 end
