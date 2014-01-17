@@ -4,6 +4,15 @@
   </div>
   <div class="modal-body">
     <%= f.text_field :serial, class: "form-control" if current_user.is_admin? %>
+    <div class="form-group">
+      <%= f.label :width, "Effective", class: "col-md-2 control-label" %>
+      <div class="col-md-4">
+        <%= f.number_field :effective_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :effective_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+      </div>
+    </div>
     <%= f.text_field :formula, class: "form-control" %>
     <%= f.number_field :mix_mass, step: "any", class: "form-control" %>
     <%= f.collection_select :machine_id, Machine.all, :id, :code, {}, class: "form-control" %>
