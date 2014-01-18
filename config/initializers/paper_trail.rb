@@ -12,10 +12,6 @@ module PaperTrail
       self.next ? self.next.reify : Film.find(item_id)
     end
 
-    def area_diff
-      area_change[1].to_f - area_change[0].to_f
-    end
-
     def datetime_display
       if created_at.year == Time.zone.today.year
         created_at.strftime("%e %b %R")

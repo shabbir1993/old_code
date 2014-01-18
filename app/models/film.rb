@@ -72,7 +72,7 @@ class Film < ActiveRecord::Base
   end
   
   def area
-    AreaCalculator.calculate(width, length, tenant.area_divisor)
+    AreaCalculator.calculate(width, length, Tenant.current_area_divisor)
   end
 
   def destination=(destination)
