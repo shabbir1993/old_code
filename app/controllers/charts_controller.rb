@@ -36,8 +36,8 @@ class ChartsController < ApplicationController
   end
 
   def movement_summary
-    params[:start_date] ||= Date.today.to_s
-    params[:end_date] ||= (Date.today + 1).to_s
+    params[:start_date] ||= Date.current.to_s
+    params[:end_date] ||= (Date.current + 1).to_s
     data = PaperTrail::Version.search_date_range(params[:start_date], params[:end_date])
     data = data.where("'phase' = ANY (columns_changed)").group_by(&:phase_change)
     @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| (v.after ? v.after.area : nil) || 0 }.to_f.round(2) ]] }]
