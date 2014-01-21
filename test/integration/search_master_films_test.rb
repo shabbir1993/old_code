@@ -8,11 +8,11 @@ class SearchMasterFilmsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  describe "searching for F0101-01 to F0101-02 with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "searching for F0101-01 to F0101-02 with user authentication" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Engineering"
       fill_in "Start Serial", with: "F0101-01"
       fill_in "End Serial", with: "F0101-02"

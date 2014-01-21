@@ -4,11 +4,11 @@ class EnterMasterFilmTest < ActionDispatch::IntegrationTest
 
   before { use_javascript_driver }
 
-  describe "Film entry form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "Film entry form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Engineering"
       click_link 'Enter film'
     end

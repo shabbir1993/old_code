@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RestoreFilmTest < ActionDispatch::IntegrationTest
 
-  let(:supervisor) { FactoryGirl.create(:supervisor) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:admin) { FactoryGirl.create(:admin) }
 
   before do 
@@ -23,8 +23,8 @@ class RestoreFilmTest < ActionDispatch::IntegrationTest
     end
   end
 
-  it "has no deleted tab with supervisor authentication" do
-    log_in(supervisor)
+  it "has no deleted tab with user authentication" do
+    log_in(user)
     click_link "Production"
     refute page.has_link?("Deleted")
   end

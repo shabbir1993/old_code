@@ -7,11 +7,11 @@ class EditMultipleFilmsTest < ActionDispatch::IntegrationTest
     @film2 = FactoryGirl.create(:film_with_dimensions, phase: "stock")
   end
 
-  describe "edit multiple form with supervisor auth" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "edit multiple form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Production"
       click_link "Available"
       within('tr', text: @film1.serial) { check 'film_ids_' }

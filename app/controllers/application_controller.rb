@@ -51,10 +51,6 @@ private
     end
   end
 
-  def check_supervisor
-    redirect_to root_url if !current_user.is_supervisor?
-  end
-
   def check_admin
     redirect_to root_url if !current_user.is_admin?
   end

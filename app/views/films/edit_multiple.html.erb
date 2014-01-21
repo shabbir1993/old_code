@@ -12,9 +12,7 @@
   <div class="modal-body">
     <%= f.text_field :shelf, class: "form-control" %>
     <%= f.collection_select :sales_order_id, SalesOrder.unshipped, :id, :code, { include_blank: true }, class: "form-control" %>
-    <% if current_user.is_supervisor? %>
-      <%= f.select :destination, @films.map{ |f| PhaseDefinitions.destinations_for(f.phase) }.uniq.reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
-    <% end %>
+    <%= f.select :destination, @films.map{ |f| PhaseDefinitions.destinations_for(f.phase) }.uniq.reduce(:&), { prompt: "Move to..." }, { class: "form-control", label: false } %>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

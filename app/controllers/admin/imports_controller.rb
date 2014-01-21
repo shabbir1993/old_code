@@ -1,7 +1,4 @@
 class Admin::ImportsController < AdminController
-  def home
-  end
-
   def import_master_films
     MasterFilm.import_csv(params[:file])
     redirect_to imports_path, notice: "Master films imported."
@@ -17,4 +14,3 @@ class Admin::ImportsController < AdminController
     redirect_to imports_path, notice: "Machines imported."
   end
 end
-

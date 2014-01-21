@@ -25,7 +25,7 @@ class FilmsController < ApplicationController
   end
 
   def update
-    @film = Film.select_fields.find(params[:id])
+    @film = Film.find(params[:id])
     @film.update_attributes(params[:film])
   end 
 
@@ -35,7 +35,7 @@ class FilmsController < ApplicationController
   end
 
   def update_multiple
-    @films = Film.select_fields.find(params[:film_ids])
+    @films = Film.find(params[:film_ids])
     @films.each do |film|
       film.update_attributes(params[:film].reject { |k,v| v.blank? })
     end
@@ -48,9 +48,9 @@ class FilmsController < ApplicationController
   end
 
   def create_split
-    @film = Film.select_fields.find(params[:id])
+    @film = Film.find(params[:id])
     @film.assign_attributes(params[:film])
-    @split = Film.select_fields.new(params[:film][:split])
+    @split = Film.new(params[:film][:split])
     # to trigger validation
     @split.valid?
     if @film.valid? && @split.valid?
@@ -73,7 +73,7 @@ class FilmsController < ApplicationController
 
   def sort_column
     default_column = params[:min_width] || params[:min_length] ? "area" : "serial"
-    %w(serial width length area second_width second_length second_area shelf sales_order_code note).include?(params[:sort]) ? params[:sort] : default_column
+    %w(serial width length area shelf sales_order_code note).include?(params[:sort]) ? params[:sort] : default_column
   end
 
   def sort_direction

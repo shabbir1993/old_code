@@ -19,12 +19,8 @@ class User < ActiveRecord::Base
     User.where(operator: true).pluck(:full_name)
   end
 
-  def is_supervisor?
-    role_level >= 1
-  end
-
   def is_admin?
-    role_level >= 2
+    role_level >= 1
   end
 
   def role_title
@@ -32,8 +28,6 @@ class User < ActiveRecord::Base
     when 0
       "User"
     when 1
-      "Supervisor"
-    when 2
       "Admin"
     else
       "Undefined"

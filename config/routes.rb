@@ -30,7 +30,6 @@ Pcms::Application.routes.draw do
     get 'imports', to: 'imports#forms'
     post 'import_master_films', to: 'imports#import_master_films'
     post 'import_films', to: 'imports#import_films'
-    post 'import_users', to: 'imports#import_users'
     post 'import_machines', to: 'imports#import_machines'
 
     resources :users, except: :show

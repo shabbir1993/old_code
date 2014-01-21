@@ -6,11 +6,11 @@ class EditFilmTest < ActionDispatch::IntegrationTest
     @film = FactoryGirl.create(:film, phase: "lamination")
   end
 
-  describe "edit form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "edit form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do 
-      log_in(supervisor)
+      log_in(user)
       click_link "Production"
       click_link "film-#{@film.id}-edit" 
     end

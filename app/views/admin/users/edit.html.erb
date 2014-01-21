@@ -3,12 +3,7 @@
     <h4 class="modal-title text-center"><%= @user.full_name %></h4>
   </div>
   <div class="modal-body">
-    <%= f.text_field :username, class: "form-control" %>
-    <%= f.password_field :password, class: "form-control" %>
-    <%= f.password_field :password_confirmation, class: "form-control" %>
-    <%= f.select :role_level, [['User', 0], ['Supervisor', 1], ['Admin', 2]], {}, { label: "Role", class: "form-control" } %>
-    <%= f.check_box :chemist %>
-    <%= f.check_box :operator %>
+    <%= render 'shared_fields', f: f %>
   </div>
   <div class="modal-footer">
     <%= link_to "Delete", @user, method: :delete, class: "btn btn-danger pull-left" %>

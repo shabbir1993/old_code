@@ -7,11 +7,11 @@ class EditSalesOrderTest < ActionDispatch::IntegrationTest
     @sales_order = FactoryGirl.create(:sales_order_with_line_item)
   end
 
-  describe "edit sales order form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "edit sales order form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Orders"
       click_link "sales-order-#{@sales_order.id}-edit"
     end

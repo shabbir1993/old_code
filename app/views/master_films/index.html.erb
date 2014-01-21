@@ -21,13 +21,11 @@
     <th>Defects</th>
     <th>Note</th>
   </tr>
-  <% if current_user.is_supervisor? %>
-    <tr>
-      <th colspan="100%">
-        <%= link_to "Enter film", new_master_film_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } %>
-      </td>
-    </tr>
-  <% end %>
+  <tr>
+    <th colspan="100%">
+      <%= link_to "Enter film", new_master_film_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } %>
+    </td>
+  </tr>
 <% end %>
 
 <% content_for :table_body do %>

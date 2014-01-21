@@ -6,11 +6,11 @@ class ShipSalesOrderTest < ActionDispatch::IntegrationTest
     @sales_order = FactoryGirl.create(:sales_order)
   end
 
-  describe "ship form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "ship form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Orders"
       click_link "sales-order-#{@sales_order.id}-ship"
     end

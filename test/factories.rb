@@ -54,10 +54,6 @@ FactoryGirl.define do
       operator true
     end
 
-    factory :supervisor do
-      role_level 1
-    end
-
     factory :admin do
       role_level 2
     end

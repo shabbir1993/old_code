@@ -7,11 +7,11 @@ class SplitFilmTest < ActionDispatch::IntegrationTest
     @film = FactoryGirl.create(:film_with_dimensions, phase: "stock")
   end
 
-  describe "split form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "split form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do 
-      log_in(supervisor)
+      log_in(user)
       click_link "Production"
       click_link "Available"
       click_link "film-#{@film.id}-split"

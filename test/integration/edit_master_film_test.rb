@@ -6,11 +6,11 @@ class EditMasterFilmTest < ActionDispatch::IntegrationTest
     @master_film = FactoryGirl.create(:master_film_with_child, defects: { "White Spot" => "2" })
   end
 
-  describe "edit form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "edit form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Engineering"
       click_link "masterfilm-#{@master_film.id}-edit"
     end

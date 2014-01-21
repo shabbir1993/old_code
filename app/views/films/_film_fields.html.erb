@@ -18,6 +18,4 @@
   </div>
 </div>
 <%= f.text_area :note, class: "form-control" %>
-<% if current_user.is_supervisor? %>
-  <%= f.select :destination, PhaseDefinitions.destinations_for(film.phase), { prompt: "Move to..." }, { class: "form-control", label: false } %>
-<% end %>
+<%= f.select :destination, PhaseDefinitions.destinations_for(film.phase), { prompt: "Move to..." }, { class: "form-control", label: false } %>

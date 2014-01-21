@@ -4,11 +4,11 @@ class EnterSalesOrderTest < ActionDispatch::IntegrationTest
 
   before { use_javascript_driver }
 
-  describe "Sales order entry form with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "Sales order entry form" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Orders"
       click_link 'Enter sales order'
     end

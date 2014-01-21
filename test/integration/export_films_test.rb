@@ -6,11 +6,11 @@ class ExportFilmsTest < ActionDispatch::IntegrationTest
     FactoryGirl.create(:master_film_with_child, serial: "F0101-01")
   end
 
-  describe "production page with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "production page" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Production"
       click_link "Lamination"
     end

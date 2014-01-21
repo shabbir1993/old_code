@@ -8,11 +8,11 @@ class UnassignFilmTest < ActionDispatch::IntegrationTest
     @film = FactoryGirl.create(:film, sales_order: @sales_order)
   end
 
-  describe "orders page with supervisor authentication" do
-    let(:supervisor) { FactoryGirl.create(:supervisor) }
+  describe "orders page" do
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
-      log_in(supervisor)
+      log_in(user)
       click_link "Orders"
     end
 
