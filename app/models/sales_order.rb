@@ -18,6 +18,17 @@ class SalesOrder < ActiveRecord::Base
   scope :shipped, -> { where('ship_date is not null') }
   scope :unshipped, -> { where(ship_date: nil) }
 
+  def self.ship_date_range(start_date, end_date)
+    sales_orders = all
+    sales_orders = sales_orders.where("ship_date >= ?", start_date) if start_date
+    sales_orders = sales_orders.where("ship_date <= ?", end_date) if end_date
+    sales_orders
+  end
+
+  def self.with_ship_date(date)
+    where("ship_date = ?", date)
+  end
+
   def self.text_search(query)
     if query.present?
       #reorder is workaround for pg_search issue 88
@@ -51,7 +62,10 @@ class SalesOrder < ActiveRecord::Base
     100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
   end
 
-  def total_custom_area_by_product_type(type)
-    line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
+  def self.total_custom_area_by_product_type(type)
+    custom_areas = all.map do |s|
+      s.line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
+    end
+    custom_areas.sum
   end
 end

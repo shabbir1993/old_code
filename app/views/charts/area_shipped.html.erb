@@ -1,22 +1,9 @@
 <%= form_tag area_shipped_chart_path, method: :get, class: 'form-inline search' do %>
   <div class="row">
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :start_date, params[:start_date], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :end_date, params[:end_date], placeholder: "End", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
+    <%= render 'shared/date_range_fields' %>
     <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
   </div>
 <% end %>
-<span><%= "Total film shipped: #{number_with_precision(@total_film_shipped, precision: 2)}" %></span>
-<span><%= "Total glass shipped: #{number_with_precision(@total_glass_shipped, precision: 2)}" %></span>
 
 <script>
   $(function () {
@@ -26,7 +13,7 @@
         zoomType: 'x'
       },
       title: {
-        text: 'Area shipped'
+        text: 'Area of film and glass shipped by date'
       },
       xAxis: {
         type: 'datetime'
@@ -46,22 +33,39 @@
         }
       },
       series: [
-        {
-          name: 'Film',
-          data: [
-          <% @film_shipped.each do |point| %>
-            [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
-          <% end %>
-          ]
+      {
+        name: 'Film',
+        data: [
+        <% @film_area_shipped_by_date.each do |point| %>
+          [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
+        <% end %>
+        ]
         }, {
+        name: 'Glass',
+        data: [
+        <% @glass_area_shipped_by_date.each do |point| %>
+          [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
+        <% end %>
+        ]
+        } , {
+        type: 'pie',
+        name: 'Total shipped',
+        data: [{
+          name: 'Film',
+          y: <%= @total_film_area_shipped %>,
+          color: Highcharts.getOptions().colors[0]
+          }, {
           name: 'Glass',
-          data: [
-          <% @glass_shipped.each do |point| %>
-            [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
-          <% end %>
-          ]
+          y: <%= @total_glass_area_shipped %>,
+          color: Highcharts.getOptions().colors[1]
+        }],
+        center: [70, 70],
+        size: 100,
+        showInLegend: false,
+        dataLabels: {
+          enabled: false
         }
-      ]
+      }]
     });
   });
 </script>

@@ -62,10 +62,11 @@ class ChartsController < ApplicationController
   end
 
   def area_shipped
-    data = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).group_by(&:ship_date)
-    @film_shipped = data.map{ |k,v| [k, v.map{ |s| s.total_custom_area_by_product_type("Film") }.sum ] }
-    @glass_shipped = data.map{ |k,v| [k, v.map{ |s| s.total_custom_area_by_product_type("Glass") }.sum ] }
-    @total_film_shipped = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).map{ |s| s.total_custom_area_by_product_type("Film") }.sum
-    @total_glass_shipped = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date]).map{ |s| s.total_custom_area_by_product_type("Glass") }.sum
+    sales_orders = SalesOrder.shipped.ship_date_range(params[:start_date], params[:end_date])
+    dates = (params[:start_date] || SalesOrder.minimum(:ship_date))..(params[:end_date] || SalesOrder.maximum(:ship_date))
+    @film_area_shipped_by_date = dates.map{ |d| [d, sales_orders.with_ship_date(d).total_custom_area_by_product_type("Film").round(2) ] }
+    @glass_area_shipped_by_date = dates.map{ |d| [d, sales_orders.with_ship_date(d).total_custom_area_by_product_type("Glass").round(2) ] }
+    @total_film_area_shipped = sales_orders.total_custom_area_by_product_type("Film").round(2)
+    @total_glass_area_shipped = sales_orders.total_custom_area_by_product_type("Glass").round(2)
   end
 end
