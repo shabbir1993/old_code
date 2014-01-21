@@ -45,7 +45,7 @@ Pcms::Application.routes.draw do
   get 'charts/stock_dimensions', to: 'charts#stock_dimensions', as: :stock_dimensions_chart
   get 'charts/stock_snapshots', to: 'charts#stock_snapshots', as: :stock_snapshots_chart
   get 'charts/movement_summary', to: 'charts#movement_summary', as: :movement_summary_chart
-  get 'charts/inventory', to: 'charts#inventory', as: :inventory_chart
+  get 'charts/shelf_inventory', to: 'charts#shelf_inventory', as: :shelf_inventory_chart
   get 'charts/utilization', to: 'charts#utilization', as: :utilization_chart
   get 'charts/yield', to: 'charts#yield', as: :yield_chart
   get 'charts/area_shipped', to: 'charts#area_shipped', as: :area_shipped_chart

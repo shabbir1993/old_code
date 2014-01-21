@@ -6,7 +6,7 @@
   <%= link_to "Stock dimensions", stock_dimensions_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_dimensions'}" %>
   <%= link_to "Stock snapshots", stock_snapshots_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_snapshots'}" %>
   <%= link_to "Movement summary", movement_summary_chart_path, class: "list-group-item#{" active" if params[:action] == 'movement_summary'}" %>
-  <%= link_to "Inventory", inventory_chart_path, class: "list-group-item#{" active" if params[:action] == 'inventory'}" %>
+  <%= link_to "Shelf Inventory", shelf_inventory_chart_path, class: "list-group-item#{" active" if params[:action] == 'shelf_inventory'}" %>
   <%= link_to "Utilization", utilization_chart_path, class: "list-group-item#{" active" if params[:action] == 'utilization'}" %>
   <%= link_to "Yield", yield_chart_path, class: "list-group-item#{" active" if params[:action] == 'yield'}" %>
   <%= link_to "Area shipped", area_shipped_chart_path, class: "list-group-item#{" active" if params[:action] == 'area_shipped'}" %>

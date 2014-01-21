@@ -38,13 +38,13 @@ class ChartsController < ApplicationController
   def movement_summary
     params[:start_date] ||= Date.current.to_s
     params[:end_date] ||= (Date.current + 1).to_s
-    data = PaperTrail::Version.search_date_range(params[:start_date], params[:end_date])
-    data = data.where("'phase' = ANY (columns_changed)").group_by(&:phase_change)
-    @data = Hash[data.map { |k,v| [k, [(v ? v.count : 0), v.sum { |v| (v.after ? v.after.area : nil) || 0 }.to_f.round(2) ]] }]
+    film_movements = PaperTrail::Version.search_date_range(params[:start_date], params[:end_date]).movements
+    film_movements_by_phase_change = film_movements.group_by(&:phase_change)
+    @data = Hash[film_movements_by_phase_change.map { |k,v| [k, [(v ? v.count : 0), v.map{ |ver| ver.area_after }.sum.to_f.round(2) ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 
-  def inventory
+  def shelf_inventory
     @data = Film.phase("stock").large.order("shelf ASC").group_by(&:shelf)
   end
 

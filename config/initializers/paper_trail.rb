@@ -1,12 +1,12 @@
 module PaperTrail
   class Version < ActiveRecord::Base
-    attr_accessible :columns_changed, :phase_change, :area_change, :split_id
+    attr_accessible :columns_changed, :phase_change, :area_after
 
-    default_scope { where(tenant_id: Tenant.current_id) }
+    default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
     scope :history, -> { joins('INNER JOIN films ON films.id = versions.item_id').where( films: { deleted: false }).order('versions.created_at DESC') } 
     scope :before_date, ->(date) { where("created_at <= ?", date) } 
     scope :after_date, ->(date) { where("created_at >= ?", date) } 
-    scope :resizes_and_splits, -> { where("('width' = ANY (columns_changed) OR 'length' = ANY (columns_changed)) AND (phase_change[1] <> 'inspection' OR phase_change[1] is NULL)") }
+    scope :movements, -> { where("'phase' = ANY (columns_changed)") }
 
     def after
       self.next ? self.next.reify : Film.find(item_id)
@@ -23,7 +23,7 @@ module PaperTrail
     def self.search_date_range(start_date, end_date)
       versions = all
       if start_date.present?
-        versions = versions.after_date(Time.zone.parse(start_date))
+        versions = versions.after_date(Time.zone.parse(start_date)) 
       end
       if end_date.present?
         versions = versions.before_date(Time.zone.parse(end_date))

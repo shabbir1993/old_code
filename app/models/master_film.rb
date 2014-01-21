@@ -17,7 +17,7 @@ class MasterFilm < ActiveRecord::Base
   validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_id },
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
-  default_scope { where(tenant_id: Tenant.current_id) }
+  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
 
