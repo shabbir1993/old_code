@@ -40,7 +40,7 @@ class ChartsController < ApplicationController
     params[:end_date] ||= (Date.current + 1).to_s
     film_movements = PaperTrail::Version.search_date_range(params[:start_date], params[:end_date]).movements
     film_movements_by_phase_change = film_movements.group_by(&:phase_change)
-    @film_movements_by_phase_change = Hash[film_movements_by_phase_change.map { |k,v| [k, [(v ? v.count : 0), v.map{ |ver| ver.area_after }.sum.to_f.round(2) ]] }]
+    @data = Hash[film_movements_by_phase_change.map { |k,v| [k, [(v ? v.count : 0), v.map{ |ver| ver.area_after }.sum.to_f.round(2) ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 
