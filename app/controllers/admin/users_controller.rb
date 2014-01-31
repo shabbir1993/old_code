@@ -1,29 +1,30 @@
 class Admin::UsersController < AdminController
   def index
-    @users = User.page(params[:page])
+    @users = current_tenant.users.page(params[:page])
   end
 
   def new
-    @user = User.new
+    @user = current_tenant.new_user(params[:user])
     render layout: false
   end
 
   def create
-    @user = User.create(params[:user])
+    @user = current_tenant.new_user(params[:user])
+    @user.save
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = current_tenant.user(params[:id])
     render layout: false
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = current_tenant.user(params[:id])
     @user.update_attributes(params[:user])
   end 
 
   def destroy
-    @user = User.find(params[:id])
+    @user = current_tenant.user(params[:id])
     @user.destroy
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
   end
