@@ -1,22 +1,11 @@
 <%= form_tag movement_summary_chart_path, method: :get, class: 'form-inline search' do %>
   <div class="row">
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :start_date, params[:start_date], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :end_date, params[:end_date], placeholder: "End", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
+    <%= render 'shared/date_range_fields' %>
     <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
   </div>
 <% end %>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-condensed">
   <thead>
     <tr>
       <td></td>
@@ -26,60 +15,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td><strong>raw</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[[nil, p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-    <tr>
-      <td><strong>lamination</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["lamination", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>inspection</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["inspection", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>stock</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["stock", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>wip</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["wip", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>fg</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["fg", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>test</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["test", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>nc</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["nc", p]] %></td>
-      <% end %>
-    </tr>
-    <tr>
-      <td><strong>scrap</strong></td>
-      <% @phases_in_order.each do |p| %>
-        <td><%= @data[["scrap", p]] %></td>
-      <% end %>
-    </tr>
+    <% @phases_in_order.each do |from_phase| %>
+      <tr>
+        <td><strong><%= from_phase %></strong></td>
+        <% @phases_in_order.each do |to_phase| %>
+          <% if @film_movement_totals_hash[[from_phase, to_phase]] %>
+            <td class="row warning">
+              <span class="col-md-4"><%= "#{@film_movement_totals_hash[[from_phase, to_phase]][0]}" %></span> 
+              <strong class="col-md-1">|</strong> 
+              <span class="col-md-6"><%= "#{@film_movement_totals_hash[[from_phase, to_phase]][1]}" %></span>
+            </td>
+          <% else %>
+            <td></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
   </tbody>
 </table>

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :full_name, presence: true, uniqueness: { case_sensitive: false }
 
-  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
+  default_scope { where(tenant_id: Tenant.current_id) }
 
   def self.chemists
     User.where(chemist: true).pluck(:full_name)

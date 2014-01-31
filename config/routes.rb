@@ -38,7 +38,6 @@ Pcms::Application.routes.draw do
   get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history
   get 'history/scrap_film_movements', to: 'history#scrap_film_movements', as: :scrap_film_movements_history
-  get 'history/film_deletes', to: 'history#film_deletes', as: :film_deletes_history
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
   get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart

@@ -31,6 +31,10 @@ td.note {
   text-overflow: ellipsis;
 }
 
+td.nowrap {
+  white-space: nowrap;
+}
+
 .table tbody tr.info td {
   background-color: #d9edf7;
   border-color: #c3dbe7;

@@ -5,12 +5,11 @@
         type: 'bar'
       },
       title: {
-        text: 'Stock film type totals'
+        text: 'Available film by ITO'
       },
       xAxis: {
         categories: <%= raw(@data.map{ |i| i[:film_type] }.flatten) %>
       },
-
       yAxis: [{
         title: {
           text: 'Count'
@@ -20,13 +19,11 @@
           text: 'Area'
         }
       }],
-
       plotOptions: {
         series: {
           groupPadding: 0.25
         }
       },
-
       series: [{
         yAxis: 0,
         name: 'Count',

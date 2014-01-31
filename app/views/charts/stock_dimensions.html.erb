@@ -6,7 +6,7 @@
         zoomType: 'xy'
       },
       title: {
-        text: 'Stock dimensions'
+        text: 'Available dimensions map'
       },
       xAxis: {
         title: {
@@ -14,15 +14,12 @@
         },
         min: 0
       },
-
       yAxis: [{
         title: {
           text: 'Width'
         },
-
         min: 0
       }],
-
       series: [
         <% @data.each do |k, v| %>
           {
@@ -34,19 +31,17 @@
           ]},
         <% end %>
       ],
-
       plotOptions: {
         bubble: {
           minSize: 6,
-          maxSize: '10%',
+          maxSize: '12%',
         }
       },
-
       tooltip: {
         formatter: function() {
           return 'count: ' + this.point.z + '<br/>' +
-          'width: ' + this.point.x + '<br/>' +
-          'length: ' + this.point.y + '<br/>' +
+          'width: ' + this.point.y + '<br/>' +
+          'length: ' + this.point.x + '<br/>' +
           'formula: ' + this.series.name
         }
       },

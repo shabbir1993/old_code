@@ -3,12 +3,10 @@ require 'test_helper'
 class SearchHistoryTest < ActionDispatch::IntegrationTest
   before do
     @film = FactoryGirl.create(:film_with_dimensions, phase: "stock")
-    with_versioning do
-      Timecop.freeze(Time.zone.today - 2) do
-        @film.update_attributes(destination: "wip")
-      end
-      @film.update_attributes(destination: "fg")
+    Timecop.freeze(Time.zone.today - 2) do
+      @film.update_attributes(destination: "wip")
     end
+    @film.update_attributes(destination: "fg")
   end
   
   describe "searching film movements between two days ago and yesterday" do
@@ -24,7 +22,6 @@ class SearchHistoryTest < ActionDispatch::IntegrationTest
     end
 
     it "displays searched movement" do
-      skip "with_verioning doesn't work correctly, see paper_trail issue 312"
       assert page.has_selector?("tr", text: @film.serial, count: 1)
     end
   end

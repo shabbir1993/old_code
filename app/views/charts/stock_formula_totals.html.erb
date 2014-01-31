@@ -5,7 +5,7 @@
         type: 'bar'
       },
       title: {
-        text: 'Formula totals in stock'
+        text: 'Available film by formula'
       },
       xAxis: {
         categories: <%= raw(@data.map{ |i| i[:film_formula] }.flatten) %>

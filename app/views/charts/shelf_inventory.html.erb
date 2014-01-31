@@ -1,22 +1,20 @@
 <div class="panel-group">
-  <% @data.each do |s| %>
+  <% @films_group_shelf.each do |s| %>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="<%= "#collapse-#{s[0]}" %>">
-            <%= "#{s[0]} - #{s[1].count}pcs." %>
+          <a data-toggle="collapse" href="<%= "#collapse-#{s[0].parameterize}" %>">
+            <%= "#{s[0]} " %><span class="badge"><%= s[1].count %></span>
           </a>
         </h4>
       </div>
-      <div id="<%= "collapse-#{s[0]}" %>" class="panel-collapse collapse">
-        <div class="panel-body">
-          <% s[1].each do |f| %>
-            <div>
-            <strong><%= "#{f.serial}" %></strong> ~~ <%= "#{f.width} x #{f.length}" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <ul id="<%= "collapse-#{s[0].parameterize}" %>" class="list-group panel-collapse collapse">
+        <% s[1].each do |f| %>
+          <li class="list-group-item">
+          <strong><%= "#{f.serial} --" %></strong><%= " #{f.width} x #{f.length}" %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 </div>

@@ -35,7 +35,7 @@ class Film < ActiveRecord::Base
       sales_order: [:code]
     }
 
-  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
+  default_scope { where(tenant_id: Tenant.current_id) }
   scope :phase, ->(phase) { active.where(phase: phase) }
   scope :small, -> { where("width*length/#{Tenant.current_area_divisor} < ?", Tenant.current_small_area_cutoff) }
   scope :large, -> { where("width*length/#{Tenant.current_area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.current_small_area_cutoff) }

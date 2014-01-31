@@ -4,7 +4,6 @@
   <%= link_to "Film movements", film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'film_movements'}" %>
   <%= link_to "FG movements", fg_film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'fg_film_movements'}" %>
   <%= link_to "Scrap movements", scrap_film_movements_history_path, class: "list-group-item#{" active" if params[:action] == 'scrap_film_movements'}" %>
-  <%= link_to "Deletes", film_deletes_history_path, class: "list-group-item#{" active" if params[:action] == 'film_deletes'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

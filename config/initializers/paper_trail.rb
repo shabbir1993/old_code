@@ -3,10 +3,15 @@ module PaperTrail
     attr_accessible :columns_changed, :phase_change, :area_after
 
     default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
-    scope :history, -> { joins('INNER JOIN films ON films.id = versions.item_id').where( films: { deleted: false }).order('versions.created_at DESC') } 
+    scope :exclude_deleted_films, -> { joins('INNER JOIN films ON films.id = versions.item_id').where( films: { deleted: false }) } 
+    scope :sort_by_created_at, -> { order('versions.created_at DESC') }
     scope :before_date, ->(date) { where("created_at <= ?", date) } 
     scope :after_date, ->(date) { where("created_at >= ?", date) } 
     scope :movements, -> { where("'phase' = ANY (columns_changed)") }
+
+    def phase_movement
+      phase_change == [nil, "lamination"] ? ["raw", "lamination"] : phase_change
+    end
 
     def after
       self.next ? self.next.reify : Film.find(item_id)

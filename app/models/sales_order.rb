@@ -13,15 +13,15 @@ class SalesOrder < ActiveRecord::Base
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 
-  default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
+  default_scope { where(tenant_id: Tenant.current_id) }
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
   scope :shipped, -> { where('ship_date is not null') }
   scope :unshipped, -> { where(ship_date: nil) }
 
   def self.ship_date_range(start_date, end_date)
-    sales_orders = all
-    sales_orders = sales_orders.where("ship_date >= ?", start_date) if start_date
-    sales_orders = sales_orders.where("ship_date <= ?", end_date) if end_date
+    sales_orders = shipped
+    sales_orders = sales_orders.where("ship_date >= ?", start_date) if start_date.present?
+    sales_orders = sales_orders.where("ship_date <= ?", end_date) if end_date.present?
     sales_orders
   end
 

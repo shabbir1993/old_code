@@ -38,18 +38,20 @@ class ChartsController < ApplicationController
   def movement_summary
     params[:start_date] ||= Date.current.to_s
     params[:end_date] ||= (Date.current + 1).to_s
-    film_movements = PaperTrail::Version.search_date_range(params[:start_date], params[:end_date]).movements
-    film_movements_by_phase_change = film_movements.group_by(&:phase_change)
-    @data = Hash[film_movements_by_phase_change.map { |k,v| [k, [(v ? v.count : 0), v.map{ |ver| ver.area_after }.sum.to_f.round(2) ]] }]
+    film_movements_by_phase_change = PaperTrail::Version.exclude_deleted_films
+      .search_date_range(params[:start_date], params[:end_date])
+      .movements
+      .group_by(&:phase_movement)
+    @film_movement_totals_hash = Hash[film_movements_by_phase_change.map { |k,v| [k, [(v ? v.count : 0), v.map{ |ver| ver.area_after }.sum.to_f.round(2) ]] }]
     @phases_in_order = %w(raw lamination inspection stock wip fg test nc scrap)
   end
 
   def shelf_inventory
-    @data = Film.phase("stock").large.order("shelf ASC").group_by(&:shelf)
+    @films_group_shelf = Film.phase("stock").large.where("shelf <> ''").order("shelf ASC").group_by(&:shelf)
   end
 
   def utilization
-    data = SalesOrder.shipped.where(ship_date: params[:start_date]..params[:end_date])
+    data = SalesOrder.shipped.ship_date_range(params[:start_date], params[:end_date])
     data = data.by_code.reverse
     @data = data
     @average = data.sum{ |d| d.utilization.to_f }/data.count if data.count != 0
@@ -63,7 +65,7 @@ class ChartsController < ApplicationController
 
   def area_shipped
     sales_orders = SalesOrder.shipped.ship_date_range(params[:start_date], params[:end_date])
-    dates = (params[:start_date] || SalesOrder.minimum(:ship_date))..(params[:end_date] || SalesOrder.maximum(:ship_date))
+    dates = (params[:start_date].try(:to_date) || SalesOrder.minimum(:ship_date))..(params[:end_date].try(:to_date) || SalesOrder.maximum(:ship_date))
     @film_area_shipped_by_date = dates.map{ |d| [d, sales_orders.with_ship_date(d).total_custom_area_by_product_type("Film").round(2) ] }
     @glass_area_shipped_by_date = dates.map{ |d| [d, sales_orders.with_ship_date(d).total_custom_area_by_product_type("Glass").round(2) ] }
     @total_film_area_shipped = sales_orders.total_custom_area_by_product_type("Film").round(2)

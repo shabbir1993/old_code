@@ -47,14 +47,3 @@ ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 def use_javascript_driver
   Capybara.current_driver = Capybara.javascript_driver
 end
-
-# turns on papertrail
-def with_versioning
-  was_enabled = PaperTrail.enabled?
-  PaperTrail.enabled = true
-  begin
-    yield
-  ensure
-    PaperTrail.enabled = was_enabled
-  end
-end

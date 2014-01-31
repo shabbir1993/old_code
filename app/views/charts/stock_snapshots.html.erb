@@ -6,25 +6,18 @@
         zoomType: 'x'
       },
       title: {
-        text: 'Stock snapshots'
+        text: 'Phase area'
       },
       xAxis: {
         type: 'datetime'
       },
-      yAxis: [
-        {
-          min: 0,
-          title: {
-            text: 'SQFT'
-          }
-        },
-        { 
-          title: {
-            text: 'Count'
-          },
-          min: 0
+      yAxis:
+      {
+        min: 0,
+        title: {
+          text: 'SQFT'
         }
-      ],
+      },
       plotOptions: {
         area: {
           stacking: 'normal',
@@ -38,7 +31,6 @@
               lineWidth: 1
             }
           },
-          threshold: null,
           fillOpacity: 0.5
         }
       },
