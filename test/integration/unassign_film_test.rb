@@ -18,7 +18,7 @@ class UnassignFilmTest < ActionDispatch::IntegrationTest
 
     it "unassigns film from sales order" do
       click_link "film-#{@film.id}-unassign"
-      assert page.has_selector?("#film-#{@film.id}-label", text: "#{@film.serial} unassigned")
+      assert page.has_selector?("#film-#{@film.id}-label.label-default", text: "#{@film.serial}")
     end
   end
 end

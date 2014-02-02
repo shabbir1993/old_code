@@ -61,7 +61,7 @@ FactoryGirl.define do
       role_level 1
     end
 
-    initialize_with { tenant.new_user(attributes) }
+    initialize_with { tenant.new_widget(User, attributes) }
   end
 
   factory :machine do

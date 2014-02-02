@@ -23,7 +23,7 @@
       </div>
     <% end %>
     <ul class="list-inline">
-      <%= render partial: "film", collection: sales_order.films %>
+      <%= render partial: "film", collection: decorate_collection(sales_order.films) %>
     </ul>
     <span class="pull-left">Utilization: <strong><%= number_to_percentage(sales_order.utilization, precision: 2) || "N/A" %></strong></span>
     <span><strong><br/></strong></span>

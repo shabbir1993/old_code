@@ -1,4 +1,5 @@
 class ApplicationDecorator < SimpleDelegator
+  attr_reader :context
 
   def initialize(object, context)
     @context = context
@@ -7,8 +8,8 @@ class ApplicationDecorator < SimpleDelegator
 
   def self.decorators
     [
-      CollectionDecorator,
-      UserDecorator
+      UserDecorator,
+      FilmDecorator
     ]
   end
 

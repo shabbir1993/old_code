@@ -4,7 +4,7 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
 
   describe "login" do
     before do
-      @user = FactoryGirl.create(:user, tenant: @tenant)
+      @user = FactoryGirl.create(:user)
       visit login_path
     end
 

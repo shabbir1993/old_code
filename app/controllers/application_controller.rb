@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include DecoratorHelper
+  include DecoratorsHelper
 
   before_filter :authorize
   around_filter :scope_current_tenant

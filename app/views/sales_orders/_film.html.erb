@@ -1,13 +1,4 @@
-<% li_class ||= case film.phase %>
-<% when "fg" %>
-  <% "label-success" %>
-<% when "wip" %>
-  <% "label-warning" %>
-<% else %>
-  <% "label-danger" %>
-<% end %>
-
-<li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{li_class}" %>">
-  <%= film.serial %><%= " unassigned" if film.sales_order == nil %>
-  <%= link_to("X", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign"}) unless film.sales_order == nil %>
+<li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{film.phase_label_class}" %>">
+  <%= film.serial %>
+  <%= link_to("X", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign"}) %>
 </li>

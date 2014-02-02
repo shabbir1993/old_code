@@ -1,1 +1,1 @@
-$("<%= "#film-#{@film.id}-label" %>").replaceWith("<%= j render 'sales_orders/film', film: @film, li_class: "label-default" %>");
+$("<%= "#film-#{@film.id}-label" %>").html("<%= "#{@film.serial}" %>").attr("class", "label label-default");

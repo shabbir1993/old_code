@@ -2,7 +2,11 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy, :return]
 
   def index
-    @sales_orders = SalesOrder.send(params[:scope]).text_search(params[:query]).by_code.page(params[:page])
+    @sales_orders = current_tenant.widgets(SalesOrder)
+                                  .send(params[:scope])
+                                  .text_search(params[:query])
+                                  .by_code
+                                  .page(params[:page])
   end
   
   def new

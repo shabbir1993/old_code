@@ -1,6 +1,6 @@
 class Admin::UsersController < AdminController
   def index
-    @users = decorate(current_tenant.users.page(params[:page]))
+    @users = Kaminari.paginate_array(decorate_collection(current_tenant.widgets(User))).page(params[:page])
   end
 
   def new
@@ -36,10 +36,10 @@ class Admin::UsersController < AdminController
   end
 
   def new_user(parameters = nil)
-    current_tenant.new_user(parameters)
+    current_tenant.new_widget(User, parameters)
   end
 
   def find_user(id)
-    current_tenant.user(id)
+    current_tenant.widget(User, id)
   end
 end
