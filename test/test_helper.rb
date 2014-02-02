@@ -17,7 +17,7 @@ class ActiveSupport::TestCase
   end
 
   before do
-    setup_tenant
+    @tenant = setup_tenant
   end
 end
 

@@ -45,6 +45,9 @@ FactoryGirl.define do
     sequence(:full_name) { |n| "Example Person #{n}" }
     password "foobar"
     password_confirmation "foobar"
+    ignore do 
+      tenant
+    end
 
     factory :chemist do
       chemist true
@@ -55,8 +58,10 @@ FactoryGirl.define do
     end
 
     factory :admin do
-      role_level 2
+      role_level 1
     end
+
+    initialize_with { tenant.new_user(attributes) }
   end
 
   factory :machine do

@@ -1,31 +1,45 @@
 class Admin::UsersController < AdminController
   def index
-    @users = current_tenant.users.page(params[:page])
+    @users = decorate(current_tenant.users.page(params[:page]))
   end
 
   def new
-    @user = current_tenant.new_user(params[:user])
+    @user = new_user
     render layout: false
   end
 
   def create
-    @user = current_tenant.new_user(params[:user])
+    @user = decorate(new_user(user_params))
     @user.save
   end
 
   def edit
-    @user = current_tenant.user(params[:id])
+    @user = find_user(params[:id])
     render layout: false
   end
 
   def update
-    @user = current_tenant.user(params[:id])
-    @user.update_attributes(params[:user])
+    @user = decorate(find_user(params[:id]))
+    @user.update_attributes(user_params)
   end 
 
   def destroy
-    @user = current_tenant.user(params[:id])
+    @user = find_user(params[:id])
     @user.destroy
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level)
+  end
+
+  def new_user(parameters = nil)
+    current_tenant.new_user(parameters)
+  end
+
+  def find_user(id)
+    current_tenant.user(id)
   end
 end

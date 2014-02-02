@@ -9,6 +9,7 @@ class ModalFormBuilder < ActionView::Helpers::FormBuilder
         super(name, *args)
       else
         args << options if options.present?
+        args = add_default_class(args)
         content_tag :div, class: "form-group" do
           field_label(name, *args) +
           content_tag(:div, super(name, *args), class: "col-md-8")
@@ -43,5 +44,14 @@ private
     else
       label(name, options[:label], class: "control-label col-md-2")
     end
+  end
+
+  def add_default_class(args)
+    if args.last && args.last[:class].nil?
+      args.last[:class] = "form-control"
+    elsif args.empty?
+      args << { class: "form-control" }
+    end
+    args
   end
 end

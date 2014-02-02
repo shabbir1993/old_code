@@ -29,4 +29,16 @@ module ApplicationHelper
     new_params = params.merge({ sort: column, direction: direction })
     link_to(title, new_params) + " " + icon
   end
+
+  def link_to_modal_edit(path, object)
+    link_to path, { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "#{object.class.to_s.downcase}-#{object.id}-edit" } do
+      content_tag(:i, nil, class: "fa fa-edit").html_safe
+    end
+  end
+
+  def link_to_modal_new(path, label)
+    content_tag(:th, nil, colspan: "100%") do
+      link_to label, path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" }
+    end
+  end
 end

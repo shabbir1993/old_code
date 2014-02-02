@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include DecoratorHelper
+
   before_filter :authorize
   around_filter :scope_current_tenant
   around_filter :set_tenant_time_zone, :if => :current_tenant

@@ -1,14 +1,10 @@
-<% row_class = "" if local_assigns[:row_class].nil? %>
-<tr id="<%= "user-#{user.id}" %>" class="<%= row_class %>">
+<tr id="<%= "user-#{user.id}" %>">
   <td>
-    <%= link_to edit_user_path(user), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "user-#{user.id}-edit" } do %>
-      <i class="fa fa-edit"></i>
-    <% end %>
+    <%= link_to_modal_edit(edit_user_path(user), user) %>
   </td>
   <td class="full_name"><%= user.full_name %></td>
   <td class="username"><%= user.username %></td>
   <td class="role_title"><%= user.role_title %></td>
   <td class="chemist"><%= user.chemist %></td>
   <td class="operator"><%= user.operator %></td>
-  <td class="has_password"><%= user.password_digest.present? %></td>
 </tr>

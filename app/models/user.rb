@@ -9,8 +9,6 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :full_name, presence: true, uniqueness: { case_sensitive: false }
 
-  default_scope { where(tenant_id: Tenant.current_id) }
-
   def self.chemists
     User.where(chemist: true).pluck(:full_name)
   end
@@ -20,17 +18,6 @@ class User < ActiveRecord::Base
   end
 
   def is_admin?
-    role_level >= 1
-  end
-
-  def role_title
-    case role_level
-    when 0
-      "User"
-    when 1
-      "Admin"
-    else
-      "Undefined"
-    end
+    role_level == 1
   end
 end

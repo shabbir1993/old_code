@@ -8,12 +8,9 @@
     <th>Role</th>
     <th>Chemist</th>
     <th>Operator</th>
-    <th>Has password</th>
   </tr>
   <tr>
-    <th colspan="100%">
-      <%= link_to "New user", new_user_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => ".modal" } %>
-    </th>
+    <%= link_to_modal_new(new_user_path, "New user") %>
   </tr>
 <% end %>
 
