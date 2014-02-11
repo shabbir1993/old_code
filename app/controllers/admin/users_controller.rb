@@ -1,31 +1,31 @@
 class Admin::UsersController < AdminController
   def index
-    @users = Kaminari.paginate_array(decorate_collection(current_tenant.widgets(User))).page(params[:page])
+    @users = current_tenant.widgets(User)
   end
 
   def new
-    @user = new_user
+    @user = current_tenant.new_widget(User, params[:user])
     render layout: false
   end
 
   def create
-    @user = decorate(new_user(user_params))
+    @user = current_tenant.new_widget(User, params[:user])
     @user.save
   end
 
   def edit
-    @user = find_user(params[:id])
+    @user = current_tenant.widget(User, params[:id])
     render layout: false
   end
 
   def update
-    @user = decorate(find_user(params[:id]))
+    @user = current_tenant.widget(User, params[:id])
     @user.update_attributes(user_params)
   end 
 
   def destroy
-    @user = find_user(params[:id])
-    @user.destroy
+    @user = current_tenant.widget(User, params[:id])
+    @user.destroy!
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
   end
 
@@ -35,11 +35,13 @@ class Admin::UsersController < AdminController
     params.require(:user).permit(:username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level)
   end
 
-  def new_user(parameters = nil)
-    current_tenant.new_widget(User, parameters)
+  def users
+    Kaminari.paginate_array(decorate_collection(@users)).page(params[:page])
   end
+  helper_method :users
 
-  def find_user(id)
-    current_tenant.widget(User, id)
+  def user
+    decorate(@user)
   end
+  helper_method :user
 end

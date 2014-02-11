@@ -1,21 +1,13 @@
-<div class="form-group">
-  <%= f.label :width, "Dimensions", class: "col-md-2 control-label" %>
-  <div class="col-md-4">
-    <%= f.number_field :width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-  </div>
-  <div class="col-md-4">
-    <%= f.number_field :length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-  </div>
-</div>
-<%= f.text_field :shelf, class: "form-control" %>
+<%= render 'shared/dimensions_fields', f: f, label: "Dimensions", width: :width, length: :length %>
+<%= f.text_field :shelf %>
 <div class="form-group">
   <%= f.label :sales_order_id, "SO", class: "control-label col-md-2" %>
   <div class="col-md-5">
-    <%= f.collection_select :sales_order_id, film.sales_order ? SalesOrder.unshipped.to_set << film.sales_order : SalesOrder.unshipped, :id, :code, { include_blank: "---" }, class: "form-control", default: true %>
+    <%= f.collection_select :sales_order_id, sales_order_assign_choices(film), :id, :code, { include_blank: "---" }, class: "form-control", default: true %>
   </div>
   <div class="col-md-3">
     <%= f.number_field :order_fill_count, placeholder: "Count", class: "form-control", default: true %>
   </div>
 </div>
-<%= f.text_area :note, class: "form-control" %>
-<%= f.select :destination, PhaseDefinitions.destinations_for(film.phase), { prompt: "Move to..." }, { class: "form-control", label: false } %>
+<%= f.text_area :note %>
+<%= f.select :destination, PhaseDefinitions.destinations_for(film.phase), { prompt: "Move to..." }, { label: false } %>

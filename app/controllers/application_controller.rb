@@ -1,19 +1,16 @@
 class ApplicationController < ActionController::Base
   include DecoratorsHelper
 
-  before_filter :authorize
+  before_action :authorize
   around_filter :scope_current_tenant
-  around_filter :set_tenant_time_zone, :if => :current_tenant
+  around_filter :set_tenant_time_zone, if: :current_tenant
 
   protect_from_forgery
 
 private
 
   def restrict_by_ip
-    allowed_ips = ["66.226.220.106",   #PI Dallas
-                   "120.33.232.194",   #PE Fujian
-                   "127.0.0.1"]        #localhost
-    raise ActionController::RoutingError.new('Bad IP') unless allowed_ips.include?(request.remote_ip)
+    raise ActionController::RoutingError.new('Bad IP') unless ALLOWED_IPS.include?(request.remote_ip)
   end
 
   def current_user

@@ -42,12 +42,18 @@ class SalesOrder < ActiveRecord::Base
     line_items.sum(:quantity)
   end
 
-  def total_assigned_film_count(phase)
-    films.where(phase: phase).sum(:order_fill_count)
+  def total_assigned_film_count(phase = nil)
+    if phase
+      films.where(phase: phase).sum(:order_fill_count)
+    else
+      films.sum(:order_fill_count)
+    end
   end
 
   def total_assigned_film_percent(phase)
     total_assigned_film_count(phase)*100/total_quantity
+  rescue ZeroDivisionError
+    0
   end
 
   def total_custom_area

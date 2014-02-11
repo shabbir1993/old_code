@@ -1,9 +1,9 @@
 <div class="navbar navbar-inverse navbar-static-top">
   <%= link_to "PCMS", root_url, class: "navbar-brand" %>
   <ul class="nav navbar-nav">
-    <li class="<%= 'active' if params[:controller] == 'films' %>"><%= link_to "Production", films_path(scope: "lamination") %></li>
+    <li class="<%= 'active' if params[:controller] == 'films' %>"><%= link_to "Production", films_path(phase: "lamination") %></li>
     <li class="<%= 'active' if params[:controller] == 'master_films' %>"><%= link_to "Engineering", master_films_path %></li>
-    <li class="<%= 'active' if params[:controller] == 'sales_orders' %>"><%= link_to "Orders", sales_orders_path(scope: 'unshipped') %></li>
+    <li class="<%= 'active' if params[:controller] == 'sales_orders' %>"><%= link_to "Orders", sales_orders_path(status: 'unshipped') %></li>
     <li class="<%= 'active' if params[:controller] == 'history' %>"><%= link_to "History", film_movements_history_path %></li>
     <li class="<%= 'active' if params[:controller] == 'charts' %>"><%= link_to "Charts", stock_formula_totals_chart_path %></li>
     <% if current_user.is_admin? %>

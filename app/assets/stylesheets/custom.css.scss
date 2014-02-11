@@ -89,10 +89,6 @@ td.nowrap {
   margin-bottom: 0;
 }
 
-.modal-dialog.wide {
-  width: 1000px;
-}
-
 .modal-footer {
   .form-group {
     width: 300px;
@@ -110,3 +106,15 @@ td.nowrap {
   color: #dddddd
 }
 
+.progress {
+  margin-bottom: 10px !important;
+
+  .progress-bar {
+    opacity: 0.6;
+  }
+
+  span {
+    z-index: 100;
+    position: absolute;
+  }
+}

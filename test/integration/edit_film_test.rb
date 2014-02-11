@@ -47,9 +47,9 @@ class EditFilmTest < ActionDispatch::IntegrationTest
       click_link "film-#{@film.id}-edit" 
     end
 
-    it "has a working delete checkbox" do
-      check("Deleted")
-      click_button "Update"
+    it "has a working delete button" do
+      sleep 0.1
+      click_link "Delete"
       assert page.has_selector?("#film-#{@film.id}", text: "deleted")
     end
   end

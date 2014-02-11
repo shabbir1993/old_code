@@ -6,6 +6,7 @@ class ModalFormBuilder < ActionView::Helpers::FormBuilder
       options = args.extract_options!
       if options[:default]
         args << options.except(:default)
+        args = add_default_class(args)
         super(name, *args)
       else
         args << options if options.present?
@@ -47,9 +48,9 @@ private
   end
 
   def add_default_class(args)
-    if args.last && args.last[:class].nil?
+    if args.last && args.last.is_a?(Hash) && !args.last.has_key?(:class)
       args.last[:class] = "form-control"
-    elsif args.empty?
+    elsif args.empty? || !args.last.is_a?(Hash)
       args << { class: "form-control" }
     end
     args

@@ -67,9 +67,20 @@ class Film < ActiveRecord::Base
   scope :nc, -> { select_fields.phase("nc") }
   scope :scrap, -> { select_fields.phase("scrap") }
   scope :deleted, -> { select_fields.where(deleted: true) }
-  
+
+  def split
+    master_film.films.build(tenant_id: tenant_id, phase: phase, width: width, length: length).tap do |s|
+      s.save!
+    end
+  end
+
   def serial
     master_film.serial + "-" + division.to_s
+  end
+
+  def unassign
+    reset_sales_order
+    save!
   end
   
   def area
@@ -79,22 +90,18 @@ class Film < ActiveRecord::Base
   def destination=(destination)
     if destination.present?
       write_attribute(:phase, destination)
-      write_attribute(:sales_order_id, nil) unless %w(stock wip fg).include?(destination)
+      reset_sales_order unless %w(stock wip fg).include?(destination)
     end
   end
 
   def width=(width)
-    master_film.update_attributes(effective_width: width) if PhaseDefinitions.front_end?(phase)
+    master_film.update_attributes!(effective_width: width) if PhaseDefinitions.front_end?(phase)
     write_attribute(:width, width)
   end
 
   def length=(length)
-    master_film.update_attributes(effective_length: length) if PhaseDefinitions.front_end?(phase)
+    master_film.update_attributes!(effective_length: length) if PhaseDefinitions.front_end?(phase)
     write_attribute(:length, length)
-  end
-
-  def upcase_shelf
-    shelf.upcase! if shelf.present?
   end
 
   def self.total_area
@@ -131,5 +138,15 @@ class Film < ActiveRecord::Base
       data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
     end
     data
+  end
+
+  private
+
+  def upcase_shelf
+    shelf.upcase! if shelf.present?
+  end
+
+  def reset_sales_order
+    assign_attributes(sales_order_id: nil, order_fill_count: 1)
   end
 end

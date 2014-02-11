@@ -4,11 +4,11 @@ class ExportMasterFilmsTest < ActionDispatch::IntegrationTest
 
   before { @master_film = FactoryGirl.create(:master_film_with_child) }
 
-  describe "Engineering page" do
-    let(:user) { FactoryGirl.create(:user) }
+  describe "engineering page with admin auth" do
+    let(:admin) { FactoryGirl.create(:admin) }
 
     before do
-      log_in(user)
+      log_in(admin)
       click_link "Engineering"
     end
 

@@ -1,8 +1,7 @@
 Pcms::Application.routes.draw do
-  resources :films, except: [:new, :create, :show, :destroy] do
+  resources :films, except: [:new, :create, :show] do
     member do
-      get :split
-      patch :create_split
+      post :split
       patch :restore
       patch :unassign
     end
@@ -50,5 +49,5 @@ Pcms::Application.routes.draw do
   get 'charts/area_shipped', to: 'charts#area_shipped', as: :area_shipped_chart
 
 
-  root to: 'films#index', defaults: { scope: "lamination" }
+  root to: 'films#index', phase: "lamination"
 end

@@ -7,15 +7,15 @@ class ExportFilmsTest < ActionDispatch::IntegrationTest
   end
 
   describe "production page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:admin) { FactoryGirl.create(:admin) }
 
     before do
-      log_in(user)
+      log_in(admin)
       click_link "Production"
       click_link "Lamination"
     end
 
-    it "Export link downloads file with films" do
+    it "export link downloads file with films" do
       click_link "Export"
       page.response_headers["Content-Disposition"].must_equal "attachment"
       page.source.must_include "F0101-01-1"

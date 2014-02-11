@@ -1,14 +1,14 @@
-<fieldset class="form-group line-item-fields">
+<fieldset class="form-group lineitem-fields">
   <div class="form-group">
     <%= label_tag :line_item, "Line item", class: "control-label col-md-2" %>
     <div class="col-md-3">
-      <%= f.number_field :custom_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+      <%= f.number_field :custom_width, placeholder: "Width", step: "any", default: true %>
     </div>
     <div class="col-md-3">
-      <%= f.number_field :custom_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+      <%= f.number_field :custom_length, placeholder: "Length", step: "any", default: true %>
     </div>
     <div class="col-md-2">
-      <%= f.number_field :quantity, placeholder: "Qty", class: "form-control", default: true %>
+      <%= f.number_field :quantity, placeholder: "Qty", default: true %>
     </div>
     <%= f.hidden_field :_destroy %>
     <%= link_to '#', class: "remove-fields" do %>
@@ -21,7 +21,7 @@
       <%= f.inline_radio :product_type, "Glass", "Glass" %>
     </div>
   </div>
-  <%= f.text_field :wire_length, placeholder: "Wires", label: false, class: "form-control" %>
-  <%= f.text_field :busbar_type, placeholder: "Busbar", label: false, class: "form-control" %>
-  <%= f.text_area :note, placeholder: "Note", label: false, class: "form-control" %>
+  <%= f.text_field :wire_length, placeholder: "Wires", label: false %>
+  <%= f.text_field :busbar_type, placeholder: "Busbar", label: false %>
+  <%= f.text_area :note, placeholder: "Note", label: false %>
 </fieldset>

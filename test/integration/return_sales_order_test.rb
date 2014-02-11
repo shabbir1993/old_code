@@ -16,8 +16,8 @@ class ReturnSalesOrderTest < ActionDispatch::IntegrationTest
     end
 
     it "returns shipped sales order" do
-      click_link "sales-order-#{@sales_order.id}-return"
-      assert page.has_content?("#{@sales_order.code} returned")
+      click_link "salesorder-#{@sales_order.id}-return"
+      assert page.has_content?("#{@sales_order.code} Returned")
     end
   end
 
@@ -31,7 +31,7 @@ class ReturnSalesOrderTest < ActionDispatch::IntegrationTest
     end
 
     it "does not have a return button" do
-      refute page.has_selector?("#sales-order-#{@sales_order.id}-return")
+      refute page.has_selector?("#salesorder-#{@sales_order.id}-return")
     end
   end
 end

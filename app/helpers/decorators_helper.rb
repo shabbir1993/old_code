@@ -4,6 +4,6 @@ module DecoratorsHelper
   end
 
   def decorate_collection(collection, context=self)
-    CollectionDecorator.new(collection, context).decorated_collection
+    collection.map { |o| decorate(o, context) }
   end
 end

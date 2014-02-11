@@ -1,54 +1,11 @@
-<%= modal_form_for @master_film do |f| %>
+<%= modal_form_for master_film do |f| %>
   <div class="modal-header">
-    <h4 class="modal-title text-center"><%= @master_film.serial %></h4>
+    <h4 class="modal-title text-center"><%= master_film.serial %></h4>
   </div>
   <div class="modal-body">
-    <%= f.text_field :serial, class: "form-control" if current_user.is_admin? %>
-    <div class="form-group">
-      <%= f.label :width, "Effective", class: "col-md-2 control-label" %>
-      <div class="col-md-4">
-        <%= f.number_field :effective_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
-      </div>
-      <div class="col-md-4">
-        <%= f.number_field :effective_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
-      </div>
-    </div>
-    <%= f.text_field :formula, class: "form-control" %>
-    <%= f.number_field :mix_mass, step: "any", class: "form-control" %>
-    <%= f.collection_select :machine_id, Machine.all, :id, :code, {}, class: "form-control" %>
-    <%= f.text_field :film_code, class: "form-control" %>
-    <%= f.text_field :thinky_code, class: "form-control" %>
-    <%= f.select :chemist, User.chemists, { prompt: "Choose chemist..." }, class: "form-control" %>
-    <%= f.select :operator, User.operators, { prompt: "Choose operator..." }, class: "form-control" %>
-    <%= f.text_area :note, class: "form-control" %>
-    <fieldset class="panel panel-warning">
-      <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
-      <div class="panel-body">
-        <%= f.fields_for :defects do |d| %>
-          <% @master_film.defects.try(:each) do |key, value| %>
-            <fieldset class="form-group defect-fields">
-              <%= f.label :defect_type, "Type", class: "control-label col-md-2" %>
-              <div class="col-md-5">
-                <%= select_tag key, options_for_select(MasterFilm::DEFECT_TYPES, key), required: true, prompt: "Select defect...", class: "dynamic-attr-key form-control" %>
-              </div>
-              <div class="col-md-3">
-                <%= d.number_field key, value: value, required: true, placeholder: "Count", class: "dynamic-attr-value form-control", default: true %>
-              </div>
-              <%= link_to '#', class: "remove-hstore-fields" do %>
-                <i class="fa fa-minus"></i>remove
-              <% end %>
-            </fieldset>
-          <% end %>
-        <% end %>
-        <div class="add-fields-link-wrapper form-group">
-          <div class="col-md-offset-2 col-md-8">
-            <%= link_to('#', class: "add-hstore-fields", data: { fields: render("new_defect_fields").gsub("\n", "") }) do %>
-              <%= content_tag(:i, nil, class: "fa fa-plus") + "Add defect" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </fieldset>
+    <%= serial_input_if_admin(f) %>
+    <%= render 'shared/dimensions_fields', f: f, label: "Effective", width: :effective_width, length: :effective_length %>
+    <%= render 'master_film_fields', f: f %>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

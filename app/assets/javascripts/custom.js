@@ -12,8 +12,10 @@ jQuery(function() {
     enableDatepicker()
   });
 
-  $("#get-edit-multiple").bind("ajax:success", function(event, data, status, xhr) {
+  $("#get-edit-multiple").on("ajax:success", function(event, data, status, xhr) {
     $("#forms-modal").html(data).modal('show');
+  }).children().on("ajax:success", function(e) {
+    return false;
   });
 
   // resets modal data when closed
@@ -57,10 +59,10 @@ jQuery(function() {
   $("input.film-select").click(function() {
     var unchecked = $('input.film-select:checked').length;
     if (unchecked >= 1) {
-      $('#film-edit-multiple').removeAttr('disabled');
+      $('#films-edit-multiple').removeAttr('disabled');
     }
     else {
-      $('#film-edit-multiple').attr('disabled', 'disabled');
+      $('#films-edit-multiple').attr('disabled', 'disabled');
     }
   });
 });

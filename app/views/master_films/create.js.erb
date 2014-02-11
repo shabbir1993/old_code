@@ -1,3 +1,4 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @master_film } do %>
-  $('.main tbody').prepend("<%= j render 'master_film', master_film: @master_film, row_class: "success"  %>");
+<%= render layout: 'shared/modal_form_submit', locals: { object: master_film } do %>
+  $('.main tbody').prepend("<%= j render 'master_film', master_film: master_film %>");
+  $("<%= "#masterfilm-#{master_film.id}" %>").addClass("success")
 <% end %>

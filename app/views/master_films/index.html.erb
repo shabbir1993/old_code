@@ -1,8 +1,8 @@
 <%= render 'search_form' %>
 
-<%= paginate @master_films %>
+<%= paginate master_films %>
 
-<%= link_to "Export", master_films_path(start_serial: params[:start_serial], end_serial: params[:end_serial], format: "csv"), id: "master-films-export", class: "btn btn-default" %>
+<%= link_to_export(method(:master_films_path), params) %>
 
 <% content_for :table_header do %>
   <tr>
@@ -22,14 +22,12 @@
     <th>Note</th>
   </tr>
   <tr>
-    <th colspan="100%">
-      <%= link_to "Enter film", new_master_film_path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } %>
-    </td>
+    <%= link_to_modal_new(new_master_film_path, "Enter film") %>
   </tr>
 <% end %>
 
 <% content_for :table_body do %>
-  <%= render @master_films %>
+  <%= render master_films %>
 <% end %>
 
 <%= render "shared/table" %>

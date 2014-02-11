@@ -1,14 +1,14 @@
-<%= modal_form_for @sales_order do |f| %>
+<%= modal_form_for sales_order do |f| %>
   <div class="modal-header">
-    <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
+    <h4 class="modal-title text-center"><%= sales_order.code %></h4>
   </div>
   <div class="modal-body">
-    <%= f.text_field :code, class: "form-control" if current_user.is_admin? %>
-    <%= f.text_field :customer, label: "Customer", class: "form-control" %>
-    <%= f.text_field :ship_to, label: "Ship to", class: "form-control" %>
+    <%= code_input_if_admin(f) %>
+    <%= f.text_field :customer, label: "Customer" %>
+    <%= f.text_field :ship_to, label: "Ship to" %>
     <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>
     <%= render "shared/date_field", f: f, name: :due_date, label: "Due" %>
-    <%= f.text_area :note, label: "Note", class: "form-control" %>
+    <%= f.text_area :note, label: "Note" %>
     <fieldset class="panel panel-warning">
       <div class="panel-heading"><h6 class="panel-title text-center">Line items</h6></div>
       <div class="panel-body">
@@ -24,9 +24,7 @@
     </fieldset>
   </div>
   <div class="modal-footer">
-    <% if current_user.is_admin? %>
-      <%= link_to "Delete", @sales_order, method: :delete, remote: true, class: "btn btn-danger pull-left" %>
-    <% end %>
+    <%= link_to_delete_if_admin(sales_order) %>
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <%= f.submit "Update", class: "btn btn-success" %>
   </div>

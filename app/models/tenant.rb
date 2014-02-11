@@ -5,7 +5,7 @@ class Tenant < ActiveRecord::Base
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   def widget(klass, id)
-    widgets(klass).find_by_id(id)
+    widgets(klass).find(id)
   end
 
   def widgets(klass)

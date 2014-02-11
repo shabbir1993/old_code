@@ -1,15 +1,20 @@
 class ApplicationDecorator < SimpleDelegator
-  attr_reader :context
+  include ActionView::Helpers::NumberHelper
+
+  attr_reader :context, :object
 
   def initialize(object, context)
     @context = context
+    @object = object
     super(object)
   end
 
   def self.decorators
     [
       UserDecorator,
-      FilmDecorator
+      FilmDecorator,
+      SalesOrderDecorator,
+      MasterFilmDecorator
     ]
   end
 

@@ -1,12 +1,11 @@
 <fieldset class="form-group defect-fields">
-  <%= f.label :defect_type, "Type", class: "control-label col-md-2" %>
-  <div class="col-md-5">
-    <%= select_tag key, options_for_select(MasterFilm::DEFECT_TYPES, key), prompt: "Select defect...", class: "form-control" %>
+  <div class="col-md-5 col-md-offset-2">
+    <%= select_tag key, options_for_select(MasterFilm::DEFECT_TYPES, key), required: true, prompt: "Select defect...", class: "dynamic-attr-key form-control" %>
   </div>
   <div class="col-md-3">
-    <%= d.number_field value, value: value, placeholder: "Count", class: "form-control", default: true %>
+    <%= f.number_field key, value: value, required: true, placeholder: "Count", class: "dynamic-attr-value form-control", default: true %>
   </div>
-  <%= link_to '#', class: "remove-fields" do %>
+  <%= link_to '#', class: "remove-hstore-fields" do %>
     <i class="fa fa-minus"></i>remove
   <% end %>
 </fieldset>

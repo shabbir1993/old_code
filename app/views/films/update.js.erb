@@ -1,9 +1,9 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @film } do %>
-  <% if params[:film][:deleted] == '1' %>
-    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', film: @film, destination: "deleted" %>");
-  <% elsif params[:film][:destination].present? %>
-    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'moved_film', film: @film, destination: @film.phase %>");
+<%= render layout: 'shared/modal_form_submit', locals: { object: film } do %>
+  var film_row = $("<%= "#film-#{film.id}" %>")
+  <% if film.moved? %>
+    film_row.replaceWith("<%= j render 'moved_film', film: film %>");
   <% else %>
-    $("<%= "#film-#{@film.id}" %>").replaceWith("<%= j render 'film', film: @film, row_class: "info" %>");
+    film_row.replaceWith("<%= j render 'film', film: film %>");
+    $(film_row.selector).addClass("info")
   <% end %>
 <% end %>

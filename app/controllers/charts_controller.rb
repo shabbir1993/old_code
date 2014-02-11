@@ -1,26 +1,10 @@
 class ChartsController < ApplicationController
   def stock_film_type_totals
-    all_film_types = Film.large_stock.pluck("master_films.film_code").uniq
-
-    @data = all_film_types.map do |type|
-      {
-        film_type: type.present? ? type : "None",
-        count: Film.large_stock.where("master_films.film_code = ?", type).count,
-        total_area: Film.large_stock.where("master_films.film_code = ?", type).sum("width * length / #{current_tenant.area_divisor}").to_i
-      }
-    end
+    @data = ItoFilmTotalsPresenter.new(current_tenant).count_and_area_by_ito
   end
 
   def stock_formula_totals
-    all_film_formulas = Film.large_stock.pluck("master_films.formula").uniq
-
-    @data = all_film_formulas.map do |formula|
-      {
-        film_formula: formula.present? ? formula : "None",
-        count: Film.large_stock.where("master_films.formula = ?", formula).count,
-        total_area: Film.large_stock.where("master_films.formula = ?", formula).sum("width * length / #{current_tenant.area_divisor}").to_i
-      }
-    end
+    @data = FormulaTotalsPresenter.new(current_tenant).count_and_area_by_formula
   end
 
   def stock_dimensions

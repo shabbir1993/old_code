@@ -22,7 +22,7 @@ class EditMasterFilmTest < ActionDispatch::IntegrationTest
       select 'White Spot', from: 'master_film_defects_key'
       fill_in 'Count', with: 1
       click_button 'Update'
-      within("#master-film-#{@master_film.id}") do
+      within("#masterfilm-#{@master_film.id}") do
         assert page.has_selector?('.note', text: "New note")
         assert page.has_selector?('.defects_sum', text: '1')
       end

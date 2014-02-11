@@ -8,7 +8,7 @@
         text: 'Available film by ITO'
       },
       xAxis: {
-        categories: <%= raw(@data.map{ |i| i[:film_type] }.flatten) %>
+        categories: <%= raw(@data.map{ |i| i[:ito] }) %>
       },
       yAxis: [{
         title: {
@@ -27,12 +27,12 @@
       series: [{
         yAxis: 0,
         name: 'Count',
-        data: <%= raw(@data.map{ |i| i[:count] }.flatten.to_json) %>,
+        data: <%= raw(@data.map{ |i| i[:count] }) %>,
         pointPlacement: 0.2
         }, {
         yAxis: 1,
         name: 'Area',
-        data: <%= raw(@data.map{ |i| i[:total_area] }.flatten.to_json) %>,
+        data: <%= raw(@data.map{ |i| i[:area] }) %>,
         pointPlacement: -0.2
       }]
     });

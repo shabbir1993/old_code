@@ -1,0 +1,8 @@
+<li id="<%= "salesorder-#{sales_order.id}" %>" class="panel panel-info">
+<div class="panel-heading">
+  <h4 class="panel-title">
+    <strong><%= sales_order.code %></strong> <i class="fa fa-arrow-right"></i> <%= sales_order.destination %>
+    <%= display_ship_date(sales_order) %>
+  </h4>
+</div>
+</li>

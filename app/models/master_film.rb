@@ -21,6 +21,12 @@ class MasterFilm < ActiveRecord::Base
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
 
+  def save_and_create_child
+    if save
+      films.create(phase: "lamination")
+    end
+  end
+
   def yield
     (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
   end

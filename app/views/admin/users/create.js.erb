@@ -1,4 +1,4 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @user } do %>
-  $('.main tbody').prepend("<%= j render 'user', user: @user %>");
-  $("<%= "#user-#{@user.id}" %>").addClass("success")
+<%= render layout: 'shared/modal_form_submit', locals: { object: user } do %>
+  $('.main tbody').prepend("<%= j render 'user', user: user %>");
+  $("<%= "#user-#{user.id}" %>").addClass("success")
 <% end %>

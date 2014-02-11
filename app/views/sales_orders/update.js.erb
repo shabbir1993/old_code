@@ -1,4 +1,6 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @sales_order } do %>
-  $("<%= "#sales-order-#{@sales_order.id}" %>").replaceWith("<%= j render 'sales_order', sales_order: @sales_order, panel_class: "panel-info" %>");
+<%= render layout: 'shared/modal_form_submit', locals: { object: sales_order } do %>
+  var sales_order_row = $("<%= "#salesorder-#{sales_order.id}" %>")
+  sales_order_row.replaceWith("<%= j render 'sales_order', sales_order: sales_order %>");
+  $(sales_order_row.selector).addClass("panel-info");
 <% end %>
 

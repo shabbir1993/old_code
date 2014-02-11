@@ -1,9 +1,6 @@
-<% row_class = "" if local_assigns[:row_class].nil? %>
-<tr id="<%= "master-film-#{master_film.id}" %>" class="<%= row_class %>">
+<tr id="<%= "masterfilm-#{master_film.id}" %>">
   <td>
-    <%= link_to edit_master_film_path(master_film), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "masterfilm-#{master_film.id}-edit" } do %>
-      <i class="fa fa-edit"></i>
-    <% end %>
+    <%= link_to_modal_edit(edit_master_film_path(master_film), master_film) %>
   </td>
   <td class="serial"><%= master_film.serial %></td>
   <td class="formula"><%= master_film.formula %></td>
@@ -15,7 +12,7 @@
   <td class="operator"><%= master_film.operator %></td>
   <td class="effective_width"><%= master_film.effective_width %></td>
   <td class="effective_length"><%= master_film.effective_length %></td>
-  <td class="yield"><%= number_to_percentage(master_film.yield, precision: 2) %></td>
+  <td class="yield"><%= master_film.yield %></td>
   <td class="defects_sum"><%= master_film.defects_sum %></td>
   <td class="note"><%= master_film.note %></td>
 </tr>

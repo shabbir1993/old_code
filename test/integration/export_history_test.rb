@@ -7,10 +7,10 @@ class ExportHistoryTest < ActionDispatch::IntegrationTest
   end
 
   describe "FG movements history page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:admin) { FactoryGirl.create(:admin) }
 
     before do
-      log_in(user)
+      log_in(admin)
       click_link "History"
       click_link "FG movements"
     end

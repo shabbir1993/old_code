@@ -1,4 +1,4 @@
-<%= paginate @users %>
+<%= paginate users %>
 
 <% content_for :table_header do %>
   <tr>
@@ -15,7 +15,7 @@
 <% end %>
 
 <% content_for :table_body do %>
-  <%= render @users %>
+  <%= render users %>
 <% end %>
 
 <%= render "shared/table" %>

@@ -1,0 +1,23 @@
+<%= f.text_field :formula %>
+<%= f.number_field :mix_mass, step: "any" %>
+<%= f.collection_select :machine_id, current_tenant.widgets(Machine), :id, :code, {}, { class: "form-control" } %>
+<%= f.text_field :film_code %>
+<%= f.text_field :thinky_code %>
+<%= f.select :chemist, current_tenant.widgets(User).chemists, { prompt: "Choose chemist..." }, { class: "form-control" } %>
+<%= f.select :operator, current_tenant.widgets(User).operators, { prompt: "Choose operator..." }, { class: "form-control" } %>
+<%= f.text_area :note %>
+<fieldset class="panel panel-warning">
+  <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
+  <div class="panel-body">
+    <%= f.fields_for :defects do |d| %>
+      <% master_film.defects.try(:each) do |key, value| %>
+        <%= render 'defect_fields', f: d, key: key, value: value %>
+      <% end %>
+    <% end %>
+    <div class="add-fields-link-wrapper form-group">
+      <div class="col-md-offset-2 col-md-8">
+        <%= link_to_add_hstore_fields("Add defect", "new_defect_fields") %>
+      </div>
+    </div>
+  </div>
+</fieldset>

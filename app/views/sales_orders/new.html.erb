@@ -1,14 +1,14 @@
-<%= modal_form_for @sales_order do |f| %>
+<%= modal_form_for sales_order do |f| %>
   <div class="modal-header">
     <h4 class="modal-title text-center">Enter sales order</h4>
   </div>
   <div class="modal-body">
-    <%= f.text_field :code, label: "SO#", class: "form-control" %>
-    <%= f.text_field :customer, label: "Customer", class: "form-control" %>
-    <%= f.text_field :ship_to, label: "Ship to", class: "form-control" %>
+    <%= f.text_field :code, label: "SO#" %>
+    <%= f.text_field :customer, label: "Customer" %>
+    <%= f.text_field :ship_to, label: "Ship to" %>
     <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>
     <%= render "shared/date_field", f: f, name: :due_date, label: "Due" %>
-    <%= f.text_area :note, label: "Note", class: "form-control" %>
+    <%= f.text_area :note, label: "Note" %>
     <fieldset class="panel panel-warning">
       <div class="panel-heading"><h6 class="panel-title text-center">Line items</h6></div>
       <div class="panel-body">

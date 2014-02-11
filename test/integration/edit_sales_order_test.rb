@@ -13,17 +13,17 @@ class EditSalesOrderTest < ActionDispatch::IntegrationTest
     before do
       log_in(user)
       click_link "Orders"
-      click_link "sales-order-#{@sales_order.id}-edit"
+      click_link "salesorder-#{@sales_order.id}-edit"
     end
 
     it "updates sales order and line items given valid attributes" do
       fill_in 'Customer', with: "New customer"
-      fill_in 'Busbar', with: "Foo"
+      fill_in 'Busbar', with: "40 Foobars"
       click_button 'Update'
-      within "#sales-order-#{@sales_order.id}" do
+      within "#salesorder-#{@sales_order.id}" do
         assert page.has_content?("New customer")
-        click_link @sales_order.code
-        assert page.has_content?("Busbars: Foo")
+        click_link "Line items"
+        assert page.has_selector?(".lineitem", text: "40 Foobars")
       end
     end
 
@@ -44,7 +44,7 @@ class EditSalesOrderTest < ActionDispatch::IntegrationTest
     before do
       log_in(admin)
       click_link "Orders"
-      click_link "sales-order-#{@sales_order.id}-edit"
+      click_link "salesorder-#{@sales_order.id}-edit"
     end
 
     it "has a SO# field" do

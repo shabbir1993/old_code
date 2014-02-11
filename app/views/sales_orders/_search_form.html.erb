@@ -2,6 +2,6 @@
   <div class="form-group">
     <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
   </div>
-  <%= hidden_field_tag :scope, params[:scope] %>
+  <%= hidden_field_tag :status, params[:status] %>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>

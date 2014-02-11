@@ -1,2 +1,4 @@
 $('#forms-modal').modal('hide')
-$("<%= "#sales-order-#{@sales_order.id}" %>").html("<%= "#{@sales_order.code} deleted." %>");
+var sales_order_row = $("<%= "#salesorder-#{sales_order.id}" %>")
+sales_order_row.replaceWith("<%= j render 'moved_sales_order', sales_order: sales_order %>");
+$(sales_order_row.selector).removeClass("panel-info").addClass("panel-danger");
