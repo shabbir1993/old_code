@@ -9,16 +9,16 @@
   <thead>
     <tr>
       <td></td>
-      <% @phases_in_order.each do |p| %>
+      <% PhaseDefinitions::HARD_PHASES.each do |p| %>
         <td><strong><%= p %></strong></td>
       <% end %>
     </tr>
   </thead>
   <tbody>
-    <% @phases_in_order.each do |from_phase| %>
+    <% PhaseDefinitions::HARD_PHASES.each do |from_phase| %>
       <tr>
         <td><strong><%= from_phase %></strong></td>
-        <% @phases_in_order.each do |to_phase| %>
+        <% PhaseDefinitions::HARD_PHASES.each do |to_phase| %>
           <% if @film_movement_totals_hash[[from_phase, to_phase]] %>
             <td class="row warning">
               <span class="col-md-4"><%= "#{@film_movement_totals_hash[[from_phase, to_phase]][0]}" %></span> 

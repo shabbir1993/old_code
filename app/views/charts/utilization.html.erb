@@ -33,7 +33,7 @@
           name: 'Utilization',
           data: [
           <% @data.each do |point| %>
-            ["<%= point.code %>", <%= number_with_precision(point.utilization) %>],
+            ["<%= point[:code] %>", <%= point[:utilization] %>],
           <% end %>
           ]
         }, {
