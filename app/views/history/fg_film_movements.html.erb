@@ -1,22 +1,6 @@
 <%= paginate @fg_film_movements %>
 
-<%= form_tag fg_film_movements_history_path, method: :get, class: 'form-inline search' do %>
-  <div class="row">
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :start_date, params[:start_date], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-    <div class="form-group col-md-2">
-      <div class="input-group">
-        <%= text_field_tag :end_date, params[:end_date], placeholder: "End", class: "form-control bootstrap-datepicker" %>
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-    <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
-  </div>
-<% end %>
+<%= render 'search_form', path: fg_film_movements_history_path %>
 
 <%= link_to "Export", fg_film_movements_history_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
 

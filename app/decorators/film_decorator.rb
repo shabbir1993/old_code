@@ -4,6 +4,10 @@ class FilmDecorator < ApplicationDecorator
     [Film]
   end
 
+  def serial
+    "#{master_film.serial}-#{division}"
+  end
+
   def phase_label_class
     case phase
     when "wip"

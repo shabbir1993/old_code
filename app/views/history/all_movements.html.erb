@@ -1,17 +1,19 @@
-<%= paginate @scrap_film_movements %>
+<%= paginate @film_movements %>
 
-<%= render 'search_form', path: scrap_film_movements_history_path %>
+<%= render 'search_form', path: all_movements_history_path %>
 
 <% content_for :table_header do %>
   <tr>
     <th>Serial</th>
+    <th>Movement</th>
     <th>User</th>
     <th>Date</th>
   </tr>
 <% end %>
 
 <% content_for :table_body do %>
-  <%= render partial: "scrap_film_movement", collection: @scrap_film_movements %>
+  <%= render partial: "film_movement", collection: @film_movements %>
 <% end %>
+
 
 <%= render "shared/table" %>

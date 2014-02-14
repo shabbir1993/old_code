@@ -6,7 +6,7 @@ class MasterFilmsController < ApplicationController
 
   def create
     @master_film = current_tenant.new_widget(MasterFilm, params[:master_film])
-    @master_film.save_and_create_child
+    @master_film.save_and_create_child(current_user)
   end
 
   def index

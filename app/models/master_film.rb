@@ -8,22 +8,25 @@ class MasterFilm < ActiveRecord::Base
 
   has_many :films
   belongs_to :machine
-  belongs_to :tenant
 
   before_validation :upcase_attributes
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
-  validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_id },
+  validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code },
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
-  default_scope { where(tenant_id: Tenant.current_id) }
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
   scope :by_serial, -> { order('serial DESC') }
 
-  def save_and_create_child
+  def save_and_create_child(user)
     if save
-      films.create(phase: "lamination")
+      destination = "lamination"
+      film = films.build(tenant_code: tenant_code)
+      movement = film.build_movement(destination, user)
+      film.phase = destination
+      film.save!
+      movement.save!
     end
   end
 
@@ -82,5 +85,9 @@ class MasterFilm < ActiveRecord::Base
       data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.yield] + all_types.map{ |type| mf.defect_count(type) }
     end
     data
+  end
+
+  def tenant
+    @tenant ||= Tenant.new(tenant_code)
   end
 end

@@ -17,7 +17,7 @@ class FilmsController < ApplicationController
 
   def update
     @film = current_tenant.widget(Film, params[:id])
-    @film.update_attributes(params[:film])
+    @film.update_and_move(params[:film], params[:film][:destination], current_user)
   end 
 
   def edit_multiple
@@ -28,7 +28,7 @@ class FilmsController < ApplicationController
   def update_multiple
     @films = current_tenant.widget(Film, params[:film_ids])
     @films.each do |film|
-      film.update_attributes(params[:film].reject { |k,v| v.blank? })
+      film.update_and_move(params[:film].reject { |k,v| v.blank? }, params[:film][:destination], current_user)
     end
   end
 

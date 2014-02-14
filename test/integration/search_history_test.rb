@@ -2,11 +2,8 @@ require 'test_helper'
 
 class SearchHistoryTest < ActionDispatch::IntegrationTest
   before do
-    @film = FactoryGirl.create(:film_with_dimensions, phase: "stock")
-    Timecop.freeze(Time.zone.today - 2) do
-      @film.update_attributes(destination: "wip")
-    end
-    @film.update_attributes(destination: "fg")
+    @film1 = FactoryGirl.create(:film_movement, created_at: 2.days.ago)
+    @film2 = FactoryGirl.create(:film_movement, created_at: Time.zone.today)
   end
   
   describe "searching film movements between two days ago and yesterday" do
@@ -22,7 +19,11 @@ class SearchHistoryTest < ActionDispatch::IntegrationTest
     end
 
     it "displays searched movement" do
-      assert page.has_selector?("tr", text: @film.serial, count: 1)
+      assert page.has_content?(@film1.serial)
+    end
+
+    it "filters other movements" do
+      refute page.has_content?(@film2.serial)
     end
   end
 end

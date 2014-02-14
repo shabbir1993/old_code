@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140121064715) do
+ActiveRecord::Schema.define(version: 20140213210613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,21 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.datetime "updated_at"
   end
 
+  create_table "film_movements", force: true do |t|
+    t.string   "from_phase",  null: false
+    t.string   "to_phase",    null: false
+    t.decimal  "width"
+    t.decimal  "length"
+    t.string   "actor",       null: false
+    t.integer  "film_id",     null: false
+    t.integer  "tenant_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "tenant_code", null: false
+  end
+
+  add_index "film_movements", ["tenant_code"], name: "index_film_movements_on_tenant_code", using: :btree
+
   create_table "films", force: true do |t|
     t.integer "division"
     t.integer "master_film_id",                   null: false
@@ -37,9 +52,11 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.integer "line_item_id"
     t.integer "sales_order_id"
     t.integer "order_fill_count", default: 1
-    t.integer "tenant_id",                        null: false
+    t.integer "tenant_id"
+    t.string  "tenant_code",                      null: false
   end
 
+  add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
   add_index "films", ["tenant_id"], name: "index_films_on_tenant_id", using: :btree
 
   create_table "line_items", force: true do |t|
@@ -60,9 +77,11 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "yield_constant"
-    t.integer  "tenant_id",      null: false
+    t.integer  "tenant_id"
+    t.string   "tenant_code",    null: false
   end
 
+  add_index "machines", ["tenant_code"], name: "index_machines_on_tenant_code", using: :btree
   add_index "machines", ["tenant_id"], name: "index_machines_on_tenant_id", using: :btree
 
   create_table "master_films", force: true do |t|
@@ -80,22 +99,26 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.string   "chemist"
     t.integer  "defects_sum",      default: 0,  null: false
     t.text     "note"
-    t.integer  "tenant_id",                     null: false
+    t.integer  "tenant_id"
     t.hstore   "defects",          default: {}, null: false
+    t.string   "tenant_code",                   null: false
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
+  add_index "master_films", ["tenant_code"], name: "index_master_films_on_tenant_code", using: :btree
   add_index "master_films", ["tenant_id"], name: "index_master_films_on_tenant_id", using: :btree
 
   create_table "phase_snapshots", force: true do |t|
-    t.string   "phase",      null: false
-    t.integer  "count",      null: false
-    t.decimal  "total_area", null: false
+    t.string   "phase",       null: false
+    t.integer  "count",       null: false
+    t.decimal  "total_area",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tenant_id",  null: false
+    t.integer  "tenant_id"
+    t.string   "tenant_code", null: false
   end
 
+  add_index "phase_snapshots", ["tenant_code"], name: "index_phase_snapshots_on_tenant_code", using: :btree
   add_index "phase_snapshots", ["tenant_id"], name: "index_phase_snapshots_on_tenant_id", using: :btree
 
   create_table "sales_orders", force: true do |t|
@@ -108,18 +131,12 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.string   "ship_to"
     t.date     "ship_date"
     t.text     "note"
-    t.integer  "tenant_id",    null: false
+    t.integer  "tenant_id"
+    t.string   "tenant_code",  null: false
   end
 
+  add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree
   add_index "sales_orders", ["tenant_id"], name: "index_sales_orders_on_tenant_id", using: :btree
-
-  create_table "tenants", force: true do |t|
-    t.string  "name",                              null: false
-    t.string  "time_zone"
-    t.decimal "area_divisor",      default: 144.0, null: false
-    t.decimal "small_area_cutoff", default: 16.0,  null: false
-    t.decimal "yield_multiplier",  default: 1.0,   null: false
-  end
 
   create_table "users", force: true do |t|
     t.string   "username",                        null: false
@@ -130,9 +147,11 @@ ActiveRecord::Schema.define(version: 20140121064715) do
     t.boolean  "operator",        default: false
     t.string   "password_digest"
     t.integer  "role_level",      default: 0
-    t.integer  "tenant_id",                       null: false
+    t.integer  "tenant_id"
+    t.string   "tenant_code",                     null: false
   end
 
+  add_index "users", ["tenant_code"], name: "index_users_on_tenant_code", using: :btree
   add_index "users", ["tenant_id"], name: "index_users_on_tenant_id", using: :btree
 
   create_table "versions", force: true do |t|

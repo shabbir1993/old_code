@@ -10,6 +10,6 @@
     <%= label_tag "Length" %>
     <%= number_field_tag :min_length, params[:min_length], placeholder: "min", step: "any", class: "form-control input-sm" %>
   </div>
-  <%= hidden_field_tag :phase, params[:phase] %>
+  <%= hidden_field_tag :tab, params[:tab] %>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>

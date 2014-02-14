@@ -10,7 +10,7 @@ class LineItem < ActiveRecord::Base
   validates :quantity, numericality: { greater_than: 0 }
 
   def custom_area
-    (custom_width*custom_length / Tenant.current_area_divisor) if custom_width && custom_length
+    (custom_width*custom_length / sales_order.tenant.area_divisor) if custom_width && custom_length
   end
 
   def total_area

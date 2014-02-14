@@ -34,7 +34,7 @@ Pcms::Application.routes.draw do
     resources :users, except: :show
   end
 
-  get 'history/film_movements', to: 'history#film_movements', as: :film_movements_history
+  get 'history/all_movements', to: 'history#all_movements', as: :all_movements_history
   get 'history/fg_film_movements', to: 'history#fg_film_movements', as: :fg_film_movements_history
   get 'history/scrap_film_movements', to: 'history#scrap_film_movements', as: :scrap_film_movements_history
 
@@ -49,5 +49,5 @@ Pcms::Application.routes.draw do
   get 'charts/area_shipped', to: 'charts#area_shipped', as: :area_shipped_chart
 
 
-  root to: 'films#index', phase: "lamination"
+  root to: 'films#index', tab: "lamination"
 end

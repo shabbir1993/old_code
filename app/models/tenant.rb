@@ -1,20 +1,38 @@
-class Tenant < ActiveRecord::Base
-  attr_accessible :name, :time_zone
-  cattr_accessor :current_id, :current_area_divisor, :current_small_area_cutoff, :current_yield_multiplier
+class Tenant
+  PROPERTIES = { 
+    'pi' => { name: "PI",
+              time_zone: "Central Time (US & Canada)", 
+              area_divisor: 144.0, 
+              small_area_cutoff: 2304, 
+              yield_multiplier: 1 },
+    'pe' => { name: "PE",
+              time_zone: "Beijing", 
+              area_divisor: 1000000.0, 
+              small_area_cutoff: 1500000.0, 
+              yield_multiplier: 10.76 }
+  }
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  attr_reader :name, :code, :time_zone, :area_divisor, :small_area_cutoff, :yield_multiplier
+
+  def initialize(code)
+    @code = code
+    @time_zone = PROPERTIES[code][:time_zone]
+    @area_divisor = PROPERTIES[code][:area_divisor]
+    @small_area_cutoff = PROPERTIES[code][:small_area_cutoff]
+    @yield_multiplier = PROPERTIES[code][:yield_multiplier]
+  end
 
   def widget(klass, id)
     widgets(klass).find(id)
   end
 
   def widgets(klass)
-    klass.where(tenant_id: current_id)
+    klass.where(tenant_code: code)
   end
 
   def new_widget(klass, *args)
     klass.new(*args).tap do |u|
-      u.tenant_id = current_id
+      u.tenant_code = code
     end
   end
 end

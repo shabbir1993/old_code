@@ -1,9 +1,9 @@
 module DecoratorsHelper
-  def decorate(object, context=self)
-    ApplicationDecorator.decorate(object, context)
+  def decorate(object)
+    ApplicationDecorator.decorate(object)
   end
 
-  def decorate_collection(collection, context=self)
-    collection.map { |o| decorate(o, context) }
+  def decorate_collection(collection)
+    collection.map { |o| decorate(o) }
   end
 end

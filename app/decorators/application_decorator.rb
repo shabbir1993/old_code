@@ -1,10 +1,9 @@
 class ApplicationDecorator < SimpleDelegator
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :context, :object
+  attr_reader :object
 
-  def initialize(object, context)
-    @context = context
+  def initialize(object)
     @object = object
     super(object)
   end
@@ -18,15 +17,15 @@ class ApplicationDecorator < SimpleDelegator
     ]
   end
 
-  def self.decorate(object, context)
+  def self.decorate(object)
     decorators.inject(object) do |object, decorator_class|
-      decorator_class.decorate_if_applicable(object, context)
+      decorator_class.decorate_if_applicable(object)
     end
   end
 
-  def self.decorate_if_applicable(object, context)
+  def self.decorate_if_applicable(object)
     if applicable_to?(object)
-      new(object, context)
+      new(object)
     else
       object
     end

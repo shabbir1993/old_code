@@ -1,8 +1,8 @@
 <tr>
-  <td class="serial"><%= Film.find(film_movement.item_id).serial %></td>
+  <td class="serial"><%= film_movement.serial %></td>
   <td class="movement">
-  <%= film_movement.changeset[:phase][0] || "raw material" %> <i class="fa fa-arrow-right"></i> <%= film_movement.changeset[:phase][1] %>
+  <%= film_movement.from_phase %> <i class="fa fa-arrow-right"></i> <%= film_movement.to_phase %>
   </td>
-  <td class="whodunnit"><%= film_movement.whodunnit %></td>
+  <td class="whodunnit"><%= film_movement.actor %></td>
   <td class="created_at"><%= film_movement.datetime_display %></td>
 </tr>

@@ -3,17 +3,15 @@ class SalesOrder < ActiveRecord::Base
 
   has_many :line_items, dependent: :destroy
   has_many :films
-  belongs_to :tenant
   
   accepts_nested_attributes_for :line_items, allow_destroy: true
   
-  validates :code, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_id }
+  validates :code, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code }
 
   include PgSearch
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 
-  default_scope { where(tenant_id: Tenant.current_id) }
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
   scope :shipped, -> { where('ship_date is not null') }
   scope :unshipped, -> { where(ship_date: nil) }
@@ -73,5 +71,9 @@ class SalesOrder < ActiveRecord::Base
       s.line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
     end
     custom_areas.sum
+  end
+
+  def tenant
+    @tenant ||= Tenant.new(tenant_code)
   end
 end

@@ -15,10 +15,6 @@ class ActiveSupport::TestCase
   class << self
     remove_method :describe
   end
-
-  before do
-    @tenant = setup_tenant
-  end
 end
 
 class ActionDispatch::IntegrationTest
@@ -41,7 +37,7 @@ class ActiveRecord::Base
 end
 
 # Forces all threads to share the same connection. This works on
-# # Capybara because it starts the web server in a thread.
+# Capybara because it starts the web server in a thread.
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 
 def use_javascript_driver

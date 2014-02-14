@@ -1,14 +1,15 @@
 class FilmsPresenter
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :films, :phase, :query, :min_width, :min_length, :sort, :direction
+  attr_reader :tenant, :films, :tab, :query, :min_width, :min_length, :sort, :direction
 
   SAFE_SCOPES = %w(lamination inspection wip fg test nc scrap large_stock small_stock reserved_stock deleted)
   SAFE_SORTS = %w(serial width length area shelf sales_order_code note) 
 
   def initialize(tenant, inputs)
+    @tenant = tenant
     @films = tenant.widgets(Film)
-    @phase = inputs[:phase]
+    @tab = inputs[:tab]
     @query = inputs[:query]
     @min_width = inputs[:min_width]
     @min_length = inputs[:min_length]
@@ -17,12 +18,11 @@ class FilmsPresenter
   end
 
   def present
-    if SAFE_SCOPES.include?(phase)
-      @results ||= films.send(phase)
-                        .search_text(query)
-                        .search_dimensions(min_width, min_length)
-                        .order("#{sort_column} #{sort_direction}")
-    end
+    @results ||= films_for_tab(tab).search_text(query)
+                                   .search_dimensions(min_width, min_length)
+                                   .with_area(tenant.area_divisor)
+                                   .with_sortable_fields
+                                   .order("#{safe_sort} #{safe_direction}")
   end
 
   def total_count
@@ -33,13 +33,30 @@ class FilmsPresenter
     number_with_precision(films.map{ |f| f.area.to_f }.sum, precision: 2)
   end
 
+  def films_for_tab(tab)
+    case tab
+    when "lamination", "inspection", "wip", "fg", "test", "nc", "scrap"
+      films.active.phase(tab)
+    when "large_stock"
+      films.active.phase("stock").large(tenant.small_area_cutoff).not_reserved
+    when "small_stock"
+      films.active.phase("stock").small(tenant.small_area_cutoff).not_reserved
+    when "reserved_stock"
+      films.active.phase("stock").reserved
+    when "deleted"
+      films.deleted
+    else 
+      films.active.phase("lamination")
+    end
+  end
+
   private
 
-  def sort_column
+  def safe_sort
     SAFE_SORTS.include?(sort) ? sort : ""
   end
 
-  def sort_direction
+  def safe_direction
     %w(asc desc).include?(direction) ? direction : ""
   end
 end

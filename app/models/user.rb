@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_many :film_movements
-  belongs_to :tenant
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :full_name, presence: true, uniqueness: { case_sensitive: false }
@@ -19,5 +18,9 @@ class User < ActiveRecord::Base
 
   def is_admin?
     role_level == 1
+  end
+
+  def tenant
+    @tenant || Tenant.new(tenant_code)
   end
 end

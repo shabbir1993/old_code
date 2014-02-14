@@ -5,12 +5,12 @@ class Film < ActiveRecord::Base
   SECOND_WIDTH_SQL = "substring(films.note from '([0-9]+([.][0-9]+)?)[ ]*[xX][ ]*([0-9]+([.][0-9]+)?)')::decimal"
   SECOND_LENGTH_SQL = "substring(films.note from '(?:[0-9]+(?:[.][0-9]+)?)[ ]*[xX][ ]*([0-9]+([.][0-9]+)?)')::decimal"
 
-  attr_accessible :width, :length, :note, :shelf, :phase, :destination, :deleted, :sales_order_id, :order_fill_count, :master_film_id
+  attr_accessible :width, :length, :note, :shelf, :phase, :deleted, :sales_order_id, :order_fill_count, :master_film_id, :tenant_code
   attr_reader :destination
 
   belongs_to :master_film
   belongs_to :sales_order
-  belongs_to :tenant
+  has_many :film_movements
 
   delegate :formula, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
@@ -22,11 +22,6 @@ class Film < ActiveRecord::Base
   validates :width, :length, presence: true, unless: lambda { |film| PhaseDefinitions.front_end?(film.phase) }
   validates :order_fill_count, numericality: { greater_than: 0 }
 
-  has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
-                  :meta => { columns_changed: Proc.new { |film| film.changed },
-                             phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] },
-                             area_after: Proc.new { |film| film.area || 0 } }
-
   include PgSearch
   pg_search_scope :search, against: [:division, :note, :shelf, :phase], 
     :using => { tsearch: { prefix: true } },
@@ -35,47 +30,56 @@ class Film < ActiveRecord::Base
       sales_order: [:code]
     }
 
-  default_scope { where(tenant_id: Tenant.current_id) }
-  scope :phase, ->(phase) { active.where(phase: phase) }
-  scope :small, -> { where("width*length/#{Tenant.current_area_divisor} < ?", Tenant.current_small_area_cutoff) }
-  scope :large, -> { where("width*length/#{Tenant.current_area_divisor} >= ? or width IS NULL or length IS NULL", Tenant.current_small_area_cutoff) }
+  scope :active, -> { where(deleted: false) }
+  scope :deleted, -> { where(deleted: true) }
+  scope :phase, ->(phase) { where(phase: phase) }
+  scope :small, ->(cutoff) { where("width*length < ?", cutoff) }
+  scope :large, ->(cutoff) { where("width*length >= ? or width IS NULL or length IS NULL", cutoff) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
-  scope :active, -> { where(deleted: false) }
-  scope :usable, -> { active.where("phase <> 'scrap' AND phase <> 'nc'") }
   scope :min_width, ->(width = 0) { where("width >= ?", width) }
   scope :min_length, ->(length = 0) { where("length >= ?", length) }
-
-  #tabs
-  scope :select_fields, -> { joins("LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id")
-    .joins("LEFT OUTER JOIN sales_orders ON sales_orders.id = films.sales_order_id")
-    .select("films.*, 
-             master_films.serial || '-' || films.division as serial, 
-             width*length/#{Tenant.current_area_divisor} as area, 
-             sales_orders.code as sales_order_code, 
-             #{SECOND_WIDTH_SQL} as second_width, 
-             #{SECOND_LENGTH_SQL} as second_length,
-             #{SECOND_WIDTH_SQL}*#{SECOND_LENGTH_SQL}/#{Tenant.current_area_divisor} as second_area") }
-  scope :lamination, -> { select_fields.phase("lamination") }
-  scope :inspection, -> { select_fields.phase("inspection") }
-  scope :large_stock, -> { select_fields.phase("stock").large.not_reserved }
-  scope :small_stock, -> { select_fields.phase("stock").small.not_reserved }
-  scope :reserved_stock, -> { select_fields.phase("stock").reserved }
-  scope :wip, -> { select_fields.phase("wip") }
-  scope :fg, -> { select_fields.phase("fg") }
-  scope :test, -> { select_fields.phase("test") }
-  scope :nc, -> { select_fields.phase("nc") }
-  scope :scrap, -> { select_fields.phase("scrap") }
-  scope :deleted, -> { select_fields.where(deleted: true) }
-
-  def split
-    master_film.films.build(tenant_id: tenant_id, phase: phase, width: width, length: length).tap do |s|
-      s.save!
-    end
-  end
+  scope :with_area, ->(area_divisor) { select("films.*, width*length/#{area_divisor} as area") }
+  scope :with_sortable_fields, -> { joins("LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id")
+                                    .joins("LEFT OUTER JOIN sales_orders ON sales_orders.id = films.sales_order_id")
+                                    .select("films.*, 
+                                            master_films.serial || '-' || films.division as serial, 
+                                            sales_orders.code as sales_order_code, 
+                                            #{SECOND_WIDTH_SQL} as second_width, 
+                                            #{SECOND_LENGTH_SQL} as second_length") }
 
   def serial
-    master_film.serial + "-" + division.to_s
+    "#{master_film.serial}-#{division}"
+  end
+
+    def area
+      AreaCalcuator.calculate(width, length, tenant.area_divisor)
+    end
+
+  def split
+    master_film.films.build(tenant_code: tenant_code, 
+                            phase: phase, 
+                            width: width, 
+                            length: length).tap(&:save!)
+  end
+
+  def update_and_move(attrs, destination, user)
+    movement = nil
+    assign_attributes(attrs)
+    if PhaseDefinitions.front_end?(phase)
+      master_film.effective_width = attrs[:width]
+      master_film.effective_length = attrs[:length]
+    end
+    if destination.present?
+      reset_sales_order if %w(stock wip fg).include?(destination)
+      self.phase = destination
+      movement = build_movement(destination, user)
+    end
+    if valid?
+      save!
+      movement.save! if movement
+      master_film.save!
+    end
   end
 
   def unassign
@@ -84,24 +88,7 @@ class Film < ActiveRecord::Base
   end
   
   def area
-    AreaCalculator.calculate(width, length, Tenant.current_area_divisor)
-  end
-
-  def destination=(destination)
-    if destination.present?
-      write_attribute(:phase, destination)
-      reset_sales_order unless %w(stock wip fg).include?(destination)
-    end
-  end
-
-  def width=(width)
-    master_film.update_attributes!(effective_width: width) if PhaseDefinitions.front_end?(phase)
-    write_attribute(:width, width)
-  end
-
-  def length=(length)
-    master_film.update_attributes!(effective_length: length) if PhaseDefinitions.front_end?(phase)
-    write_attribute(:length, length)
+    AreaCalculator.calculate(width, length, tenant.area_divisor)
   end
 
   def self.total_area
@@ -140,8 +127,17 @@ class Film < ActiveRecord::Base
     data
   end
 
-  private
+  def build_movement(destination, user)
+    from_phase = phase || "raw"
+    film_movements.build(from_phase: from_phase, to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
+  end
 
+  def tenant
+    @tenant ||= Tenant.new(tenant_code)
+  end
+
+  private
+  
   def upcase_shelf
     shelf.upcase! if shelf.present?
   end

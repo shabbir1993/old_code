@@ -1,7 +1,5 @@
 class PhaseSnapshot < ActiveRecord::Base
-  attr_accessible :phase, :count, :total_area, :tenant_id
-
-  default_scope { where(tenant_id: Tenant.current_id) }
+  attr_accessible :phase, :count, :total_area, :tenant_code
 
   def self.take_all_snapshots
     Tenant.all.each do |tenant|
@@ -12,8 +10,12 @@ class PhaseSnapshot < ActiveRecord::Base
   end
 
   def self.take_snapshot(tenant, phase)
-    count = Film.unscoped.send(phase).where(tenant_id: tenant.id).count
-    total_area = Film.unscoped.send(phase).where(tenant_id: tenant.id).to_a.sum { |f| f.area.to_f }
-    self.create!(phase: phase, count: count, total_area: total_area, tenant_id: tenant.id)
+    count = Film.unscoped.send(phase).where(tenant_code: tenant.id).count
+    total_area = Film.unscoped.send(phase).where(tenant_code: tenant.id).to_a.sum { |f| f.area.to_f }
+    self.create!(phase: phase, count: count, total_area: total_area, tenant_code: tenant.id)
+  end
+
+  def tenant
+    @tenant || Tenant.new(tenant_code)
   end
 end
