@@ -1,12 +1,10 @@
 class ChartsController < ApplicationController
   def stock_film_type_totals
-    films = current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
-    @chart = FilmTotalsByAttributeChart.new(films, "master_films.film_code")
+    @chart = FilmTotalsByAttributeChart.new(large_stock_films, "master_films.film_code")
   end
 
   def stock_formula_totals
-    films = current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
-    @chart = FilmTotalsByAttributeChart.new(films, "master_films.formula")
+    @chart = FilmTotalsByAttributeChart.new(large_stock_films, "master_films.formula")
   end
 
   def stock_dimensions
@@ -45,5 +43,11 @@ class ChartsController < ApplicationController
     @glass_area_shipped_by_date = chart.glass_area_shipped_by_date
     @total_film_area_shipped = chart.total_film_area_shipped
     @total_glass_area_shipped = chart.total_glass_area_shipped
+  end
+
+  private
+
+  def large_stock_films
+    current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
   end
 end
