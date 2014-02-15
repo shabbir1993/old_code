@@ -1,5 +1,4 @@
 class MasterFilm < ActiveRecord::Base
-  include Exportable
   include Importable
 
   DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
@@ -21,10 +20,8 @@ class MasterFilm < ActiveRecord::Base
 
   def save_and_create_child(user)
     if save
-      destination = "lamination"
-      film = films.build(tenant_code: tenant_code)
-      movement = film.build_movement(destination, user)
-      film.phase = destination
+      film = films.build(tenant_code: tenant_code, division: 1, phase: "lamination")
+      movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       film.save!
       movement.save!
     end
@@ -76,15 +73,6 @@ class MasterFilm < ActiveRecord::Base
       arry + mf.defects.keys
     end
     types.uniq
-  end
-
-  def self.data_for_export
-    all_types = defect_types
-    data = [] << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator EffW EffL Yield) + all_types
-    all.limit(2000).each do |mf|
-      data << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.effective_width, mf.effective_length, mf.yield] + all_types.map{ |type| mf.defect_count(type) }
-    end
-    data
   end
 
   def tenant

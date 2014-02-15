@@ -10,10 +10,11 @@ class MasterFilmsController < ApplicationController
   end
 
   def index
-    @master_films = MasterFilmsPresenter.new(current_tenant, params).present
+    @master_films_presenter = MasterFilmsPresenter.new(current_tenant, params)
+    @master_films = @master_films_presenter.present
     respond_to do |format|
       format.html
-      format.csv { send_data @master_films.to_csv }
+      format.csv { send_data @master_films_presenter.to_csv }
     end
   end
 

@@ -3,8 +3,6 @@ require 'test_helper'
 class ExportHistoryTest < ActionDispatch::IntegrationTest
   before do
     @film = FactoryGirl.create(:film_movement, from_phase: "wip", to_phase: "fg")
-    #@film = FactoryGirl.create(:film_with_dimensions, phase: "wip")
-    #@film.update_attributes(destination: "fg")
   end
 
   describe "FG movements history page" do

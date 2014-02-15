@@ -21,35 +21,14 @@ module FilmsHelper
     end if film.phase == "stock" && !film.deleted
   end
 
-  def dimension_cell(film, dimension)
-    second_dimension = "second_#{dimension}".to_sym
-    if film.try(second_dimension)
-      [film.send(dimension), tag('br'), film.send(second_dimension)].join.html_safe
-    else
-      film.send(dimension)
+  def utilization_label(width, length)
+    search_width = params[:min_width].to_f
+    search_length = params[:min_length].to_f
+    if width && length && params[:min_width] && params[:min_length] && width >= search_width && length >= search_length
+      content_tag(:span, class: "label label-warning") do
+        number_to_percentage(100*(search_width*search_length)/(width*length), precision: 2)
+      end
     end
-  end
-
-  def utilization_label(film)
-    content_tag(:span, class: "label label-warning") do
-      film.utilization(params[:min_width].to_f, params[:min_length].to_f)
-    end if params[:min_width].present? && params[:min_length].present?
-  end
-
-  def second_utilization_label(film)
-    content_tag(:span, class: "label label-warning") do
-      film.second_utilization(params[:min_width].to_f, params[:min_length].to_f)
-    end if params[:min_width].present? && params[:min_length].present?
-  end
-
-  def area_cell(film)
-    first_row = [film.area, utilization_label(film)].join
-    if film.try(:second_area)
-      second_row = [tag('br'), film.second_area, second_utilization_label(film)].join
-    else
-      second_row = ""
-    end
-    [first_row, second_row].join.html_safe
   end
 
   def fill_count_badge(film)

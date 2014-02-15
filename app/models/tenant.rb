@@ -27,7 +27,13 @@ class Tenant
   end
 
   def widgets(klass)
-    klass.where(tenant_code: code)
+    case
+    when klass == Film
+      klass.where(tenant_code: code).with_additional_fields(area_divisor)
+    else
+      Rails.logger.debug klass
+      klass.where(tenant_code: code)
+    end
   end
 
   def new_widget(klass, *args)

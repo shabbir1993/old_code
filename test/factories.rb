@@ -13,6 +13,7 @@ FactoryGirl.define do
 
   factory :film do
     phase "lamination"
+    division 1
     after(:build) do |film|
       film.master_film = FactoryGirl.create(:master_film) unless film.master_film.present?
     end

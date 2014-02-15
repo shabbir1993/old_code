@@ -8,13 +8,16 @@
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
   </td>
   <td class="width">
-    <%= dimension_cell(film, "width") %>
+    <%= film.width %>
+    <%= tag('br') + film.second_width.to_s if film.respond_to?(:second_width) %>
   </td>
   <td class="length">
-    <%= dimension_cell(film, "length") %>
+    <%= film.length %>
+    <%= tag('br') + film.second_length.to_s if film.respond_to?(:second_length) %>
   </td>
   <td class="area">
-    <%= area_cell(film) %>
+    <%= "#{film.area} #{utilization_label(film.width, film.length)}".html_safe  %>
+    <%= tag('br') + "#{film.second_area} #{utilization_label(film.second_width, film.second_length)}".html_safe if film.respond_to?(:second_width) && film.respond_to?(:second_length) %>
   </td>
   <td class="shelf"><%= film.shelf %></td>
   <td class="order">

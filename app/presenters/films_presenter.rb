@@ -1,4 +1,5 @@
 class FilmsPresenter
+  include Exportable
   include ActionView::Helpers::NumberHelper
 
   attr_reader :tenant, :films, :tab, :query, :min_width, :min_length, :sort, :direction
@@ -20,8 +21,6 @@ class FilmsPresenter
   def present
     @results ||= films_for_tab(tab).search_text(query)
                                    .search_dimensions(min_width, min_length)
-                                   .with_area(tenant.area_divisor)
-                                   .with_sortable_fields
                                    .order("#{safe_sort} #{safe_direction}")
   end
 
@@ -48,6 +47,14 @@ class FilmsPresenter
     else 
       films.active.phase("lamination")
     end
+  end
+
+  def data_for_export
+    data = [] << %w(Serial Formula Width Length Area Shelf SO Phase)
+    present.limit(5000).each do |f|
+      data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
+    end
+    data
   end
 
   private

@@ -4,10 +4,6 @@ class FilmDecorator < ApplicationDecorator
     [Film]
   end
 
-  def serial
-    "#{master_film.serial}-#{division}"
-  end
-
   def phase_label_class
     case phase
     when "wip"
@@ -36,16 +32,6 @@ class FilmDecorator < ApplicationDecorator
   end
 
   def second_area
-    number_with_precision(super, precision: 2)
-  end
-
-  def utilization(search_width, search_length)
-    unformatted = UtilizationCalculator.calculate_for_film(width, length, search_width, search_length)
-    number_to_percentage(unformatted, precision: 2)
-  end
-
-  def second_utilization(search_width, search_length)
-    unformatted = UtilizationCalculator.calculate_for_film(second_width, second_length, search_width, search_length)
-    number_to_percentage(unformatted, precision: 2)
+    number_with_precision(AreaCalculator.calculate(second_width, second_length, tenant.area_divisor), precision: 2)
   end
 end
