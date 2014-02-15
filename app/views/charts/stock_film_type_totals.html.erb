@@ -8,7 +8,7 @@
         text: 'Available film by ITO'
       },
       xAxis: {
-        categories: <%= raw(@data.map{ |i| i[:ito] }) %>
+        categories: <%= raw(@chart.values) %>
       },
       yAxis: [{
         title: {
@@ -27,12 +27,12 @@
       series: [{
         yAxis: 0,
         name: 'Count',
-        data: <%= raw(@data.map{ |i| i[:count] }) %>,
+        data: <%= raw(@chart.counts) %>,
         pointPlacement: 0.2
         }, {
         yAxis: 1,
         name: 'Area',
-        data: <%= raw(@data.map{ |i| i[:area] }) %>,
+        data: <%= raw(@chart.areas) %>,
         pointPlacement: -0.2
       }]
     });

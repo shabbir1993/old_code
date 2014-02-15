@@ -1,10 +1,12 @@
 class ChartsController < ApplicationController
   def stock_film_type_totals
-    @data = ItoFilmTotalsPresenter.new(current_tenant).count_and_area_by_ito
+    films = current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
+    @chart = FilmTotalsByAttributeChart.new(films, "master_films.film_code")
   end
 
   def stock_formula_totals
-    @data = FormulaTotalsPresenter.new(current_tenant).count_and_area_by_formula
+    films = current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
+    @chart = FilmTotalsByAttributeChart.new(films, "master_films.formula")
   end
 
   def stock_dimensions

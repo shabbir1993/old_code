@@ -32,6 +32,6 @@ class FilmDecorator < ApplicationDecorator
   end
 
   def second_area
-    number_with_precision(AreaCalculator.calculate(second_width, second_length, tenant.area_divisor), precision: 2)
+    number_with_precision(AreaCalculator.calculate(second_width, second_length, tenant.area_divisor), precision: 2) if second_width && second_length
   end
 end
