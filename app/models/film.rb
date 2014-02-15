@@ -34,6 +34,9 @@ class Film < ActiveRecord::Base
   scope :large, ->(cutoff) { where("width*length >= ? or width IS NULL or length IS NULL", cutoff) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
+  scope :min_dimensions, ->(width, length) { where("width >= :min_width AND length >= :min_length OR #{SECOND_WIDTH_SQL} >= :min_length AND #{SECOND_LENGTH_SQL} >= :min_width", { min_width: width, min_length: length } ) }
+  scope :min_width, ->(width) { where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: width) }
+  scope :min_length, ->(length) { where("length >= :min_length OR #{SECOND_length_SQL} >= :min_length", min_length: length) }
 
   scope :with_additional_fields, ->(area_divisor) { 
     joins("LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id")
@@ -54,9 +57,8 @@ class Film < ActiveRecord::Base
   end
 
   def split
-    division = master_film.films.pluck(:division).max.to_i + 1
     master_film.films.build(tenant_code: tenant_code, 
-                            division: division,
+                            division: master_film.max_division + 1,
                             phase: phase, 
                             width: width, 
                             length: length).tap(&:save!)
@@ -79,26 +81,6 @@ class Film < ActiveRecord::Base
     save!
   end
 
-  def self.search_text(query)
-    if query.present?
-      #reorder is workaround for pg_search issue 88
-      reorder('').search(query)
-    else
-      all
-    end
-  end
-
-  def self.search_dimensions(min_width, min_length)
-    if min_width.present? && min_length.present?
-      all.where("width >= :min_width AND length >= :min_length OR #{SECOND_WIDTH_SQL} >= :min_width AND #{SECOND_LENGTH_SQL} >= :min_length", { min_width: min_width, min_length: min_length } )
-    elsif min_width.present?
-      all.where("width >= :min_width OR #{SECOND_WIDTH_SQL} >= :min_width", min_width: min_width)
-    elsif min_length.present?
-      all.where("length >= :min_length OR #{SECOND_LENGTH_SQL} >= :min_length", min_length: min_length)
-    else
-      all
-    end
-  end
 
   def move_to(destination, user)
     reset_sales_order if %w(stock wip fg).include?(destination)

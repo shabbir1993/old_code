@@ -34,4 +34,8 @@ class FilmDecorator < ApplicationDecorator
   def second_area
     number_with_precision(AreaCalculator.calculate(second_width, second_length, tenant.area_divisor), precision: 2) if second_width && second_length
   end
+
+  def has_second_dimensions?
+    respond_to?(:second_width) && respond_to?(:second_length) && second_width && second_length
+  end
 end

@@ -3,7 +3,7 @@ class FilmsController < ApplicationController
   def index
     set_default_sort
     @films_presenter = FilmsPresenter.new(current_tenant, params)
-    @films = @films_presenter.present
+    @films = @films_presenter.search_results
     respond_to do |format|
       format.html
       format.csv { send_data @films_presenter.to_csv }

@@ -18,10 +18,11 @@ class FilmsPresenter
     @direction = inputs[:direction]
   end
 
-  def present
-    @results ||= films_for_tab(tab).search_text(query)
-                                   .search_dimensions(min_width, min_length)
-                                   .order("#{safe_sort} #{safe_direction}")
+  def search_results
+    results = films_for_tab
+    results = search_dimensions(results)
+    results = search_text(results)
+    results.order("#{safe_sort} #{safe_direction}")
   end
 
   def total_count
@@ -32,7 +33,27 @@ class FilmsPresenter
     number_with_precision(films.map{ |f| f.area.to_f }.sum, precision: 2)
   end
 
-  def films_for_tab(tab)
+  def search_text(films)
+    if query.present?
+      films.reorder('').search(query)
+    else
+      films
+    end
+  end
+
+  def search_dimensions(films)
+    if min_width.present? && min_length.present?
+      results = films.min_dimensions(min_width, min_length)
+    elsif min_width.present?
+      results = films.min_width(min_width)
+    elsif min_length.present?
+      results = films.min_length(min_length)
+    else
+      films
+    end
+  end
+
+  def films_for_tab
     case tab
     when "lamination", "inspection", "wip", "fg", "test", "nc", "scrap"
       films.active.phase(tab)
@@ -51,7 +72,7 @@ class FilmsPresenter
 
   def data_for_export
     data = [] << %w(Serial Formula Width Length Area Shelf SO Phase)
-    present.limit(5000).each do |f|
+    search_results.limit(5000).each do |f|
       data << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
     end
     data

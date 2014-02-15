@@ -78,4 +78,8 @@ class MasterFilm < ActiveRecord::Base
   def tenant
     @tenant ||= Tenant.new(tenant_code)
   end
+
+  def max_division
+    films.pluck(:division).max.to_i
+  end
 end

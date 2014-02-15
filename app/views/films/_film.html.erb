@@ -1,28 +1,44 @@
 <tr id="<%= "film-#{film.id}" %>">
-  <td class="select-box"><%= select_box(film) %></td>
+  <td class="select-box">
+    <%= check_box_tag "film_ids[]", film.id, false, class: "film-select" unless film.deleted? %>
+  </td>
   <td class="actions">
-    <%= link_to_edit_or_restore(film) %>
-    <%= link_to_split(film) %>
+    <% if film.deleted == true %>
+      <%= link_to restore_film_path(film), method: :patch, remote: true, id: "film-#{film.id}-restore" do %>
+        <i class="fa fa-wrench"></i>
+      <% end %>
+    <% else %>
+      <%= link_to edit_film_path(film), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "film-#{film.id}-edit" } do %>
+        <i class="fa fa-edit"></i>
+      <% end %>
+      <% if film.phase == "stock" %>
+        <%= link_to split_film_path(film), method: :post, remote: true, id: "film-#{film.id}-split" do %>
+          <i class="fa fa-scissors"></i>
+        <% end %>
+      <% end %>
+    <% end %>
   </td>
   <td class="serial">
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
   </td>
   <td class="width">
     <%= film.width %>
-    <%= tag('br') + film.second_width.to_s if film.respond_to?(:second_width) %>
+    <%= tag('br') + film.second_width.to_s if film.has_second_dimensions? %>
   </td>
   <td class="length">
     <%= film.length %>
-    <%= tag('br') + film.second_length.to_s if film.respond_to?(:second_length) %>
+    <%= tag('br') + film.second_length.to_s if film.has_second_dimensions? %>
   </td>
   <td class="area">
     <%= "#{film.area} #{utilization_label(film.width, film.length)}".html_safe  %>
-    <%= tag('br') + "#{film.second_area} #{utilization_label(film.second_width, film.second_length)}".html_safe if film.respond_to?(:second_width) && film.respond_to?(:second_length) %>
+    <%= tag('br') + "#{film.second_area} #{utilization_label(film.second_width, film.second_length)}".html_safe if film.has_second_dimensions? %>
   </td>
   <td class="shelf"><%= film.shelf %></td>
   <td class="order">
     <%= film.sales_order_code %>
-    <%= fill_count_badge(film) %>
+    <% if film.order_fill_count > 1 && film.sales_order.present? %>
+      <span class="badge">film.order_fill_count</span>
+    <% end %>
   </td>
   <td class="note"><%= film.note %></td>
 </tr>

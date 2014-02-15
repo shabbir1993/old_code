@@ -10,4 +10,4 @@
   </div>
 </div>
 <%= f.text_area :note %>
-<%= f.select :destination, PhaseDefinitions.destinations_for(film.phase), { prompt: "Move to..." }, { label: false } %>
+<%= f.select :destination, destination_choices([film]), { prompt: "Move to..." }, { label: false } %>
