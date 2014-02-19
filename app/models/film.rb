@@ -64,8 +64,8 @@ class Film < ActiveRecord::Base
   def move_to(destination, user)
     reset_sales_order unless %w(stock wip fg).include?(destination)
     self.phase = destination
+    movement = film_movements.build(from_phase: phase_was, to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
     save!
-    movement = film_movements.build(from_phase: previous_changes[:phase], to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
     movement.save!
   end
 
