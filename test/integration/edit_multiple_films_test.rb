@@ -3,8 +3,8 @@ require 'test_helper'
 class EditMultipleFilmsTest < ActionDispatch::IntegrationTest
   before do
     use_javascript_driver
-    @film1 = FactoryGirl.create(:film_with_dimensions, phase: "stock")
-    @film2 = FactoryGirl.create(:film_with_dimensions, phase: "stock")
+    @film1 = FactoryGirl.create(:film, phase: "stock")
+    @film2 = FactoryGirl.create(:film, phase: "stock")
   end
 
   describe "edit multiple form" do

@@ -1,4 +1,11 @@
-<%= render 'shared/dimensions_fields', f: f, label: "Dimensions", width: :width, length: :length %>
+<%= f.fields_for :dimensions do |df| %>
+  <%= render 'dimension_fields', f: df %>
+<% end %>
+<div class="add-fields-link-wrapper form-group">
+  <div class="col-md-offset-2 col-md-8">
+    <%= link_to_add_fields "Add dimensions", f, :dimensions %>
+  </div>
+</div>
 <%= f.text_field :shelf %>
 <div class="form-group">
   <%= f.label :sales_order_id, "SO", class: "control-label col-md-2" %>

@@ -1,0 +1,13 @@
+<fieldset class="form-group dimension-fields">
+  <%= label_tag "Dimensions", nil, class: "control-label col-md-2" %>
+  <div class="col-md-4">
+    <%= f.number_field :width, placeholder: "Width", step: "any", default: true %>
+  </div>
+  <div class="col-md-4">
+    <%= f.number_field :length, placeholder: "Length", step: "any", default: true %>
+  </div>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to '#', class: "remove-fields" do %>
+    <i class="fa fa-minus"></i>remove
+  <% end %>
+</fieldset>

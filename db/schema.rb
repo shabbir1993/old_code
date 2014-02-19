@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140213210613) do
+ActiveRecord::Schema.define(version: 20140218192615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,12 @@ ActiveRecord::Schema.define(version: 20140213210613) do
     t.integer  "master_film_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "dimensions", force: true do |t|
+    t.decimal "width",   default: 0.0, null: false
+    t.decimal "length",  default: 0.0, null: false
+    t.integer "film_id",               null: false
   end
 
   create_table "film_movements", force: true do |t|
@@ -54,6 +60,7 @@ ActiveRecord::Schema.define(version: 20140213210613) do
     t.integer "order_fill_count", default: 1
     t.integer "tenant_id"
     t.string  "tenant_code",                      null: false
+    t.string  "serial",                           null: false
   end
 
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
@@ -102,27 +109,17 @@ ActiveRecord::Schema.define(version: 20140213210613) do
     t.integer  "tenant_id"
     t.hstore   "defects",          default: {}, null: false
     t.string   "tenant_code",                   null: false
+    t.decimal  "micrometer_left"
+    t.decimal  "micrometer_right"
+    t.decimal  "run_speed"
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
   add_index "master_films", ["tenant_code"], name: "index_master_films_on_tenant_code", using: :btree
   add_index "master_films", ["tenant_id"], name: "index_master_films_on_tenant_id", using: :btree
 
-  create_table "phase_snapshots", force: true do |t|
-    t.string   "phase",       null: false
-    t.integer  "count",       null: false
-    t.decimal  "total_area",  null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "tenant_id"
-    t.string   "tenant_code", null: false
-  end
-
-  add_index "phase_snapshots", ["tenant_code"], name: "index_phase_snapshots_on_tenant_code", using: :btree
-  add_index "phase_snapshots", ["tenant_id"], name: "index_phase_snapshots_on_tenant_id", using: :btree
-
   create_table "sales_orders", force: true do |t|
-    t.string   "code",         null: false
+    t.string   "code",                         null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "customer"
@@ -132,7 +129,8 @@ ActiveRecord::Schema.define(version: 20140213210613) do
     t.date     "ship_date"
     t.text     "note"
     t.integer  "tenant_id"
-    t.string   "tenant_code",  null: false
+    t.string   "tenant_code",                  null: false
+    t.boolean  "cancelled",    default: false
   end
 
   add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree

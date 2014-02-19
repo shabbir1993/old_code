@@ -4,7 +4,7 @@ class YieldChart
   attr_reader :master_films
 
   def initialize(tenant, inputs)
-    @master_films = tenant.widgets(MasterFilm).search(inputs[:start_serial], inputs[:end_serial]).by_serial.reverse
+    @master_films = tenant.widgets(MasterFilm).serial_range(inputs[:start_serial], inputs[:end_serial]).by_serial.reverse
   end
 
   def yield_points

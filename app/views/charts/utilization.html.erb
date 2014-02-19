@@ -39,7 +39,7 @@
         }, {
           type: 'line',
           name: 'Average',
-          data: [[0, <%= number_with_precision(@average, precision: 2) %>], [<%= @data.count-1 %>, <%= number_with_precision(@average, precision: 2) %>]],
+          data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
           marker: {
             enabled: false
           }

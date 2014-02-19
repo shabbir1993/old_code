@@ -3,6 +3,7 @@
 <% content_for :nav_list do %>
   <%= link_to "In Progress", sales_orders_path(status: 'unshipped'), class: "list-group-item#{" active" if params[:status] == 'unshipped'}" %>
   <%= link_to "Shipped", sales_orders_path(status: 'shipped'), class: "list-group-item#{" active" if params[:status] == 'shipped'}" %>
+  <%= link_to "Cancelled", sales_orders_path(status: 'cancelled'), class: "list-group-item#{" active" if params[:status] == 'cancelled'}" %>
 <% end %>
   
 <%= render template: "layouts/application" %>

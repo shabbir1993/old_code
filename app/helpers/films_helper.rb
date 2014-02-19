@@ -1,7 +1,7 @@
 module FilmsHelper
 
   def utilization_label(width, length)
-    if params[:min_width] && params[:min_length] && width >= search_width && length >= search_length
+    if params[:min_width].present? && params[:min_length].present? && width >= search_width && length >= search_length
       content_tag(:span, class: "label label-warning") do
         number_to_percentage(100*(search_width*search_length)/(width*length), precision: 2)
       end

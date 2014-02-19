@@ -5,6 +5,9 @@
 <%= f.text_field :thinky_code %>
 <%= f.select :chemist, current_tenant.widgets(User).chemists, { prompt: "Choose chemist..." }, { class: "form-control" } %>
 <%= f.select :operator, current_tenant.widgets(User).operators, { prompt: "Choose operator..." }, { class: "form-control" } %>
+<%= f.number_field :micrometer_left, label: "Mike L" %>
+<%= f.number_field :micrometer_right, label: "Mike R" %>
+<%= f.number_field :run_speed %>
 <%= f.text_area :note %>
 <fieldset class="panel panel-warning">
   <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>

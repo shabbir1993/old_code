@@ -16,13 +16,14 @@ class MasterFilm < ActiveRecord::Base
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { includes(:films).where(films: { deleted: false }) }
-  scope :by_serial, -> { order('serial DESC') }
+  scope :by_serial, -> { order('master_films.serial DESC') }
+  scope :formula_equals, ->(formula) { where(formula: formula) }
 
   def save_and_create_child(user)
     if save
-      film = films.build(tenant_code: tenant_code, division: 1, phase: "lamination")
-      movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
+      film = films.build(serial: "#{serial}-1", tenant_code: tenant_code, division: 1, phase: "lamination")
       film.save!
+      movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       movement.save!
     end
   end
@@ -57,13 +58,13 @@ class MasterFilm < ActiveRecord::Base
     defects.values.map(&:to_i).sum
   end
 
-  def self.search(start_serial, end_serial)
+  def self.serial_range(start_serial, end_serial)
     master_films = all
-    if start_serial
-      master_films = master_films.where("serial >= ?", start_serial)
+    if start_serial.present?
+      master_films = master_films.where("master_films.serial >= ?", start_serial)
     end
-    if end_serial
-      master_films = master_films.where("serial <= ?", end_serial)
+    if end_serial.present?
+      master_films = master_films.where("master_films.serial <= ?", end_serial)
     end
     master_films
   end
@@ -79,7 +80,7 @@ class MasterFilm < ActiveRecord::Base
     @tenant ||= Tenant.new(tenant_code)
   end
 
-  def max_division
-    films.pluck(:division).max.to_i
+  def next_division
+    films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
   end
 end

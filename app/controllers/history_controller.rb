@@ -19,7 +19,9 @@ class HistoryController < ApplicationController
   private
 
   def film_movements 
-    current_tenant.widgets(FilmMovement).exclude_deleted_films
+    current_tenant.widgets(FilmMovement)
+      .exclude_deleted_films
+      .text_search(params[:query])
       .search_date_range(params[:start_date], params[:end_date])
       .sort_by_created_at
   end

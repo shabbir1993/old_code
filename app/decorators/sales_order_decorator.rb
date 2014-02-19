@@ -26,6 +26,8 @@ class SalesOrderDecorator < ApplicationDecorator
   def destination
     if destroyed?
       "Deleted"
+    elsif cancelled?
+      "cancelled"
     elsif ship_date.present?
       "Shipped"
     else

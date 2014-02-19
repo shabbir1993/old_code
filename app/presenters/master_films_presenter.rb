@@ -7,13 +7,14 @@ class MasterFilmsPresenter
     @master_films = tenant.widgets(MasterFilm)
     @start_serial = inputs[:start_serial]
     @end_serial = inputs[:end_serial]
+    @query = inputs[:query]
   end
 
   def present
-    @results ||= master_films.active
-                             .search(start_serial, end_serial)
-                             .by_serial
-                             .includes(:machine)
+    results = master_films.active
+    results = results.serial_range(start_serial, end_serial)
+    results = results.by_serial
+    results
   end
 
   def data_for_export

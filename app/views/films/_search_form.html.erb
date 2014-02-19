@@ -3,6 +3,10 @@
     <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
   </div>
   <div class="form-group">
+    <%= label_tag "Formula" %>
+    <%= text_field_tag :formula, params[:formula], class: "form-control input-sm" %>
+  </div>
+  <div class="form-group">
     <%= label_tag "Width" %>
     <%= number_field_tag :min_width, params[:min_width], placeholder: "min", step: "any", class: "form-control input-sm" %>
   </div>

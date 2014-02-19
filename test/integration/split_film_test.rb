@@ -4,7 +4,7 @@ class SplitFilmTest < ActionDispatch::IntegrationTest
 
   before do
     use_javascript_driver
-    @film = FactoryGirl.create(:film_with_dimensions, phase: "stock")
+    @film = FactoryGirl.create(:film, phase: "stock")
   end
 
   describe "split button" do
@@ -18,6 +18,7 @@ class SplitFilmTest < ActionDispatch::IntegrationTest
     end
     
     it "creates a new split" do
+      save_screenshot("ss.png")
       assert page.has_content?("#{@film.serial.next}")
     end
   end

@@ -5,7 +5,7 @@ class FilmsPresenter
   attr_reader :tenant, :films, :tab, :query, :min_width, :min_length, :sort, :direction
 
   SAFE_SCOPES = %w(lamination inspection wip fg test nc scrap large_stock small_stock reserved_stock deleted)
-  SAFE_SORTS = %w(serial width length area shelf sales_order_code note) 
+  SAFE_SORTS = %w(serial width length area shelf note) 
 
   def initialize(tenant, inputs)
     @tenant = tenant
@@ -16,21 +16,23 @@ class FilmsPresenter
     @min_length = inputs[:min_length]
     @sort = inputs[:sort]
     @direction = inputs[:direction]
+    @formula = inputs[:formula]
   end
 
   def search_results
     results = films_for_tab
     results = search_dimensions(results)
+    results = search_formula(results)
     results = search_text(results)
     results.order("#{safe_sort} #{safe_direction}")
   end
 
   def total_count
-    films.count
+    search_results.count
   end
 
   def total_area
-    number_with_precision(films.map{ |f| f.area.to_f }.sum, precision: 2)
+    number_with_precision(search_results.map{ |f| f.area.to_f }.sum, precision: 2)
   end
 
   def search_text(films)
@@ -41,16 +43,23 @@ class FilmsPresenter
     end
   end
 
-  def search_dimensions(films)
-    if min_width.present? && min_length.present?
-      results = films.min_dimensions(min_width, min_length)
-    elsif min_width.present?
-      results = films.min_width(min_width)
-    elsif min_length.present?
-      results = films.min_length(min_length)
+  def search_formula(films)
+    if @formula.present?
+      films.joins('LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.formula_equals(@formula.upcase))
     else
       films
     end
+  end
+
+  def search_dimensions(films)
+    results = films
+    if min_width.present?
+      results = films.includes(:dimensions).merge(Dimension.min_width(min_width))
+    end
+    if min_length.present?
+      results = films.includes(:dimensions).merge(Dimension.min_length(min_length))
+    end
+    results
   end
 
   def films_for_tab
@@ -81,10 +90,19 @@ class FilmsPresenter
   private
 
   def safe_sort
-    SAFE_SORTS.include?(sort) ? sort : ""
+    if SAFE_SORTS.include?(sort)
+      case sort
+      when 'area'
+        'dimensions.width*dimensions.length'
+      else
+        sort
+      end
+    else
+      'serial'
+    end
   end
 
   def safe_direction
-    %w(asc desc).include?(direction) ? direction : ""
+    %w(asc desc).include?(direction) ? direction : "desc"
   end
 end

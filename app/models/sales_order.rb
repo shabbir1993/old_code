@@ -1,5 +1,5 @@
 class SalesOrder < ActiveRecord::Base
-  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes
+  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
   has_many :line_items, dependent: :destroy
   has_many :films
@@ -13,8 +13,11 @@ class SalesOrder < ActiveRecord::Base
     :using => { tsearch: { prefix: true } }
 
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
-  scope :shipped, -> { where('ship_date is not null') }
-  scope :unshipped, -> { where(ship_date: nil) }
+  scope :shipped, -> { where('ship_date is not null and cancelled = false') }
+  scope :unshipped, -> { where(ship_date: nil, cancelled: false) }
+  scope :cancelled, -> { where(cancelled: true) }
+  scope :has_release_date, -> { where('release_date is not null') }
+  scope :has_due_date, -> { where('due_date is not null') }
 
   def self.ship_date_range(start_date, end_date)
     sales_orders = shipped
@@ -34,6 +37,20 @@ class SalesOrder < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def cycle_days
+    (ship_date - release_date).to_i
+  end
+
+  def cancel
+    self.cancelled = true
+    save!
+  end
+
+  def uncancel
+    self.cancelled = false
+    save!
   end
 
   def total_quantity

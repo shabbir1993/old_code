@@ -14,6 +14,9 @@ class UtilizationChart
   end
 
   def average
-    shipped_sales_orders.map { |sso| sso.utilization }.sum/shipped_sales_orders.count unless shipped_sales_orders.count == 0
+    if shipped_sales_orders.count > 0
+      avg = shipped_sales_orders.map { |sso| sso.utilization }.sum/shipped_sales_orders.count
+      number_with_precision(avg, precision: 2)
+    end
   end
 end

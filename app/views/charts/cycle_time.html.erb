@@ -1,0 +1,67 @@
+<%= form_tag cycle_time_chart_path, method: :get, class: 'form-inline search' do %>
+  <div class="row">
+    <%= render 'shared/date_range_fields' %>
+    <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
+  </div>
+<% end %>
+
+<script>
+  $(function () {
+    $('#cycle_time').highcharts({
+      chart: {
+        type: 'scatter',
+        zoomType: 'x'
+      },
+      title: {
+        text: 'SO Cycle Time'
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+          rotation: 90
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Cycle time'
+        }
+      },
+      series: [
+      {
+        yAxis: 0,
+        name: 'Cycle time',
+        data: [
+        <% @data.each do |point| %>
+          ["<%= point[:code] %>", <%= point[:cycle_time] %>],
+        <% end %>
+        ]
+        }, {
+        type: 'line',
+        name: 'Average',
+        data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
+        marker: {
+          enabled: false
+        }
+        }, {
+        type: 'pie',
+        data: [{
+          name: 'On time',
+          y: <%= @on_time_total %>,
+          color: 'green'
+          }, {
+          name: 'Late',
+          y: <%= @late_total %>,
+          color: 'red'
+        }],
+        center: [70, 70],
+        size: 100,
+        showInLegend: false,
+        dataLabels: {
+          enabled: false
+        }
+      }]
+    });
+  });
+</script>
+<div id="cycle_time" class="chart"></div>

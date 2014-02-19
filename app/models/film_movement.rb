@@ -1,4 +1,6 @@
 class FilmMovement < ActiveRecord::Base
+  include PgSearch
+
   attr_accessible :from_phase, :to_phase, :width, :length, :actor, :film_id, :film, :tenant_code
 
   belongs_to :film
@@ -10,11 +12,25 @@ class FilmMovement < ActiveRecord::Base
   scope :before_date, ->(date) { where("created_at <= ?", date) } 
   scope :after_date, ->(date) { where("created_at >= ?", date) } 
 
+  pg_search_scope :search, 
+    against: [:from_phase, :to_phase, :actor], 
+    using: { tsearch: { prefix: true } },
+    associated_against: { film: [:serial] }
+
   def datetime_display
     if created_at.year == Time.zone.today.year
       created_at.strftime("%e %b %R")
     else
       created_at.strftime("%F %R")
+    end
+  end
+
+  def self.text_search(query)
+    movements = all
+    if query.present?
+      movements.reorder('').search(query)
+    else
+      movements
     end
   end
 
@@ -30,7 +46,7 @@ class FilmMovement < ActiveRecord::Base
   end
 
   def area
-    AreaCalculator.calculate(width, length, Tenant.current_area_divisor)
+    AreaCalculator.calculate(width, length, tenant.area_divisor)
   end
 
   def self.fg_film_movements_to_csv(options = {})

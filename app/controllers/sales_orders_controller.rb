@@ -42,7 +42,12 @@ class SalesOrdersController < ApplicationController
 
   def return
     @sales_order = current_tenant.widget(SalesOrder, params[:id])
-    @sales_order.update_attributes!(ship_date: nil)
+    @sales_order.update_attributes!(ship_date: nil, cancelled: false)
+  end
+
+  def cancel
+    @sales_order = current_tenant.widget(SalesOrder, params[:id])
+    @sales_order.cancel
   end
 
   private

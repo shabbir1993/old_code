@@ -22,22 +22,25 @@
     <strong><%= film.serial %></strong> <span class="label label-default"><%= film.formula %></span>
   </td>
   <td class="width">
-    <%= film.width %>
-    <%= tag('br') + film.second_width.to_s if film.has_second_dimensions? %>
+    <% film.dimensions.each do |d| %>
+      <%= "#{d.width}#{tag('br')}".html_safe %>
+    <% end %>
   </td>
   <td class="length">
-    <%= film.length %>
-    <%= tag('br') + film.second_length.to_s if film.has_second_dimensions? %>
+    <% film.dimensions.each do |d| %>
+      <%= "#{d.length}#{tag('br')}".html_safe %>
+    <% end %>
   </td>
   <td class="area">
-    <%= "#{film.area} #{utilization_label(film.width, film.length)}".html_safe  %>
-    <%= tag('br') + "#{film.second_area} #{utilization_label(film.second_width, film.second_length)}".html_safe if film.has_second_dimensions? %>
+    <% film.dimensions.each do |d| %>
+      <%= "#{d.area}#{utilization_label(d.width, d.length)}#{tag('br')}".html_safe %>
+    <% end %>
   </td>
   <td class="shelf"><%= film.shelf %></td>
   <td class="order">
     <%= film.sales_order_code %>
     <% if film.order_fill_count > 1 && film.sales_order.present? %>
-      <span class="badge">film.order_fill_count</span>
+      <span class="badge"><%= film.order_fill_count %></span>
     <% end %>
   </td>
   <td class="note"><%= film.note %></td>

@@ -6,23 +6,28 @@ FactoryGirl.define do
 
     factory :master_film_with_child do
       after(:create) do |master_film|
-        FactoryGirl.create(:film, master_film: master_film)
+        FactoryGirl.create(:film, master_film: master_film, serial: "#{master_film.serial}-1")
       end
     end
   end
+    sequence(:serial) { |n| "E0101-#{'%02d' % n}"}
 
   factory :film do
+    sequence(:serial) { |n| "F0101-#{'%02d' % n}-1"}
     phase "lamination"
-    division 1
-    after(:build) do |film|
-      film.master_film = FactoryGirl.create(:master_film) unless film.master_film.present?
+    before(:create) do |film|
+      film.master_film = FactoryGirl.create(:master_film, serial: film.serial[0..7]) unless film.master_film.present?
+    end
+    after(:create) do |film|
+      FactoryGirl.create(:dimension, film: film)
     end
     tenant_code 'pi'
+  end
 
-    factory :film_with_dimensions do
-      width 60
-      length 100
-    end
+  factory :dimension do
+    width 60
+    length 100
+    film
   end
 
   factory :sales_order do

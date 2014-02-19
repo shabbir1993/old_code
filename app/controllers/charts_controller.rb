@@ -45,6 +45,14 @@ class ChartsController < ApplicationController
     @total_glass_area_shipped = chart.total_glass_area_shipped
   end
 
+  def cycle_time
+    chart = CycleTimeChart.new(current_tenant, params)
+    @data = chart.cycle_time_points
+    @average = chart.average
+    @on_time_total = chart.on_time_total
+    @late_total = chart.late_total
+  end
+
   private
 
   def large_stock_films

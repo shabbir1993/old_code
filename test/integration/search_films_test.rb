@@ -12,6 +12,7 @@ class SearchFilmsTest < ActionDispatch::IntegrationTest
       click_link "Production"
       click_link "Available"
       fill_in "query", with: "A"
+      fill_in "formula", with: ""
       fill_in "min_width", with: 52
       fill_in "min_length", with: 83
       click_button "Search"
