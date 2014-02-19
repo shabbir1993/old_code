@@ -25,6 +25,8 @@ class DropTenants < ActiveRecord::Migration
     SalesOrder.unscoped.where(tenant_id: 2).update_all(tenant_code: "pe")
     User.unscoped.where(tenant_id: 1).update_all(tenant_code: "pi")
     User.unscoped.where(tenant_id: 2).update_all(tenant_code: "pe")
+    PhaseSnapshot.unscoped.where(tenant_id: 1).update_all(tenant_code: "pi")
+    PhaseSnapshot.unscoped.where(tenant_id: 2).update_all(tenant_code: "pe")
     FilmMovement.unscoped.where(tenant_id: 1).update_all(tenant_code: "pi")
     FilmMovement.unscoped.where(tenant_id: 2).update_all(tenant_code: "pe")
     Machine.unscoped.where(tenant_id: 1).update_all(tenant_code: "pi")
