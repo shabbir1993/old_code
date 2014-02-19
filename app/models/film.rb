@@ -22,7 +22,7 @@ class Film < ActiveRecord::Base
   validates :order_fill_count, numericality: { greater_than: 0 }
   validate :must_have_dimensions, on: :update
 
-  scope :with_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq.preload(:dimensions) }
+  scope :with_dimensions, -> { includes(:dimensions) }
   scope :active, -> { where(deleted: false) }
   scope :deleted, -> { where(deleted: true) }
   scope :phase, ->(phase) { where(phase: phase) }
