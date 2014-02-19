@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140219055852) do
+ActiveRecord::Schema.define(version: 20140219061410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20140219055852) do
     t.decimal "length",  default: 0.0, null: false
     t.integer "film_id",               null: false
   end
+
+  add_index "dimensions", ["film_id"], name: "index_dimensions_on_film_id", using: :btree
 
   create_table "film_movements", force: true do |t|
     t.string   "from_phase",  null: false
@@ -35,6 +37,8 @@ ActiveRecord::Schema.define(version: 20140219055852) do
     t.string   "tenant_code", null: false
   end
 
+  add_index "film_movements", ["created_at"], name: "index_film_movements_on_created_at", using: :btree
+  add_index "film_movements", ["film_id"], name: "index_film_movements_on_film_id", using: :btree
   add_index "film_movements", ["tenant_code"], name: "index_film_movements_on_tenant_code", using: :btree
 
   create_table "films", force: true do |t|
@@ -52,6 +56,11 @@ ActiveRecord::Schema.define(version: 20140219055852) do
     t.string  "serial",                           null: false
   end
 
+  add_index "films", ["deleted"], name: "index_films_on_deleted", using: :btree
+  add_index "films", ["master_film_id"], name: "index_films_on_master_film_id", using: :btree
+  add_index "films", ["phase"], name: "index_films_on_phase", using: :btree
+  add_index "films", ["sales_order_id"], name: "index_films_on_sales_order_id", using: :btree
+  add_index "films", ["serial"], name: "index_films_on_serial", using: :btree
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
 
   create_table "line_items", force: true do |t|
@@ -64,6 +73,8 @@ ActiveRecord::Schema.define(version: 20140219055852) do
     t.text    "note"
     t.string  "product_type"
   end
+
+  add_index "line_items", ["sales_order_id"], name: "index_line_items_on_sales_order_id", using: :btree
 
   create_table "machines", force: true do |t|
     t.string  "code",           null: false
@@ -95,6 +106,8 @@ ActiveRecord::Schema.define(version: 20140219055852) do
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
+  add_index "master_films", ["machine_id"], name: "index_master_films_on_machine_id", using: :btree
+  add_index "master_films", ["serial"], name: "index_master_films_on_serial", using: :btree
   add_index "master_films", ["tenant_code"], name: "index_master_films_on_tenant_code", using: :btree
 
   create_table "sales_orders", force: true do |t|
@@ -111,6 +124,9 @@ ActiveRecord::Schema.define(version: 20140219055852) do
     t.boolean  "cancelled",    default: false
   end
 
+  add_index "sales_orders", ["cancelled"], name: "index_sales_orders_on_cancelled", using: :btree
+  add_index "sales_orders", ["due_date"], name: "index_sales_orders_on_due_date", using: :btree
+  add_index "sales_orders", ["ship_date"], name: "index_sales_orders_on_ship_date", using: :btree
   add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree
 
   create_table "users", force: true do |t|
