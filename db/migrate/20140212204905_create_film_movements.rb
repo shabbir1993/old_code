@@ -16,8 +16,8 @@ class CreateFilmMovements < ActiveRecord::Migration
       @movement = FilmMovement.new
       @movement.from_phase = v.phase_change[0] || "raw"
       @movement.to_phase = v.phase_change[1]
-      @movement.width = v.after.width
-      @movement.length = v.after.length
+      @movement.width = v.after.read_attribute('width')
+      @movement.length = v.after.read_attribute('length')
       @movement.actor = v.whodunnit
       @movement.film_id = v.item_id
       @movement.tenant_id = v.tenant_id
