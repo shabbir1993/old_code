@@ -1,7 +1,6 @@
 <%= render 'search_form' %>
 <span>
   Count: <strong><%= @films_presenter.total_count %></strong>
-  Area: <strong><%= @films_presenter.total_area %></strong>
 </span>
 
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>

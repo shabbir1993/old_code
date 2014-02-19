@@ -22,7 +22,7 @@ class Film < ActiveRecord::Base
   validates :order_fill_count, numericality: { greater_than: 0 }
   validate :must_have_dimensions, on: :update
 
-  scope :with_dimensions, -> { includes(:dimensions) }
+  scope :with_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq.preload(:dimensions) }
   scope :active, -> { where(deleted: false) }
   scope :deleted, -> { where(deleted: true) }
   scope :phase, ->(phase) { where(phase: phase) }
@@ -62,10 +62,10 @@ class Film < ActiveRecord::Base
 
 
   def move_to(destination, user)
-    reset_sales_order if %w(stock wip fg).include?(destination)
+    reset_sales_order unless %w(stock wip fg).include?(destination)
     self.phase = destination
     save!
-    movement = film_movements.build(from_phase: phase, to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
+    movement = film_movements.build(from_phase: previous_changes[:phase], to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
     movement.save!
   end
 

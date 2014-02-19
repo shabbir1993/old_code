@@ -24,7 +24,7 @@ class FilmsPresenter
   end
 
   def search_results
-    results = films_for_tab
+    results = films_for_tab.with_dimensions
     results = search_dimensions(results)
     results = search_formula(results)
     results = search_text(results)

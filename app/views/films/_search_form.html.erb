@@ -1,9 +1,7 @@
 <%= form_tag films_path, method: :get, class: 'form-inline search' do %>
-  <% if false %>
-    <div class="form-group">
-      <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
-    </div>
-  <% end %>
+  <div class="form-group">
+    <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
+  </div>
   <div class="form-group">
     <%= label_tag "Formula" %>
     <%= text_field_tag :formula, params[:formula], class: "form-control input-sm" %>
