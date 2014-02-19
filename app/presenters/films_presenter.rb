@@ -97,6 +97,8 @@ class FilmsPresenter
       case sort
       when 'area'
         'dimensions.width*dimensions.length'
+      when 'serial'
+        'films.serial'
       else
         sort
       end
