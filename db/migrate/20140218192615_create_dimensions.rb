@@ -10,7 +10,7 @@ class CreateDimensions < ActiveRecord::Migration
 
     Film.unscoped.select("films.*, #{SECOND_WIDTH_SQL} as second_width, #{SECOND_LENGTH_SQL} as second_length").each do |f|
       if f.read_attribute('width') && f.read_attribute('length')
-        dimension = f.dimensions.build(width: f.width, length: f.length)
+        dimension = f.dimensions.build(width: f.read_attribute('width'), length: f.read_attribute('length')
         dimension.save!
       end
       if f.second_width && f.second_length
