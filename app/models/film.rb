@@ -35,6 +35,11 @@ class Film < ActiveRecord::Base
     using: { tsearch: { prefix: true } },
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
+  has_paper_trail :only => [:phase, :shelf, :width, :length, :deleted],
+    :meta => { columns_changed: Proc.new { |film| film.changed },
+      phase_change: Proc.new { |film| film.changes[:phase] || [film.phase, film.phase] },
+      area_after: Proc.new { |film| film.area || 0 } }
+
   def split
     split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", tenant_code: tenant_code, phase: phase).tap(&:save!)
     dimensions = split.dimensions.build(width: width, length: length)
