@@ -14,7 +14,6 @@ gem "kaminari", "~> 0.14.1"
 gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
-gem 'paper_trail', '>= 3.0.0.beta1'
 
 group :test do
   gem "minitest", "~> 4.7"

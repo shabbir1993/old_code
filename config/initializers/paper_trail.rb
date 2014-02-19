@@ -2,7 +2,6 @@ module PaperTrail
   class Version < ActiveRecord::Base
     attr_accessible :columns_changed, :phase_change, :area_after
 
-    default_scope { where(tenant_id: Tenant.current_id) if Tenant.current_id }
     scope :exclude_deleted_films, -> { joins('INNER JOIN films ON films.id = versions.item_id').where( films: { deleted: false }) } 
     scope :sort_by_created_at, -> { order('versions.created_at DESC') }
     scope :before_date, ->(date) { where("created_at <= ?", date) } 
