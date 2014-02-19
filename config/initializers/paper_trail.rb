@@ -13,7 +13,7 @@ module PaperTrail
     end
 
     def after
-      self.next ? self.next.reify : Film.find(item_id)
+      self.next ? self.next.reify : Film.unscoped.find_by_id(item_id)
     end
 
     def datetime_display
