@@ -56,6 +56,6 @@ class ChartsController < ApplicationController
   private
 
   def large_stock_films
-    current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
+    current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved.includes(:master_film)
   end
 end

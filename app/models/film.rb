@@ -22,11 +22,12 @@ class Film < ActiveRecord::Base
   validates :order_fill_count, numericality: { greater_than: 0 }
   validate :must_have_dimensions, on: :update
 
+  scope :with_dimensions, -> { includes(:dimensions) }
   scope :active, -> { where(deleted: false) }
   scope :deleted, -> { where(deleted: true) }
   scope :phase, ->(phase) { where(phase: phase) }
-  scope :small, ->(cutoff) { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').merge(Dimension.small(cutoff)) }
-  scope :large, ->(cutoff) { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').merge(Dimension.large(cutoff)) }
+  scope :large, ->(cutoff) { with_dimensions.merge(Dimension.large(cutoff)) }
+  scope :small, ->(cutoff) { with_dimensions.merge(Dimension.small(cutoff)) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
 
@@ -39,6 +40,7 @@ class Film < ActiveRecord::Base
     split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", tenant_code: tenant_code, phase: phase).tap(&:save!)
     dimensions = split.dimensions.build(width: width, length: length)
     dimensions.save!
+    split
   end
 
   def update_and_move(attrs, destination, user)

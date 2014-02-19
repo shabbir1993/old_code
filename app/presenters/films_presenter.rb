@@ -19,12 +19,15 @@ class FilmsPresenter
     @formula = inputs[:formula]
   end
 
+  def present
+    search_results.with_dimensions.order("#{safe_sort} #{safe_direction}")
+  end
+
   def search_results
     results = films_for_tab
     results = search_dimensions(results)
     results = search_formula(results)
     results = search_text(results)
-    results.order("#{safe_sort} #{safe_direction}")
   end
 
   def total_count
@@ -54,10 +57,10 @@ class FilmsPresenter
   def search_dimensions(films)
     results = films
     if min_width.present?
-      results = films.includes(:dimensions).merge(Dimension.min_width(min_width))
+      results = results.merge(Dimension.min_width(min_width))
     end
     if min_length.present?
-      results = films.includes(:dimensions).merge(Dimension.min_length(min_length))
+      results = results.merge(Dimension.min_length(min_length))
     end
     results
   end
