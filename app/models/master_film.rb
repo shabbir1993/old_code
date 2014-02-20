@@ -21,8 +21,10 @@ class MasterFilm < ActiveRecord::Base
 
   def save_and_create_child(user)
     if save
-      film = films.build(serial: "#{serial}-1", tenant_code: tenant_code, division: 1, phase: "lamination")
+      film = films.build(serial: "#{serial}-1", area: 0, tenant_code: tenant_code, division: 1, phase: "lamination")
       film.save!
+      dimensions = film.dimensions.build(width: 0, length: 0)
+      dimensions.save!
       movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       movement.save!
     end

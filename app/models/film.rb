@@ -14,7 +14,7 @@ class Film < ActiveRecord::Base
 
   delegate :formula, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
-  delegate :width, :length, :area, to: :primary_dimension, allow_nil: true
+  delegate :width, :length, to: :primary_dimension, allow_nil: true
 
   before_save :upcase_shelf
 
@@ -22,7 +22,7 @@ class Film < ActiveRecord::Base
   validates :order_fill_count, numericality: { greater_than: 0 }
   validate :must_have_dimensions, on: :update
 
-  scope :with_dimensions, -> { includes(:dimensions) }
+  scope :with_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq }
   scope :active, -> { where(deleted: false) }
   scope :deleted, -> { where(deleted: true) }
   scope :phase, ->(phase) { where(phase: phase) }
@@ -37,7 +37,7 @@ class Film < ActiveRecord::Base
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
   def split
-    split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", tenant_code: tenant_code, phase: phase).tap(&:save!)
+    split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", area: area, tenant_code: tenant_code, phase: phase).tap(&:save!)
     dimensions = split.dimensions.build(width: width, length: length)
     dimensions.save!
     split
@@ -46,6 +46,7 @@ class Film < ActiveRecord::Base
   def update_and_move(attrs, destination, user)
     before_phase = phase
     if update_attributes(attrs)
+      set_area
       if PhaseDefinitions.front_end?(before_phase)
         master_film.effective_width = attrs[:width]
         master_film.effective_length = attrs[:length]
@@ -91,5 +92,10 @@ class Film < ActiveRecord::Base
     if dimensions.empty? or dimensions.all? {|dimension| dimension.marked_for_destruction? }
       errors.add(:base, 'Must have dimensions')
     end
+  end
+
+  def set_area
+    self.area = primary_dimension.area
+    save!
   end
 end

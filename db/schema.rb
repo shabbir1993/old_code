@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140219225351) do
+ActiveRecord::Schema.define(version: 20140219231540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,8 +51,10 @@ ActiveRecord::Schema.define(version: 20140219225351) do
     t.integer "order_fill_count", default: 1
     t.string  "tenant_code",                      null: false
     t.string  "serial",                           null: false
+    t.decimal "area",             default: 0.0,   null: false
   end
 
+  add_index "films", ["area"], name: "index_films_on_area", using: :btree
   add_index "films", ["deleted"], name: "index_films_on_deleted", using: :btree
   add_index "films", ["master_film_id"], name: "index_films_on_master_film_id", using: :btree
   add_index "films", ["phase"], name: "index_films_on_phase", using: :btree

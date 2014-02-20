@@ -95,15 +95,13 @@ class FilmsPresenter
   def safe_sort
     if SAFE_SORTS.include?(sort)
       case sort
-      when 'area'
-        'dimensions.width*dimensions.length'
       when 'serial'
         'films.serial'
       else
         sort
       end
     else
-      'serial'
+      'films.serial'
     end
   end
 

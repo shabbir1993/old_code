@@ -1,6 +1,7 @@
 <%= render 'search_form' %>
 <span>
   Count: <strong><%= @films_presenter.total_count %></strong>
+  Area: <strong><%= @films_presenter.total_area %></strong>
 </span>
 
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
@@ -13,9 +14,9 @@
     <tr>
       <th></th>
       <th></th>
-      <th><%= sort_link 'serial_with_division', "Serial" %></th>
-      <th><%= sort_link 'width' %></th>
-      <th><%= sort_link 'length' %></th>
+      <th><%= sort_link 'films.serial', "Serial" %></th>
+      <th>Width</th>
+      <th>Length</th>
       <th><%= sort_link 'area' %></th>
       <th><%= sort_link 'shelf' %></th>
       <th>SO</th>
