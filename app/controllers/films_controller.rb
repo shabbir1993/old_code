@@ -40,11 +40,13 @@ class FilmsController < ApplicationController
   def destroy
     @film = current_tenant.widget(Film, params[:id])
     @film.update_attributes(deleted: true)
+    @film.master_film.set_inactive(true) if @film.master_film.no_active_films?
   end
 
   def restore
     @film = current_tenant.widget(Film, params[:id])
     @film.update_attributes(deleted: false)
+    @film.master_film.set_inactive(false) if @film.master_film.inactive?
   end
 
   def unassign

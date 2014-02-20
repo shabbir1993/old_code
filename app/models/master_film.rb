@@ -15,7 +15,7 @@ class MasterFilm < ActiveRecord::Base
   validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code },
     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
-  scope :active, -> { includes(:films).where(films: { deleted: false }) }
+  scope :active, -> { where(inactive: false) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_equals, ->(formula) { where(formula: formula) }
 
@@ -84,5 +84,14 @@ class MasterFilm < ActiveRecord::Base
 
   def next_division
     films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
+  end
+
+  def no_active_films?
+    films.active.empty?
+  end
+
+  def set_inactive(inactive)
+    self.inactive = inactive
+    save!
   end
 end
