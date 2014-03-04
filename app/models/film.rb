@@ -48,8 +48,8 @@ class Film < ActiveRecord::Base
     if update_attributes(attrs)
       set_area
       if PhaseDefinitions.front_end?(before_phase)
-        master_film.effective_width = attrs[:width]
-        master_film.effective_length = attrs[:length]
+        master_film.effective_width = width
+        master_film.effective_length = length
         master_film.save!
       end
       move_to(destination, user) if destination.present?
