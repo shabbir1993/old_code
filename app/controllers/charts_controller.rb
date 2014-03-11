@@ -27,8 +27,7 @@ class ChartsController < ApplicationController
 
   def utilization
     chart = UtilizationChart.new(current_tenant, params)
-    @data = chart.utilization_points
-    @average = chart.average
+    @data = chart.averages_by_month
   end
 
   def yield

@@ -7,16 +7,14 @@ class UtilizationChart
     @shipped_sales_orders = tenant.widgets(SalesOrder).shipped.ship_date_range(inputs[:start_date], inputs[:end_date])
   end
 
-  def utilization_points
-    shipped_sales_orders.by_code.reverse.map do |so| 
-      { code: so.code, utilization:  number_with_precision(so.utilization, precision: 2) }
+  def averages_by_month
+    shipped_sales_orders.group_by { |o| o.ship_date.beginning_of_week }.sort.map do |k,v| 
+      { week_start: k, average_util:  number_with_precision(average_utilization(v), precision: 2) }
     end
   end
 
-  def average
-    if shipped_sales_orders.count > 0
-      avg = shipped_sales_orders.map { |sso| sso.utilization.to_f }.sum/shipped_sales_orders.count
-      number_with_precision(avg, precision: 2)
-    end
+  def average_utilization(sales_orders)
+    orders_with_utilization = sales_orders.reject { |so| so.utilization.nil? }
+    orders_with_utilization.sum(&:utilization)/orders_with_utilization.count
   end
 end

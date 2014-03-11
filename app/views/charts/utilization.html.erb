@@ -9,17 +9,14 @@
   $(function () {
     $('#utilization').highcharts({
       chart: {
-        type: 'scatter',
+        type: 'spline',
         zoomType: 'x'
       },
       title: {
         text: 'Utilization'
       },
       xAxis: {
-        type: 'category',
-        labels: {
-          rotation: 90
-        }
+        type: 'datetime'
       },
       yAxis: {
         min: 0,
@@ -27,24 +24,14 @@
           text: 'Utilization'
         }
       },
-      series: [
-        {
-          yAxis: 0,
-          name: 'Utilization',
-          data: [
-          <% @data.each do |point| %>
-            ["<%= point[:code] %>", <%= point[:utilization] %>],
-          <% end %>
-          ]
-        }, {
-          type: 'line',
-          name: 'Average',
-          data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
-          marker: {
-            enabled: false
-          }
-        }
-      ]
+      series: [{
+        name: 'Utilization',
+        data: [
+        <% @data.each do |point| %>
+          [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:average_util] %>],
+        <% end %>
+        ]
+      }]
     });
   });
 </script>

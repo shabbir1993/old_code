@@ -9,11 +9,11 @@
   $(function () {
     $('#cycle_time').highcharts({
       chart: {
-        type: 'scatter',
+        type: 'line',
         zoomType: 'x'
       },
       title: {
-        text: 'SO Cycle Time'
+        text: 'Cycle Time'
       },
       xAxis: {
         type: 'category',
@@ -31,13 +31,13 @@
       {
         yAxis: 0,
         name: 'Cycle time',
+        lineWidth: 0,
         data: [
         <% @data.each do |point| %>
-          ["<%= point[:code] %>", <%= point[:cycle_time] %>],
+          ["<%= point[:code] %>", <%= point[:cycle_days] %>],
         <% end %>
         ]
         }, {
-        type: 'line',
         name: 'Average',
         data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
         marker: {

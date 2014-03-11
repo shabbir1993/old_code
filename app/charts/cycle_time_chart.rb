@@ -7,7 +7,7 @@ class CycleTimeChart
 
   def cycle_time_points
     @shipped_sales_orders.by_code.reverse.map do |so| 
-      { code: so.code, cycle_time: so.cycle_days }
+      { code: so.code, cycle_days: so.cycle_days, ship_date: so.ship_date }
     end
   end
 
