@@ -9,20 +9,31 @@
   $(function () {
     $('#utilization').highcharts({
       chart: {
-        type: 'spline',
-        zoomType: 'x'
+        type: 'spline'
       },
       title: {
-        text: 'Utilization'
+        text: 'Utilization by week'
       },
       xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        title: {
+          text: 'Beginning of shipment week'
+        }
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Utilization'
-        }
+          text: '% Utilization'
+        },
+        plotLines: [{
+          color: 'red',
+          value: <%= @overall_average %>,
+          width: 2,
+          label: {
+            align: 'right',
+            text: "<%= @overall_average %>"
+          }
+        }]
       },
       series: [{
         name: 'Utilization',

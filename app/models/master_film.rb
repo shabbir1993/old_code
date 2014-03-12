@@ -18,6 +18,7 @@ class MasterFilm < ActiveRecord::Base
   scope :active, -> { where(inactive: false) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_equals, ->(formula) { where(formula: formula) }
+  scope :in_house, -> { where("length(serial) = 8") }
 
   def save_and_create_child(user)
     if save
@@ -43,6 +44,8 @@ class MasterFilm < ActiveRecord::Base
     month = serial[1,2].to_i
     day = serial[3,2].to_i
     DateTime.new(year, month, day)
+  rescue Exception
+    logger.debug self.serial
   end
 
   def defect_count(type)
