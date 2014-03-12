@@ -9,11 +9,10 @@
   $(function () {
     $('#area_shipped').highcharts({
       chart: {
-        type: 'area',
-        zoomType: 'x'
+        type: 'column'
       },
       title: {
-        text: 'Area of film and glass shipped by date'
+        text: 'Area of film and glass shipped by week'
       },
       xAxis: {
         type: 'datetime'
@@ -28,7 +27,9 @@
         shared: true
       },
       plotOptions: {
-        area: {
+        column: {
+          pointPadding: 0,
+          groupPadding: 0,
           stacking: 'normal'
         }
       },
@@ -36,15 +37,15 @@
       {
         name: 'Film',
         data: [
-        <% @film_area_shipped_by_date.each do |point| %>
-          [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
+        <% @chart.area_shipped_by_date.each do |point| %>
+          [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:shipped_film_area] %>],
         <% end %>
         ]
         }, {
         name: 'Glass',
         data: [
-        <% @glass_area_shipped_by_date.each do |point| %>
-          [<%= point[0].to_datetime.to_i*1000 %>, <%= point[1] %>],
+        <% @chart.area_shipped_by_date.each do |point| %>
+          [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:shipped_glass_area] %>],
         <% end %>
         ]
         } , {
@@ -52,11 +53,11 @@
         name: 'Total shipped',
         data: [{
           name: 'Film',
-          y: <%= @total_film_area_shipped %>,
+          y: <%= @chart.total_film_area_shipped %>,
           color: Highcharts.getOptions().colors[0]
           }, {
           name: 'Glass',
-          y: <%= @total_glass_area_shipped %>,
+          y: <%= @chart.total_glass_area_shipped %>,
           color: Highcharts.getOptions().colors[1]
         }],
         center: [70, 70],

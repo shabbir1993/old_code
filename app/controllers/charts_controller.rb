@@ -39,8 +39,7 @@ class ChartsController < ApplicationController
 
   def area_shipped
     chart = ShippedAreaChart.new(current_tenant, params)
-    @film_area_shipped_by_date = chart.film_area_shipped_by_date
-    @glass_area_shipped_by_date = chart.glass_area_shipped_by_date
+    @chart = chart
     @total_film_area_shipped = chart.total_film_area_shipped
     @total_glass_area_shipped = chart.total_glass_area_shipped
   end
