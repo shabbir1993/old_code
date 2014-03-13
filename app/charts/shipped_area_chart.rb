@@ -4,7 +4,7 @@ class ShippedAreaChart
   attr_reader :sales_orders
 
   def initialize(tenant, inputs)
-    @sales_orders = tenant.widgets(SalesOrder).shipped.ship_date_range(inputs[:start_serial], inputs[:end_serial])
+    @sales_orders = tenant.widgets(SalesOrder).shipped.ship_date_range(inputs[:start_date], inputs[:end_date])
   end
 
   def area_shipped_by_date
