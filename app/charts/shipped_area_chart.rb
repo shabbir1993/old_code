@@ -25,6 +25,10 @@ class ShippedAreaChart
     sales_orders.total_custom_area_by_product_type("Glass").round(2)
   end
 
+  def total_area_shipped
+    number_with_delimiter(total_film_area_shipped + total_glass_area_shipped, delimiter: ',')
+  end
+
   private
 
   def total_custom_area_by_product_type(sales_orders, type)

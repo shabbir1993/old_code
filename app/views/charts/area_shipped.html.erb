@@ -50,7 +50,7 @@
         ]
         } , {
         type: 'pie',
-        name: 'Total shipped',
+        name: 'Area shipped',
         data: [{
           name: 'Film',
           y: <%= @chart.total_film_area_shipped %>,
@@ -63,8 +63,9 @@
         center: [70, 70],
         size: 100,
         showInLegend: false,
-        dataLabels: {
-          enabled: false
+        dataLabels: false,
+        tooltip: {
+          pointFormat: "<b>Percent:</b> {point.percentage:.1f}%<br/><b>Area shipped:</b> {point.y}<br/><b>Total:</b> <%= @chart.total_area_shipped %>"
         }
       }]
     });
