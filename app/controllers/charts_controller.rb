@@ -48,11 +48,7 @@ class ChartsController < ApplicationController
   end
 
   def cycle_time
-    chart = CycleTimeChart.new(current_tenant, params)
-    @data = chart.cycle_time_points
-    @average = chart.average
-    @on_time_total = chart.on_time_total
-    @late_total = chart.late_total
+    @chart = CycleTimeChart.new(current_tenant, params)
   end
 
   private

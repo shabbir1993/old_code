@@ -25,4 +25,11 @@ class CycleTimeChart
   def late_total
     @shipped_sales_orders.where('due_date < ship_date').count
   end
+
+  def count_grouped_by_cycle_time
+    array = @shipped_sales_orders.group_by{ |o| o.cycle_days}.sort.map do |k,v|
+      [k, v.count]
+    end
+    Hash[array]
+  end
 end

@@ -9,57 +9,28 @@
   $(function () {
     $('#cycle_time').highcharts({
       chart: {
-        type: 'line',
-        zoomType: 'x'
+        type: 'column'
       },
       title: {
         text: 'Cycle Time'
       },
       xAxis: {
+        title: {
+          text: 'Days'
+        },
         type: 'category',
-        labels: {
-          rotation: 90
-        }
+        categories: <%= raw(@chart.count_grouped_by_cycle_time.keys) %>
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Cycle time'
+          text: 'Count'
         }
       },
       series: [
       {
-        yAxis: 0,
-        name: 'Cycle time',
-        lineWidth: 0,
-        data: [
-        <% @data.each do |point| %>
-          ["<%= point[:code] %>", <%= point[:cycle_days] %>],
-        <% end %>
-        ]
-        }, {
-        name: 'Average',
-        data: [[0, <%= @average %>], [<%= @data.count-1 %>, <%= @average %>]],
-        marker: {
-          enabled: false
-        }
-        }, {
-        type: 'pie',
-        data: [{
-          name: 'On time',
-          y: <%= @on_time_total %>,
-          color: 'green'
-          }, {
-          name: 'Late',
-          y: <%= @late_total %>,
-          color: 'red'
-        }],
-        center: [70, 70],
-        size: 100,
-        showInLegend: false,
-        dataLabels: {
-          enabled: false
-        }
+        name: 'Count',
+        data: <%= raw(@chart.count_grouped_by_cycle_time.values) %>
       }]
     });
   });
