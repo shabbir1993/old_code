@@ -1,5 +1,4 @@
 class Film < ActiveRecord::Base
-  include PgSearch
   include Importable
 
   attr_accessible :note, :shelf, :phase, :deleted, :sales_order_id, :order_fill_count, :master_film_id, :tenant_code, :serial, :dimensions_attributes, :area
@@ -31,6 +30,7 @@ class Film < ActiveRecord::Base
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
 
+  include PgSearch
   pg_search_scope :search, 
     against: [:serial, :note, :shelf, :phase], 
     using: { tsearch: { prefix: true } },

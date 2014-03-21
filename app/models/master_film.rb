@@ -19,6 +19,12 @@ class MasterFilm < ActiveRecord::Base
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_equals, ->(formula) { where(formula: formula) }
   scope :in_house, -> { where("length(serial) = 8") }
+  
+  include PgSearch
+  pg_search_scope :search, 
+    against: [:serial, :formula, :film_code, :thinky_code, :operator, :chemist, :inspector, :defects, :note], 
+    using: { tsearch: { prefix: true } },
+    associated_against: { machine: [:code] }
 
   def save_and_create_child(user)
     if save
