@@ -31,6 +31,12 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
+  def self.date_range(start_date, end_date)
+    start_serial = (start_date.year - 1943).chr + '%02d' % start_date.month + '%02d' % start_date.day + '-0'
+    end_serial = (end_date.year - 1943).chr + '%02d' % end_date.month + '%02d' % (end_date.day+1) + '-0'
+    serial_range(start_serial, end_serial)
+  end
+
   def yield
     (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
   end

@@ -3,8 +3,8 @@ class MovementSummaryPresenter
 
   def initialize(tenant, inputs)
     @movements = tenant.widgets(FilmMovement).exclude_deleted_films
-    @start_date = inputs[:start_date] || Date.current.to_s
-    @end_date = inputs[:end_date] || (Date.current + 1).to_s
+    @start_date = inputs[:start_date]
+    @end_date = inputs[:end_date]
   end
 
   def film_movement_totals_hash
