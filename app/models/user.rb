@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level
+  attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector
 
   has_secure_password
 
@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
 
   def self.operators
     User.where(operator: true).pluck(:full_name)
+  end
+
+  def self.inspectors
+    User.where(inspector: true).pluck(:full_name)
   end
 
   def is_admin?

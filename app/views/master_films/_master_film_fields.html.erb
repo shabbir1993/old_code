@@ -5,6 +5,7 @@
 <%= f.text_field :thinky_code %>
 <%= f.select :chemist, current_tenant.widgets(User).chemists, { prompt: "Choose chemist..." }, { class: "form-control" } %>
 <%= f.select :operator, current_tenant.widgets(User).operators, { prompt: "Choose operator..." }, { class: "form-control" } %>
+<%= f.select :inspector, current_tenant.widgets(User).inspectors, { prompt: "Choose inspector..." }, { class: "form-control" } %>
 <%= f.number_field :micrometer_left, label: "Mike L", step: "any" %>
 <%= f.number_field :micrometer_right, label: "Mike R", step: "any" %>
 <%= f.number_field :run_speed, step: "any" %>

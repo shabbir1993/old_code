@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140220005924) do
+ActiveRecord::Schema.define(version: 20140321195221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20140220005924) do
     t.decimal  "micrometer_right"
     t.decimal  "run_speed"
     t.boolean  "inactive",         default: false
+    t.string   "inspector"
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20140220005924) do
     t.string   "password_digest"
     t.integer  "role_level",      default: 0
     t.string   "tenant_code",                     null: false
+    t.boolean  "inspector",       default: false, null: false
   end
 
   add_index "users", ["tenant_code"], name: "index_users_on_tenant_code", using: :btree
