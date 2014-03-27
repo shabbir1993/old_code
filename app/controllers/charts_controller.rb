@@ -47,8 +47,8 @@ class ChartsController < ApplicationController
     @total_glass_area_shipped = chart.total_glass_area_shipped
   end
 
-  def cycle_time
-    @chart = CycleTimeChart.new(current_tenant, params)
+  def lead_time
+    @chart = LeadTimeChart.new(current_tenant, params)
   end
 
   private

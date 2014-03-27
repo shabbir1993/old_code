@@ -9,7 +9,7 @@
   <%= link_to "Utilization", utilization_chart_path, class: "list-group-item#{" active" if params[:action] == 'utilization'}" %>
   <%= link_to "Yield", yield_chart_path, class: "list-group-item#{" active" if params[:action] == 'yield'}" %>
   <%= link_to "Area shipped", area_shipped_chart_path, class: "list-group-item#{" active" if params[:action] == 'area_shipped'}" %>
-  <%= link_to "Cycle time", cycle_time_chart_path, class: "list-group-item#{" active" if params[:action] == 'cycle_time'}" %>
+  <%= link_to "Lead Time", lead_time_chart_path, class: "list-group-item#{" active" if params[:action] == 'lead_time'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

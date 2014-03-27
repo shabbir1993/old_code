@@ -47,7 +47,7 @@ Pcms::Application.routes.draw do
   get 'charts/utilization', to: 'charts#utilization', as: :utilization_chart
   get 'charts/yield', to: 'charts#yield', as: :yield_chart
   get 'charts/area_shipped', to: 'charts#area_shipped', as: :area_shipped_chart
-  get 'charts/cycle_time', to: 'charts#cycle_time', as: :cycle_time_chart
+  get 'charts/lead_time', to: 'charts#lead_time', as: :lead_time_chart
 
 
   root to: 'films#index', tab: "lamination"

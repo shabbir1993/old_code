@@ -1,4 +1,4 @@
-class CycleTimeChart
+class LeadTimeChart
   include ActionView::Helpers::NumberHelper
 
   def initialize(tenant, inputs)
