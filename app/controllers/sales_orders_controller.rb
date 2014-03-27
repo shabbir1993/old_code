@@ -2,7 +2,8 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy, :return]
 
   def index
-    @sales_orders = SalesOrdersPresenter.new(current_tenant, params).present
+    @presenter = SalesOrdersPresenter.new(current_tenant, params)
+    @sales_orders = @presenter.present
   end
   
   def new

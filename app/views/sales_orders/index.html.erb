@@ -1,4 +1,9 @@
 <%= render 'search_form' %>
+<span>
+  Orders: <strong><%= @presenter.total_orders %></strong>
+  Pieces: <strong><%= @presenter.total_pieces %></strong>
+  Area: <strong><%= @presenter.total_area %></strong>
+</span>
 
 <%= paginate sales_orders %>
 
