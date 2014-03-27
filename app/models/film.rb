@@ -36,6 +36,10 @@ class Film < ActiveRecord::Base
     using: { tsearch: { prefix: true } },
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
+  pg_search_scope :formula_search,
+    using: :tsearch,
+    associated_against: { master_film: [:formula] }
+
   def split
     split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", area: area, tenant_code: tenant_code, phase: phase).tap(&:save!)
     dimensions = split.dimensions.build(width: width, length: length)

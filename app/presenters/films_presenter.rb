@@ -48,7 +48,7 @@ class FilmsPresenter
 
   def search_formula(films)
     if @formula.present?
-      films.joins('LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.formula_equals(@formula.upcase))
+      films.joins('LEFT OUTER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.formula_like(@formula.gsub('*', '%')))
     else
       films
     end
