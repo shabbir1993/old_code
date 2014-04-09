@@ -5,11 +5,14 @@ class SalesOrdersPresenter
     @sales_orders = tenant.widgets(SalesOrder)
     @status = inputs[:status]
     @query = inputs[:query]
+    @start_ship_date = inputs[:start_ship_date]
+    @end_ship_date = inputs[:end_ship_date]
   end
 
   def present
     @results ||= sales_orders.send(status)
                              .text_search(query)
+                             .ship_date_range(@start_ship_date, @end_ship_date)
                              .by_code
   end
 

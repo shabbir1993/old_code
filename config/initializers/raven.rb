@@ -1,3 +1,4 @@
+# required by getsentry.com
 require 'raven'
 
 Raven.configure do |config|

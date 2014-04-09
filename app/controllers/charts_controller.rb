@@ -1,6 +1,6 @@
 class ChartsController < ApplicationController
   before_action :set_date_range_to_today, only: :movement_summary
-  before_action :set_date_range_to_past_year, only: [:utilization, :yield, :area_shipped, :cycle_time]
+  before_action :set_date_range_to_past_year, only: [:utilization, :yield, :area_shipped, :lead_time]
 
   def stock_film_type_totals
     @chart = FilmTotalsByAttributeChart.new(large_stock_films, "master_films.film_code")

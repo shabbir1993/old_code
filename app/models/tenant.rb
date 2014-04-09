@@ -27,7 +27,6 @@ class Tenant
   end
 
   def widgets(klass)
-    Rails.logger.debug klass
     klass.where(tenant_code: code)
   end
 

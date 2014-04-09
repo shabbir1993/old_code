@@ -1,4 +1,5 @@
 module Exportable
+  require 'csv'
 
   def to_csv(options = {})
     data = data_for_export

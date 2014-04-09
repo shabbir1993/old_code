@@ -1,5 +1,4 @@
 class Film < ActiveRecord::Base
-  include Importable
 
   attr_accessible :note, :shelf, :phase, :deleted, :sales_order_id, :order_fill_count, :master_film_id, :tenant_code, :serial, :dimensions_attributes, :area
   attr_reader :destination

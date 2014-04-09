@@ -7,7 +7,7 @@
     <li class="<%= 'active' if params[:controller] == 'history' %>"><%= link_to "History", all_movements_history_path %></li>
     <li class="<%= 'active' if params[:controller] == 'charts' %>"><%= link_to "Charts", stock_formula_totals_chart_path %></li>
     <% if current_user.is_admin? %>
-      <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", imports_path %></li>
+      <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", users_path %></li>
     <% end %>
   </ul>
   <p class="navbar-text navbar-right">Logged in as <%= "#{current_user.full_name} (#{current_tenant.code.upcase})" %> | <%= link_to "Logout", logout_path, id: "logout", class: "navbar-link" %></p>
