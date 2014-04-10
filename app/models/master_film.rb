@@ -43,7 +43,9 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def yield
-    (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if effective_area && mix_mass && machine
+    if effective_area && mix_mass && machine
+      (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) 
+    end
   end
 
   def effective_area
