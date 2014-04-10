@@ -21,7 +21,7 @@ class SalesOrder < ActiveRecord::Base
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) if prefix.present? }
 
   def self.ship_date_range(start_date, end_date)
-    sales_orders = shipped
+    sales_orders = all
     sales_orders = sales_orders.where("ship_date >= ?", start_date) if start_date.present?
     sales_orders = sales_orders.where("ship_date <= ?", end_date) if end_date.present?
     sales_orders
