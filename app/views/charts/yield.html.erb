@@ -1,5 +1,8 @@
 <%= form_tag yield_chart_path, method: :get, class: 'form-inline search' do %>
   <div class="row">
+    <div class="form-group col-md-1">
+      <%= text_field_tag :formula, params[:formula], placeholder: "Formula", class: "form-control" %>
+    </div>
     <%= render 'shared/date_range_fields' %>
     <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
   </div>

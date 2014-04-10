@@ -17,6 +17,7 @@ class MasterFilm < ActiveRecord::Base
   scope :active, -> { where(inactive: false) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula) }
+  scope :formula, ->(formula) { where(formula: formula) if formula }
   scope :in_house, -> { where("length(serial) = 8") }
   
   include PgSearch

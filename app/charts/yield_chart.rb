@@ -4,7 +4,7 @@ class YieldChart
   attr_reader :master_films_with_yield
 
   def initialize(tenant, inputs)
-    @master_films_with_yield = tenant.widgets(MasterFilm).active.in_house.date_range(inputs[:start_date].to_date, inputs[:end_date].to_date).by_serial.reverse.reject { |mf| mf.yield.nil? }
+    @master_films_with_yield = tenant.widgets(MasterFilm).active.in_house.formula(inputs[:formula]).date_range(inputs[:start_date].to_date, inputs[:end_date].to_date).by_serial.reverse.reject { |mf| mf.yield.nil? }
   end
 
   def averages_by_week
@@ -20,6 +20,10 @@ class YieldChart
   private
 
   def average_yield(master_films)
-    master_films.sum(&:yield)/master_films.count
+    if master_films.count > 0
+      master_films.sum(&:yield)/master_films.count
+    else
+      'null'
+    end
   end
 end
