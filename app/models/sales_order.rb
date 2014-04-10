@@ -18,6 +18,7 @@ class SalesOrder < ActiveRecord::Base
   scope :cancelled, -> { where(cancelled: true) }
   scope :has_release_date, -> { where('release_date is not null') }
   scope :has_due_date, -> { where('due_date is not null') }
+  scope :type, ->(prefix) { where('code ILIKE ?', prefix) if prefix.present? }
 
   def self.ship_date_range(start_date, end_date)
     sales_orders = shipped

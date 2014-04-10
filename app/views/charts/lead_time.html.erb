@@ -14,12 +14,15 @@
       title: {
         text: 'Lead Time'
       },
+      subtitle: {
+        text: "<%= @chart.total_orders %> total orders"
+      },
       xAxis: {
         title: {
           text: 'Days'
         },
         type: 'category',
-        categories: <%= raw(@chart.count_grouped_by_cycle_time.keys) %>
+        categories: <%= raw(@chart.count_grouped_by_cycle_time(nil).keys) %>
       },
       yAxis: {
         min: 0,
@@ -27,11 +30,24 @@
           text: 'Count'
         }
       },
-      series: [
-      {
-        name: 'Count',
-        data: <%= raw(@chart.count_grouped_by_cycle_time.values) %>
-      }]
+      plotOptions: {
+        series: {
+          stacking: 'normal'
+        }
+      },
+      series: [{
+        name: 'PD',
+        data: <%= raw(@chart.count_grouped_by_cycle_time('PD%').values) %>
+        }, {
+        name: 'PT',
+        data: <%= raw(@chart.count_grouped_by_cycle_time('PT%').values) %>
+        }, {
+        name: 'SP',
+        data: <%= raw(@chart.count_grouped_by_cycle_time('SP%').values) %>
+        }, {
+        name: 'RP',
+        data: <%= raw(@chart.count_grouped_by_cycle_time('RP%').values) %>
+      } ]
     });
   });
 </script>
