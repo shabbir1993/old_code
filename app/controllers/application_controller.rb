@@ -22,7 +22,7 @@ private
   end
 
   def check_auth
-    redirect_to login_url unless AuthChecker.new(current_user, request.remote_ip).has_access?
+    redirect_to login_url unless AuthChecker.new(current_user, request.remote_ip).grant_access?
   end
 
   def check_admin

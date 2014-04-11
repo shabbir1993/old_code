@@ -14,12 +14,12 @@ describe AuthChecker do
 
     it "grants access with valid ip" do
       @auth_checker = AuthChecker.new(@user, @valid_ip)
-      @auth_checker.has_access?.must_equal true
+      @auth_checker.grant_access?.must_equal true
     end
 
     it "denies access" do
       @auth_checker = AuthChecker.new(@user, "invalid")
-      @auth_checker.has_access?.wont_equal true
+      @auth_checker.grant_access?.wont_equal true
     end
   end
 
@@ -29,23 +29,23 @@ describe AuthChecker do
     end
     it "grants access with valid ip" do
       @auth_checker = AuthChecker.new(@user, @valid_ip)
-      @auth_checker.has_access?.must_equal true
+      @auth_checker.grant_access?.must_equal true
     end
 
     it "grants access with invalid ip" do
       @auth_checker = AuthChecker.new(@user, "invalid")
-      @auth_checker.has_access?.must_equal true
+      @auth_checker.grant_access?.must_equal true
     end
   end
 
   describe "without login" do
     it "denies access with valid ip" do
       @auth_checker = AuthChecker.new(nil, @valid_ip)
-      @auth_checker.has_access?.wont_equal true
+      @auth_checker.grant_access?.wont_equal true
     end
     it "denies access with invalid ip" do
       @auth_checker = AuthChecker.new(nil, "invalid")
-      @auth_checker.has_access?.wont_equal true
+      @auth_checker.grant_access?.wont_equal true
     end
   end
 end

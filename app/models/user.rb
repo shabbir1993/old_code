@@ -24,6 +24,17 @@ class User < ActiveRecord::Base
     role_level == 1
   end
 
+  def role_title
+    case role_level
+    when 0
+      "User"
+    when 1
+      "Admin"
+    else
+      raise InvalidUserRoleLevelError
+    end
+  end
+
   def tenant
     @tenant || Tenant.new(tenant_code)
   end

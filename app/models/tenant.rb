@@ -12,7 +12,7 @@ class Tenant
               yield_multiplier: 10.76 }
   }
 
-  attr_reader :name, :code, :time_zone, :area_divisor, :small_area_cutoff, :yield_multiplier
+  attr_reader :code, :time_zone, :area_divisor, :small_area_cutoff, :yield_multiplier
 
   def initialize(code)
     @code = code

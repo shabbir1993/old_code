@@ -9,7 +9,7 @@ class AuthChecker
     @remote_ip = remote_ip
   end
 
-  def has_access?
+  def grant_access?
     @user && (valid_ip? || @user.is_admin?)
   end
 

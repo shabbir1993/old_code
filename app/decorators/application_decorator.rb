@@ -10,7 +10,6 @@ class ApplicationDecorator < SimpleDelegator
 
   def self.decorators
     [
-      UserDecorator,
       FilmDecorator,
       SalesOrderDecorator,
       MasterFilmDecorator

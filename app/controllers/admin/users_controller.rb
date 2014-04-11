@@ -1,6 +1,6 @@
 class Admin::UsersController < AdminController
   def index
-    @users = current_tenant.widgets(User)
+    @users = user_manager.all_widgets
   end
 
   def new
@@ -44,4 +44,8 @@ class Admin::UsersController < AdminController
     decorate(@user)
   end
   helper_method :user
+
+  def user_manager
+    WidgetManager.new(current_tenant, User)
+  end
 end
