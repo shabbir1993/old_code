@@ -36,7 +36,7 @@ class Admin::UsersController < AdminController
   end
 
   def users
-    Kaminari.paginate(@users).page(params[:page])
+    @users.page(params[:page])
   end
   helper_method :users
 
