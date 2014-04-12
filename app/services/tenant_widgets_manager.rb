@@ -1,4 +1,4 @@
-class WidgetManager
+class TenantWidgetsManager
   def initialize(tenant, model)
     @tenant = tenant
     @model = model
@@ -6,6 +6,10 @@ class WidgetManager
 
   def new_widget
     @model.new(tenant_code: @tenant.code)
+  end
+
+  def create_widget(attrs)
+    @model.create(attrs.merge(tenant_code: @tenant.code))
   end
 
   def all_widgets

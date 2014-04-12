@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :full_name, presence: true, uniqueness: { case_sensitive: false }
 
+  scope :tenant, ->(tenant) { where(tenant_code: tenant) }
+
   def self.chemists
     User.where(chemist: true).pluck(:full_name)
   end

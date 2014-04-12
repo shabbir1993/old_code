@@ -1,10 +1,10 @@
 class Admin::UsersController < AdminController
   def index
-    @users = user_manager.all_widgets
+    @users = users_manager.all_widgets
   end
 
   def new
-    @user = current_tenant.new_widget(User, params[:user])
+    @user = users_manager.new_widget
     render layout: false
   end
 
@@ -36,16 +36,16 @@ class Admin::UsersController < AdminController
   end
 
   def users
-    Kaminari.paginate_array(decorate_collection(@users)).page(params[:page])
+    Kaminari.paginate(@users).page(params[:page])
   end
   helper_method :users
 
   def user
-    decorate(@user)
+    @user
   end
   helper_method :user
 
-  def user_manager
-    WidgetManager.new(current_tenant, User)
+  def users_manager
+    @users_manager ||= TenantWidgetsManager.new(current_tenant, User)
   end
 end

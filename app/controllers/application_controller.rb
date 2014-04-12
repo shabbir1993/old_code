@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  VALID_IPS = ["66.226.220.106",   #PI Dallas
+                "120.33.232.194",   #PE Fujian
+                "127.0.0.1"]        #localhost
+
   include DecoratorsHelper
   protect_from_forgery
 
@@ -22,10 +26,16 @@ private
   end
 
   def check_auth
-    redirect_to login_url unless AuthChecker.new(current_user, request.remote_ip).grant_access?
+    unless current_user && (valid_ip? || current_user.is_admin?)
+      redirect_to login_url 
+    end
   end
 
   def check_admin
     redirect_to root_url unless current_user.is_admin?
+  end
+
+  def valid_ip?
+    VALID_IPS.include?(request.remote_ip)
   end
 end

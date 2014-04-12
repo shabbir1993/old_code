@@ -15,15 +15,8 @@ gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 
-group :test do
-  gem "minitest", "~> 4.7"
-  gem 'capybara', '2.1.0'
-  gem "turn", "~> 0.9.6"
-  gem "poltergeist", "~> 1.4.1"
-  gem "timecop", "~> 0.7.1"
-end
-
-group :development, :test do
+group :test, :development do
+  gem 'rspec-rails', '~> 3.0.0.beta'
   gem "factory_girl_rails", "4.2.1"
 end
 
