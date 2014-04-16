@@ -40,4 +40,9 @@ class User < ActiveRecord::Base
   def tenant
     @tenant || Tenant.new(tenant_code)
   end
+
+  # explicit database column definitions for rspec-fire
+  def full_name; super; end
+  def tenant_code; super; end
+  def tenant_code=(arg); super(arg); end
 end

@@ -1,39 +1,38 @@
 class Admin::UsersController < AdminController
   def index
-    @users = users_manager.all_widgets
+    @users = tenant_users.all
   end
 
   def new
-    @user = users_manager.new_widget
+    @user = tenant_users.new
     render layout: false
   end
 
   def create
-    @user = current_tenant.new_widget(User, params[:user])
-    @user.save
+    @user = tenant_users.new(params[:user])
+    render :display_error_messages unless @user.save
   end
 
   def edit
-    @user = current_tenant.widget(User, params[:id])
+    @user = tenant_users.find_by_id(params[:id])
     render layout: false
   end
 
   def update
-    @user = current_tenant.widget(User, params[:id])
-    @user.update_attributes(user_params)
+    @user = tenant_users.find_by_id(params[:id])
+    render :display_error_messages unless @user.update_attributes(params[:user])
   end 
 
   def destroy
-    @user = current_tenant.widget(User, params[:id])
+    @user = tenant_users.find_by_id(params[:id])
     @user.destroy!
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
+  rescue ActiveRecord::RecordNotDestroyed => e
+    capture_exception(e)
+    redirect_to users_path, alert: "Error: user could not be deleted."
   end
 
   private
-
-  def user_params
-    params.require(:user).permit(:username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector)
-  end
 
   def users
     @users.page(params[:page])
@@ -45,7 +44,7 @@ class Admin::UsersController < AdminController
   end
   helper_method :user
 
-  def users_manager
-    @users_manager ||= TenantWidgetsManager.new(current_tenant, User)
+  def tenant_users
+    @tenant_users ||= TenantAssets.new(current_tenant, User)
   end
 end

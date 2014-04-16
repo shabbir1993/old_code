@@ -15,6 +15,11 @@ gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 
+group :test do
+  gem 'capybara', '~> 2.2.1'
+  gem 'poltergeist', '~> 1.5.0'
+end
+
 group :test, :development do
   gem 'rspec-rails', '~> 3.0.0.beta'
   gem "factory_girl_rails", "4.2.1"

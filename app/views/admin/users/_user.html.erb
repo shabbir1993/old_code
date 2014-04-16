@@ -1,6 +1,6 @@
 <tr id="<%= "user-#{user.id}" %>">
   <td>
-    <%= link_to_modal_edit(edit_user_path(user), user) %>
+    <%= link_to_modal_edit(edit_user_path(user), user, class: "edit-user") %>
   </td>
   <td class="full_name"><%= user.full_name %></td>
   <td class="username"><%= user.username %></td>
