@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_action :check_auth
-  before_action :check_ip, if: :current_user
+  before_action :check_ip
   around_action :set_tenant_time_zone, if: :current_tenant
   around_action :set_raven_user_context, if: :current_user
 

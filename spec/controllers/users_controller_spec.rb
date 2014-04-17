@@ -158,7 +158,7 @@ describe Admin::UsersController do
         expect(response).to redirect_to(users_path)
       end
 
-      it "send a notice flash message" do
+      it "sends a notice flash message" do
         expect(flash[:notice]).to match(/deleted/i)
       end
     end
