@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  class InvalidRoleError < StandardError; end
   attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector
 
   has_secure_password
@@ -33,7 +34,7 @@ class User < ActiveRecord::Base
     when 1
       "Admin"
     else
-      raise InvalidUserRoleLevelError
+      raise InvalidRoleError
     end
   end
 
@@ -41,7 +42,7 @@ class User < ActiveRecord::Base
     @tenant || Tenant.new(tenant_code)
   end
 
-  # explicit database column definitions for rspec-fire
+  # explicit database column definitions as workaround for verifying doubles with rspec-mocks
   def full_name; super; end
   def tenant_code; super; end
   def tenant_code=(arg); super(arg); end

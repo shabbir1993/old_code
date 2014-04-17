@@ -1,5 +1,7 @@
+require 'spec_helper'
+
 describe "Admin Users tab", js: true do
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { create(:admin) }
 
   it "creates edits and deletes users" do
     log_in(admin)

@@ -10,18 +10,19 @@ FactoryGirl.define do
       end
     end
   end
-    sequence(:serial) { |n| "E0101-#{'%02d' % n}"}
 
   factory :film do
     sequence(:serial) { |n| "F0101-#{'%02d' % n}-1"}
     phase "lamination"
+    tenant_code 'pi'
+
     before(:create) do |film|
       film.master_film = FactoryGirl.create(:master_film, serial: film.serial[0..7]) unless film.master_film.present?
     end
+
     after(:create) do |film|
       FactoryGirl.create(:dimension, film: film)
     end
-    tenant_code 'pi'
   end
 
   factory :dimension do
@@ -61,6 +62,10 @@ FactoryGirl.define do
 
     factory :operator do
       operator true
+    end
+    
+    factory :inspector do
+      inspector true
     end
 
     factory :admin do

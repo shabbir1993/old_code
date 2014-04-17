@@ -18,11 +18,12 @@ gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 group :test do
   gem 'capybara', '~> 2.2.1'
   gem 'poltergeist', '~> 1.5.0'
+  gem 'database_cleaner', '1.2.0'
 end
 
 group :test, :development do
   gem 'rspec-rails', '~> 3.0.0.beta'
-  gem "factory_girl_rails", "4.2.1"
+  gem "factory_girl_rails", "~> 4.4.1"
 end
 
 group :production do
