@@ -7,6 +7,11 @@ describe SessionsController do
     expect(response.status).to eq(200)
   end
 
+  it "doesn't check IP" do
+    get :new, 'REMOTE_ADDR' => 'invalid'
+    expect(response.status).to eq(200)
+  end
+
   describe "#new" do
     it "renders the new template" do
       get :new

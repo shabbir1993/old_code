@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_filter :check_auth
+  skip_before_filter :check_ip
 
   def new
   end
