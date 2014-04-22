@@ -1,3 +1,5 @@
+require 'csv'
+
 class FilmMovement < ActiveRecord::Base
   include PgSearch
 
@@ -11,6 +13,9 @@ class FilmMovement < ActiveRecord::Base
   scope :sort_by_created_at, -> { order('film_movements.created_at DESC') }
   scope :before_date, ->(date) { where("created_at <= ?", date) } 
   scope :after_date, ->(date) { where("created_at >= ?", date) } 
+  scope :to_fg, -> { where(to_phase: "fg") } 
+  scope :to_scrap, -> { where(to_phase: "scrap") } 
+  scope :tenant, ->(tenant_code) { where(tenant_code: tenant_code) }
 
   pg_search_scope :search, 
     against: [:from_phase, :to_phase, :actor], 
@@ -49,7 +54,7 @@ class FilmMovement < ActiveRecord::Base
     AreaCalculator.calculate(width, length, tenant.area_divisor)
   end
 
-  def self.fg_film_movements_to_csv(options = {})
+  def self.to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << %w(Serial Formula Width Length Order User DateTime)
       all.each do |m|
