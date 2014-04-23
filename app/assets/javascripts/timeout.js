@@ -12,9 +12,8 @@ $(document).ready(function () {
 });
 
 function timerIncrement() {
-  $logout_link = document.getElementById('logout');
   idleTime = idleTime + 1;
-  if (idleTime >= 5 && $logout_link) {
-    window.location = $logout_link.href;
+  if (idleTime >= 10 && $logout_link) {
+    window.location.reload();
   };
 }
