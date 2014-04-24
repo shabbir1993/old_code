@@ -13,7 +13,7 @@ $(document).ready(function () {
 
 function timerIncrement() {
   idleTime = idleTime + 1;
-  if (idleTime >= 10 && $logout_link) {
+  if (idleTime >= 10) {
     window.location.reload();
   };
 }

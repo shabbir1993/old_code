@@ -14,7 +14,6 @@ class MovementSummaryPresenter
 
   private
   def film_movements_by_phase_change
-    Rails.logger.debug "YAY"
-    movements.search_date_range(start_date, end_date).group_by{ |m| [m.from_phase, m.to_phase] }
+    movements.created_at_after(start_date).created_at_before(end_date).group_by{ |m| [m.from_phase, m.to_phase] }
   end
 end

@@ -3,6 +3,8 @@
   <td class="movement">
   <%= film_movement.from_phase %> <i class="fa fa-arrow-right"></i> <%= film_movement.to_phase %>
   </td>
+  <td class="dimensions"><%= "#{film_movement.width} x #{film_movement.length}" %></td>
+  <td class="sales_order"><%= film_movement.film.sales_order_code %></td>
   <td class="whodunnit"><%= film_movement.actor %></td>
   <td class="created_at"><%= film_movement.datetime_display %></td>
 </tr>

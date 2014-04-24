@@ -2,6 +2,7 @@ require 'csv'
 
 class FilmMovement < ActiveRecord::Base
   include PgSearch
+  include Filterable
 
   attr_accessible :from_phase, :to_phase, :width, :length, :actor, :film_id, :film, :tenant_code
 
@@ -11,11 +12,12 @@ class FilmMovement < ActiveRecord::Base
   
   scope :exclude_deleted_films, -> { joins('INNER JOIN films ON films.id = film_movements.film_id').where( films: { deleted: false }) } 
   scope :sort_by_created_at, -> { order('film_movements.created_at DESC') }
-  scope :before_date, ->(date) { where("created_at <= ?", date) } 
-  scope :after_date, ->(date) { where("created_at >= ?", date) } 
-  scope :to_fg, -> { where(to_phase: "fg") } 
-  scope :to_scrap, -> { where(to_phase: "scrap") } 
+  scope :created_at_before, ->(date) { where("created_at <= ?", Time.zone.parse(date)) } 
+  scope :created_at_after, ->(date) { where("created_at >= ?", Time.zone.parse(date)) } 
+  scope :to_phase, ->(phase) { where(to_phase: phase.downcase) } 
+  scope :from_phase, ->(phase) { where(from_phase: phase.downcase) } 
   scope :tenant, ->(tenant_code) { where(tenant_code: tenant_code) }
+  scope :text_search, ->(query) { reorder('').search(query) }
 
   pg_search_scope :search, 
     against: [:from_phase, :to_phase, :actor], 
@@ -28,26 +30,6 @@ class FilmMovement < ActiveRecord::Base
     else
       created_at.strftime("%F %R")
     end
-  end
-
-  def self.text_search(query)
-    movements = all
-    if query.present?
-      movements.reorder('').search(query)
-    else
-      movements
-    end
-  end
-
-  def self.search_date_range(start_date, end_date)
-    movements = all
-    if start_date.present?
-      movements = movements.after_date(Time.zone.parse(start_date)) 
-    end
-    if end_date.present?
-      movements = movements.before_date(Time.zone.parse(end_date))
-    end
-    movements
   end
 
   def area

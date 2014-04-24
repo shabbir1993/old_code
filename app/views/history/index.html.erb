@@ -1,11 +1,15 @@
 <%= paginate @film_movements %>
 
-<%= render 'search_form', path: all_movements_history_path %>
+<%= render 'search_form', path: history_index_path %>
+
+<%= link_to "Export", history_index_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
 
 <% content_for :table_header do %>
   <tr>
     <th>Serial</th>
     <th>Movement</th>
+    <th>Dimensions</th>
+    <th>Order</th>
     <th>User</th>
     <th>Date</th>
   </tr>

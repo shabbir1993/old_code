@@ -1,6 +1,10 @@
 require 'spec_helper'
+require_relative 'concerns/filterable_spec.rb'
 
 describe FilmMovement do
+
+  it_behaves_like "filterable"
+  
   describe "#datetime_display" do
     context "created_at year is current year" do
       let(:current_year) { Time.zone.today.year }
@@ -24,6 +28,41 @@ describe FilmMovement do
       it "displays created_at as shortened date with time" do
         expect(@last_year_movement.datetime_display).to match(/#{last_year}-01-02 07:00/)
       end
+    end
+  end
+
+  describe "#area" do
+    it "passes params to the AreaCalculator calculate method" do
+      film_movement = build_stubbed(:film_movement)
+      tenant = instance_double("Tenant")
+      allow(Tenant).to receive(:new).with(film_movement.tenant_code) { tenant }
+      allow(tenant).to receive(:area_divisor) { 144 }
+      expect(AreaCalculator).to receive(:calculate).with(film_movement.width, film_movement.length, 144)
+      film_movement.area
+    end
+  end
+
+  describe ".to_csv" do
+    let(:csv) { FilmMovement.to_csv }
+
+    context "with multiple records" do
+      before do
+        @first_movement = create(:film_movement)
+        @second_movement = create(:film_movement)
+      end
+
+      it "returns csv with correct serials" do
+        expect(csv).to include(@first_movement.serial, @second_movement.serial)
+      end
+    end
+  end
+
+  describe "#tenant" do
+    it "returns the tenant User belongs to" do
+      tenant = instance_double("Tenant")
+      allow(Tenant).to receive(:new).with('pi') { tenant }
+      user = build_stubbed(:user, tenant_code: 'pi')
+      expect(user.tenant).to eq(tenant)
     end
   end
 end

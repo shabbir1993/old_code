@@ -14,8 +14,8 @@ describe "History tab" do
     click_link "History"
     click_link "Film movements"
     expect(page).to have_selector("td.serial", count: 3)
-    fill_in "query", with: "wip"
-    fill_in "start_date", with: 1.days.ago
+    fill_in "text_search", with: "wip"
+    fill_in "created_at_after", with: 1.days.ago
     click_button "Search"
     expect(page).to have_selector("td.serial", count: 1)
   end
