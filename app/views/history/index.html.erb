@@ -1,23 +1,63 @@
-<%= paginate @film_movements %>
-
 <%= render 'search_form', path: history_index_path %>
 
-<%= link_to "Export", history_index_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
-
-<% content_for :table_header do %>
-  <tr>
-    <th>Serial</th>
-    <th>Movement</th>
-    <th>Dimensions</th>
-    <th>Order</th>
-    <th>User</th>
-    <th>Date</th>
-  </tr>
-<% end %>
-
-<% content_for :table_body do %>
-  <%= render partial: "film_movement", collection: @film_movements %>
-<% end %>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#table" data-toggle="tab">Table</a></li>
+  <li><a href="#summary-chart" data-toggle="tab">Summary Chart</a></li>
+</ul>
 
 
-<%= render "shared/table" %>
+<div class="tab-content">
+  <div class="tab-pane active" id="table">
+    <%= link_to "Export", history_index_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
+    <%= paginate @film_movements %>
+
+    <% content_for :table_header do %>
+      <tr>
+        <th>Serial</th>
+        <th>Movement</th>
+        <th>Dimensions</th>
+        <th>Order</th>
+        <th>User</th>
+        <th>Date</th>
+      </tr>
+    <% end %>
+
+    <% content_for :table_body do %>
+      <%= render partial: "film_movement", collection: @film_movements %>
+    <% end %>
+
+
+    <%= render "shared/table" %>
+  </div>
+  <div class="tab-pane" id="summary-chart">
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <td></td>
+          <% PhaseDefinitions::HARD_PHASES.each do |p| %>
+            <td><strong><%= p %></strong></td>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% PhaseDefinitions::HARD_PHASES.each do |from_phase| %>
+          <tr>
+            <td><strong><%= from_phase %></strong></td>
+            <% PhaseDefinitions::HARD_PHASES.each do |to_phase| %>
+              <% if @summary_data[[from_phase, to_phase]] %>
+                <td class="row warning">
+                  <span class="col-md-4"><%= "#{@summary_data[[from_phase, to_phase]][0]}" %></span> 
+                  <strong class="col-md-1">|</strong> 
+                  <span class="col-md-6"><%= "#{@summary_data[[from_phase, to_phase]][1]}" %></span>
+                </td>
+              <% else %>
+                <td></td>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

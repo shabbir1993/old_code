@@ -10,7 +10,8 @@ class FilmMovement < ActiveRecord::Base
 
   delegate :serial, :formula, :sales_order_code, to: :film
   
-  scope :exclude_deleted_films, -> { joins('INNER JOIN films ON films.id = film_movements.film_id').where( films: { deleted: false }) } 
+  # manual join as workaround for pg_search issue #88
+  scope :exclude_deleted_films, -> { joins('INNER JOIN films ON films.id = film_movements.film_id').merge(Film.active) } 
   scope :sort_by_created_at, -> { order('film_movements.created_at DESC') }
   scope :created_at_before, ->(date) { where("created_at <= ?", Time.zone.parse(date)) } 
   scope :created_at_after, ->(date) { where("created_at >= ?", Time.zone.parse(date)) } 

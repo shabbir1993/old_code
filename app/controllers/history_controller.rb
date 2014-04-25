@@ -2,6 +2,7 @@ class HistoryController < ApplicationController
 
   def index
     @film_movements = film_movements.page(params[:page])
+    @summary_data = MovementSummaryData.for(film_movements)
     respond_to do |format|
       format.html
       format.csv { render csv: film_movements }
