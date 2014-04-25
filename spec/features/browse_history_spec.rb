@@ -5,7 +5,6 @@ describe "History tab" do
 
   before do
     create(:film_movement, from_phase: "stock", to_phase: "wip")
-    create(:film_movement, from_phase: "stock", to_phase: "wip", created_at: 2.days.ago)
     create(:film_movement, from_phase: "stock", to_phase: "fg")
   end
 
@@ -13,9 +12,8 @@ describe "History tab" do
     log_in(user)
     click_link "History"
     click_link "Film movements"
-    expect(page).to have_selector("td.serial", count: 3)
+    expect(page).to have_selector("td.serial", count: 2)
     fill_in "text_search", with: "wip"
-    fill_in "created_at_after", with: 1.days.ago
     click_button "Search"
     expect(page).to have_selector("td.serial", count: 1)
   end

@@ -1,8 +1,9 @@
 class HistoryController < ApplicationController
+  before_action :set_created_at_date_range_to_today, only: :index
 
   def index
     @film_movements = film_movements.page(params[:page])
-    @summary_data = MovementSummaryData.for(film_movements)
+    @movement_matrix_data = MovementMatrixData.for(film_movements)
     respond_to do |format|
       format.html
       format.csv { render csv: film_movements }
@@ -24,5 +25,10 @@ class HistoryController < ApplicationController
 
   def tenant_film_movements
     @tenant_film_movements ||= TenantAssets.new(current_tenant, FilmMovement)
+  end
+
+  def set_created_at_date_range_to_today
+    params[:created_at_after] ||= Date.current.to_s
+    params[:created_at_before] ||= (Date.current + 1).to_s
   end
 end

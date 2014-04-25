@@ -1,5 +1,4 @@
 class ChartsController < ApplicationController
-  before_action :set_date_range_to_today, only: :movement_summary
   before_action :set_date_range_to_past_year, only: [:utilization, :yield, :area_shipped, :lead_time]
 
   def stock_film_type_totals
@@ -18,11 +17,6 @@ class ChartsController < ApplicationController
     presenter = StockSnapshotsPresenter.new(current_tenant)
     @stock_data = presenter.for_phase("large_stock")
     @reserved_stock_data = presenter.for_phase("reserved_stock")
-  end
-
-  def movement_summary
-    filtering_params = params.slice(:text_search, :from_phase, :to_phase, :created_at_before, :created_at_after)
-    @film_movement_totals_hash = MovementSummaryData.for(TenantAssets.new(current_tenant, FilmMovement).all.exclude_deleted_films.filter(filtering_params).sort_by_created_at)
   end
 
   def shelf_inventory
@@ -56,11 +50,6 @@ class ChartsController < ApplicationController
 
   def large_stock_films
     current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved.joins(:master_film)
-  end
-
-  def set_date_range_to_today
-    params[:start_date] ||= Date.current.to_s
-    params[:end_date] ||= (Date.current + 1).to_s
   end
 
   def set_date_range_to_past_year

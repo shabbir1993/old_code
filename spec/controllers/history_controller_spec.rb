@@ -15,9 +15,11 @@ describe HistoryController do
 
   describe "#index" do
     let(:paged_film_movements) { double }
+    let(:movement_matrix_data) { instance_double("MovementMatrixData") }
 
     before do
       allow(film_movements).to receive(:page) { paged_film_movements }
+      allow(MovementMatrixData).to receive(:for).with(film_movements) { movement_matrix_data }
     end
 
     context "html format" do
@@ -27,6 +29,10 @@ describe HistoryController do
         expect(assigns(:film_movements)).to eq(paged_film_movements)
       end
 
+      it "assigns matrix data" do
+        expect(assigns(:movement_matrix_data)).to eq(movement_matrix_data)
+      end
+
       it "renders the index template" do
         expect(response).to render_template(:index)
       end
@@ -34,10 +40,6 @@ describe HistoryController do
 
     context "csv format" do
       before { get :index, format: :csv }
-
-      it "assigns film movements" do
-        expect(assigns(:film_movements)).to eq(paged_film_movements)
-      end
 
       it "send data as a csv" do
         expect(response.headers["Content-Type"]).to match(/csv/i)

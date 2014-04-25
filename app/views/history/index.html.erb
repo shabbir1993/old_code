@@ -44,11 +44,11 @@
           <tr>
             <td><strong><%= from_phase %></strong></td>
             <% PhaseDefinitions::HARD_PHASES.each do |to_phase| %>
-              <% if @summary_data[[from_phase, to_phase]] %>
+              <% if @movement_matrix_data[[from_phase, to_phase]] %>
                 <td class="row warning">
-                  <span class="col-md-4"><%= "#{@summary_data[[from_phase, to_phase]][0]}" %></span> 
+                  <span class="col-md-4"><%= "#{@movement_matrix_data[[from_phase, to_phase]][0]}" %></span> 
                   <strong class="col-md-1">|</strong> 
-                  <span class="col-md-6"><%= "#{@summary_data[[from_phase, to_phase]][1]}" %></span>
+                  <span class="col-md-6"><%= "#{@movement_matrix_data[[from_phase, to_phase]][1]}" %></span>
                 </td>
               <% else %>
                 <td></td>

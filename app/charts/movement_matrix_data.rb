@@ -1,4 +1,4 @@
-class MovementSummaryData
+class MovementMatrixData
   def self.for(movements)
     new(movements).summary_hash
   end
