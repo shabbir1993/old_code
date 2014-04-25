@@ -22,7 +22,7 @@
           text: 'Days'
         },
         type: 'category',
-        categories: <%= raw(@chart.count_grouped_by_cycle_time(nil).keys) %>
+        categories: <%= raw(@chart.count_grouped_by_cycle_time("%").keys) %>
       },
       yAxis: {
         min: 0,

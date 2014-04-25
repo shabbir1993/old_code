@@ -3,11 +3,7 @@ module ApplicationHelper
     options[:builder] = ModalFormBuilder
     options[:remote] = true
     options[:html] = { class: 'form-horizontal modal-form' }
-    content_tag(:div, class: "modal-dialog #{options[:dialog_class]}") do
-      content_tag(:div, class: "modal-content") do
-        form_for(object, options, &block)
-      end
-    end
+    form_for(object, options, &block)
   end
 
   def link_to_add_fields(name, f, association)
@@ -50,14 +46,14 @@ module ApplicationHelper
   end
 
   def link_to_export(route_helper, params)
-    if current_user.is_admin?
+    if current_user.admin?
       export_params = params.merge(format: "csv")
       link_to "Export", route_helper.call(export_params), class: "btn btn-default"
     end
   end
 
   def link_to_delete_if_admin(object)
-    if current_user.is_admin?
+    if current_user.admin?
       link_to "Delete", object, method: :delete, remote: true, class: "btn btn-danger pull-left"
     end
   end

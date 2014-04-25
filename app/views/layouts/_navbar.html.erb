@@ -6,7 +6,7 @@
     <li class="<%= 'active' if params[:controller] == 'sales_orders' %>"><%= link_to "Orders", sales_orders_path(status: 'unshipped') %></li>
     <li class="<%= 'active' if params[:controller] == 'history' %>"><%= link_to "History", history_index_path %></li>
     <li class="<%= 'active' if params[:controller] == 'charts' %>"><%= link_to "Charts", stock_formula_totals_chart_path %></li>
-    <% if current_user.is_admin? %>
+    <% if current_user.admin? %>
       <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", users_path %></li>
     <% end %>
   </ul>

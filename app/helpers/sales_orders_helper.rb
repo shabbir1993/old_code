@@ -4,7 +4,7 @@ module SalesOrdersHelper
       link_to edit_ship_date_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "salesorder-#{sales_order.id}-ship", class: "pull-right" } do 
         content_tag(:i, nil, class: "fa fa-truck fa-flip-horizontal")
       end 
-    elsif current_user.is_admin?
+    elsif current_user.admin?
       link_to return_sales_order_path(sales_order), method: :patch, remote: true, id: "salesorder-#{sales_order.id}-return", class: "pull-right" do 
         content_tag(:i, nil, class: "fa fa-reply")
       end 
@@ -24,6 +24,6 @@ module SalesOrdersHelper
   end
 
   def code_input_if_admin(form)
-    form.text_field :code, label: "SO#" if current_user.is_admin?
+    form.text_field :code, label: "SO#" if current_user.admin?
   end
 end

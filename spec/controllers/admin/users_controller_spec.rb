@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Admin::UsersController do
   let(:tenant) { instance_double("Tenant", time_zone: "Beijing").as_null_object }
-  let(:admin) { instance_double("User", is_admin?: true, tenant: tenant).as_null_object }
+  let(:admin) { instance_double("User", admin?: true, tenant: tenant).as_null_object }
   let(:tenant_users) { instance_double("TenantAssets") }
 
   before do

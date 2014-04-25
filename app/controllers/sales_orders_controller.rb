@@ -62,4 +62,8 @@ class SalesOrdersController < ApplicationController
     @decorated_sales_order ||= decorate(@sales_order)
   end
   helper_method :sales_order
+
+  def filtering_params
+    params.slice(:text_search, :ship_date_before, :ship_date_after)
+  end
 end

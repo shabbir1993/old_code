@@ -41,12 +41,16 @@ private
   end
 
   def check_ip
-    unless VALID_IPS.include?(request.remote_ip) || current_user.is_admin?
+    unless VALID_IPS.include?(request.remote_ip) || current_user.admin?
       deny_access("Access denied: invalid IP.")
     end
   end
 
   def deny_access(message)
     redirect_to login_url, alert: message
+  end
+
+  def check_admin
+    redirect_to root_url unless current_user.admin?
   end
 end

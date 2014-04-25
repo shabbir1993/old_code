@@ -50,7 +50,9 @@
     </tbody>
   </table>
 </div>
-<a class="accordion-toggle pull-left panel-body" data-toggle="collapse" href="<%= "#collapse-#{sales_order.id}" %>">
-  <i class="fa fa-chevron-down"></i><strong>Line items</strong>
-</a>
+<div class="panel-footer">
+  <a class="accordion-toggle" data-toggle="collapse" href="<%= "#collapse-#{sales_order.id}" %>">
+    <i class="fa fa-chevron-down"></i><strong>Line items</strong>
+  </a>
+</div>
 </li>

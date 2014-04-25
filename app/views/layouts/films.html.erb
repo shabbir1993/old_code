@@ -17,7 +17,7 @@
   <%= link_to "Test", films_path(tab: 'test'), class: "list-group-item#{" active" if params[:tab] == 'test'}" %>
   <%= link_to "NC", films_path(tab: 'nc'), class: "list-group-item#{" active" if params[:tab] == 'nc'}" %>
   <%= link_to "Scrap", films_path(tab: 'scrap'), class: "list-group-item#{" active" if params[:tab] == 'scrap'}" %>
-  <% if current_user.is_admin? %>
+  <% if current_user.admin? %>
     <%= link_to films_path(tab: 'deleted'), class: "list-group-item#{" active" if params[:tab] == 'deleted'}" do %>
     <i class="fa fa-trash-o fa-lg"></i> Deleted
     <% end %>

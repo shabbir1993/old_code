@@ -1,4 +1,7 @@
 class SalesOrder < ActiveRecord::Base
+  include PgSearch
+  include Filterable
+
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
   has_many :line_items, dependent: :destroy
@@ -8,7 +11,6 @@ class SalesOrder < ActiveRecord::Base
   
   validates :code, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code }
 
-  include PgSearch
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 
@@ -18,7 +20,10 @@ class SalesOrder < ActiveRecord::Base
   scope :cancelled, -> { where(cancelled: true) }
   scope :has_release_date, -> { where('release_date is not null') }
   scope :has_due_date, -> { where('due_date is not null') }
-  scope :type, ->(prefix) { where('code ILIKE ?', prefix) if prefix.present? }
+  scope :type, ->(prefix) { where('code ILIKE ?', prefix) }
+  scope :ship_date_before, ->(date) { where("ship_date <= ?", Time.zone.parse(date)) } 
+  scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
+  scope :text_search, ->(query) { reorder('').search(query) }
 
   def self.ship_date_range(start_date, end_date)
     sales_orders = all
@@ -29,15 +34,6 @@ class SalesOrder < ActiveRecord::Base
 
   def self.with_ship_date(date)
     where("ship_date = ?", date)
-  end
-
-  def self.text_search(query)
-    if query.present?
-      #reorder is workaround for pg_search issue 88
-      search(query)
-    else
-      all
-    end
   end
 
   def cycle_days

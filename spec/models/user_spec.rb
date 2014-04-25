@@ -58,34 +58,6 @@ describe User do
     end
   end
 
-  describe "#is_admin?" do
-    it "returns true when user is an admin" do
-      admin = build_stubbed(:admin)
-      expect(admin.is_admin?).to eq(true)
-    end
-    it "returns false when user is not an admin" do
-      not_admin = build_stubbed(:user)
-      expect(not_admin.is_admin?).to eq(false)
-    end
-  end
-
-  describe "#role_title" do
-    it "returns user when role_level is 0" do
-      user = build_stubbed(:user, role_level: 0)
-      expect(user.role_title).to eq("User")
-    end
-
-    it "returns admin when role_level is 1" do
-      user = build_stubbed(:user, role_level: 1)
-      expect(user.role_title).to eq("Admin")
-    end
-
-    it "raises an error when role_level is something else" do
-      user = build_stubbed(:user, role_level: 2)
-      expect{ user.role_title }.to raise_error(User::InvalidRoleError)
-    end
-  end
-
   describe "#tenant" do
     it "returns the tenant User belongs to" do
       tenant = instance_double("Tenant")

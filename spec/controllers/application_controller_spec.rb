@@ -10,7 +10,7 @@ describe ApplicationController do
   let(:tenant) { instance_double("Tenant", time_zone: "Beijing") }
 
   context "when logged in as a user" do
-    let(:user) { instance_double("User", is_admin?: false, tenant: tenant, full_name: "Some Name").as_null_object }
+    let(:user) { instance_double("User", admin?: false, tenant: tenant, full_name: "Some Name").as_null_object }
 
     before do 
       session[:user_id] = 1
@@ -50,7 +50,7 @@ describe ApplicationController do
   end
 
   context "when logged in as an admin" do
-    let(:user) { instance_double("User", is_admin?: true, tenant: tenant).as_null_object }
+    let(:user) { instance_double("User", admin?: true, tenant: tenant).as_null_object }
 
     before do 
       session[:user_id] = 1

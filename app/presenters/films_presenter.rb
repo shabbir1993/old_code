@@ -31,7 +31,7 @@ class FilmsPresenter
   end
 
   def total_count
-    search_results.count
+    search_results.count(:all)
   end
 
   def total_area

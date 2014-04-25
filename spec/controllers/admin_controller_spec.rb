@@ -10,7 +10,7 @@ describe AdminController do
   let(:tenant) { instance_double("Tenant", time_zone: "Beijing") }
 
   context "when logged in as an admin" do
-    let(:admin) { instance_double("User", is_admin?: true, tenant: tenant, full_name: "Some Name").as_null_object }
+    let(:admin) { instance_double("User", admin?: true, tenant: tenant, full_name: "Some Name").as_null_object }
 
     before do 
       session[:user_id] = 1
@@ -39,7 +39,7 @@ describe AdminController do
   end
 
   context "when logged in as a user with a valid IP" do
-    let(:user) { instance_double("User", is_admin?: false, tenant: tenant).as_null_object }
+    let(:user) { instance_double("User", admin?: false, tenant: tenant).as_null_object }
 
     before do 
       @request.env['REMOTE_ADDR'] = '127.0.0.1'

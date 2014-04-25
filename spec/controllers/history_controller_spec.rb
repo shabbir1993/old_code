@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HistoryController do
   let(:tenant) { instance_double("Tenant", time_zone: "Beijing").as_null_object }
-  let(:user) { instance_double("User", is_admin?: false, tenant: tenant).as_null_object }
+  let(:user) { instance_double("User", admin?: false, tenant: tenant).as_null_object }
   let(:tenant_film_movements) { instance_double("TenantAssets") }
   let(:film_movements) { double }
 
