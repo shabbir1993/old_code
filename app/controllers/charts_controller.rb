@@ -21,7 +21,8 @@ class ChartsController < ApplicationController
   end
 
   def movement_summary
-    @film_movement_totals_hash = MovementSummaryPresenter.new(current_tenant, params).film_movement_totals_hash
+    filtering_params = params.slice(:text_search, :from_phase, :to_phase, :created_at_before, :created_at_after)
+    @film_movement_totals_hash = MovementSummaryData.for(TenantAssets.new(current_tenant, FilmMovement).all.exclude_deleted_films.filter(filtering_params).sort_by_created_at)
   end
 
   def shelf_inventory

@@ -1,6 +1,17 @@
 <%= form_tag movement_summary_chart_path, method: :get, class: 'form-inline search' do %>
   <div class="row">
-    <%= render 'shared/date_range_fields' %>
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :created_at_after, params[:created_at_after], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>
+    </div>
+    <div class="form-group col-md-2">
+      <div class="input-group">
+        <%= text_field_tag :created_at_after, params[:created_at_after], placeholder: "End", class: "form-control bootstrap-datepicker" %>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      </div>
+    </div>
     <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
   </div>
 <% end %>
