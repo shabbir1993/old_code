@@ -1,0 +1,81 @@
+<script>
+  $(function () { 
+    $('#dimensions-map').highcharts({
+      chart: {
+        type: 'heatmap',
+        height: 600
+      },
+
+      title: {
+        text: false
+      },
+
+      xAxis: {
+        categories: <%= raw data.x_axis_categories %>,
+        gridLineWidth: 2,
+        title: {
+          text: "Length"
+        }
+      },
+
+      yAxis: {
+        categories: <%= raw data.y_axis_categories %>,
+        gridLineWidth: 2,
+        title: {
+          text: "Width"
+        }
+      },
+
+      colorAxis: {
+        min: 0,
+        minColor: '#FFFFFF',
+        maxColor: Highcharts.getOptions().colors[0]
+      },
+
+      legend: {
+        align: 'right',
+        layout: 'vertical',
+        margin: 0,
+        verticalAlign: 'top',
+        y: 25,
+        symbolHeight: 320
+      },
+
+      tooltip: {
+        formatter: function () {
+          var serial_array = this.point.serials;
+          var serial_str = ""; 
+          for(var i = 0; i < serial_array.length; i++){
+            serial_str = serial_str + serial_array[i] + '<br>';
+          }
+          return serial_str;
+        }
+      },
+
+      series: [{
+        name: 'Sales per employee',
+        borderWidth: 1,
+        data: [ 
+        <% data.map_hash.each do |p| %>
+        { 
+          x: <%= p[:coords][0] %>,
+          y: <%= p[:coords][1] %>,
+          value: <%= p[:value] %>,
+          serials: <%= raw p[:serials] %>
+        },
+        <% end %>
+        ],
+       
+        dataLabels: {
+          enabled: true,
+          color: 'black',
+          style: {
+            textShadow: 'none'
+          }
+        }
+      }]
+    });
+  });
+</script>
+
+<div id="dimensions-map" class="chart"></div>

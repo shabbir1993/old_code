@@ -15,13 +15,13 @@ describe HistoryController do
 
   describe "#index" do
     let(:paged_film_movements) { double }
-    let(:movement_matrix_data) { instance_double("MovementMatrixData") }
-    let(:dimension_matrix_data) { instance_double("DimensionMatrixData") }
+    let(:movement_map_data) { instance_double("MovementmapData") }
+    let(:dimensions_map_data) { instance_double("DimensionsMapData") }
 
     before do
       allow(film_movements).to receive(:page) { paged_film_movements }
-      allow(MovementMatrixData).to receive(:for).with(film_movements) { movement_matrix_data }
-      allow(DimensionMatrixData).to receive(:for).with(film_movements) { dimension_matrix_data }
+      allow(MovementMapData).to receive(:for).with(film_movements) { movement_map_data }
+      allow(DimensionsMapData).to receive(:new).with(film_movements) { dimensions_map_data }
     end
 
     context "html format" do
@@ -31,12 +31,12 @@ describe HistoryController do
         expect(assigns(:film_movements)).to eq(paged_film_movements)
       end
 
-      it "assigns movement matrix data" do
-        expect(assigns(:movement_matrix_data)).to eq(movement_matrix_data)
+      it "assigns movement map data" do
+        expect(assigns(:movement_map_data)).to eq(movement_map_data)
       end
 
-      it "assigns dimension matrix data" do
-        expect(assigns(:movement_matrix_data)).to eq(movement_matrix_data)
+      it "assigns dimensions map data" do
+        expect(assigns(:dimensions_map_data)).to eq(dimensions_map_data)
       end
 
       it "renders the index template" do

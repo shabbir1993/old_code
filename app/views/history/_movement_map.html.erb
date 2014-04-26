@@ -1,0 +1,28 @@
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+      <td></td>
+      <% PhaseDefinitions::HARD_PHASES.each do |p| %>
+        <td><strong><%= p %></strong></td>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% PhaseDefinitions::HARD_PHASES.each do |from_phase| %>
+      <tr>
+        <td><strong><%= from_phase %></strong></td>
+        <% PhaseDefinitions::HARD_PHASES.each do |to_phase| %>
+          <% if data[[from_phase, to_phase]] %>
+            <td class="row warning">
+              <span class="col-md-4"><%= "#{data[[from_phase, to_phase]][0]}" %></span> 
+              <strong class="col-md-1">|</strong> 
+              <span class="col-md-6"><%= "#{data[[from_phase, to_phase]][1]}" %></span>
+            </td>
+          <% else %>
+            <td></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -10,7 +10,7 @@ gem 'bootstrap-sass', '~> 3.1.1.1'
 gem 'protected_attributes'
 
 gem 'pg', '0.17.0'
-gem 'paper_trail', '>= 3.0.0.beta1'
+gem 'highcharts-rails', '~> 4.0.1'
 gem "kaminari", "~> 0.15.1"
 gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"

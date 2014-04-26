@@ -15,5 +15,7 @@
 //= require bootstrap
 //= require bootstrap-datepicker/core
 //= require highcharts
-//= require highcharts-more
+//= require highcharts/highcharts-more
+//= require highcharts/modules/no-data-to-display
+//= require highcharts/modules/heatmap
 //= require_tree .
