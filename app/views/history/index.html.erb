@@ -9,7 +9,7 @@
 
 <div class="tab-content">
   <div class="tab-pane active" id="table">
-    <%= link_to "Export", history_index_path(format: "csv"), id: "fg-movements-export", class: "btn btn-default" %>
+    <%= link_to "Export", history_index_path(params.merge(format: "csv")), id: "fg-movements-export", class: "btn btn-default" %>
     <%= paginate @film_movements %>
 
     <% content_for :table_header do %>
