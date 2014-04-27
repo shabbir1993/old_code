@@ -31,12 +31,12 @@ class MasterFilmsController < ApplicationController
   private
 
   def master_films
-    @decorated_master_films ||= Kaminari.paginate_array(decorate_collection(@master_films)).page(params[:page])
+    @master_films.page(params[:page])
   end
   helper_method :master_films
 
   def master_film
-    @decorated_master_film ||= decorate(@master_film)
+    @master_film
   end
   helper_method :master_film
 end

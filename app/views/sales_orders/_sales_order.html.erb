@@ -22,14 +22,14 @@
     <span>
       count: <strong><%= sales_order.count_fill_ratio %></strong> 
       area: <strong><%= sales_order.area_fill_ratio %></strong>
-      utilization: <strong><%= sales_order.utilization %></strong>
+      utilization: <strong><%= sales_order.utilization_as_percent %></strong>
     </span>
-    <div class="progress-bar progress-bar-success" style="<%= "width: #{sales_order.total_assigned_film_percent("fg") }%;" %>"></div>
-    <div class="progress-bar progress-bar-warning" style="<%= "width: #{sales_order.total_assigned_film_percent("wip") }%;" %>"></div>
-    <div class="progress-bar progress-bar-danger" style="<%= "width: #{sales_order.total_assigned_film_percent("stock") }%;" %>"></div>
+    <div class="progress-bar progress-bar-success" style="<%= "width: #{sales_order.assigned_film_percentage("fg") }%;" %>"></div>
+    <div class="progress-bar progress-bar-warning" style="<%= "width: #{sales_order.assigned_film_percentage("wip") }%;" %>"></div>
+    <div class="progress-bar progress-bar-danger" style="<%= "width: #{sales_order.assigned_film_percentage("stock") }%;" %>"></div>
   </div>
   <ul class="list-inline">
-    <%= render partial: "film", collection: decorate_collection(sales_order.films) %>
+    <%= render partial: "film", collection: sales_order.films %>
   </ul>
 </div>
 <div id="<%= "collapse-#{sales_order.id}" %>" class="panel-body panel-collapse collapse">

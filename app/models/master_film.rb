@@ -1,4 +1,5 @@
 class MasterFilm < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
 
   DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
 
@@ -110,5 +111,9 @@ class MasterFilm < ActiveRecord::Base
   def set_inactive(inactive)
     self.inactive = inactive
     save!
+  end
+
+  def yield_to_percent
+    number_to_percentage(self.yield, precision: 2)
   end
 end

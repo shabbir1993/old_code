@@ -1,5 +1,5 @@
 class HistoryController < ApplicationController
-  before_action :set_created_at_date_range_to_today, only: :index
+  before_action :set_default_date_range, only: :index
 
   def index
     @film_movements = film_movements.page(params[:page])
@@ -28,7 +28,7 @@ class HistoryController < ApplicationController
     @tenant_film_movements ||= TenantAssets.new(current_tenant, FilmMovement)
   end
 
-  def set_created_at_date_range_to_today
+  def set_default_date_range
     params[:created_at_after] ||= Date.current.to_s
     params[:created_at_before] ||= (Date.current + 1).to_s
   end

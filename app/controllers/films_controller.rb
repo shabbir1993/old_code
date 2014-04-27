@@ -66,17 +66,17 @@ class FilmsController < ApplicationController
   end
 
   def films
-    @decorated_films ||= Kaminari.paginate_array(decorate_collection(@films)).page(params[:page])
+    @films.page(params[:page])
   end
   helper_method :films
 
   def film
-    @decorated_film ||= decorate(@film)
+    @film
   end
   helper_method :film
 
   def split_film
-    @decorated_split_film ||= decorate(@split)
+    @split
   end
   helper_method :split_film
 end

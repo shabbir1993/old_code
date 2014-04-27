@@ -54,16 +54,16 @@ class SalesOrdersController < ApplicationController
   private
 
   def sales_orders
-    @decorated_sales_orders ||= Kaminari.paginate_array(decorate_collection(@sales_orders)).page(params[:page])
+    @sales_orders.page(params[:page])
   end
   helper_method :sales_orders
 
   def sales_order
-    @decorated_sales_order ||= decorate(@sales_order)
+    @sales_order
   end
   helper_method :sales_order
 
-  def filtering_params
-    params.slice(:text_search, :ship_date_before, :ship_date_after)
+  def tenant_sales_orders
+    @tenant_film_movements ||= TenantAssets.new(current_tenant, SalesOrder)
   end
 end

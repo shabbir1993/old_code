@@ -1,4 +1,5 @@
 class SalesOrder < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
   include PgSearch
   include Filterable
 
@@ -32,10 +33,6 @@ class SalesOrder < ActiveRecord::Base
     sales_orders
   end
 
-  def self.with_ship_date(date)
-    where("ship_date = ?", date)
-  end
-
   def cycle_days
     (ship_date - release_date).to_i
   end
@@ -54,16 +51,16 @@ class SalesOrder < ActiveRecord::Base
     line_items.sum(:quantity)
   end
 
-  def total_assigned_film_count(phase = nil)
+  def assigned_film_count(phase = nil)
     if phase
-      films.where(phase: phase).sum(:order_fill_count)
+      films.phase(phase).sum(:order_fill_count)
     else
       films.sum(:order_fill_count)
     end
   end
 
-  def total_assigned_film_percent(phase)
-    total_assigned_film_count(phase)*100/total_quantity
+  def assigned_film_percentage(phase)
+    assigned_film_count(phase)*100/total_quantity
   rescue ZeroDivisionError
     0
   end
@@ -85,6 +82,37 @@ class SalesOrder < ActiveRecord::Base
       s.line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
     end
     custom_areas.sum
+  end
+
+  %w[ship_to release_date due_date note].each do |method_name|
+    define_method(method_name) do
+      return super() if super().present?
+      "N/A"
+    end
+  end
+
+  def count_fill_ratio
+    "#{assigned_film_count}/#{total_quantity}"
+  end
+
+  def area_fill_ratio
+    "#{number_with_precision(total_assigned_area, precision: 2)}/#{number_with_precision(total_custom_area, precision: 2)}"
+  end
+
+  def utilization_as_percent
+    number_to_percentage(utilization, precision: 2)
+  end
+
+  def destination
+    if destroyed?
+      "Deleted"
+    elsif cancelled?
+      "cancelled"
+    elsif ship_date.present?
+      "Shipped"
+    else
+      "Returned"
+    end
   end
 
   def tenant

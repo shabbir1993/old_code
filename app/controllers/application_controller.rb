@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
                "120.33.232.194",   #PE Fujian
                "127.0.0.1"]        #localhost
 
-  include DecoratorsHelper
   protect_from_forgery
 
   before_action :check_auth
