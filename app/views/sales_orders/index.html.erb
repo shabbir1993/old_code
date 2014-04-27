@@ -1,14 +1,27 @@
 <%= render 'search_form' %>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#table" data-toggle="tab">Table</a></li>
+  <li><a href="#weekly-shipped-product-type" data-toggle="tab">Weekly shipped product types</a></li>
+</ul>
+
 <span>
   Orders: <strong><%= @presenter.total_orders %></strong>
   Pieces: <strong><%= @presenter.total_pieces %></strong>
   Area: <strong><%= @presenter.total_area %></strong>
 </span>
 
-<%= paginate sales_orders %>
+<div class="tab-content">
+  <div class="tab-pane active" id="table">
+    <%= paginate sales_orders %>
 
-<%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
+    <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
 
-<ol class="list-unstyled panel-group">
-  <%= render sales_orders %>
-</ol>
+    <ol class="list-unstyled panel-group">
+      <%= render sales_orders %>
+    </ol>
+  </div>
+  <div class="tab-pane" id="weekly-shipped-product-type">
+    <%= render 'weekly_shipped_product_type_chart', data: @weekly_shipped_product_type_data %>
+  </div>
+</div>

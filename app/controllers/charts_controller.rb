@@ -35,13 +35,6 @@ class ChartsController < ApplicationController
     @overall_average = chart.overall_average
   end
 
-  def area_shipped
-    chart = ShippedAreaChart.new(current_tenant, params)
-    @chart = chart
-    @total_film_area_shipped = chart.total_film_area_shipped
-    @total_glass_area_shipped = chart.total_glass_area_shipped
-  end
-
   def lead_time
     @chart = LeadTimeChart.new(current_tenant, params)
   end

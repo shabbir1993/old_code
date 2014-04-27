@@ -4,6 +4,7 @@ class SalesOrdersController < ApplicationController
   def index
     @presenter = SalesOrdersPresenter.new(current_tenant, params)
     @sales_orders = @presenter.present
+    @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(@sales_orders)
   end
   
   def new

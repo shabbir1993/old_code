@@ -1,31 +1,33 @@
-<%= form_tag area_shipped_chart_path, method: :get, class: 'form-inline search' do %>
-  <div class="row">
-    <%= render 'shared/date_range_fields' %>
-    <%= submit_tag "Search", name: nil, class: "btn btn-default col-md-1" %>
-  </div>
-<% end %>
-
 <script>
   $(function () {
-    $('#area_shipped').highcharts({
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      $('#weekly-shipped-product-type').highcharts().setSize($('#weekly-shipped-product-type').width(),$('#weekly-shipped-product-type').height());
+    });
+
+    $('#weekly-shipped-product-type').highcharts({
       chart: {
-        type: 'column'
+        type: 'column',
       },
+
       title: {
-        text: 'Area of film and glass shipped by week'
+        text: false
       },
+
       xAxis: {
         type: 'datetime'
       },
+
       yAxis: {
         min: 0,
         title: {
           text: 'Area'
         }
       },
+
       tooltip: {
         shared: true
       },
+
       plotOptions: {
         column: {
           pointPadding: 0,
@@ -33,18 +35,19 @@
           stacking: 'normal'
         }
       },
+
       series: [
       {
         name: 'Film',
         data: [
-        <% @chart.area_shipped_by_date.each do |point| %>
+        <% data.area_shipped_by_date.each do |point| %>
           [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:shipped_film_area] %>],
         <% end %>
         ]
         }, {
         name: 'Glass',
         data: [
-        <% @chart.area_shipped_by_date.each do |point| %>
+        <% data.area_shipped_by_date.each do |point| %>
           [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:shipped_glass_area] %>],
         <% end %>
         ]
@@ -53,22 +56,21 @@
         name: 'Area shipped',
         data: [{
           name: 'Film',
-          y: <%= @chart.total_film_area_shipped %>,
-          color: Highcharts.getOptions().colors[0]
+          y: <%= data.total_film_area_shipped %>
           }, {
           name: 'Glass',
-          y: <%= @chart.total_glass_area_shipped %>,
-          color: Highcharts.getOptions().colors[1]
+          y: <%= data.total_glass_area_shipped %>
         }],
         center: [70, 70],
         size: 100,
         showInLegend: false,
         dataLabels: false,
         tooltip: {
-          pointFormat: "<b>Percent:</b> {point.percentage:.1f}%<br/><b>Area shipped:</b> {point.y}<br/><b>Total:</b> <%= @chart.total_area_shipped %>"
+          pointFormat: "<b>Percent:</b> {point.percentage:.1f}%<br/><b>Area shipped:</b> {point.y}<br/><b>Total:</b> <%= data.total_area_shipped %>"
         }
       }]
     });
   });
 </script>
-<div id="area_shipped" class="chart"></div>
+
+<div id="weekly-shipped-product-type" class="chart"></div>

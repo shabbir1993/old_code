@@ -77,11 +77,8 @@ class SalesOrder < ActiveRecord::Base
     100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
   end
 
-  def self.total_custom_area_by_product_type(type)
-    custom_areas = all.map do |s|
-      s.line_items.where(product_type: type).map{ |li| li.total_area.to_f }.sum
-    end
-    custom_areas.sum
+  def self.line_items
+    LineItem.where(sales_order_id: pluck(:id))
   end
 
   %w[ship_to release_date due_date note].each do |method_name|
