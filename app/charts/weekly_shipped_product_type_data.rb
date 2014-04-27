@@ -30,6 +30,6 @@ class WeeklyShippedProductTypeData
   private
 
   def line_items_for(sales_orders)
-    LineItem.where(id: sales_orders.collect(&:id))
+    LineItem.where(sales_order_id: sales_orders.collect(&:id))
   end
 end

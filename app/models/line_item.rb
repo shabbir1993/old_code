@@ -3,7 +3,7 @@ class LineItem < ActiveRecord::Base
 
   belongs_to :sales_order
 
-  delegate :code, to: :sales_order, prefix: true, allow_nil: true
+  delegate :code, to: :sales_order, prefix: true
   
   validates :custom_width, presence: true
   validates :custom_length, presence: true
