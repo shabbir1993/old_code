@@ -16,11 +16,11 @@ class WeeklyShippedProductTypeData
   end
 
   def total_film_area_shipped 
-    @sales_orders.line_items.product_type_equals("Film").total_area.round(2)
+    line_items_for(@sales_orders).product_type_equals("Film").total_area.round(2)
   end
   
   def total_glass_area_shipped 
-    @sales_orders.line_items.product_type_equals("Glass").total_area.round(2)
+    line_items_for(@sales_orders).product_type_equals("Glass").total_area.round(2)
   end
 
   def total_area_shipped
