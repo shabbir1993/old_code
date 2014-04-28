@@ -1,5 +1,5 @@
 $('#forms-modal').modal('hide');
-<% films.each do |film| %>
+<% @films.each do |film| %>
   var film_row = $("<%= "#film-#{film.id}" %>")
   <% if film.moved? %>
     film_row.replaceWith("<%= j render 'moved_film', film: film %>");
