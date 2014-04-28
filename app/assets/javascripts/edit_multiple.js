@@ -1,7 +1,8 @@
 jQuery(function() {
 
   $("#get-edit-multiple").on("ajax:success", function(event, data, status, xhr) {
-    $("#forms-modal").html(data).modal('show');
+    $("#forms-modal .modal-content").html(data);
+    $("#forms-modal").modal('show');
   }).children().on("ajax:success", function(e) {
     return false;
   });

@@ -1,7 +1,7 @@
 <%= modal_form_for :film, url: update_multiple_films_path, method: :patch do |f| %>
   <div class="modal-header">
     <ul class="list-inline">
-      <% films.each do |film| %>
+      <% @films.each do |film| %>
         <li>
         <%= hidden_field_tag "film_ids[]", film.id %>
         <h4><%= film.serial %></h4>
@@ -12,7 +12,7 @@
   <div class="modal-body">
     <%= f.text_field :shelf, class: "form-control" %>
     <%= f.collection_select :sales_order_id, current_tenant.widgets(SalesOrder).unshipped, :id, :code, { include_blank: true }, class: "form-control" %>
-    <%= f.select :destination, destination_choices(films), { prompt: "Move to..." }, { class: "form-control", label: false } %>
+    <%= f.select :destination, destination_choices(@films), { prompt: "Move to..." }, { class: "form-control", label: false } %>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
