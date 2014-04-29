@@ -45,6 +45,7 @@ FactoryGirl.define do
   factory :line_item do
     custom_width 55
     custom_length 80
+    product_type "Film"
     quantity 2
     sales_order
   end

@@ -7,7 +7,7 @@ describe HistoryController do
   let(:film_movements) { double }
 
   before do
-    login(user)
+    set_user_session(user)
     @request.env['REMOTE_ADDR'] = '127.0.0.1'
     expect(TenantAssets).to receive(:new) { tenant_film_movements }
     expect(tenant_film_movements).to receive_message_chain(:all, :exclude_deleted_films, :filter, :sort_by_created_at) { film_movements }

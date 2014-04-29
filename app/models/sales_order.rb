@@ -59,10 +59,20 @@ class SalesOrder < ActiveRecord::Base
     end
   end
 
-  def assigned_film_percentage(phase)
-    assigned_film_count(phase)*100/total_quantity
-  rescue ZeroDivisionError
-    0
+  def assigned_film_percentages_by_phase
+    if assigned_film_count <= total_quantity
+      ary = PhaseDefinitions::HARD_PHASES.map do |p|
+        ratio = total_quantity > 0 ? assigned_film_count(p).to_f/total_quantity : 0
+        [p, number_to_percentage(ratio*100)]
+      end
+    else
+      ary = PhaseDefinitions::HARD_PHASES.map do |p|
+        ratio = total_quantity > 0 ? assigned_film_count(p).to_f/assigned_film_count : 0
+        ary = [p, number_to_percentage(ratio*100)]
+      end
+    end
+
+    Hash[ary]
   end
 
   def total_custom_area

@@ -8,18 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :check_auth
   before_action :check_ip
   around_action :set_tenant_time_zone, if: :current_tenant
-  around_action :set_raven_user_context, if: :current_user
 
 private
-
-  def set_raven_user_context
-    begin
-      Raven.user_context name: current_user.full_name
-      yield
-    ensure
-      Raven::Context.clear!
-    end
-  end
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]

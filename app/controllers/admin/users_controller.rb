@@ -1,30 +1,30 @@
 class Admin::UsersController < AdminController
   def index
-    @users = tenant_users.all
+    @users = current_tenant.users
   end
 
   def new
-    @user = tenant_users.new
+    @user = current_tenant.new_user
     render layout: false
   end
 
   def create
-    @user = tenant_users.new(params[:user])
+    @user = current_tenant.new_user(params[:user])
     render :display_error_messages unless @user.save
   end
 
   def edit
-    @user = tenant_users.find_by_id(params[:id])
+    @user = current_tenant.users.find(params[:id])
     render layout: false
   end
 
   def update
-    @user = tenant_users.find_by_id(params[:id])
+    @user = current_tenant.users.find(params[:id])
     render :display_error_messages unless @user.update_attributes(params[:user])
   end 
 
   def destroy
-    @user = tenant_users.find_by_id(params[:id])
+    @user = current_tenant.users.find(params[:id])
     @user.destroy!
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
   rescue ActiveRecord::RecordNotDestroyed => e

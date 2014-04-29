@@ -27,16 +27,6 @@ describe ApplicationController do
         get :index
       end
 
-      it "sets raven user context" do
-        expect(Raven).to receive(:user_context).with(name: "Some Name")
-        get :index
-      end
-
-      it "ensures raven contexts are cleared" do
-        expect(Raven::Context).to receive(:clear!)
-        get :index
-      end
-
       it "grants access with a valid IP" do
         get :index
         expect(response.status).to eq(200)
@@ -71,11 +61,6 @@ describe ApplicationController do
 
     it "doesn't set tenant time zone" do
       expect(Time).to_not receive(:use_zone)
-      get :index
-    end
-
-    it "doesn't set raven user context" do
-      expect(Raven).to_not receive(:user_context).with(name: "Some Name")
       get :index
     end
   end

@@ -26,16 +26,6 @@ describe AdminController do
       expect(Time).to receive(:use_zone).with("Beijing")
       get :index
     end
-
-    it "sets raven user context" do
-      expect(Raven).to receive(:user_context).with(name: "Some Name")
-      get :index
-    end
-
-    it "ensures raven contexts are cleared" do
-      expect(Raven::Context).to receive(:clear!)
-      get :index
-    end
   end
 
   context "when logged in as a user with a valid IP" do
