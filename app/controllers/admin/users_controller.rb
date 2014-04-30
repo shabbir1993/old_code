@@ -1,6 +1,6 @@
 class Admin::UsersController < AdminController
   def index
-    @users = current_tenant.users
+    @users = users.page(params[:page])
   end
 
   def new
@@ -14,17 +14,17 @@ class Admin::UsersController < AdminController
   end
 
   def edit
-    @user = current_tenant.users.find(params[:id])
+    @user = users.find(params[:id])
     render layout: false
   end
 
   def update
-    @user = current_tenant.users.find(params[:id])
+    @user = users.find(params[:id])
     render :display_error_messages unless @user.update_attributes(params[:user])
   end 
 
   def destroy
-    @user = current_tenant.users.find(params[:id])
+    @user = users.find(params[:id])
     @user.destroy!
     redirect_to users_path, notice: "User #{@user.full_name} deleted."
   rescue ActiveRecord::RecordNotDestroyed => e
@@ -35,16 +35,6 @@ class Admin::UsersController < AdminController
   private
 
   def users
-    @users.page(params[:page])
-  end
-  helper_method :users
-
-  def user
-    @user
-  end
-  helper_method :user
-
-  def tenant_users
-    @tenant_users ||= TenantAssets.new(current_tenant, User)
+    current_tenant.users
   end
 end

@@ -3,24 +3,27 @@ require 'spec_helper'
 describe Admin::UsersController do
   let(:tenant) { instance_double("Tenant", time_zone: "Beijing").as_null_object }
   let(:admin) { instance_double("User", admin?: true, tenant: tenant).as_null_object }
+  let(:users) { double }
+  let(:user) { instance_double("User").as_null_object }
+
   before do
     set_user_session(admin)
   end
 
   describe "#index" do
-    let(:users) { double }
+    let(:paged_users) { double }
     before do
       allow(tenant).to receive(:users) { users }
-      get :index
+      allow(users).to receive(:page).with("2") { paged_users }
+      get :index, page: 2
     end
 
     it "assigns current tenant users" do
-      expect(assigns(:users)).to eq(users)
+      expect(assigns(:users)).to eq(paged_users)
     end
   end
 
   describe "#new" do
-    let(:user) { instance_double("User") }
     before do
       allow(tenant).to receive(:new_user) { user }
       get :new
@@ -32,7 +35,6 @@ describe Admin::UsersController do
   end
 
   describe "#create" do
-    let(:user) { instance_double("User") }
     before do
       allow(tenant).to receive(:new_user) { user }
     end
@@ -51,8 +53,6 @@ describe Admin::UsersController do
   end
 
   describe "#edit" do
-    let(:users) { double }
-    let(:user) { instance_double("User") }
     before do
       allow(tenant).to receive(:users) { users }
       allow(users).to receive(:find).with("1") { user }
@@ -65,8 +65,6 @@ describe Admin::UsersController do
   end
 
   describe "#update" do
-    let(:users) { double }
-    let(:user) { instance_double("User") }
     before do
       allow(tenant).to receive(:users) { users }
       allow(users).to receive(:find).with("1") { user }
@@ -86,8 +84,6 @@ describe Admin::UsersController do
   end
 
   describe "#destroy" do
-    let(:users) { double }
-    let(:user) { instance_double("User").as_null_object }
 
     before do 
       allow(tenant).to receive(:users) { users }

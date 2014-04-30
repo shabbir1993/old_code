@@ -1,6 +1,6 @@
 <li id="<%= "salesorder-#{sales_order.id}" %>" class="panel panel-default">
 <div class="panel-heading">
-  <%= link_to_modal_edit(edit_sales_order_path(sales_order), sales_order, class: "pull-left") %>
+  <%= link_to_modal_edit(edit_sales_order_path(sales_order), sales_order, class: "pull-left edit-sales-order") %>
   <%= link_to_ship_or_return(sales_order) %>
   <h4 class="panel-title">
     <strong><%= sales_order.code %></strong> - <%= sales_order.customer %>

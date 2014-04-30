@@ -1,7 +1,7 @@
 module SalesOrdersHelper
   def link_to_ship_or_return(sales_order)
     if !sales_order.ship_date.present? && !sales_order.cancelled?
-      link_to edit_ship_date_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "salesorder-#{sales_order.id}-ship", class: "pull-right" } do 
+      link_to edit_ship_date_sales_order_path(sales_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "salesorder-#{sales_order.id}-ship", class: "pull-right edit-ship-date" } do 
         content_tag(:i, nil, class: "fa fa-truck fa-flip-horizontal")
       end 
     elsif current_user.admin?

@@ -14,7 +14,7 @@ class HistoryController < ApplicationController
   private
 
   def film_movements 
-    @movements ||= tenant_film_movements.all
+    @movements ||= current_tenant.film_movements
       .exclude_deleted_films
       .filter(filtering_params)
       .sort_by_created_at
@@ -22,10 +22,6 @@ class HistoryController < ApplicationController
 
   def filtering_params
     params.slice(:text_search, :from_phase, :to_phase, :created_at_before, :created_at_after)
-  end
-
-  def tenant_film_movements
-    @tenant_film_movements ||= TenantAssets.new(current_tenant, FilmMovement)
   end
 
   def set_default_date_range

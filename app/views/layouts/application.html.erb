@@ -9,6 +9,12 @@
   <%= render 'layouts/ga' %>
 </head>
 <body>
+  <div id="forms-modal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
   <%= render "layouts/navbar" if current_user.present? %>
   <% flash.each do |name, msg| %>
     <div class="alert alert-<%= name == :notice ? "success" : "warning" %>">
@@ -20,12 +26,6 @@
     <div class="sidebar">
       <div class="list-group">
         <%= yield :nav_list %>
-      </div>
-    </div>
-    <div id="forms-modal" class="modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-        </div>
       </div>
     </div>
   <% end %>

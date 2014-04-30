@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative 'concerns/filterable_spec.rb'
+require_relative 'concerns/filterable.rb'
 
 describe FilmMovement do
 

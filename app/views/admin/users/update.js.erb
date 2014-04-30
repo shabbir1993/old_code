@@ -1,5 +1,4 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: user } do %>
-  var user_row = $("<%= "#user-#{user.id}" %>")
-  user_row.replaceWith("<%= j render 'user', user: user %>");
-  $(user_row.selector).addClass("info");
-<% end %>
+var user_row = $("<%= "#user-#{@user.id}" %>")
+$('#forms-modal').modal('hide')
+user_row.replaceWith("<%= j render 'user', user: @user %>");
+$(user_row.selector).addClass("info");

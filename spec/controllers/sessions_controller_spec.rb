@@ -29,11 +29,8 @@ describe SessionsController do
         post :create, login: { username: "valid_user", password: "valid_password" }
       end
 
-      it "sets sets the session user_id" do
+      it "logs user in and redirects to root" do
         expect(session[:user_id]).to eq(1)
-      end
-        
-      it "redirects to root path" do
         expect(request).to redirect_to(root_path)
       end
     end
@@ -44,11 +41,8 @@ describe SessionsController do
         post :create, login: { username: "invalid", password: "foo" }
       end
 
-      it "sends a flash error" do
+      it "re-renders with flash error" do
         expect(flash.now[:error]).to match(/invalid/i)
-      end
-
-      it "renders the new template" do
         expect(request).to render_template(:new)
       end
     end
@@ -62,11 +56,8 @@ describe SessionsController do
         post :create, login: { username: "valid_user", password: "invalid_password" }
       end
 
-      it "sends a flash error" do
+      it "re-renders with flash error" do
         expect(flash.now[:error]).to match(/invalid/i)
-      end
-
-      it "renders the new template" do
         expect(request).to render_template(:new)
       end
     end
@@ -75,15 +66,9 @@ describe SessionsController do
   describe "#destroy" do
     before { delete :destroy }
 
-    it "clears the session user_id" do
+    it "clears session and redirects to login with flash notice" do
       expect(session[:user_id]).to eq(nil)
-    end
-
-    it "redirects to login" do
       expect(request).to redirect_to(login_url)
-    end
-
-    it "sends a flash notice" do
       expect(flash[:notice]).to match(/logged out/i)
     end
   end

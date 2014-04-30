@@ -40,18 +40,18 @@ class Tenant
   private
 
   def self.asset_classes
-    [User]
+    [User, FilmMovement]
   end
 
   asset_classes.each do |klass|
-    name = klass.name.pluralize.downcase.to_sym
+    name = klass.name.pluralize.underscore.downcase.to_sym
     define_method(name) do
       klass.tenant(code)
     end
   end
 
   asset_classes.each do |klass|
-    name = "new_#{klass.name.downcase}".to_sym
+    name = "new_#{klass.name.underscore.downcase}".to_sym
     define_method(name) do |*args|
       klass.new(*args).tap do |o|
         o.tenant_code = code
