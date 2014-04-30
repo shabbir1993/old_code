@@ -5,8 +5,8 @@ describe HistoryController do
   let(:user) { instance_double("User", admin?: false, tenant: tenant).as_null_object }
 
   before do
-    set_user_session(user)
     @request.env['REMOTE_ADDR'] = '127.0.0.1'
+    set_user_session(user)
   end
 
   describe "#index" do

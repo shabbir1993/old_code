@@ -40,7 +40,7 @@ class Tenant
   private
 
   def self.asset_classes
-    [User, FilmMovement]
+    [User, FilmMovement, SalesOrder]
   end
 
   asset_classes.each do |klass|

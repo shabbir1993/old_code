@@ -1,6 +1,6 @@
-<%= modal_form_for sales_order, url: update_ship_date_sales_order_path do |f| %>
+<%= modal_form_for @sales_order, url: update_ship_date_sales_order_path do |f| %>
   <div class="modal-header">
-    <h4 class="modal-title text-center"><%= sales_order.code %></h4>
+    <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
   </div>
   <div class="modal-body">
     <div class="form-group">
@@ -15,7 +15,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-    <%= link_to cancel_sales_order_path(sales_order), method: :patch, remote: true, id: "salesorder-#{sales_order.id}-cancel", class: "pull-left btn btn-warning" do %>
+    <%= link_to cancel_sales_order_path(@sales_order), method: :patch, remote: true, id: "salesorder-#{@sales_order.id}-cancel", class: "pull-left btn btn-warning" do %>
       Cancel order
     <% end %>
     <%= f.submit "Update", class: "btn btn-success" %>

@@ -25,6 +25,7 @@ class SalesOrder < ActiveRecord::Base
   scope :ship_date_before, ->(date) { where("ship_date <= ?", Time.zone.parse(date)) } 
   scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
   scope :text_search, ->(query) { reorder('').search(query) }
+  scope :tenant, ->(code) { where(tenant_code: code) }
 
   def self.ship_date_range(start_date, end_date)
     sales_orders = all

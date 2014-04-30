@@ -1,4 +1,3 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: sales_order } do %>
-  $('.main .panel-group').prepend("<%= j render 'sales_order', sales_order: sales_order %>");
-  $("<%= "#salesorder-#{sales_order.id}" %>").addClass("panel-success")
-<% end %>
+$('#forms-modal').modal('hide')
+$('.main .panel-group').prepend("<%= j render 'sales_order', sales_order: @sales_order %>");
+$("<%= "#salesorder-#{@sales_order.id}" %>").addClass("panel-success")

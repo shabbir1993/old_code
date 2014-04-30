@@ -6,19 +6,18 @@
 </ul>
 
 <span>
-  Orders: <strong><%= @presenter.total_orders %></strong>
-  Pieces: <strong><%= @presenter.total_pieces %></strong>
-  Area: <strong><%= @presenter.total_area %></strong>
+  Orders: <strong><%= @total_orders %></strong>
+  Area: <strong><%= number_with_precision(@total_area, precision: 2) %></strong>
 </span>
 
 <div class="tab-content">
   <div class="tab-pane active" id="table">
-    <%= paginate sales_orders %>
+    <%= paginate @sales_orders %>
 
     <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
 
     <ol class="list-unstyled panel-group">
-      <%= render sales_orders %>
+      <%= render @sales_orders %>
     </ol>
   </div>
   <div class="tab-pane" id="weekly-shipped-product-type">
