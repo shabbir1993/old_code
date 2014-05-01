@@ -9,8 +9,8 @@ module FilmsHelper
   end
 
   def sales_order_assign_choices(film)
-    unshipped_orders = current_tenant.widgets(SalesOrder).unshipped
-    film.sales_order.present? ? unshipped_orders.to_set << film.sales_order : unshipped_orders
+    in_progress_orders = current_tenant.widgets(SalesOrder).in_progress
+    film.sales_order.present? ? in_progress_orders.to_set << film.sales_order : in_progress_orders
   end
 
   def destination_choices(films)

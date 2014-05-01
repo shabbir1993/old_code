@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321195221) do
+ActiveRecord::Schema.define(version: 20140430234916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20140321195221) do
     t.text     "note"
     t.string   "tenant_code",                  null: false
     t.boolean  "cancelled",    default: false
+    t.integer  "status",       default: 0,     null: false
   end
 
   add_index "sales_orders", ["cancelled"], name: "index_sales_orders_on_cancelled", using: :btree

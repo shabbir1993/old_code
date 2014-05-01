@@ -24,13 +24,20 @@ describe "Orders tab", js: true do
     click_button "Add sales order"
 
     within('li', text: "PT123P") do
+      page.find(".move-sales-order").click
+    end
+    click_link "Hold"
+
+    click_link "On Hold"
+    within('li', text: "PT123P") do
       page.find(".edit-sales-order").click
     end
     fill_in "Customer", with: "Other Customer"
     click_button "Update"
 
     within('li', text: "Other Customer") do
-      find(".edit-ship-date").click
+      page.find(".move-sales-order").click
+      click_link "Ship"
     end
     fill_in "Shipped", with: "2014-02-01"
     click_button "Update"

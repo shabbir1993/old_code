@@ -2,14 +2,11 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy, :return]
 
   def index
-    @sales_orders = sales_orders
-      .send(params[:status])
-      .filter(filtering_params)
-      .by_code
-      .page(params[:page])
-    @total_orders = sales_orders.count
-    @total_area = sales_orders.line_items.total_area
-    @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(sales_orders)
+    filtered_orders = sales_orders.send(params[:status]).filter(filtering_params).by_code
+    @sales_orders = filtered_orders.page(params[:page])
+    @total_orders = filtered_orders.count
+    @total_area = filtered_orders.line_items.total_area
+    @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(filtered_orders)
   end
   
   def new
@@ -38,23 +35,21 @@ class SalesOrdersController < ApplicationController
   end
 
   def edit_ship_date
-    @sales_order = current_tenant.widget(SalesOrder, params[:id])
+    @sales_order = current_tenant.sales_orders.find(params[:id])
     render layout: false
   end
 
   def update_ship_date
-    @sales_order = current_tenant.widget(SalesOrder, params[:id])
+    @sales_order = current_tenant.sales_orders.find(params[:id])
+    @sales_order.status = "shipped"
+    @sales_order.save!
     @sales_order.update_attributes(params[:sales_order])
   end
 
-  def return
-    @sales_order = current_tenant.widget(SalesOrder, params[:id])
-    @sales_order.update_attributes!(ship_date: nil, cancelled: false)
-  end
-
-  def cancel
-    @sales_order = current_tenant.widget(SalesOrder, params[:id])
-    @sales_order.cancel
+  def move
+    @sales_order = sales_orders.find(params[:id])
+    @sales_order.status = params[:destination]
+    @sales_order.save!
   end
 
   private

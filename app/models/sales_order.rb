@@ -5,6 +5,8 @@ class SalesOrder < ActiveRecord::Base
 
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
+  enum status: [ :in_progress, :on_hold, :cancelled, :shipped ]
+
   has_many :line_items, dependent: :destroy
   has_many :films
   
@@ -16,9 +18,6 @@ class SalesOrder < ActiveRecord::Base
     :using => { tsearch: { prefix: true } }
 
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
-  scope :shipped, -> { where('ship_date is not null and cancelled = false') }
-  scope :unshipped, -> { where(ship_date: nil, cancelled: false) }
-  scope :cancelled, -> { where(cancelled: true) }
   scope :has_release_date, -> { where('release_date is not null') }
   scope :has_due_date, -> { where('due_date is not null') }
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) }
@@ -39,8 +38,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def cancel
-    self.cancelled = true
-    save!
+    self.cancelled!
   end
 
   def uncancel
@@ -109,18 +107,6 @@ class SalesOrder < ActiveRecord::Base
 
   def utilization_as_percent
     number_to_percentage(utilization, precision: 2)
-  end
-
-  def destination
-    if destroyed?
-      "Deleted"
-    elsif cancelled?
-      "cancelled"
-    elsif ship_date.present?
-      "Shipped"
-    else
-      "Returned"
-    end
   end
 
   def tenant

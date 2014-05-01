@@ -17,8 +17,7 @@ Pcms::Application.routes.draw do
     member do
       get :edit_ship_date
       patch :update_ship_date
-      patch :return
-      patch :cancel
+      patch :move
     end
   end
 
