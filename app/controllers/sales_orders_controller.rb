@@ -41,9 +41,9 @@ class SalesOrdersController < ApplicationController
 
   def update_ship_date
     @sales_order = current_tenant.sales_orders.find(params[:id])
+    @sales_order.update_attributes(params[:sales_order])
     @sales_order.status = "shipped"
     @sales_order.save!
-    @sales_order.update_attributes(params[:sales_order])
   end
 
   def move

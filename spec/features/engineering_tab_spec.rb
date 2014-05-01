@@ -16,7 +16,7 @@ describe "Engineering tab", js: true do
     within('tr', text: "F1231-01") do
       page.find(".edit-master-film").click
     end
-    sleep 0.01
+    sleep 0.1
     click_link "Add defect"
     select "Clear Spot", from: "master_film_defects_key"
     fill_in "Count", with: 2
