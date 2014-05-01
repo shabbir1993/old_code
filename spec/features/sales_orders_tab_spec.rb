@@ -39,6 +39,7 @@ describe "Orders tab", js: true do
       page.find(".move-sales-order").click
       click_link "Ship"
     end
+    sleep 0.1
     fill_in "Shipped", with: "2014-02-01"
     click_button "Update"
 

@@ -4,7 +4,7 @@ class SalesOrdersController < ApplicationController
   def index
     filtered_orders = sales_orders.send(params[:status]).filter(filtering_params).by_code
     @sales_orders = filtered_orders.page(params[:page])
-    @total_orders = filtered_orders.count
+    @total_orders = filtered_orders.count(:all)
     @total_area = filtered_orders.line_items.total_area
     @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(filtered_orders)
   end

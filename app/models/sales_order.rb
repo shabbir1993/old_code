@@ -13,6 +13,7 @@ class SalesOrder < ActiveRecord::Base
   accepts_nested_attributes_for :line_items, allow_destroy: true
   
   validates :code, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code }
+  validates :ship_date, presence: true, if: Proc.new { |o| o.shipped? }
 
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
@@ -35,15 +36,6 @@ class SalesOrder < ActiveRecord::Base
 
   def cycle_days
     (ship_date - release_date).to_i
-  end
-
-  def cancel
-    self.cancelled!
-  end
-
-  def uncancel
-    self.cancelled = false
-    save!
   end
 
   def total_quantity
@@ -87,7 +79,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def self.line_items
-    LineItem.where(sales_order_id: pluck(:id))
+    LineItem.where(sales_order_id: all.map(&:id))
   end
 
   %w[ship_to release_date due_date note].each do |method_name|
