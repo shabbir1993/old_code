@@ -7,6 +7,16 @@ class SalesOrdersController < ApplicationController
     @total_orders = filtered_orders.count(:all)
     @total_area = filtered_orders.line_items.total_area
     @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(filtered_orders)
+    respond_to do |format|
+      format.html
+      format.csv do 
+        if params[:data] == "orders"
+          render csv: filtered_orders
+        elsif params[:data] == "line_items"
+          render csv: filtered_orders.line_items
+        end
+      end
+    end
   end
   
   def new
@@ -29,26 +39,26 @@ class SalesOrdersController < ApplicationController
     render :display_error_messages unless @sales_order.update_attributes(params[:sales_order])
   end
 
+  def move
+    @sales_order = sales_orders.find(params[:id])
+    @sales_order.status = params[:destination]
+    @sales_order.save!
+  end
+
   def destroy
     @sales_order = sales_orders.find(params[:id])
     @sales_order.destroy!
   end
 
   def edit_ship_date
-    @sales_order = current_tenant.sales_orders.find(params[:id])
+    @sales_order = sales_orders.find(params[:id])
     render layout: false
   end
 
   def update_ship_date
-    @sales_order = current_tenant.sales_orders.find(params[:id])
+    @sales_order = sales_orders.find(params[:id])
     @sales_order.update_attributes(params[:sales_order])
     @sales_order.status = "shipped"
-    @sales_order.save!
-  end
-
-  def move
-    @sales_order = sales_orders.find(params[:id])
-    @sales_order.status = params[:destination]
     @sales_order.save!
   end
 

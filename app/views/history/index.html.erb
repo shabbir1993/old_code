@@ -10,6 +10,7 @@
 <div class="tab-content">
   <div class="tab-pane active" id="table">
     <%= link_to "Export", history_index_path(params.merge(format: "csv")), id: "fg-movements-export", class: "btn btn-default" %>
+
     <%= paginate @film_movements %>
 
     <% content_for :table_header do %>
@@ -31,7 +32,7 @@
     <%= render "shared/table" %>
   </div>
   <div class="tab-pane" id="movement-map">
-    <%= render 'movement_map', data: @movement_map_data %>
+    <%= render 'movement_map', movements: @film_movements %>
   </div>
   <div class="tab-pane" id="dimensions-map">
     <%= render 'dimensions_map', data: @dimensions_map_data %>

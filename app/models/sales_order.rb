@@ -101,6 +101,15 @@ class SalesOrder < ActiveRecord::Base
     number_to_percentage(utilization, precision: 2)
   end
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << %w(SO# Customer Released Due Ship-to Status Shipped Note)
+      all.each do |o|
+        csv << [o.code, o.customer, o.release_date, o.due_date, o.ship_to, o.status, o.ship_date, o.note]
+      end
+    end
+  end
+
   def tenant
     @tenant ||= Tenant.new(tenant_code)
   end

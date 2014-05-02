@@ -12,6 +12,9 @@
 
 <div class="tab-content">
   <div class="tab-pane active" id="table">
+    <%= link_to "Export Orders", sales_orders_path(params.merge(format: "csv", data: "orders")), class: "btn btn-default" %>
+    <%= link_to "Export Line items", sales_orders_path(params.merge(format: "csv", data: "line_items")), class: "btn btn-default" %>
+
     <%= paginate @sales_orders %>
 
     <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>

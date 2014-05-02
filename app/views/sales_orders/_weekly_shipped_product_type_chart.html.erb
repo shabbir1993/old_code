@@ -52,24 +52,7 @@
           [<%= point[:week_start].to_datetime.to_i*1000 %>, <%= point[:shipped_glass_area] %>],
         <% end %>
         ]
-        } , {
-        type: 'pie',
-        name: 'Area shipped',
-        data: [{
-          name: 'Film',
-          y: <%= data.total_film_area_shipped %>
-          }, {
-          name: 'Glass',
-          y: <%= data.total_glass_area_shipped %>
-        }],
-        center: [70, 70],
-        size: 100,
-        showInLegend: false,
-        dataLabels: false,
-        tooltip: {
-          pointFormat: "<b>Percent:</b> {point.percentage:.1f}%<br/><b>Area shipped:</b> {point.y}<br/><b>Total:</b> <%= data.total_area_shipped %>"
-        }
-      }]
+        }]
     });
   });
 </script>

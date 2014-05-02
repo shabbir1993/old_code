@@ -15,18 +15,6 @@ class WeeklyShippedProductTypeData
     end
   end
 
-  def total_film_area_shipped 
-    line_items_for(@sales_orders).product_type_equals("Film").total_area.round(2)
-  end
-  
-  def total_glass_area_shipped 
-    line_items_for(@sales_orders).product_type_equals("Glass").total_area.round(2)
-  end
-
-  def total_area_shipped
-    number_with_delimiter(total_film_area_shipped + total_glass_area_shipped, delimiter: ',')
-  end
-
   private
 
   def line_items_for(sales_orders)

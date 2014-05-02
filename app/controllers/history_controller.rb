@@ -3,7 +3,6 @@ class HistoryController < ApplicationController
 
   def index
     @film_movements = film_movements.page(params[:page])
-    @movement_map_data = MovementMapData.for(film_movements)
     @dimensions_map_data = DimensionsMapData.new(film_movements)
     respond_to do |format|
       format.html

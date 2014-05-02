@@ -12,11 +12,11 @@
       <tr>
         <td><strong><%= from_phase %></strong></td>
         <% PhaseDefinitions::HARD_PHASES.each do |to_phase| %>
-          <% if data[[from_phase, to_phase]] %>
+          <% if movements.grouped_by_phases[[from_phase, to_phase]] %>
             <td class="row warning">
-              <span class="col-md-4"><%= "#{data[[from_phase, to_phase]][0]}" %></span> 
+              <span class="col-md-4"><%= "#{movements.grouped_by_phases[[from_phase, to_phase]].count}" %></span> 
               <strong class="col-md-1">|</strong> 
-              <span class="col-md-6"><%= "#{data[[from_phase, to_phase]][1]}" %></span>
+              <span class="col-md-6"><%= "#{movements.grouped_by_phases[[from_phase, to_phase]].map(&:area).reduce(:+).round(2)}" %></span>
             </td>
           <% else %>
             <td></td>

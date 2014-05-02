@@ -46,6 +46,10 @@ class FilmMovement < ActiveRecord::Base
     end
   end
 
+  def self.grouped_by_phases
+    all.group_by{ |m| [m.from_phase, m.to_phase] }
+  end
+
   def tenant
     @tenant || Tenant.new(tenant_code)
   end
