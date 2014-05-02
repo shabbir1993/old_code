@@ -2,6 +2,7 @@ class HistoryController < ApplicationController
   before_action :set_default_date_range, only: :index
 
   def index
+    @all_film_movements = film_movements
     @film_movements = film_movements.page(params[:page])
     @dimensions_map_data = DimensionsMapData.new(film_movements)
     respond_to do |format|
