@@ -150,6 +150,8 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    skylight (0.3.12)
+      activesupport (>= 3.0.0)
     spring (1.1.2)
     spring-commands-rspec (1.0.2)
       spring (>= 0.9.1)
@@ -204,6 +206,7 @@ DEPENDENCIES
   rspec-rails (~> 3.0.0.beta)
   sass-rails (~> 4.0.0)
   sentry-raven!
+  skylight
   spring (~> 1.1.2)
   spring-commands-rspec (~> 1.0.2)
   thin (~> 1.5.1)

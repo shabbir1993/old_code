@@ -1,0 +1,47 @@
+<script>
+  $(function () {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      $('#lead-time').highcharts().setSize($('#lead-time').width(),$('#lead-time').height());
+    });
+
+    $('#lead-time').highcharts({
+      chart: {
+        type: 'column'
+      },
+
+      title: {
+        text: 'Lead Time'
+      },
+
+      xAxis: {
+        title: {
+          text: 'Days'
+        },
+        type: 'category',
+        categories: <%= raw (0..data.max_lead_days).to_a %>
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Count'
+        }
+      },
+
+      plotOptions: {
+        series: {
+          stacking: 'normal'
+        }
+      },
+
+      series: [
+      <% data.code_prefixes.each do |prefix| %>
+        {
+          name: <%= prefix %>,
+          data: <%= raw(data.count_grouped_by_cycle_time("#{prefix}%").values) %>
+        },
+      <% end %>
+      ]
+    });
+  });
+</script>
+<div id="lead-time" class="chart"></div>

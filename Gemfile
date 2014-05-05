@@ -15,6 +15,7 @@ gem "kaminari", "~> 0.15.1"
 gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
+gem "skylight"
 
 group :test do
   gem 'capybara', '~> 2.2.1'
