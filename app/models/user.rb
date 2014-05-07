@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Tenancy
+
   attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector
 
   has_secure_password
@@ -6,23 +8,13 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :full_name, presence: true, uniqueness: { case_sensitive: false }
 
-  scope :tenant, ->(code) { where(tenant_code: code) }
+  scope :chemists, -> { where(chemist: true) }
+  scope :operators, -> { where(operator: true) }
+  scope :inspectors, -> { where(inspector: true) }
 
   enum role_level: [ :user, :admin ]
 
-  def self.chemists
-    User.where(chemist: true).pluck(:full_name)
-  end
-
-  def self.operators
-    User.where(operator: true).pluck(:full_name)
-  end
-
-  def self.inspectors
-    User.where(inspector: true).pluck(:full_name)
-  end
-
-  def tenant
-    @tenant || Tenant.new(tenant_code)
+  def self.names
+    pluck(:full_name)
   end
 end

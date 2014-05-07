@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 shared_examples_for "filterable" do
-  let(:model) { described_class } # the class that includes the concern
+  let(:model) { described_class }
 
   describe ".filter" do
     context "with no params" do
@@ -16,7 +16,7 @@ shared_examples_for "filterable" do
       end
     end
 
-    context "with params" do
+    context "with params that have value" do
       it "filters with all params" do
         filtered_model = double
         expect(model).to receive(:foo).with("value") { filtered_model }

@@ -12,6 +12,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.use_transactional_fixtures = true
   config.order = "random"
   config.expect_with :rspec do |c|
     # disable the `should` syntax

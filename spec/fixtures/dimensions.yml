@@ -1,0 +1,14 @@
+zero:
+  width: 0
+  length: 0
+  film_id: 1
+
+medium:
+  width: 40
+  length: 60
+  film_id: 2
+
+large:
+  width: 60
+  length: 100
+  film_id: 3

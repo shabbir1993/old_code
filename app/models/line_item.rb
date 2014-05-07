@@ -13,7 +13,7 @@ class LineItem < ActiveRecord::Base
   scope :product_type_equals, ->(type) { where(product_type: type) }
 
   def custom_area
-    custom_width*custom_length / sales_order.tenant.area_divisor
+    custom_width*custom_length / tenant.area_divisor
   end
 
   def total_area
@@ -31,5 +31,9 @@ class LineItem < ActiveRecord::Base
         csv << [o.sales_order_code, o.product_type, o.custom_width, o.custom_length, o.quantity, o.wire_length, o.busbar_type, o.note]
       end
     end
+  end
+
+  def tenant
+    @tenant ||= sales_order.tenant
   end
 end

@@ -1,68 +1,36 @@
 require 'spec_helper'
-require_relative 'concerns/filterable.rb'
 
 describe FilmMovement do
-
-  it_behaves_like "filterable"
-  
-  describe "#datetime_display" do
-    context "created_at year is current year" do
-      let(:current_year) { Time.zone.today.year }
-
-      before do
-        @current_year_movement = build_stubbed(:film_movement, created_at: Time.zone.local(current_year, 1, 2, 7))
-      end
-
-      it "displays created_at as date, month, and time" do
-        expect(@current_year_movement.datetime_display).to match(/2 Jan 07:00/i)
-      end
-    end
-
-    context "created_at year is not current year" do
-      let(:last_year) { Time.zone.today.year - 1 }
-
-      before do
-        @last_year_movement = create(:film_movement, created_at: Time.zone.local(last_year, 1, 2, 7))
-      end
-
-      it "displays created_at as shortened date with time" do
-        expect(@last_year_movement.datetime_display).to match(/#{last_year}-01-02 07:00/)
-      end
-    end
-  end
+  fixtures :film_movements
+  fixtures :films
+  fixtures :master_films
 
   describe "#area" do
-    it "passes params to the AreaCalculator calculate method" do
-      film_movement = build_stubbed(:film_movement)
-      tenant = instance_double("Tenant")
-      allow(Tenant).to receive(:new).with(film_movement.tenant_code) { tenant }
-      allow(tenant).to receive(:area_divisor) { 144 }
-      expect(AreaCalculator).to receive(:calculate).with(film_movement.width, film_movement.length, 144)
-      film_movement.area
+    context "with width and length" do
+      it "calculates the area" do
+        expect(film_movements(:stock_to_wip).area).to be_within(0.1).of(41.7)
+      end
+    end
+
+    context "without width and length" do
+      it "returns 0" do
+        expect(film_movements(:lamination_to_inspection).area).to eq(0)
+      end
     end
   end
 
   describe ".to_csv" do
     let(:csv) { FilmMovement.to_csv }
 
-    context "with multiple records" do
-      before do
-        @first_movement = create(:film_movement)
-        @second_movement = create(:film_movement)
-      end
-
-      it "returns csv with correct serials" do
-        expect(csv).to include(@first_movement.serial, @second_movement.serial)
-      end
+    it "returns csv with correct serials" do
+      expect(csv).to include(film_movements(:stock_to_wip).serial, film_movements(:lamination_to_inspection).serial)
     end
   end
 
-  describe "#tenant" do
-    it "returns the tenant User belongs to" do
-      tenant = instance_double("Tenant")
-      allow(Tenant).to receive(:new).with('pi') { tenant }
-      user = build_stubbed(:user, tenant_code: 'pi')
-      expect(user.tenant).to eq(tenant)
+  describe ".grouped_by_phases" do
+    it "returns a grouped hash of movements" do
+      expect(FilmMovement.grouped_by_phases[['lamination', 'inspection']]).to include(film_movements(:lamination_to_inspection))
+      expect(FilmMovement.grouped_by_phases[['stock', 'wip']]).to include(film_movements(:stock_to_wip))
     end
   end
 end

@@ -1,40 +1,29 @@
 require 'spec_helper'
 
 describe AdminController do
+  fixtures :users
+
   controller do
     def index
       render nothing: true
     end
   end
 
-  let(:tenant) { instance_double("Tenant", time_zone: "Beijing") }
-
-  context "when logged in as an admin" do
-    let(:admin) { instance_double("User", admin?: true, tenant: tenant, full_name: "Some Name").as_null_object }
-
-    before do 
-      session[:user_id] = 1
-      allow(User).to receive(:find).with(1) { admin }
+  context "as admin" do
+    before do
+      set_user_session(users(:admin))
     end
 
     it "grants access" do
       get :index
       expect(response.status).to eq(200)
     end
-
-    it "sets the time zone" do
-      expect(Time).to receive(:use_zone).with("Beijing")
-      get :index
-    end
   end
 
   context "when logged in as a user with a valid IP" do
-    let(:user) { instance_double("User", admin?: false, tenant: tenant).as_null_object }
-
     before do 
+      set_user_session(users(:user))
       @request.env['REMOTE_ADDR'] = '127.0.0.1'
-      session[:user_id] = 1
-      allow(User).to receive(:find).with(1) { user }
     end
 
     it "redirects to root" do

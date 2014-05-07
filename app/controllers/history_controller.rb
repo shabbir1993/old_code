@@ -1,5 +1,4 @@
 class HistoryController < ApplicationController
-  before_action :set_default_date_range, only: :index
 
   def index
     @all_film_movements = film_movements
@@ -22,10 +21,5 @@ class HistoryController < ApplicationController
 
   def filtering_params
     params.slice(:text_search, :from_phase, :to_phase, :created_at_before, :created_at_after)
-  end
-
-  def set_default_date_range
-    params[:created_at_after] ||= Date.current.to_s
-    params[:created_at_before] ||= (Date.current + 1).to_s
   end
 end

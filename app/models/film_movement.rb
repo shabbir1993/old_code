@@ -3,6 +3,7 @@ require 'csv'
 class FilmMovement < ActiveRecord::Base
   include PgSearch
   include Filterable
+  include Tenancy
 
   attr_accessible :from_phase, :to_phase, :width, :length, :actor, :film_id, :film, :tenant_code
 
@@ -17,7 +18,6 @@ class FilmMovement < ActiveRecord::Base
   scope :created_at_after, ->(date) { where("created_at >= ?", Time.zone.parse(date)) } 
   scope :to_phase, ->(phase) { where(to_phase: phase.downcase) } 
   scope :from_phase, ->(phase) { where(from_phase: phase.downcase) } 
-  scope :tenant, ->(tenant_code) { where(tenant_code: tenant_code) }
   scope :text_search, ->(query) { reorder('').search(query) }
 
   pg_search_scope :search, 
@@ -25,16 +25,9 @@ class FilmMovement < ActiveRecord::Base
     using: { tsearch: { prefix: true } },
     associated_against: { film: [:serial] }
 
-  def datetime_display
-    if created_at.year == Time.zone.today.year
-      created_at.strftime("%e %b %R")
-    else
-      created_at.strftime("%F %R")
-    end
-  end
-
   def area
-    AreaCalculator.calculate(width, length, tenant.area_divisor)
+    return width*length/tenant.area_divisor if width && length && tenant.area_divisor
+    0
   end
 
   def self.to_csv(options = {})
@@ -48,9 +41,5 @@ class FilmMovement < ActiveRecord::Base
 
   def self.grouped_by_phases
     all.group_by{ |m| [m.from_phase, m.to_phase] }
-  end
-
-  def tenant
-    @tenant || Tenant.new(tenant_code)
   end
 end

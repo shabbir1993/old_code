@@ -1,6 +1,5 @@
 def set_user_session(user)
-  session[:user_id] = 1
-  allow(User).to receive(:find).with(1) { user }
+  session[:user_id] = user.id
 end
 
 def log_in(user)

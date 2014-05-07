@@ -1,0 +1,13 @@
+film:
+  product_type: film
+  custom_width: 50
+  custom_length: 70
+  quantity: 2
+  sales_order_id: 1
+
+glass:
+  product_type: glass
+  custom_width: 40
+  custom_length: 80
+  quantity: 3
+  sales_order_id: 2

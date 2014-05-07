@@ -1,20 +1,17 @@
 require 'spec_helper'
 
 describe ApplicationController do
+  fixtures :users
+
   controller do
     def index
       render nothing: true
     end
   end
 
-  let(:tenant) { instance_double("Tenant", time_zone: "Beijing") }
-
   context "when logged in as a user" do
-    let(:user) { instance_double("User", admin?: false, tenant: tenant, full_name: "Some Name").as_null_object }
-
     before do 
-      session[:user_id] = 1
-      allow(User).to receive(:find).with(1) { user }
+      set_user_session(users(:user))
     end
 
     context "with a valid IP" do
@@ -23,8 +20,8 @@ describe ApplicationController do
       end
 
       it "sets the time zone" do
-        expect(Time).to receive(:use_zone).with("Beijing")
         get :index
+        expect(Time.zone.name).to eq("Central Time (US & Canada)")
       end
 
       it "grants access with a valid IP" do
@@ -40,11 +37,8 @@ describe ApplicationController do
   end
 
   context "when logged in as an admin" do
-    let(:user) { instance_double("User", admin?: true, tenant: tenant).as_null_object }
-
     before do 
-      session[:user_id] = 1
-      allow(User).to receive(:find).with(1) { user }
+      set_user_session(users(:admin))
     end
 
     it "grants access with an invalid IP" do
@@ -57,11 +51,6 @@ describe ApplicationController do
     it "redirects to login_url" do
       get :index
       expect(response).to redirect_to login_url
-    end
-
-    it "doesn't set tenant time zone" do
-      expect(Time).to_not receive(:use_zone)
-      get :index
     end
   end
 end

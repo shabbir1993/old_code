@@ -30,17 +30,18 @@ private
   end
 
   def check_auth
-    deny_access("Access denied: Please log in first.") unless current_user
+    deny_access unless current_user
   end
 
   def check_ip
     unless VALID_IPS.include?(request.remote_ip) || current_user.admin?
-      deny_access("Access denied: invalid IP.")
+      flash[:alert] = "Access denied: invalid IP"
+      deny_access
     end
   end
 
-  def deny_access(message)
-    redirect_to login_url, alert: message
+  def deny_access
+    redirect_to login_url
   end
 
   def check_admin

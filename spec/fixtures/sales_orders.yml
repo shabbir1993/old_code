@@ -1,0 +1,14 @@
+in_progress:
+  id: 1
+  code: PD001P
+  release_date: 2014-01-01
+  due_date: 2014-02-01
+  tenant_code: pi
+  
+shipped:
+  id: 2
+  code: PT001P 
+  release_date: 2013-01-01
+  due_date: 2013-02-01
+  ship_date: 2013-01-20
+  tenant_code: pi
