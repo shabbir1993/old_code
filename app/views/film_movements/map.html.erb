@@ -1,0 +1,28 @@
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+      <td></td>
+      <% @categories.each do |p| %>
+        <td><strong><%= p %></strong></td>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each do |from_phase| %>
+      <tr>
+        <td><strong><%= from_phase %></strong></td>
+        <% @categories.each do |to_phase| %>
+          <% if @map_data[[from_phase, to_phase]] %>
+            <td class="row warning">
+              <span class="col-md-4"><%= "#{@map_data[[from_phase, to_phase]][:count]}" %></span> 
+              <strong class="col-md-1">|</strong> 
+              <span class="col-md-6"><%= "#{@map_data[[from_phase, to_phase]][:area]}" %></span>
+            </td>
+          <% else %>
+            <td></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

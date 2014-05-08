@@ -1,0 +1,15 @@
+<% provide :title, "History" %>
+
+<% content_for :nav_list do %>
+  <%= link_to "Film movements", film_movements_path, class: "list-group-item active" %>
+<% end %>
+
+<% content_for :page_head do %>
+  <%= render 'search_form', path: film_movements_path %>
+  <ul class="nav nav-tabs">
+    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "List", film_movements_path %></li>
+    <li class="<%= "active" if params[:action] == 'map' %>"><%= link_to "Map", map_film_movements_path %></li>
+  </ul>
+<% end %>
+
+<%= render template: "layouts/application" %>

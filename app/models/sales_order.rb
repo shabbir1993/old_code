@@ -2,6 +2,7 @@ class SalesOrder < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include PgSearch
   include Filterable
+  include Tenancy
 
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
@@ -25,7 +26,6 @@ class SalesOrder < ActiveRecord::Base
   scope :ship_date_before, ->(date) { where("ship_date <= ?", Time.zone.parse(date)) } 
   scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
   scope :text_search, ->(query) { reorder('').search(query) }
-  scope :tenant, ->(code) { where(tenant_code: code) }
 
   def self.ship_date_range(start_date, end_date)
     sales_orders = all
@@ -108,9 +108,5 @@ class SalesOrder < ActiveRecord::Base
         csv << [o.code, o.customer, o.release_date, o.due_date, o.ship_to, o.status, o.ship_date, o.note]
       end
     end
-  end
-
-  def tenant
-    @tenant ||= Tenant.new(tenant_code)
   end
 end

@@ -34,7 +34,11 @@ Pcms::Application.routes.draw do
     resources :users, except: :show
   end
 
-  resources :history, only: [:index]
+  resources :film_movements, only: [:index] do
+    collection do
+      get :map
+    end
+  end
 
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
   get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart

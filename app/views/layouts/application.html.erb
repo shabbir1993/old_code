@@ -28,9 +28,11 @@
         <%= yield :nav_list %>
       </div>
     </div>
+    <div class="page-head">
+      <%= yield :page_head %>
+    </div>
   <% end %>
   <div class="main">
-    <%= yield :search_form %>
     <%= yield %>
   </div>
 </body>

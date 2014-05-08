@@ -50,12 +50,16 @@ td.nowrap {
   width: 160px;
 }
 
-.main {
+.main, .page-head {
   margin-left: 180px;
   padding-right: 10px;
 }
 
-.ul, ol {
+.page-head {
+  margin-bottom: 10px;
+}
+
+ol {
   padding: 0;
 }
 

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe "History tab" do
+describe "Movements tab" do
   let(:user) { create(:user) }
 
   before do
     log_in(user)
-    click_link "History"
+    click_link "Movements"
   end
 
   it "filters and displays film movements" do

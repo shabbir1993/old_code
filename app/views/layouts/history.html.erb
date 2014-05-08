@@ -1,7 +1,0 @@
-<% provide :title, "History" %>
-
-<% content_for :nav_list do %>
-  <%= link_to "Film movements", history_index_path, class: "list-group-item#{" active" if params[:action] == 'index'}" %>
-<% end %>
-
-<%= render template: "layouts/application" %>

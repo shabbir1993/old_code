@@ -1,0 +1,21 @@
+<%= link_to "Export", film_movements_path(params.merge(format: "csv")), id: "fg-movements-export", class: "btn btn-default" %>
+
+<%= paginate @film_movements %>
+
+<% content_for :table_header do %>
+  <tr>
+    <th>Serial</th>
+    <th>Movement</th>
+    <th>Dimensions</th>
+    <th>Order</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
+<% end %>
+
+<% content_for :table_body do %>
+  <%= render partial: "film_movement", collection: @film_movements %>
+<% end %>
+
+
+<%= render "shared/table" %>

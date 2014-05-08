@@ -26,11 +26,4 @@ describe FilmMovement do
       expect(csv).to include(film_movements(:stock_to_wip).serial, film_movements(:lamination_to_inspection).serial)
     end
   end
-
-  describe ".grouped_by_phases" do
-    it "returns a grouped hash of movements" do
-      expect(FilmMovement.grouped_by_phases[['lamination', 'inspection']]).to include(film_movements(:lamination_to_inspection))
-      expect(FilmMovement.grouped_by_phases[['stock', 'wip']]).to include(film_movements(:stock_to_wip))
-    end
-  end
 end

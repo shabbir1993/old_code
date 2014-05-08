@@ -1,13 +1,17 @@
-class HistoryController < ApplicationController
+class FilmMovementsController < ApplicationController
 
   def index
-    @all_film_movements = film_movements
     @film_movements = film_movements.page(params[:page])
-    @dimensions_map_data = DimensionsMapData.new(film_movements)
     respond_to do |format|
       format.html
       format.csv { render csv: film_movements }
     end
+  end
+
+  def map
+    map = FilmMovementsMap.new(film_movements)
+    @categories = map.categories
+    @map_data = map.data
   end
 
   private
