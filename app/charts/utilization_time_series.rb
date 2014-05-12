@@ -6,7 +6,7 @@ class UtilizationTimeSeries
 
   def data
     @shipments.map do |s|
-      [s[:date].to_datetime.to_i*1000, s[:avg_utilization]]
+      [s[:date].to_datetime.to_i*1000, s[:avg_utilization].to_f]
     end
   end
 
