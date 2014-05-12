@@ -1,29 +1,14 @@
-<%= render 'search_form' %>
-
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#table" data-toggle="tab">Table</a></li>
-  <li><a href="#weekly-shipped-product-type" data-toggle="tab">Weekly shipped product types</a></li>
-</ul>
-
-<span>
+<div>
   Orders: <strong><%= @total_orders %></strong>
   Area: <strong><%= number_with_precision(@total_area, precision: 2) %></strong>
-</span>
-
-<div class="tab-content">
-  <div class="tab-pane active" id="table">
-    <%= link_to "Export Orders", sales_orders_path(params.merge(format: "csv", data: "orders")), class: "btn btn-default" %>
-    <%= link_to "Export Line items", sales_orders_path(params.merge(format: "csv", data: "line_items")), class: "btn btn-default" %>
-
-    <%= paginate @sales_orders %>
-
-    <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
-
-    <ol class="list-unstyled panel-group">
-      <%= render @sales_orders %>
-    </ol>
-  </div>
-  <div class="tab-pane" id="weekly-shipped-product-type">
-    <%= render 'weekly_shipped_product_type_chart', data: @weekly_shipped_product_type_data %>
-  </div>
 </div>
+
+<%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
+<%= link_to "Export Orders", sales_orders_path(params.merge(format: "csv", data: "orders")), class: "btn btn-default" %>
+<%= link_to "Export Line items", sales_orders_path(params.merge(format: "csv", data: "line_items")), class: "btn btn-default" %>
+
+<%= paginate @sales_orders %>
+
+<ol class="list-unstyled panel-group">
+  <%= render @sales_orders %>
+</ol>

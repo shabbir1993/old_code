@@ -2,33 +2,30 @@
 
 <%= paginate master_films %>
 
+<%= link_to_modal_new(new_master_film_path, "Enter film") %>
 <%= link_to_export(method(:master_films_path), params) %>
 
-<% content_for :table_header do %>
-  <tr>
-    <th></th>
-    <th>Serial</th>
-    <th>Formula</th>
-    <th>Mix/g</th>
-    <th>Mach</th>
-    <th>ITO</th>
-    <th>Thinky</th>
-    <th>Chemist</th>
-    <th>Operator</th>
-    <th>Inspector</th>
-    <th>Eff W</th>
-    <th>Eff L</th>
-    <th>Yield</th>
-    <th>Defects</th>
-    <th>Note</th>
-  </tr>
-  <tr>
-    <%= link_to_modal_new(new_master_film_path, "Enter film") %>
-  </tr>
-<% end %>
-
-<% content_for :table_body do %>
-  <%= render master_films %>
-<% end %>
-
-<%= render "shared/table" %>
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Serial</th>
+      <th>Formula</th>
+      <th>Mix/g</th>
+      <th>Mach</th>
+      <th>ITO</th>
+      <th>Thinky</th>
+      <th>Chemist</th>
+      <th>Operator</th>
+      <th>Inspector</th>
+      <th>Eff W</th>
+      <th>Eff L</th>
+      <th>Yield</th>
+      <th>Defects</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render master_films %>
+  </tbody>
+</table>

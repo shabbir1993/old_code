@@ -16,8 +16,14 @@ describe LineItem do
   end
 
   describe ".total_area" do
-    it "calculates the sum of total areas of line items" do
+    it "calculates the sum of total areas" do
       expect(LineItem.total_area).to be_within(0.1).of 115.3
+    end
+  end
+
+  describe ".total_quantity" do
+    it "calculates the sum of quantities" do
+      expect(LineItem.total_quantity).to eq(5)
     end
   end
 

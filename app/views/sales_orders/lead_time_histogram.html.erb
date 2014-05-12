@@ -1,0 +1,31 @@
+<script>
+  $(function () {
+    $('#lead_time_histogram').highcharts({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: false
+      },
+      xAxis: {
+        title: {
+          text: 'Lead days'
+        },
+        type: 'category',
+        categories: <%= raw @histogram.lead_day_range %>
+      },
+      yAxis: {
+        min: 0,
+        minTickInterval: 1,
+        title: {
+          text: 'Orders count'
+        }
+      },
+      series: [{
+        data: <%= raw @histogram.data %>
+      }]
+    });
+  });
+</script>
+
+<div id="lead_time_histogram" class="chart"></div>

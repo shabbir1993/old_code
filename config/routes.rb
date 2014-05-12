@@ -19,6 +19,9 @@ Pcms::Application.routes.draw do
       patch :update_ship_date
       patch :move
     end
+    collection do
+      get :lead_time_histogram
+    end
   end
 
   get 'login', to: 'sessions#new'
@@ -37,6 +40,13 @@ Pcms::Application.routes.draw do
   resources :film_movements, only: [:index] do
     collection do
       get :map
+    end
+  end
+
+  resources :shipments, only: [:index] do
+    collection do
+      get :utilization_time_series
+      get :shipped_area_time_series
     end
   end
 

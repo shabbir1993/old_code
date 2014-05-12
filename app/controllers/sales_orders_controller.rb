@@ -2,21 +2,20 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy, :return]
 
   def index
-    filtered_orders = sales_orders.send(params[:status]).filter(filtering_params).by_code
     @sales_orders = filtered_orders.page(params[:page])
     @total_orders = filtered_orders.count(:all)
     @total_area = filtered_orders.line_items.total_area
-    @weekly_shipped_product_type_data = WeeklyShippedProductTypeData.new(filtered_orders)
     respond_to do |format|
       format.html
       format.csv do 
-        if params[:data] == "orders"
-          render csv: filtered_orders
-        elsif params[:data] == "line_items"
-          render csv: filtered_orders.line_items
-        end
+        render csv: filtered_orders if params[:data] == "orders"
+        render csv: filtered_orders.line_items if params[:data] == "line_items"
       end
     end
+  end
+
+  def lead_time_histogram
+    @histogram = LeadTimeHistogram.new(filtered_orders)
   end
   
   def new
@@ -63,6 +62,9 @@ class SalesOrdersController < ApplicationController
   end
 
   private
+  def filtered_orders
+    sales_orders.send(params[:status]).filter(filtering_params).by_code
+  end
 
   def sales_orders
     current_tenant.sales_orders

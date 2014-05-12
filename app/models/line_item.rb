@@ -12,6 +12,10 @@ class LineItem < ActiveRecord::Base
 
   scope :product_type_equals, ->(type) { where(product_type: type) }
 
+  def self.total_quantity
+    all.sum(:quantity)
+  end
+
   def custom_area
     custom_width*custom_length / tenant.area_divisor
   end

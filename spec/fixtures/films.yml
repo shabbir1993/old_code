@@ -12,6 +12,8 @@ stock:
 
 fg:
   serial: F0101-02-2
+  area: 41.67
   phase: fg
   tenant_code: pi
   master_film: inspected
+  sales_order: shipped

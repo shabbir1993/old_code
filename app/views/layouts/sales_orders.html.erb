@@ -6,6 +6,15 @@
   <%= link_to "Shipped", sales_orders_path(status: 'shipped'), class: "list-group-item#{" active" if params[:status] == 'shipped'}" %>
   <%= link_to "Cancelled", sales_orders_path(status: 'cancelled'), class: "list-group-item#{" active" if params[:status] == 'cancelled'}" %>
 <% end %>
-  
+
+<% content_for :page_head do %>
+  <%= render 'search_form' %>
+
+  <ul class="nav nav-tabs">
+    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
+    <li class="<%= "active" if params[:action] == 'lead_time_histogram' %>"><%= link_to "Lead time histogram", url_for(params.merge(action: 'lead_time_histogram')) %></li>
+  </ul>
+<% end %>
+
 <%= render template: "layouts/application" %>
 

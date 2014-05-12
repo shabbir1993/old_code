@@ -1,0 +1,20 @@
+<%= paginate @shipments %>
+
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Orders</th>
+      <th>Film pieces</th>
+      <th>Glass pieces</th>
+      <th>Total pieces</th>
+      <th>Film area</th>
+      <th>Glass area</th>
+      <th>Total area</th>
+      <th>Avg utilization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "shipment", collection: @shipments %>
+  </tbody>
+</table>

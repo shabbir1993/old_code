@@ -1,0 +1,46 @@
+<script>
+  $(function () {
+    $('#shipped_area_time_series').highcharts({
+      chart: {
+        type: 'column'
+      },
+
+      title: {
+        text: false
+      },
+
+      xAxis: {
+        type: 'datetime'
+      },
+
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Area'
+        }
+      },
+
+      tooltip: {
+        shared: true
+      },
+
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          groupPadding: 0,
+          stacking: 'normal'
+        }
+      },
+
+      series: [{
+        name: 'Film',
+        data: <%= raw @time_series.film_data %>
+        }, {
+        name: 'Glass',
+        data: <%= raw @time_series.glass_data %>
+      }]
+    });
+  });
+</script>
+
+<div id="shipped_area_time_series" class="chart"></div>

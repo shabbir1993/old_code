@@ -10,23 +10,22 @@
 
   <%= paginate films %>
 
-  <% content_for :table_header do %>
-    <tr>
-      <th></th>
-      <th></th>
-      <th><%= sort_link 'films.serial', "Serial" %></th>
-      <th>Width</th>
-      <th>Length</th>
-      <th><%= sort_link 'area' %></th>
-      <th><%= sort_link 'shelf' %></th>
-      <th>SO</th>
-      <th><%= sort_link 'note' %></th>
-    </tr>
-  <% end %>
-
-  <% content_for :table_body do %>
-    <%= render films %>
-  <% end %>
-
-  <%= render "shared/table" %>
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th><%= sort_link 'films.serial', "Serial" %></th>
+        <th>Width</th>
+        <th>Length</th>
+        <th><%= sort_link 'area' %></th>
+        <th><%= sort_link 'shelf' %></th>
+        <th>SO</th>
+        <th><%= sort_link 'note' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render films %>
+    </tbody>
+  </table>
 <% end %>

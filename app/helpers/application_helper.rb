@@ -40,8 +40,8 @@ module ApplicationHelper
   end
 
   def link_to_modal_new(path, label)
-    content_tag(:th, nil, colspan: "100%") do
-      link_to label, path, { class: "btn btn-primary btn-block text-center", :"data-toggle" => "modal", :"data-target" => "#forms-modal" }
+    link_to path, { class: "btn btn-success", :"data-toggle" => "modal", :"data-target" => "#forms-modal" } do
+      content_tag(:i, nil, class: "fa fa-plus") + " #{label}"
     end
   end
 

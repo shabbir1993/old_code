@@ -1,6 +1,9 @@
 <%= paginate @users %>
 
-<% content_for :table_header do %>
+<%= link_to_modal_new(new_user_path, "New user") %>
+
+<table class="table table-condensed table-hover">
+  <thead>
   <tr>
     <th></th>
     <th>Name</th>
@@ -11,12 +14,9 @@
     <th>Inspector</th>
   </tr>
   <tr>
-    <%= link_to_modal_new(new_user_path, "New user") %>
   </tr>
-<% end %>
-
-<% content_for :table_body do %>
+  </thead>
+  <tbody>
   <%= render @users %>
-<% end %>
-
-<%= render "shared/table" %>
+  </tbody>
+</table>

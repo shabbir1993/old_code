@@ -13,7 +13,9 @@ class SalesOrder < ActiveRecord::Base
   
   accepts_nested_attributes_for :line_items, allow_destroy: true
   
-  validates :code, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code }
+  validates :code, presence: true, 
+                   uniqueness: { case_sensitive: false, 
+                                 scope: :tenant_code }
   validates :ship_date, presence: true, if: Proc.new { |o| o.shipped? }
 
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
@@ -27,19 +29,12 @@ class SalesOrder < ActiveRecord::Base
   scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
   scope :text_search, ->(query) { reorder('').search(query) }
 
-  def self.ship_date_range(start_date, end_date)
-    sales_orders = all
-    sales_orders = sales_orders.where("ship_date >= ?", start_date) if start_date.present?
-    sales_orders = sales_orders.where("ship_date <= ?", end_date) if end_date.present?
-    sales_orders
-  end
-
-  def cycle_days
+  def lead_days
     (ship_date - release_date).to_i
   end
 
   def total_quantity
-    line_items.sum(:quantity)
+    line_items.total_quantity
   end
 
   def assigned_film_count(phase = nil)
@@ -67,11 +62,11 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_custom_area
-    line_items.map{ |li| li.total_area.to_f }.sum
+    line_items.total_area
   end
 
   def total_assigned_area
-    films.map{ |f| f.area.to_f }.sum
+    films.map{ |f| f.area.to_f * f.order_fill_count }.sum
   end
 
   def utilization
@@ -89,16 +84,8 @@ class SalesOrder < ActiveRecord::Base
     end
   end
 
-  def count_fill_ratio
-    "#{assigned_film_count}/#{total_quantity}"
-  end
-
   def area_fill_ratio
     "#{number_with_precision(total_assigned_area, precision: 2)}/#{number_with_precision(total_custom_area, precision: 2)}"
-  end
-
-  def utilization_as_percent
-    number_to_percentage(utilization, precision: 2)
   end
 
   def self.to_csv(options = {})

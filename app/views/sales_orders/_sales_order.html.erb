@@ -40,9 +40,9 @@
   </div>
   <div class="progress text-center">
     <span>
-      count: <strong><%= sales_order.count_fill_ratio %></strong> 
+      count: <strong><%= "#{sales_order.assigned_film_count}/#{sales_order.total_quantity}" %></strong> 
       area: <strong><%= sales_order.area_fill_ratio %></strong>
-      utilization: <strong><%= sales_order.utilization_as_percent %></strong>
+      utilization: <strong><%= number_to_percentage(sales_order.utilization, precision: 2) %></strong>
     </span>
     <div class="progress-bar progress-bar-success" style="<%= "width: #{sales_order.assigned_film_percentages_by_phase["fg"] }" %>"></div>
     <div class="progress-bar progress-bar-warning" style="<%= "width: #{sales_order.assigned_film_percentages_by_phase["wip"] }" %>"></div>
