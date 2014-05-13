@@ -7,22 +7,44 @@ class ShipmentSummary
 
   def by_day
     ary = orders.group_by { |o| o.ship_date }.map do |k,v|
-      data = {
-        date: k,
-        order_count: v.count,
-        film_pieces: line_items_for(v).product_type_equals('Film').total_quantity,
-        glass_pieces: line_items_for(v).product_type_equals('Glass').total_quantity,
-        total_pieces: line_items_for(v).total_quantity,
-        film_area: line_items_for(v).product_type_equals('Film').total_area.round(2),
-        glass_area: line_items_for(v).product_type_equals('Glass').total_area.round(2),
-        total_area: line_items_for(v).total_area.round(2),
-        avg_utilization: average_utilization(v).round(2),
-        orders: v
-      }
+      { date: k }.merge summary_hash(v)
+    end.sort_by{ |s| s[:date] }
+  end
+
+  def by_week
+    ary = orders.group_by { |o| o.ship_date.beginning_of_week }.map do |k,v|
+      { date: k }.merge summary_hash(v)
+    end.sort_by{ |s| s[:date] }
+  end
+
+  def by_month
+    ary = orders.group_by { |o| o.ship_date.beginning_of_month }.map do |k,v|
+      { date: k }.merge summary_hash(v)
+    end.sort_by{ |s| s[:date] }
+  end
+
+  def by_quarter
+    ary = orders.group_by { |o| o.ship_date.beginning_of_quarter }.map do |k,v|
+      { date: k }.merge summary_hash(v)
     end.sort_by{ |s| s[:date] }
   end
 
   private
+
+  def summary_hash(orders)
+    {
+      order_count: orders.count,
+      film_pieces: line_items_for(orders).product_type_equals('Film').total_quantity,
+      glass_pieces: line_items_for(orders).product_type_equals('Glass').total_quantity,
+      total_pieces: line_items_for(orders).total_quantity,
+      film_area: line_items_for(orders).product_type_equals('Film').total_area.round(2),
+      glass_area: line_items_for(orders).product_type_equals('Glass').total_area.round(2),
+      total_area: line_items_for(orders).total_area.round(2),
+      avg_utilization: average_utilization(orders).round(2),
+      orders: orders
+    }
+  end
+
 
   def orders
     @tenant.sales_orders.shipped.filter(ship_date_after: @start_date, ship_date_before: @end_date)

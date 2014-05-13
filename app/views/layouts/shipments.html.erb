@@ -1,7 +1,10 @@
 <% provide :title, "Shipments" %>
 
 <% content_for :nav_list do %>
-  <%= link_to "Daily", shipments_path, class: "list-group-item#{" active" if params[:group] == 'by_day'}" %>
+  <%= link_to "Daily", shipments_path(group: 'by_day'), class: "list-group-item#{" active" if params[:group] == 'by_day'}" %>
+  <%= link_to "Weekly", shipments_path(group: 'by_week'), class: "list-group-item#{" active" if params[:group] == 'by_week'}" %>
+  <%= link_to "Monthly", shipments_path(group: 'by_month'), class: "list-group-item#{" active" if params[:group] == 'by_month'}" %>
+  <%= link_to "Quarterly", shipments_path(group: 'by_quarter'), class: "list-group-item#{" active" if params[:group] == 'by_quarter'}" %>
 <% end %>
 
 <% content_for :page_head do %>

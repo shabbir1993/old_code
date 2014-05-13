@@ -9,6 +9,9 @@ gem 'uglifier', '>= 2.2.1'
 gem 'bootstrap-sass', '~> 3.1.1.1'
 gem 'protected_attributes'
 
+# nokogiri 1.6.2 segmentation faults when running rspec
+gem 'nokogiri', '1.6.1'
+
 gem 'pg', '0.17.0'
 gem 'highcharts-rails', '~> 4.0.1'
 gem "kaminari", "~> 0.15.1"
@@ -24,7 +27,7 @@ group :test do
 end
 
 group :test, :development do
-  gem 'rspec-rails', '~> 3.0.0.beta'
+  gem 'rspec-rails', '~> 3.0.0.beta2'
   gem "factory_girl_rails", "~> 4.4.1"
 end
 
