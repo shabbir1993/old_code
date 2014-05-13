@@ -17,6 +17,8 @@ class SalesOrder < ActiveRecord::Base
                    uniqueness: { case_sensitive: false, 
                                  scope: :tenant_code }
   validates :ship_date, presence: true, if: Proc.new { |o| o.shipped? }
+  validates :release_date, presence: true
+  validates :due_date, presence: true
 
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
@@ -75,17 +77,6 @@ class SalesOrder < ActiveRecord::Base
 
   def self.line_items
     LineItem.where(sales_order_id: all.map(&:id))
-  end
-
-  %w[ship_to release_date due_date note].each do |method_name|
-    define_method(method_name) do
-      return super() if super().present?
-      "N/A"
-    end
-  end
-
-  def area_fill_ratio
-    "#{number_with_precision(total_assigned_area, precision: 2)}/#{number_with_precision(total_custom_area, precision: 2)}"
   end
 
   def self.to_csv(options = {})

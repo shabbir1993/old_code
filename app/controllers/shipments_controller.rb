@@ -1,7 +1,7 @@
 class ShipmentsController < ApplicationController
 
   def index
-    @shipments = Kaminari.paginate_array(grouped_shipments).page(params[:page])
+    @shipments = Kaminari.paginate_array(grouped_shipments.reverse).page(params[:page])
   end
 
   def utilization_time_series
