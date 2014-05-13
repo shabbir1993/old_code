@@ -11,6 +11,7 @@ class UtilizationTimeSeries
   end
 
   def overall_average
+    return 0 if @shipments.empty?
     avg = @shipments.map { |s| s[:avg_utilization] }.reduce(:+)/@shipments.count
     avg.round(2)
   end
