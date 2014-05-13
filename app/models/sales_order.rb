@@ -66,7 +66,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_assigned_area
-    films.map{ |f| f.area.to_f * f.order_fill_count }.sum
+    films.map{ |f| f.area.to_f }.sum
   end
 
   def utilization
