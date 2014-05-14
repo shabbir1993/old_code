@@ -44,9 +44,7 @@
       area: <strong><%= "#{number_with_precision(sales_order.total_assigned_area, precision: 2)}/#{number_with_precision(sales_order.total_custom_area, precision: 2)}" %></strong>
       utilization: <strong><%= number_to_percentage(sales_order.utilization, precision: 2) %></strong>
     </span>
-    <div class="progress-bar progress-bar-success" style="<%= "width: #{sales_order.assigned_film_percentages_by_phase["fg"] }" %>"></div>
-    <div class="progress-bar progress-bar-warning" style="<%= "width: #{sales_order.assigned_film_percentages_by_phase["wip"] }" %>"></div>
-    <div class="progress-bar progress-bar-danger" style="<%= "width: #{sales_order.assigned_film_percentages_by_phase["stock"] }" %>"></div>
+    <div class="progress-bar" style="<%= "width: #{sales_order.assigned_film_percentage}%" %>"></div>
   </div>
   <ul class="list-inline">
     <%= render partial: "film", collection: sales_order.films %>

@@ -35,10 +35,6 @@ class Film < ActiveRecord::Base
     using: { tsearch: { prefix: true } },
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
-  pg_search_scope :formula_search,
-    using: :tsearch,
-    associated_against: { master_film: [:formula] }
-
   def split
     split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", area: area, tenant_code: tenant_code, phase: phase).tap(&:save!)
     dimensions = split.dimensions.build(width: width, length: length)
@@ -98,10 +94,6 @@ class Film < ActiveRecord::Base
 
   def moved?
     previous_changes.keys.include?("phase")
-  end
-
-  def area_with_precision
-    number_with_precision(area, precision: 2)
   end
 
   private

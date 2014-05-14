@@ -12,14 +12,14 @@ class MasterFilm < ActiveRecord::Base
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
-  validates :serial, presence: true, uniqueness: { case_sensitive: false, scope: :tenant_code },
-    format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
+  validates :serial, presence: true, 
+                     uniqueness: { case_sensitive: false, scope: :tenant_code },
+                     format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
-  scope :active, -> { where(inactive: false) }
+  scope :active, -> { all.joins(:films).merge(Film.active) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
-  scope :formula, ->(formula) { where(formula: formula) if formula.present? }
-  scope :in_house, -> { where("length(serial) = 8") }
+  scope :in_house, -> { where("length(master_films.serial) = 8") }
   
   include PgSearch
   pg_search_scope :search, 
@@ -102,18 +102,5 @@ class MasterFilm < ActiveRecord::Base
 
   def next_division
     films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
-  end
-
-  def no_active_films?
-    films.active.empty?
-  end
-
-  def set_inactive(inactive)
-    self.inactive = inactive
-    save!
-  end
-
-  def yield_to_percent
-    number_to_percentage(self.yield, precision: 2)
   end
 end

@@ -39,28 +39,12 @@ class SalesOrder < ActiveRecord::Base
     line_items.total_quantity
   end
 
-  def assigned_film_count(phase = nil)
-    if phase
-      films.phase(phase).sum(:order_fill_count)
-    else
-      films.sum(:order_fill_count)
-    end
+  def assigned_film_count
+    films.sum(:order_fill_count)
   end
 
-  def assigned_film_percentages_by_phase
-    if assigned_film_count <= total_quantity
-      ary = PhaseDefinitions::HARD_PHASES.map do |p|
-        ratio = total_quantity > 0 ? assigned_film_count(p).to_f/total_quantity : 0
-        [p, number_to_percentage(ratio*100)]
-      end
-    else
-      ary = PhaseDefinitions::HARD_PHASES.map do |p|
-        ratio = total_quantity > 0 ? assigned_film_count(p).to_f/assigned_film_count : 0
-        ary = [p, number_to_percentage(ratio*100)]
-      end
-    end
-
-    Hash[ary]
+  def assigned_film_percentage
+    100*assigned_film_count/total_quantity
   end
 
   def total_custom_area

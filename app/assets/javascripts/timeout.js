@@ -13,7 +13,7 @@ $(document).ready(function () {
 
 function timerIncrement() {
   idleTime = idleTime + 1;
-  if (idleTime >= 10) {
+  if (idleTime >= 30) {
     window.location.reload();
   };
 }
