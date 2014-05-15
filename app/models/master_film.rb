@@ -7,10 +7,11 @@ class MasterFilm < ActiveRecord::Base
 
   attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed
 
-  has_many :films
+  has_many :films, dependent: :destroy
   belongs_to :machine
 
   before_validation :upcase_attributes
+  before_validation :set_serial_date
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
@@ -63,9 +64,7 @@ class MasterFilm < ActiveRecord::Base
     year = serial[0].ord + 1943
     month = serial[1,2].to_i
     day = serial[3,2].to_i
-    DateTime.new(year, month, day)
-  rescue Exception
-    logger.debug self.serial
+    Date.new(year, month, day)
   end
 
   def defect_count(type)
@@ -102,5 +101,23 @@ class MasterFilm < ActiveRecord::Base
         csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.inspector, mf.effective_width, mf.effective_length] + types.map{ |type| mf.defect_count(type) }
       end
     end
+  end
+
+  def self.lint_serials
+    all.each do |mf|
+      @asdf = mf.serial
+      mf.laminated_at
+    end
+  rescue ArgumentError => e
+    puts @asdf
+  end
+
+  def set_serial_date
+    year = serial[0].ord + 1943
+    month = serial[1,2].to_i
+    day = serial[3,2].to_i
+    self.serial_date = Date.new(year, month, day)
+  rescue ArgumentError
+    self.errors[:serial] = "does not correspond to a valid date"
   end
 end
