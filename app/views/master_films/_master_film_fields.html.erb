@@ -14,7 +14,7 @@
   <div class="panel-heading"><h6 class="panel-title text-center">Defects</h6></div>
   <div class="panel-body">
     <%= f.fields_for :defects do |d| %>
-      <% master_film.defects.try(:each) do |key, value| %>
+      <% @master_film.defects.try(:each) do |key, value| %>
         <%= render 'defect_fields', f: d, key: key, value: value %>
       <% end %>
     <% end %>

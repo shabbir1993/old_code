@@ -1,12 +1,12 @@
 <%= form_tag master_films_path, method: :get, class: 'form-inline search' do %>
   <div class="form-group">
-    <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
+    <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= text_field_tag :start_serial, params[:start_serial], placeholder: "Start Serial", class: "form-control" %>
+    <%= text_field_tag :serial_after, params[:serial_after], placeholder: "Start Serial", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= text_field_tag :end_serial, params[:end_serial], placeholder: "End Serial", class: "form-control" %>
+    <%= text_field_tag :serial_before, params[:serial_before], placeholder: "End Serial", class: "form-control" %>
   </div>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>

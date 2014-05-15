@@ -1,42 +1,43 @@
 class MasterFilmsController < ApplicationController
   def new
-    @master_film = current_tenant.new_widget(MasterFilm)
+    @master_film = current_tenant.new_master_film
     render layout: false
   end
 
   def create
-    @master_film = current_tenant.new_widget(MasterFilm, params[:master_film])
-    @master_film.save_and_create_child(current_user)
+    @master_film = current_tenant.new_master_film(params[:master_film])
+    render :display_error_messages unless @master_film.save_and_create_child(current_user)
   end
 
   def index
-    @master_films_presenter = MasterFilmsPresenter.new(current_tenant, params)
-    @master_films = @master_films_presenter.present
+    @master_films = filtered_master_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { send_data @master_films_presenter.to_csv }
+      format.csv { render csv: @master_films.limit(1000) }
     end
   end
 
   def edit
-    @master_film = current_tenant.widget(MasterFilm, params[:id])
+    @master_film = master_films.find(params[:id])
     render layout: false
   end
 
   def update
-    @master_film = current_tenant.widget(MasterFilm, params[:id])
-    @master_film.update_attributes(params[:master_film].reverse_merge(defects: {}))
+    @master_film = master_films.find(params[:id])
+    render :display_error_messages unless @master_film.update_attributes(params[:master_film].reverse_merge(defects: {}))
   end 
 
   private
 
-  def master_films
-    @master_films.page(params[:page])
+  def filtered_master_films
+    master_films.active.filter(filtering_params).by_serial
   end
-  helper_method :master_films
 
-  def master_film
-    @master_film
+  def master_films
+    current_tenant.master_films
   end
-  helper_method :master_film
+
+  def filtering_params
+    params.slice(:text_search, :serial_before, :serial_after)
+  end
 end

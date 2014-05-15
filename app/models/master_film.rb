@@ -1,5 +1,7 @@
 class MasterFilm < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
+  include Filterable
+  include Tenancy
 
   DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
 
@@ -17,9 +19,12 @@ class MasterFilm < ActiveRecord::Base
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { all.joins(:films).merge(Film.active) }
+  scope :serial_before, ->(serial) { where('master_films.serial <= ?', serial) }
+  scope :serial_after, ->(serial) { where('master_films.serial >= ?', serial) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
-  scope :in_house, -> { where("length(master_films.serial) = 8") }
+  scope :in_house, -> { where(in_house: true) }
+  scope :text_search, ->(query) { reorder('').search(query) }
   
   include PgSearch
   pg_search_scope :search, 
@@ -78,17 +83,6 @@ class MasterFilm < ActiveRecord::Base
     defects.values.map(&:to_i).sum
   end
 
-  def self.serial_range(start_serial, end_serial)
-    master_films = all
-    if start_serial.present?
-      master_films = master_films.where("master_films.serial >= ?", start_serial)
-    end
-    if end_serial.present?
-      master_films = master_films.where("master_films.serial <= ?", end_serial)
-    end
-    master_films
-  end
-
   def self.defect_types
     types = all.inject([]) do |arry, mf|
       arry + mf.defects.keys
@@ -96,11 +90,17 @@ class MasterFilm < ActiveRecord::Base
     types.uniq
   end
 
-  def tenant
-    @tenant ||= Tenant.new(tenant_code)
-  end
-
   def next_division
     films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
+  end
+
+  def self.to_csv(options = {})
+    types = defect_types
+    CSV.generate(options) do |csv|
+      csv << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator Inspector EffW EffL) + types
+      all.each do |mf|
+        csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.inspector, mf.effective_width, mf.effective_length] + types.map{ |type| mf.defect_count(type) }
+      end
+    end
   end
 end

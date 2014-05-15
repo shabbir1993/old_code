@@ -1,6 +1,6 @@
 <%= render 'search_form' %>
 
-<%= paginate master_films %>
+<%= paginate @master_films %>
 
 <%= link_to_modal_new(new_master_film_path, "Enter film") %>
 <%= link_to_export(method(:master_films_path), params) %>
@@ -26,6 +26,6 @@
     </tr>
   </thead>
   <tbody>
-    <%= render master_films %>
+    <%= render @master_films %>
   </tbody>
 </table>

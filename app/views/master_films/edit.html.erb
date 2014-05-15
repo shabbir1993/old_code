@@ -1,6 +1,6 @@
-<%= modal_form_for master_film do |f| %>
+<%= modal_form_for @master_film do |f| %>
   <div class="modal-header">
-    <h4 class="modal-title text-center"><%= master_film.serial %></h4>
+    <h4 class="modal-title text-center"><%= @master_film.serial %></h4>
   </div>
   <div class="modal-body">
     <%= serial_input_if_admin(f) %>

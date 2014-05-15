@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430234916) do
+ActiveRecord::Schema.define(version: 20140515191006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20140430234916) do
     t.decimal  "run_speed"
     t.boolean  "inactive",         default: false
     t.string   "inspector"
+    t.boolean  "in_house",         default: true
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
