@@ -3,10 +3,10 @@
     <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= text_field_tag :serial_after, params[:serial_after], placeholder: "Start Serial", class: "form-control" %>
+    <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start Date", class: "form-control bootstrap-datepicker" %>
   </div>
   <div class="form-group">
-    <%= text_field_tag :serial_before, params[:serial_before], placeholder: "End Serial", class: "form-control" %>
+    <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End Date", class: "form-control bootstrap-datepicker" %>
   </div>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>

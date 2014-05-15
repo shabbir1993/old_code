@@ -20,8 +20,8 @@ class MasterFilm < ActiveRecord::Base
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { all.joins(:films).merge(Film.active) }
-  scope :serial_before, ->(serial) { where('master_films.serial <= ?', serial) }
-  scope :serial_after, ->(serial) { where('master_films.serial >= ?', serial) }
+  scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
+  scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
   scope :in_house, -> { where(in_house: true) }
@@ -60,22 +60,8 @@ class MasterFilm < ActiveRecord::Base
     AreaCalculator.calculate(effective_width, effective_length, tenant.area_divisor)
   end
 
-  def laminated_at
-    year = serial[0].ord + 1943
-    month = serial[1,2].to_i
-    day = serial[3,2].to_i
-    Date.new(year, month, day)
-  end
-
   def defect_count(type)
     defects[type].to_i
-  end
-  
-  def upcase_attributes
-    formula.upcase! if formula.present?
-    film_code.upcase! if film_code.present?
-    thinky_code.upcase! if thinky_code.present?
-    serial.upcase! if serial.present?
   end
 
   def defects_sum
@@ -103,14 +89,7 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
-  def self.lint_serials
-    all.each do |mf|
-      @asdf = mf.serial
-      mf.laminated_at
-    end
-  rescue ArgumentError => e
-    puts @asdf
-  end
+  private
 
   def set_serial_date
     year = serial[0].ord + 1943
@@ -119,5 +98,12 @@ class MasterFilm < ActiveRecord::Base
     self.serial_date = Date.new(year, month, day)
   rescue ArgumentError
     self.errors[:serial] = "does not correspond to a valid date"
+  end
+  
+  def upcase_attributes
+    formula.upcase! if formula.present?
+    film_code.upcase! if film_code.present?
+    thinky_code.upcase! if thinky_code.present?
+    serial.upcase! if serial.present?
   end
 end

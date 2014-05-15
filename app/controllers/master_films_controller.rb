@@ -38,6 +38,6 @@ class MasterFilmsController < ApplicationController
   end
 
   def filtering_params
-    params.slice(:text_search, :serial_before, :serial_after)
+    params.slice(:text_search, :serial_date_before, :serial_date_after)
   end
 end
