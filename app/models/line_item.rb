@@ -5,8 +5,8 @@ class LineItem < ActiveRecord::Base
 
   delegate :code, to: :sales_order, prefix: true
   
-  validates :custom_width, presence: true
-  validates :custom_length, presence: true
+  validates :custom_width, presence: true, numericality: { less_than: :custom_length }
+  validates :custom_length, presence: true, numericality: { greater_than: :custom_width }
   validates :product_type, presence: true
   validates :quantity, numericality: { greater_than: 0 }
 
