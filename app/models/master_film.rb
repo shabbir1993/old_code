@@ -1,5 +1,4 @@
 class MasterFilm < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
   include Filterable
   include Tenancy
 
@@ -42,12 +41,6 @@ class MasterFilm < ActiveRecord::Base
       movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       movement.save!
     end
-  end
-
-  def self.date_range(start_date, end_date)
-    start_serial = (start_date.year - 1943).chr + '%02d' % start_date.month + '%02d' % start_date.day + '-0'
-    end_serial = (end_date.year - 1943).chr + '%02d' % end_date.month + '%02d' % (end_date.day+1) + '-0'
-    serial_range(start_serial, end_serial)
   end
 
   def yield
