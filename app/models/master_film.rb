@@ -18,7 +18,7 @@ class MasterFilm < ActiveRecord::Base
                      uniqueness: { case_sensitive: false, scope: :tenant_code },
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
-  scope :active, -> { all.joins(:films).merge(Film.active) }
+  scope :active, -> { all.joins(:films).merge(Film.active).uniq }
   scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }

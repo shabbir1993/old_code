@@ -34,6 +34,8 @@ FactoryGirl.define do
   factory :sales_order do
     sequence(:code) { |n| "PT#{ '%03d' % n }P" }
     tenant_code 'pi'
+    release_date Date.new(2013-01-01)
+    due_date Date.new(2013-02-01)
 
     factory :sales_order_with_line_item do
       after(:create) do |sales_order|
