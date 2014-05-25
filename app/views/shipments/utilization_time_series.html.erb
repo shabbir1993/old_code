@@ -22,6 +22,7 @@
           color: 'red',
           value: <%= @time_series.overall_average %>,
           width: 2,
+          zIndex: 5,
           label: {
             align: 'right',
             text: "<%= number_with_precision(@time_series.overall_average, precision: 2) %>"
