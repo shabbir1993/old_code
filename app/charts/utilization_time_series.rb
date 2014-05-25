@@ -6,13 +6,12 @@ class UtilizationTimeSeries
 
   def data
     @shipments.map do |s|
-      [s[:date].to_datetime.to_i*1000, s[:avg_utilization].to_f]
+      [s[:sort_date].to_datetime.to_i*1000, s[:relation].avg_utilization.to_f]
     end
   end
 
   def overall_average
     return 0 if @shipments.empty?
-    avg = @shipments.map { |s| s[:avg_utilization] }.reduce(:+)/@shipments.count
-    avg.round(2)
+    @shipments.map { |s| s[:relation].avg_utilization.to_f }.reduce(:+)/@shipments.count
   end
 end

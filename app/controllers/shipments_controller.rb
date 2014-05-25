@@ -15,6 +15,10 @@ class ShipmentsController < ApplicationController
   private
   
   def grouped_shipments
-    ShipmentSummary.new(current_tenant, params[:start_date], params[:end_date]).send(params[:group])
+    RelationGrouper.new(shipped_orders, 'ship_date', params[:start_date], params[:end_date]).send(params[:grouping])
+  end
+
+  def shipped_orders
+    current_tenant.sales_orders.shipped
   end
 end

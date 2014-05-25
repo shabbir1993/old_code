@@ -5,6 +5,6 @@
   <div class="form-group">
     <%= text_field_tag :end_date, params[:end_date], placeholder: "End date", class: "form-control bootstrap-datepicker" %>
   </div>
-  <%= hidden_field_tag :group, params[:group] %>
+  <%= hidden_field_tag :grouping, params[:grouping] %>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
 <% end %>

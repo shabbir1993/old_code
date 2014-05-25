@@ -24,7 +24,7 @@
           width: 2,
           label: {
             align: 'right',
-            text: "<%= @time_series.overall_average %>"
+            text: "<%= number_with_precision(@time_series.overall_average, precision: 2) %>"
           }
         }]
       },

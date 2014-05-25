@@ -1,10 +1,7 @@
 class SalesOrder < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
   include PgSearch
   include Filterable
   include Tenancy
-
-  cattr_accessor :group_start_date, :display_date
 
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
@@ -61,8 +58,24 @@ class SalesOrder < ActiveRecord::Base
     100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
   end
 
+  def self.avg_utilization
+    100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
+  end
+
+  def self.total_custom_area
+    line_items.total_area
+  end
+
+  def self.total_assigned_area
+    films.map{ |f| f.area.to_f }.sum
+  end
+
   def self.line_items
     LineItem.where(sales_order_id: all.map(&:id))
+  end
+
+  def self.films
+    Film.where(sales_order_id: all.map(&:id))
   end
 
   def self.to_csv(options = {})
