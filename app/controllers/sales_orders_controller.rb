@@ -62,8 +62,9 @@ class SalesOrdersController < ApplicationController
   end
 
   private
+
   def filtered_orders
-    sales_orders.send(params[:status]).filter(filtering_params).by_code
+    sales_orders.status(params[:status]).filter(filtering_params).by_code
   end
 
   def sales_orders

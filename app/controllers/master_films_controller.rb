@@ -30,7 +30,7 @@ class MasterFilmsController < ApplicationController
   private
 
   def filtered_master_films
-    master_films.active.filter(filtering_params).by_serial
+    master_films.active.status(params[:status]).filter(filtering_params).by_serial
   end
 
   def master_films

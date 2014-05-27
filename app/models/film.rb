@@ -37,8 +37,7 @@ class Film < ActiveRecord::Base
 
   def split
     split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", area: area, tenant_code: tenant_code, phase: phase).tap(&:save!)
-    dimensions = split.dimensions.build(width: width, length: length)
-    dimensions.save!
+    split.dimensions.build(width: width, length: length).save!
     split
   end
 

@@ -2,7 +2,7 @@
   <td>
     <%= link_to_modal_edit(edit_master_film_path(master_film), master_film, class: "edit-master-film") %>
   </td>
-  <td class="serial"><%= master_film.serial %></td>
+  <td class="serial"><%= master_film.serial %><span class="label label-default"><%= master_film.origin if !master_film.in_house? %></span></td>
   <td class="formula"><%= master_film.formula %></td>
   <td class="mix_mass"><%= master_film.mix_mass %></td>
   <td class="machine_code"><%= master_film.machine_code %></td>

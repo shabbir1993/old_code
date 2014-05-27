@@ -5,8 +5,8 @@ class LineItem < ActiveRecord::Base
 
   delegate :code, to: :sales_order, prefix: true
   
-  validates :custom_width, presence: true, numericality: { less_than_or_equal_to: :custom_length }
-  validates :custom_length, presence: true, numericality: { greater_than_or_equal_to: :custom_width }
+  validates :custom_width, presence: true, numericality: { greater_than: 0 }
+  validates :custom_length, presence: true, numericality: { greater_than_or_equal_to: :custom_width }, unless: Proc.new { |li| li.custom_width.nil? }
   validates :product_type, presence: true
   validates :quantity, numericality: { greater_than: 0 }
 

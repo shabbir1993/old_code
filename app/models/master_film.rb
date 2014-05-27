@@ -6,6 +6,8 @@ class MasterFilm < ActiveRecord::Base
 
   attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed
 
+  enum status: [ :uninspected, :usable, :test ]
+
   has_many :films, dependent: :destroy
   belongs_to :machine
 
@@ -19,11 +21,13 @@ class MasterFilm < ActiveRecord::Base
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { all.joins(:films).merge(Film.active).uniq }
+  scope :status, ->(status) { where(status: statuses[status]) }
   scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
-  scope :in_house, -> { where(in_house: true) }
+  scope :in_house, -> { where(origin: "in_house") }
+  scope :transfer, -> { where("origin <> 'in_house'") }
   scope :text_search, ->(query) { reorder('').search(query) }
   
   include PgSearch
@@ -70,6 +74,10 @@ class MasterFilm < ActiveRecord::Base
 
   def next_division
     films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
+  end
+
+  def in_house?
+    origin == "in_house"
   end
 
   def self.to_csv(options = {})
