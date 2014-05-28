@@ -4,7 +4,6 @@
   </div>
   <div class="modal-body">
     <%= serial_input_if_admin(f) %>
-    <%= f.select :status, MasterFilm.statuses.keys, {}, { class: "form-control" } %>
     <%= render 'shared/dimensions_fields', f: f, label: "Effective", width: :effective_width, length: :effective_length %>
     <%= render 'master_film_fields', f: f %>
   </div>

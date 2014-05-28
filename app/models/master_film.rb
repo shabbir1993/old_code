@@ -6,7 +6,7 @@ class MasterFilm < ActiveRecord::Base
 
   attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed
 
-  enum status: [ :uninspected, :usable, :test ]
+  enum function: [ :production, :test, :transfer ]
 
   has_many :films, dependent: :destroy
   belongs_to :machine
@@ -21,7 +21,7 @@ class MasterFilm < ActiveRecord::Base
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
 
   scope :active, -> { all.joins(:films).merge(Film.active).uniq }
-  scope :status, ->(status) { where(status: statuses[status]) }
+  scope :function, ->(function) { where(function: functions[function]) }
   scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }

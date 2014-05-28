@@ -1,6 +1,7 @@
+<%= f.select :function, MasterFilm.functions.keys, {}, { class: "form-control" } %>
 <%= f.text_field :formula %>
 <%= f.number_field :mix_mass, step: "any" %>
-<%= f.collection_select :machine_id, current_tenant.widgets(Machine), :id, :code, {}, { class: "form-control" } %>
+<%= f.collection_select :machine_id, current_tenant.widgets(Machine), :id, :code, { prompt: "Choose machine..."}, { class: "form-control" } %>
 <%= f.text_field :film_code %>
 <%= f.text_field :thinky_code %>
 <%= f.select :chemist, current_tenant.users.chemists.names, { prompt: "Choose chemist..." }, { class: "form-control" } %>
