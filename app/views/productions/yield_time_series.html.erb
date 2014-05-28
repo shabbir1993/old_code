@@ -1,0 +1,39 @@
+<script>
+  $(function () {
+    $('#yield_time_series').highcharts({
+      chart: {
+        type: 'spline'
+      },
+      title: {
+        text: false
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Start Date'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '% yield'
+        },
+        plotLines: [{
+          color: 'red',
+          value: <%= @time_series.overall_average %>,
+          width: 2,
+          zIndex: 5,
+          label: {
+            align: 'right',
+            text: "<%= number_with_precision(@time_series.overall_average, precision: 2) %>"
+          }
+        }]
+      },
+      series: [{
+        name: 'yield',
+        data: <%= raw @time_series.data %>
+      }]
+    });
+  });
+</script>
+<div id="yield_time_series" class="chart"></div>

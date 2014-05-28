@@ -45,10 +45,12 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
+  def yieldable?
+    effective_area && mix_mass && machine
+  end
+
   def yield
-    if effective_area && mix_mass && machine
-      (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) 
-    end
+      (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if yieldable?
   end
 
   def effective_area
@@ -79,8 +81,8 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def self.avg_yield
-    return 0 if count == 0
-    (all.map { |mf| mf.yield }.sum)/count
+    return nil if count == 0
+    (all.select(&:yieldable?).map { |mf| mf.yield.to_f }.sum)/count
   end
 
   def self.to_csv(options = {})

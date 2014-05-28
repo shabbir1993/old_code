@@ -45,11 +45,11 @@ class RelationGrouper
   private
 
   def start_date
-    @start_date || @klass.minimum(@date_column)
+    @start_date.present? ? @start_date : @klass.minimum(@date_column)
   end
 
   def end_date
-    @end_date || @klass.maximum(@date_column)
+    @end_date.present? ? @end_date : @klass.maximum(@date_column)
   end
 
   def sorted_relevant_dates
