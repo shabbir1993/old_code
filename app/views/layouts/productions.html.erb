@@ -1,0 +1,18 @@
+<% provide :title, "productions" %>
+
+<% content_for :nav_list do %>
+  <%= link_to "Daily", productions_path(grouping: 'by_day'), class: "list-group-item#{" active" if params[:grouping] == 'by_day'}" %>
+  <%= link_to "Weekly", productions_path(grouping: 'by_week'), class: "list-group-item#{" active" if params[:grouping] == 'by_week'}" %>
+  <%= link_to "Monthly", productions_path(grouping: 'by_month'), class: "list-group-item#{" active" if params[:grouping] == 'by_month'}" %>
+  <%= link_to "Quarterly", productions_path(grouping: 'by_quarter'), class: "list-group-item#{" active" if params[:grouping] == 'by_quarter'}" %>
+<% end %>
+
+<% content_for :page_head do %>
+  <%= render 'shared/history_search_form' %>
+  <ul class="nav nav-tabs">
+    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
+    <li class="<%= "active" if params[:action] == 'yield_time_series' %>"><%= link_to "Yield", url_for(params.merge(action: 'yield_time_series')) %></li>
+  </ul>
+<% end %>
+
+<%= render template: "layouts/application" %>

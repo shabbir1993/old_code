@@ -8,7 +8,7 @@
 <% end %>
 
 <% content_for :page_head do %>
-  <%= render 'search_form' %>
+  <%= render 'shared/history_search_form' %>
   <ul class="nav nav-tabs">
     <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
     <li class="<%= "active" if params[:action] == 'utilization_time_series' %>"><%= link_to "Utilization", url_for(params.merge(action: 'utilization_time_series')) %></li>

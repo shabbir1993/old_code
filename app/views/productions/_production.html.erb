@@ -1,0 +1,6 @@
+<tr>
+  <td><%= production[:display_date] %></td>
+  <td><%= production[:relation].count %></td>
+  <td><%= number_with_precision(production[:relation].total_effective_area, precision: 2) %></td>
+  <td><%= number_with_precision(production[:relation].avg_yield, precision: 2) %></td>
+</tr>

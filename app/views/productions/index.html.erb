@@ -1,0 +1,15 @@
+<%= paginate @productions %>
+
+<table class="table table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Films laminated</th>
+      <th>Area laminated</th>
+      <th>Yield</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "production", collection: @productions %>
+  </tbody>
+</table>

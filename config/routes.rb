@@ -50,6 +50,12 @@ Pcms::Application.routes.draw do
     end
   end
 
+  resources :productions, only: [:index] do
+    collection do
+      get :yield_time_series
+    end
+  end
+
   get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
   get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart
   get 'charts/stock_dimensions', to: 'charts#stock_dimensions', as: :stock_dimensions_chart

@@ -26,8 +26,6 @@ class MasterFilm < ActiveRecord::Base
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }
   scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
-  scope :in_house, -> { where(origin: "in_house") }
-  scope :transfer, -> { where("origin <> 'in_house'") }
   scope :text_search, ->(query) { reorder('').search(query) }
   
   include PgSearch
@@ -76,8 +74,13 @@ class MasterFilm < ActiveRecord::Base
     films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
   end
 
-  def in_house?
-    origin == "in_house"
+  def self.total_effective_area
+    all.map{ |mf| mf.effective_area.to_f }.sum
+  end
+
+  def self.avg_yield
+    return 0 if count == 0
+    (all.map { |mf| mf.yield }.sum)/count
   end
 
   def self.to_csv(options = {})

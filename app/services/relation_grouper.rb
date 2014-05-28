@@ -10,7 +10,7 @@ class RelationGrouper
     date_ranges("day").map do |d|
       { sort_date: d[:after], 
         display_date: d[:after].strftime('%D'), 
-        relation: relation(d, d)
+        relation: relation(d[:after], d[:before])
       }
     end
   end
