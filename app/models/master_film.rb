@@ -82,7 +82,7 @@ class MasterFilm < ActiveRecord::Base
 
   def self.avg_yield
     return nil if count == 0
-    (all.select(&:yieldable?).map { |mf| mf.yield.to_f }.sum)/count
+    (all.map { |mf| mf.yield.to_f }.sum)/count
   end
 
   def self.to_csv(options = {})

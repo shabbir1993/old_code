@@ -5,7 +5,6 @@
   <%= link_to "Available film by ITO", stock_film_type_totals_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_film_type_totals'}" %>
   <%= link_to "Available dimensions", stock_dimensions_chart_path, class: "list-group-item#{" active" if params[:action] == 'stock_dimensions'}" %>
   <%= link_to "Shelf Inventory", shelf_inventory_chart_path, class: "list-group-item#{" active" if params[:action] == 'shelf_inventory'}" %>
-  <%= link_to "Yield", yield_chart_path, class: "list-group-item#{" active" if params[:action] == 'yield'}" %>
 <% end %>
 
 <%= render template: "layouts/application" %>

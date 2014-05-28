@@ -1,0 +1,2 @@
+module SimpleCalendarHelper
+end

@@ -21,6 +21,7 @@ Pcms::Application.routes.draw do
     end
     collection do
       get :lead_time_histogram
+      get :calendar
     end
   end
 

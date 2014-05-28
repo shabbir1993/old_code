@@ -14,6 +14,10 @@ class SalesOrdersController < ApplicationController
     end
   end
 
+  def calendar
+    @sales_orders = sales_orders.has_due_date
+  end
+
   def lead_time_histogram
     @histogram = LeadTimeHistogram.new(filtered_orders)
   end
