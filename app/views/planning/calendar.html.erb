@@ -1,6 +1,6 @@
-<%= month_calendar events: @planning_days, table: { class: "table table-bordered" } do |date, orders| %>
+<%= month_calendar events: @planning_days, table: { class: "table table-bordered" } do |date, planning_day| %>
   <%= date.day %>
-  <% orders.each do |order| %>
+  <% planning_day.orders.each do |order| %>
     <div>
       <%= "#{order.code} due" %>
     </div>

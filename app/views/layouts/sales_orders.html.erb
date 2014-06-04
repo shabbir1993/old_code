@@ -5,7 +5,6 @@
   <%= link_to "On Hold", sales_orders_path(status: 'on_hold'), class: "list-group-item#{" active" if params[:status] == 'on_hold'}" %>
   <%= link_to "Shipped", sales_orders_path(status: 'shipped'), class: "list-group-item#{" active" if params[:status] == 'shipped'}" %>
   <%= link_to "Cancelled", sales_orders_path(status: 'cancelled'), class: "list-group-item#{" active" if params[:status] == 'cancelled'}" %>
-  <%= link_to "Calendar", calendar_sales_orders_path, class: "list-group-item#{" active" if params[:action] == 'calendar'}" %>
 <% end %>
 
 <% content_for :page_head do %>
