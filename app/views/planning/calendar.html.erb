@@ -1,0 +1,8 @@
+<%= month_calendar events: @planning_days, table: { class: "table table-bordered" } do |date, orders| %>
+  <%= date.day %>
+  <% orders.each do |order| %>
+    <div>
+      <%= "#{order.code} due" %>
+    </div>
+  <% end %>
+<% end %>

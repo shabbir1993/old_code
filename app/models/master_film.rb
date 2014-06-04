@@ -25,7 +25,7 @@ class MasterFilm < ActiveRecord::Base
   scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }
-  scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) if formula.present? }
+  scope :formula_like, ->(formula) { where('formula ILIKE ?', formula.gsub('*', '%')) }
   scope :text_search, ->(query) { reorder('').search(query) }
   
   include PgSearch

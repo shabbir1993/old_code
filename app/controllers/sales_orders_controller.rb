@@ -14,10 +14,6 @@ class SalesOrdersController < ApplicationController
     end
   end
 
-  def calendar
-    @sales_orders = sales_orders.has_due_date
-  end
-
   def lead_time_histogram
     @histogram = LeadTimeHistogram.new(filtered_orders)
   end
@@ -76,6 +72,6 @@ class SalesOrdersController < ApplicationController
   end
 
   def filtering_params
-    params.slice(:text_search, :ship_date_before, :ship_date_after)
+    params.slice(:text_search, :code_like, :ship_date_before, :ship_date_after)
   end
 end

@@ -3,9 +3,6 @@ class SalesOrder < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  extend SimpleCalendar
-  has_calendar attribute: :due_date
-
   attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
 
   enum status: [ :in_progress, :on_hold, :cancelled, :shipped ]
@@ -29,10 +26,12 @@ class SalesOrder < ActiveRecord::Base
   scope :status, ->(status) { where(status: statuses[status]) }
   scope :has_release_date, -> { where('release_date is not null') }
   scope :has_due_date, -> { where('due_date is not null') }
+  scope :due_date_equals, ->(date) { where(due_date: date) }
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) }
   scope :ship_date_before, ->(date) { where("ship_date <= ?", Time.zone.parse(date)) } 
   scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
   scope :text_search, ->(query) { reorder('').search(query) }
+  scope :code_like, ->(code) { where('code ILIKE ?', code.gsub('*', '%')) }
 
   def lead_days
     (ship_date - release_date).to_i
