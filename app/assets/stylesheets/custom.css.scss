@@ -123,6 +123,32 @@ ol {
   }
 }
 
+.calendar-header {
+  text-align: center;
+
+  h2 {
+    display: inline-block;
+  }
+}
+
+.calendar-table {
+  td {
+    min-width: 100px;
+    height: 80px;
+
+    .calendar-item, .panel-heading, .panel-footer {
+      padding: 3px 10px;
+    }
+
+    dl {
+      margin-bottom: 0;
+    }
+  }
+  .non-month {
+    opacity: 0.5;
+  }
+}
+
 .main .nav-tabs {
   margin-bottom: 15px;
 }

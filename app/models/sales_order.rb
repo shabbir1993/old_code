@@ -42,7 +42,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def assigned_film_count
-    films.sum(:order_fill_count)
+    films.total_order_fill_count
   end
 
   def assigned_film_percentage

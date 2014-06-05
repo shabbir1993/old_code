@@ -59,6 +59,9 @@ class Film < ActiveRecord::Base
     save!
   end
 
+  def self.total_order_fill_count
+    all.sum(:order_fill_count)
+  end
 
   def move_to(destination, user)
     reset_sales_order unless %w(stock wip fg).include?(destination)

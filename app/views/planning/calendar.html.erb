@@ -1,8 +1,25 @@
-<%= month_calendar events: @planning_days, table: { class: "table table-bordered" } do |date, planning_day| %>
+<%= month_calendar events: @planning_days, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, planning_days| %>
   <%= date.day %>
-  <% planning_day.orders.each do |order| %>
-    <div>
-      <%= "#{order.code} due" %>
+  <% if !planning_days.empty? %>
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Due</strong></div>
+      <ul class="list-group">
+        <% planning_days.first.orders_due.each do |order| %>
+          <li class="calendar-item list-group-item list-group-item-warning"><%= order.code %></li>
+        <% end %>
+      </ul>
+      <div class="panel-footer">
+        <dl class="dl-horizontal">
+          <dt>Reserved</dt>
+          <dd><%= planning_days.first.progress_by_phase[:reserved] %></dd>
+          <dt>WIP</dt>
+          <dd><%= planning_days.first.progress_by_phase[:wip] %></dd>
+          <dt>FG</dt>
+          <dd><%= planning_days.first.progress_by_phase[:fg] %></dd>
+          <dt>Total pieces</dt>
+          <dd><%= planning_days.first.progress_by_phase[:total] %></dd>
+        </dl>
+      </div>
     </div>
   <% end %>
 <% end %>
