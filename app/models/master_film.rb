@@ -13,6 +13,7 @@ class MasterFilm < ActiveRecord::Base
 
   before_validation :upcase_attributes
   before_validation :set_serial_date
+  before_save :set_yield
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
@@ -43,14 +44,6 @@ class MasterFilm < ActiveRecord::Base
       movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       movement.save!
     end
-  end
-
-  def yieldable?
-    effective_area && mix_mass && machine
-  end
-
-  def yield
-      (100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant) if yieldable?
   end
 
   def effective_area
@@ -95,6 +88,10 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
+  def yieldable?
+    effective_area && mix_mass && machine
+  end
+
   private
 
   def set_serial_date
@@ -111,5 +108,13 @@ class MasterFilm < ActiveRecord::Base
     film_code.upcase! if film_code.present?
     thinky_code.upcase! if thinky_code.present?
     serial.upcase! if serial.present?
+  end
+
+  def set_yield
+    if yieldable?
+      self.yield = 100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant
+    else
+      self.yield = nil
+    end
   end
 end
