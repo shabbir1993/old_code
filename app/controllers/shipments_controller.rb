@@ -1,4 +1,5 @@
 class ShipmentsController < ApplicationController
+  before_filter :set_default_start_date
 
   def index
     @shipments = Kaminari.paginate_array(grouped_shipments.reverse).page(params[:page])
@@ -20,5 +21,9 @@ class ShipmentsController < ApplicationController
 
   def shipped_orders
     current_tenant.sales_orders.shipped
+  end
+
+  def set_default_start_date
+    params[:start_date] ||= 1.year.ago.to_date
   end
 end

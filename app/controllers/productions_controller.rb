@@ -1,4 +1,5 @@
 class ProductionsController < ApplicationController
+  before_filter :set_default_start_date
 
   def index
     @productions = Kaminari.paginate_array(grouped_productions.reverse).page(params[:page])
@@ -16,5 +17,9 @@ class ProductionsController < ApplicationController
 
   def production_master_films
     current_tenant.master_films.active.production
+  end
+
+  def set_default_start_date
+    params[:start_date] ||= 1.year.ago.to_date
   end
 end

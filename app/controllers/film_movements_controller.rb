@@ -1,4 +1,5 @@
 class FilmMovementsController < ApplicationController
+  before_filter :set_default_start_date
 
   def index
     @film_movements = film_movements.page(params[:page])
@@ -25,5 +26,9 @@ class FilmMovementsController < ApplicationController
 
   def filtering_params
     params.slice(:text_search, :from_phase, :to_phase, :created_at_before, :created_at_after)
+  end
+
+  def set_default_start_date
+    params[:created_at_after] ||= Date.current
   end
 end

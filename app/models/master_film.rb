@@ -88,10 +88,6 @@ class MasterFilm < ActiveRecord::Base
     end
   end
 
-  def yieldable?
-    effective_area && mix_mass && machine
-  end
-
   private
 
   def set_serial_date
@@ -116,5 +112,9 @@ class MasterFilm < ActiveRecord::Base
     else
       self.yield = nil
     end
+  end
+
+  def yieldable?
+    effective_area && mix_mass && machine
   end
 end
