@@ -4,7 +4,7 @@ class FilmsPresenter
 
   attr_reader :tenant, :films, :tab, :query, :min_width, :min_length, :sort, :direction
 
-  SAFE_SCOPES = %w(lamination inspection wip fg test nc scrap large_stock small_stock reserved_stock deleted)
+  SAFE_SCOPES = %w(lamination inspection wip fg nc scrap large_stock small_stock reserved_stock deleted)
   SAFE_SORTS = %w(serial width length area shelf note) 
 
   def initialize(tenant, inputs)
@@ -67,7 +67,7 @@ class FilmsPresenter
 
   def films_for_tab
     case tab
-    when "lamination", "inspection", "wip", "fg", "test", "nc", "scrap"
+    when "lamination", "inspection", "wip", "fg", "nc", "scrap"
       films.active.phase(tab)
     when "large_stock"
       films.active.phase("stock").large(tenant.small_area_cutoff).not_reserved

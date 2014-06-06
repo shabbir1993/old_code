@@ -3,10 +3,10 @@
     <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= select_tag :from_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap test), params[:from_phase]), prompt: "From", class: "form-control" %>
+    <%= select_tag :from_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:from_phase]), prompt: "From", class: "form-control" %>
   </div>
   <div class="form-group">
-    <%= select_tag :to_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap test), params[:to_phase]), prompt: "To", class: "form-control" %>
+    <%= select_tag :to_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:to_phase]), prompt: "To", class: "form-control" %>
   </div>
   <div class="form-group">
     <%= text_field_tag :created_at_after, params[:created_at_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>

@@ -14,7 +14,6 @@
   <% end %>
   <%= link_to "WIP", films_path(tab: 'wip'), class: "list-group-item#{" active" if params[:tab] == 'wip'}" %>
   <%= link_to "FG", films_path(tab: 'fg'), class: "list-group-item#{" active" if params[:tab] == 'fg'}" %>
-  <%= link_to "Test", films_path(tab: 'test'), class: "list-group-item#{" active" if params[:tab] == 'test'}" %>
   <%= link_to "NC", films_path(tab: 'nc'), class: "list-group-item#{" active" if params[:tab] == 'nc'}" %>
   <%= link_to "Scrap", films_path(tab: 'scrap'), class: "list-group-item#{" active" if params[:tab] == 'scrap'}" %>
   <% if current_user.admin? %>
