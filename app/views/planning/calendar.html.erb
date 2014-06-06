@@ -2,10 +2,15 @@
   <%= date.day %>
   <% if !planning_days.empty? %>
     <div class="panel panel-default">
-      <div class="panel-heading"><strong>Due</strong></div>
       <ul class="list-group">
         <% planning_days.first.orders_due.each do |order| %>
-          <li class="calendar-item list-group-item list-group-item-warning"><%= order.code %></li>
+          <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "Reserved: #{order.assigned_film_count("stock")} <br /> WIP: #{order.assigned_film_count("wip")} <br /> FG: #{order.assigned_film_count("fg")}" %>" data-trigger="hover" data-html="true">
+          <%= order.code %>
+          <% if order.shipped? %>
+            <span class="label label-success">shipped</span>
+          <% end %>
+          <span class="badge"><%= "#{order.total_quantity} pcs" %></span>
+          </li>
         <% end %>
       </ul>
       <div class="panel-footer">

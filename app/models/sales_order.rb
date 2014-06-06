@@ -41,8 +41,9 @@ class SalesOrder < ActiveRecord::Base
     line_items.total_quantity
   end
 
-  def assigned_film_count
-    films.total_order_fill_count
+  def assigned_film_count(phase = nil)
+    assigned = phase ? films.phase(phase) : films
+    assigned.total_order_fill_count
   end
 
   def assigned_film_percentage
