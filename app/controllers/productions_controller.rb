@@ -12,14 +12,18 @@ class ProductionsController < ApplicationController
   private
   
   def grouped_productions
-    RelationGrouper.new(production_master_films, 'serial_date', params[:start_date], params[:end_date]).send(params[:grouping])
+    RelationGrouper.new(filtered_production_master_films, 'serial_date').send(params[:grouping])
   end
 
-  def production_master_films
-    current_tenant.master_films.active.production
+  def filtered_production_master_films
+    current_tenant.master_films.active.production.filter(filtering_params)
   end
 
   def set_default_start_date
-    params[:start_date] ||= 1.year.ago.to_date
+    params[:serial_date_after] ||= 1.year.ago.to_date
+  end
+
+  def filtering_params
+    params.slice(:serial_date_before, :serial_date_after)
   end
 end

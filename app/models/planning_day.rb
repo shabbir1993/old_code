@@ -24,6 +24,7 @@ class PlanningDay
     progress[:reserved] = assigned_count('stock')
     progress[:wip] = assigned_count('wip')
     progress[:fg] = assigned_count('fg')
+    progress[:shipped] = orders_due.shipped.films.total_order_fill_count
     progress[:total] = orders_due.line_items.total_quantity
     progress
   end

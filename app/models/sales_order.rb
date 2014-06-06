@@ -28,8 +28,8 @@ class SalesOrder < ActiveRecord::Base
   scope :has_due_date, -> { where('due_date is not null') }
   scope :due_date_equals, ->(date) { where(due_date: date) }
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) }
-  scope :ship_date_before, ->(date) { where("ship_date <= ?", Time.zone.parse(date)) } 
-  scope :ship_date_after, ->(date) { where("ship_date >= ?", Time.zone.parse(date)) } 
+  scope :ship_date_before, ->(date) { where("ship_date <= ?", date) } 
+  scope :ship_date_after, ->(date) { where("ship_date >= ?", date) } 
   scope :text_search, ->(query) { reorder('').search(query) }
   scope :code_like, ->(code) { where('code ILIKE ?', code.gsub('*', '%')) }
 

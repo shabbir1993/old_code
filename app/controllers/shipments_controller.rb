@@ -16,14 +16,18 @@ class ShipmentsController < ApplicationController
   private
   
   def grouped_shipments
-    RelationGrouper.new(shipped_orders, 'ship_date', params[:start_date], params[:end_date]).send(params[:grouping])
+    RelationGrouper.new(filtered_shipped_orders, 'ship_date').send(params[:grouping])
   end
 
-  def shipped_orders
-    current_tenant.sales_orders.shipped
+  def filtered_shipped_orders
+    current_tenant.sales_orders.shipped.filter(filtering_params)
   end
 
   def set_default_start_date
-    params[:start_date] ||= 1.year.ago.to_date
+    params[:ship_date_after] ||= 1.year.ago.to_date
+  end
+
+  def filtering_params
+    params.slice(:ship_date_before, :ship_date_after)
   end
 end

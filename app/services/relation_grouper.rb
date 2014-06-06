@@ -1,9 +1,7 @@
 class RelationGrouper
-  def initialize(klass, date_column, start_date, end_date)
-    @klass = klass
+  def initialize(relation, date_column)
+    @relation = relation
     @date_column = date_column
-    @start_date = start_date
-    @end_date = end_date
   end
 
   def by_day
@@ -44,18 +42,9 @@ class RelationGrouper
 
   private
 
-  def start_date
-    @start_date.present? ? @start_date : @klass.minimum(@date_column)
-  end
-
-  def end_date
-    @end_date.present? ? @end_date : @klass.maximum(@date_column)
-  end
-
   def sorted_relevant_dates
-    relation(start_date, end_date).pluck(@date_column).sort
+    @relation.pluck(@date_column).sort
   end
-
 
   def date_ranges(unit)
     sorted_relevant_dates.map do |d| 
@@ -67,8 +56,8 @@ class RelationGrouper
   end
 
   def relation(after, before)
-    @klass.public_send("#{@date_column}_after", after.to_s)
-          .public_send("#{@date_column}_before", before.to_s)
+    @relation.public_send("#{@date_column}_after", after.to_s)
+      .public_send("#{@date_column}_before", before.to_s)
   end
 
   def quarter(date)
