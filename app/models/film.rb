@@ -29,6 +29,7 @@ class Film < ActiveRecord::Base
   scope :small, ->(cutoff) { with_dimensions.merge(Dimension.small(cutoff)) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
   scope :not_reserved, -> { where("sales_order_id IS NULL") }
+  scope :formula_like, ->(formula) { joins('INNER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.formula_like(formula)) }
 
   include PgSearch
   pg_search_scope :search, 
