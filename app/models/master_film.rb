@@ -4,7 +4,7 @@ class MasterFilm < ActiveRecord::Base
 
   DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
 
-  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed
+  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed, :function
 
   enum function: [ :production, :test, :transfer ]
 
@@ -12,8 +12,7 @@ class MasterFilm < ActiveRecord::Base
   belongs_to :machine
 
   before_validation :upcase_attributes
-  before_validation :set_serial_date
-  before_save :set_yield
+  before_save :set_yield, :set_serial_date
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 

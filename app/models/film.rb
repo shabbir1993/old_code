@@ -21,7 +21,7 @@ class Film < ActiveRecord::Base
   validate :must_have_dimensions, on: :update
 
   scope :with_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq }
-  scope :active, -> { where(deleted: false) }
+  scope :active, -> { where(deleted: false).joins(:master_film).merge(MasterFilm.where(function: "test")) }
   scope :deleted, -> { where(deleted: true) }
   scope :phase, ->(phase) { where(phase: phase) }
   scope :large, ->(cutoff) { with_dimensions.merge(Dimension.large(cutoff)) }
