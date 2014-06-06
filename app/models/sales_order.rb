@@ -58,6 +58,10 @@ class SalesOrder < ActiveRecord::Base
     films.map{ |f| f.area.to_f }.sum
   end
 
+  def past_due?
+    Date.current > due_date
+  end
+
   def utilization
     100*total_custom_area/total_assigned_area if total_custom_area && total_assigned_area && total_assigned_area > 0
   end

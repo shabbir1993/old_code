@@ -9,6 +9,9 @@
           <% if order.shipped? %>
             <span class="label label-success">shipped</span>
           <% end %>
+          <% if !order.shipped? && order.past_due? %>
+            <span class="label label-danger">past due</span>
+          <% end %>
           <span class="badge"><%= "#{order.total_quantity} pcs" %></span>
           </li>
         <% end %>
