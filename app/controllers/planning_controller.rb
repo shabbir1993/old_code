@@ -1,6 +1,6 @@
 class PlanningController < ApplicationController
   def calendar
-    @planning_days = PlanningDay.all(sales_orders)
+    @calendar_days = CalendarDay.all(sales_orders)
   end
 
   private

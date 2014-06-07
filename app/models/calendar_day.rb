@@ -1,4 +1,4 @@
-class PlanningDay
+class CalendarDay
   extend SimpleCalendar
   has_calendar
 
@@ -19,11 +19,11 @@ class PlanningDay
     @orders.due_date_equals(starts_at)
   end
 
-  def progress_by_phase
+  def progress_count
     progress = Hash.new
-    progress[:reserved] = assigned_count('stock')
-    progress[:wip] = assigned_count('wip')
-    progress[:fg] = assigned_count('fg')
+    progress[:reserved] = orders_due.not_shipped.films.phase('stock').total_order_fill_count
+    progress[:wip] = orders_due.not_shipped.films.phase('wip').total_order_fill_count
+    progress[:fg] = orders_due.not_shipped.films.phase('fg').total_order_fill_count
     progress[:shipped] = orders_due.shipped.films.total_order_fill_count
     progress[:total] = orders_due.line_items.total_quantity
     progress
@@ -33,9 +33,5 @@ class PlanningDay
 
   def self.all_dates(orders)
     orders.pluck(:due_date).uniq
-  end
-
-  def assigned_count(phase)
-    orders_due.films.phase(phase).total_order_fill_count
   end
 end

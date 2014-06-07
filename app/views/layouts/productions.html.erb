@@ -8,7 +8,16 @@
 <% end %>
 
 <% content_for :page_head do %>
-  <%= render 'shared/history_search_form' %>
+  <%= form_tag url_for, method: :get, class: 'form-inline search' do %>
+    <div class="form-group">
+      <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>
+    </div>
+    <div class="form-group">
+      <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End date", class: "form-control bootstrap-datepicker" %>
+    </div>
+    <%= hidden_field_tag :grouping, params[:grouping] %>
+    <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+  <% end %>
   <ul class="nav nav-tabs">
     <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
     <li class="<%= "active" if params[:action] == 'yield_time_series' %>"><%= link_to "Yield", url_for(params.merge(action: 'yield_time_series')) %></li>

@@ -142,6 +142,13 @@ ol {
 
     dl {
       margin-bottom: 0;
+
+      dt {
+        width: 80px;
+      }
+      dd {
+        margin-left: 100px;
+      }
     }
   }
   .non-month {
