@@ -11,13 +11,13 @@
             <span class="label label-success">ship</span>
           <% end %>
           <% if !order.shipped? && order.past_due? %>
-            <span class="label label-danger">past due</span>
+            <span class="label label-danger">past</span>
           <% end %>
           <% if order.on_hold? %>
             <span class="label label-info">hold</span>
           <% end %>
           <% if order.cancelled? %>
-            <span class="label label-warning">cancelled</span>
+            <span class="label label-warning">cancel</span>
           <% end %>
           <span class="badge"><%= "#{order.total_quantity} pcs" %></span>
           </li>
