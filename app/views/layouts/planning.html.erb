@@ -1,3 +1,7 @@
 <% provide :title, "Planning" %>
 
+<% content_for :nav_list do %>
+  <%= link_to "Orders due", planning_calendar_path, class: "list-group-item#{" active" if params[:action] == 'calendar'}" %>
+<% end %>
+
 <%= render template: "layouts/application" %>

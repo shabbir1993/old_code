@@ -8,13 +8,13 @@
           <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>Reserved</dt><dd>#{order.assigned_film_count("stock")}</dd><dt>WIP</dt><dd>#{order.assigned_film_count("wip")}</dd><dt>FG</dt><dd>#{order.assigned_film_count("fg")}</dd></dl>" %>" data-trigger="hover" data-html="true">
           <%= order.code %>
           <% if order.shipped? %>
-            <span class="label label-success">shipped</span>
+            <span class="label label-success">ship</span>
           <% end %>
           <% if !order.shipped? && order.past_due? %>
             <span class="label label-danger">past due</span>
           <% end %>
           <% if order.on_hold? %>
-            <span class="label label-info">on hold</span>
+            <span class="label label-info">hold</span>
           <% end %>
           <% if order.cancelled? %>
             <span class="label label-warning">cancelled</span>
