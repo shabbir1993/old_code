@@ -1,7 +1,8 @@
 <%= render 'search_form' %>
 
 <span>
-  Count: <strong><%= filtered_films.count %></strong>
+  <!-- count must be count(:all) to accommodate pg_search query -->
+  Count: <strong><%= filtered_films.count(:all) %></strong>
   Area: <strong><%= filtered_films.total_area %></strong>
 </span>
 
