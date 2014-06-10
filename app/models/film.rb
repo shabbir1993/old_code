@@ -16,7 +16,7 @@ class Film < ActiveRecord::Base
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
   delegate :width, :length, to: :primary_dimension
 
-  before_save :upcase_shelf, :set_area
+  before_update :upcase_shelf, :set_area
 
   validates :phase, presence: true
   validates :order_fill_count, numericality: { greater_than: 0 }

@@ -38,9 +38,26 @@
         }, {
         name: 'Glass',
         data: <%= raw @time_series.glass_data %>
+        }, {
+        type: 'pie',
+        name: 'Total consumption',
+        data: [{
+          name: 'Film',
+          y: 13,
+          }, {
+          name: 'Glass',
+          y: 23,
+        }],
+        center: [100, 80],
+        size: 100,
+        showInLegend: false,
+        dataLabels: {
+          enabled: false
+        }
       }]
-    });
+    }]
   });
+});
 </script>
 
 <div id="shipped_area_time_series" class="chart"></div>

@@ -1,5 +1,4 @@
 class FilmsController < ApplicationController
-  SAFE_SCOPES = %w(lamination inspection wip fg nc scrap large_stock small_stock reserved_stock deleted)
   SAFE_SORTS = %w(serial width length area shelf note) 
 
   def index
