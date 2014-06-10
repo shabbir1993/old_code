@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/getsentry/raven-ruby.git
-  revision: c857923fe332bd147cfbb8cb6373a84344374e96
+  revision: 9f8c309c64c4d468d944c1438abac0130fdc6dd1
   specs:
-    sentry-raven (0.9.1)
+    sentry-raven (0.9.3)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
       uuidtools
@@ -129,7 +129,7 @@ GEM
     rspec-expectations (3.0.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
-    rspec-mocks (3.0.0)
+    rspec-mocks (3.0.1)
       rspec-support (~> 3.0.0)
     rspec-rails (3.0.1)
       actionpack (>= 3.0)

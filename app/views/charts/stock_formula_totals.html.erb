@@ -10,7 +10,6 @@
       xAxis: {
         categories: <%= raw(@chart.values) %>
       },
-
       yAxis: [{
         title: {
           text: 'Count'
@@ -20,13 +19,11 @@
           text: 'Area'
         }
       }],
-
       plotOptions: {
         series: {
           groupPadding: 0.25
         }
       },
-
       series: [{
         yAxis: 0,
         name: 'Count',

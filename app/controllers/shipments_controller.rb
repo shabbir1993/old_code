@@ -22,7 +22,6 @@ class ShipmentsController < ApplicationController
   def filtered_shipped_orders
     current_tenant.sales_orders.shipped.filter(filtering_params)
   end
-  helper_method :filtered_shipped_orders
 
   def set_default_start_date
     params[:ship_date_after] ||= 1.year.ago.to_date
