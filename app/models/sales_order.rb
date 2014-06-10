@@ -1,5 +1,4 @@
 class SalesOrder < ActiveRecord::Base
-  include PgSearch
   include Filterable
   include Tenancy
 
@@ -19,6 +18,7 @@ class SalesOrder < ActiveRecord::Base
   validates :release_date, presence: true
   validates :due_date, presence: true
 
+  include PgSearch
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 

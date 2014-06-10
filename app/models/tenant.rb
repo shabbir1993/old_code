@@ -13,34 +13,21 @@ class Tenant
               yield_multiplier: 10.76 }
   }
 
-  attr_reader :code, :time_zone, :area_divisor, :small_area_cutoff, :yield_multiplier
+  attr_reader :code, :name, :time_zone, :area_divisor, :small_area_cutoff, :yield_multiplier
 
   def initialize(code)
     @code = code
+    @name = PROPERTIES[code][:name]
     @time_zone = PROPERTIES[code][:time_zone]
     @area_divisor = PROPERTIES[code][:area_divisor]
     @small_area_cutoff = PROPERTIES[code][:small_area_cutoff]
     @yield_multiplier = PROPERTIES[code][:yield_multiplier]
   end
 
-  def widget(klass, id)
-    widgets(klass).find(id)
-  end
-
-  def widgets(klass)
-    klass.where(tenant_code: code)
-  end
-
-  def new_widget(klass, *args)
-    klass.new(*args).tap do |u|
-      u.tenant_code = code
-    end
-  end
-
   private
 
   def self.asset_classes
-    [User, FilmMovement, SalesOrder, MasterFilm]
+    [User, FilmMovement, SalesOrder, MasterFilm, Film, Machine]
   end
 
   asset_classes.each do |klass|

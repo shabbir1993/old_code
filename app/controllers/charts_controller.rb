@@ -20,7 +20,7 @@ class ChartsController < ApplicationController
   private
 
   def large_stock_films
-    current_tenant.widgets(Film).active.phase('stock').large(current_tenant.small_area_cutoff).not_reserved
+    current_tenant.films.active.phase('stock').large(current_tenant.small_area_cutoff).available
   end
 
   def set_date_range_to_past_year

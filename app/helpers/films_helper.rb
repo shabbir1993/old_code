@@ -9,7 +9,7 @@ module FilmsHelper
   end
 
   def sales_order_assign_choices(film)
-    in_progress_orders = current_tenant.widgets(SalesOrder).in_progress
+    in_progress_orders = current_tenant.sales_orders.in_progress
     film.sales_order.present? ? in_progress_orders.to_set << film.sales_order : in_progress_orders
   end
 

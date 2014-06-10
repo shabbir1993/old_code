@@ -1,4 +1,6 @@
 class Film < ActiveRecord::Base
+  include Filterable
+  include Tenancy
 
   attr_accessible :note, :shelf, :phase, :deleted, :sales_order_id, :order_fill_count, :master_film_id, :tenant_code, :serial, :dimensions_attributes, :area
   attr_reader :destination
@@ -12,24 +14,31 @@ class Film < ActiveRecord::Base
 
   delegate :formula, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
-  delegate :width, :length, to: :primary_dimension, allow_nil: true
+  delegate :width, :length, to: :primary_dimension
 
-  before_save :upcase_shelf
+  before_save :upcase_shelf, :set_area
 
   validates :phase, presence: true
   validates :order_fill_count, numericality: { greater_than: 0 }
   validate :must_have_dimensions, on: :update
 
-  scope :with_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq }
-  scope :active, -> { where(deleted: false).joins('INNER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.where("function <> ?", MasterFilm.functions[:test])) }
+  scope :join_dimensions, -> { joins('LEFT OUTER JOIN dimensions ON dimensions.film_id = films.id').uniq }
+  scope :join_master_films, -> { joins('INNER JOIN master_films ON master_films.id = films.master_film_id') }
+  scope :active, -> { where(deleted: false)
+                     .join_master_films
+                     .merge(MasterFilm.where("function <> ?", MasterFilm.functions[:test])) }
   scope :deleted, -> { where(deleted: true) }
   scope :not_deleted, -> { where(deleted: false) }
-  scope :phase, ->(phase) { where(phase: phase) }
-  scope :large, ->(cutoff) { with_dimensions.merge(Dimension.large(cutoff)) }
-  scope :small, ->(cutoff) { with_dimensions.merge(Dimension.small(cutoff)) }
+  scope :large, ->(cutoff) { join_dimensions.merge(Dimension.large(cutoff)) }
+  scope :small, ->(cutoff) { join_dimensions.merge(Dimension.small(cutoff)) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }
-  scope :not_reserved, -> { where("sales_order_id IS NULL") }
-  scope :formula_like, ->(formula) { joins('INNER JOIN master_films ON master_films.id = films.master_film_id').merge(MasterFilm.formula_like(formula)) }
+  scope :available, -> { where("sales_order_id IS NULL") }
+  scope :text_search, ->(query) { reorder('').search(query) }
+  scope :formula_like, ->(formula) { join_master_films
+                                    .merge(MasterFilm.formula_like(formula)) }
+  scope :order_by, ->(col, dir) { order("#{col} #{dir}") }
+  scope :width_greater_than, ->(n) { join_dimensions.merge(Dimension.min_width(n)) }
+  scope :length_greater_than, ->(n) { join_dimensions.merge(Dimension.min_length(n)) }
 
   include PgSearch
   pg_search_scope :search, 
@@ -46,13 +55,27 @@ class Film < ActiveRecord::Base
   def update_and_move(attrs, destination, user)
     before_phase = phase
     if update_attributes(attrs)
-      set_area
       if PhaseDefinitions.front_end?(before_phase)
         master_film.effective_width = width
         master_film.effective_length = length
         master_film.save!
       end
       move_to(destination, user) if destination.present?
+    end
+  end
+
+  def self.phase(phase, tenant = nil)
+    case phase
+    when "lamination", "inspection", "stock", "wip", "fg", "nc", "scrap"
+      active.where(phase: phase)
+    when "large_stock"
+      phase("stock").large(tenant.small_area_cutoff).available
+    when "small_stock"
+      phase("stock").small(tenant.small_area_cutoff).available
+    when "reserved_stock"
+      phase("stock").reserved
+    when "deleted"
+      deleted
     end
   end
 
@@ -71,10 +94,6 @@ class Film < ActiveRecord::Base
     movement = film_movements.build(from_phase: phase_was, to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
     save!
     movement.save!
-  end
-
-  def tenant
-    @tenant ||= Tenant.new(tenant_code)
   end
 
   def phase_label_class
@@ -100,6 +119,19 @@ class Film < ActiveRecord::Base
     previous_changes.keys.include?("phase")
   end
 
+  def self.total_area
+    sum(:area)
+  end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << %w(Serial Formula Width Length Area Shelf SO Phase)
+      all.join_dimensions.each do |f|
+        csv << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
+      end
+    end
+  end
+
   private
   
   def upcase_shelf
@@ -107,21 +139,21 @@ class Film < ActiveRecord::Base
   end
 
   def reset_sales_order
-    assign_attributes(sales_order_id: nil, order_fill_count: 1)
+    self.sales_order_id = nil
+    self.order_fill_count = 1
   end
 
   def primary_dimension
-    @dimension ||= dimensions.first
+    @primary_dimension ||= dimensions.first
   end
 
   def must_have_dimensions
-    if dimensions.empty? or dimensions.all? {|dimension| dimension.marked_for_destruction? }
+    if dimensions.empty? || dimensions.all? {|dimension| dimension.marked_for_destruction? }
       errors.add(:base, 'Must have dimensions')
     end
   end
 
   def set_area
     self.area = primary_dimension.area
-    save!
   end
 end

@@ -1,54 +1,55 @@
 class FilmsController < ApplicationController
+  SAFE_SCOPES = %w(lamination inspection wip fg nc scrap large_stock small_stock reserved_stock deleted)
+  SAFE_SORTS = %w(serial width length area shelf note) 
 
   def index
     set_default_sort
-    @films_presenter = FilmsPresenter.new(current_tenant, params)
-    @films = @films_presenter.present
+    @films = filtered_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { send_data @films_presenter.to_csv }
+      format.csv { render csv: @films }
     end
   end
 
   def edit
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     render layout: false
   end
 
   def update
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     @film.update_and_move(params[:film], params[:film][:destination], current_user)
   end 
 
   def edit_multiple
-    @films = current_tenant.widget(Film, params[:film_ids])
+    @films = tenant_films.find(params[:film_ids])
     render layout: false
   end
 
   def update_multiple
-    @films = current_tenant.widget(Film, params[:film_ids])
+    @films = tenant_films.find(params[:film_ids])
     @films.each do |film|
       film.update_and_move(params[:film].reject { |k,v| v.blank? }, params[:film][:destination], current_user)
     end
   end
 
   def split
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     @split = @film.split
   end
 
   def destroy
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     @film.update_attributes(deleted: true)
   end
 
   def restore
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     @film.update_attributes(deleted: false)
   end
 
   def unassign
-    @film = current_tenant.widget(Film, params[:id])
+    @film = tenant_films.find(params[:id])
     @film.unassign
   end
 
@@ -60,7 +61,7 @@ class FilmsController < ApplicationController
   end
 
   def dimensions_searched?
-    params[:min_width].present? || params[:min_length].present?
+    params[:width_greater_than].present? || params[:length_greater_than].present?
   end
 
   def films
@@ -77,4 +78,37 @@ class FilmsController < ApplicationController
     @split
   end
   helper_method :split_film
+
+  def tenant_films
+    current_tenant.films
+  end
+
+  def filtered_films
+    tenant_films.join_dimensions
+                .phase(params[:tab], current_tenant)
+                .filter(filtering_params)
+                .order_by(safe_sort, safe_direction)
+  end
+  helper_method :filtered_films
+
+  def safe_sort
+    if SAFE_SORTS.include?(params[:sort])
+      case params[:sort]
+      when 'serial'
+        'films.serial'
+      else
+        params[:sort]
+      end
+    else
+      'films.serial'
+    end
+  end
+
+  def safe_direction
+    %w(asc desc).include?(params[:direction]) ? params[:direction] : "desc"
+  end
+
+  def filtering_params
+    params.slice(:text_search, :formula_like, :width_greater_than, :length_greater_than)
+  end
 end

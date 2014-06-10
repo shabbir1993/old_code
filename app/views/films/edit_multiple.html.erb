@@ -11,7 +11,7 @@
   </div>
   <div class="modal-body">
     <%= f.text_field :shelf, class: "form-control" %>
-    <%= f.collection_select :sales_order_id, current_tenant.widgets(SalesOrder).in_progress, :id, :code, { include_blank: true }, class: "form-control" %>
+    <%= f.collection_select :sales_order_id, current_tenant.sales_orders.in_progress, :id, :code, { include_blank: true }, class: "form-control" %>
     <%= f.select :destination, destination_choices(@films), { prompt: "Move to..." }, { class: "form-control", label: false } %>
   </div>
   <div class="modal-footer">

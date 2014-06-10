@@ -1,18 +1,18 @@
 <%= form_tag films_path, method: :get, class: 'form-inline search' do %>
   <div class="form-group">
-    <%= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control" %>
+    <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
   </div>
   <div class="form-group">
     <%= label_tag "Formula" %>
-    <%= text_field_tag :formula, params[:formula], class: "form-control input-sm" %>
+    <%= text_field_tag :formula_like, params[:formula_like], class: "form-control input-sm" %>
   </div>
   <div class="form-group">
     <%= label_tag "Width" %>
-    <%= number_field_tag :min_width, params[:min_width], placeholder: "min", step: "any", class: "form-control input-sm" %>
+    <%= number_field_tag :width_greater_than, params[:width_greater_than], placeholder: "min", step: "any", class: "form-control input-sm" %>
   </div>
   <div class="form-group">
     <%= label_tag "Length" %>
-    <%= number_field_tag :min_length, params[:min_length], placeholder: "min", step: "any", class: "form-control input-sm" %>
+    <%= number_field_tag :length_greater_than, params[:length_greater_than], placeholder: "min", step: "any", class: "form-control input-sm" %>
   </div>
   <%= hidden_field_tag :tab, params[:tab] %>
   <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
