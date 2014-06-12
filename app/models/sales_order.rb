@@ -33,6 +33,7 @@ class SalesOrder < ActiveRecord::Base
   scope :text_search, ->(query) { reorder('').search(query) }
   scope :code_like, ->(code) { where('code ILIKE ?', code.gsub('*', '%')) }
   scope :not_shipped, -> { where("status <> ?", statuses[:shipped]) }
+  scope :not_cancelled, -> { where("status <> ?", statuses[:cancelled]) }
 
   def lead_days
     (ship_date - release_date).to_i
@@ -61,6 +62,10 @@ class SalesOrder < ActiveRecord::Base
 
   def past_due?
     Date.current > due_date
+  end
+
+  def shipped_late?
+    ship_date ? ship_date > due_date : false
   end
 
   def utilization

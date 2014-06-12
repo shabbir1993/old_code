@@ -1,4 +1,4 @@
-class RelationGrouper
+class TimeSeriesGrouper
   def initialize(relation, date_column)
     @relation = relation
     @date_column = date_column

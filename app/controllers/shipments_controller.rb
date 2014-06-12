@@ -16,7 +16,7 @@ class ShipmentsController < ApplicationController
   private
   
   def grouped_shipments
-    RelationGrouper.new(filtered_shipped_orders, 'ship_date').send(params[:grouping])
+    TimeSeriesGrouper.new(filtered_shipped_orders, 'ship_date').send(params[:grouping])
   end
 
   def filtered_shipped_orders

@@ -12,7 +12,7 @@ class ProductionsController < ApplicationController
   private
   
   def grouped_productions
-    RelationGrouper.new(filtered_production_master_films, 'serial_date').send(params[:grouping])
+    TimeSeriesGrouper.new(filtered_production_master_films, 'serial_date').send(params[:grouping])
   end
 
   def filtered_production_master_films

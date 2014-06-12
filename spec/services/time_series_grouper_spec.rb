@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe RelationGrouper do
+describe TimeSeriesGrouper do
 
   describe "#by_day" do
     let(:start_date) { Date.today.to_s }
     let(:end_date) { Date.tomorrow.to_s }
-    let(:grouped_orders) { RelationGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_day }
+    let(:grouped_orders) { TimeSeriesGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_day }
     before do
       @sales_order = create(:sales_order, status: 'shipped', ship_date: Date.today)
     end
@@ -27,7 +27,7 @@ describe RelationGrouper do
   describe "#by_week" do
     let(:start_date) { Date.today.to_s }
     let(:end_date) { (Date.today.end_of_week + 1).to_s }
-    let(:grouped_orders) { RelationGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_week }
+    let(:grouped_orders) { TimeSeriesGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_week }
     before do
       @sales_order = create(:sales_order, status: 'shipped', ship_date: Date.today)
     end
@@ -49,7 +49,7 @@ describe RelationGrouper do
   describe "#group_by_month" do
     let(:start_date) { Date.today.to_s }
     let(:end_date) { (Date.today.end_of_month + 1).to_s }
-    let(:grouped_orders) { RelationGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_month }
+    let(:grouped_orders) { TimeSeriesGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_month }
     before do
       @sales_order = create(:sales_order, status: 'shipped', ship_date: Date.today)
     end
@@ -71,7 +71,7 @@ describe RelationGrouper do
   describe "#group_by_quarter" do
     let(:start_date) { Date.today.to_s }
     let(:end_date) { (Date.today.end_of_quarter + 1).to_s }
-    let(:grouped_orders) { RelationGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_quarter }
+    let(:grouped_orders) { TimeSeriesGrouper.new(SalesOrder.shipped, 'ship_date', start_date, end_date).by_quarter }
     before do
       @sales_order = create(:sales_order, status: 'shipped', ship_date: Date.today)
     end

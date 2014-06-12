@@ -16,8 +16,8 @@
           <% if order.on_hold? %>
             <span class="label label-info">hold</span>
           <% end %>
-          <% if order.cancelled? %>
-            <span class="label label-warning">cancel</span>
+          <% if order.shipped_late? %>
+            <span class="label label-warning">late</span>
           <% end %>
           <span class="badge"><%= "#{order.total_quantity} pcs" %></span>
           </li>
