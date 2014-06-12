@@ -36,7 +36,7 @@ class MasterFilm < ActiveRecord::Base
 
   def save_and_create_child(user)
     if save
-      film = films.build(serial: "#{serial}-1", area: 0, tenant_code: tenant_code, division: 1, phase: "lamination")
+      film = films.build(serial: "#{serial}-1", area: 0, tenant_code: tenant_code, phase: "lamination")
       film.save!
       dimensions = film.dimensions.build(width: 0, length: 0)
       dimensions.save!

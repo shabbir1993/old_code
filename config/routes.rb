@@ -8,6 +8,9 @@ Pcms::Application.routes.draw do
     collection do
       get :edit_multiple
       patch :update_multiple
+      get :formula_totals
+      get :dimensions_map
+      get :shelf_inventory
     end
   end
 
@@ -22,6 +25,7 @@ Pcms::Application.routes.draw do
     collection do
       get :lead_time_histogram
       get :calendar
+      get :product_type_totals
     end
   end
 
@@ -30,11 +34,6 @@ Pcms::Application.routes.draw do
   get 'logout', to: 'sessions#destroy'
 
   scope module: "admin" do
-    get 'imports', to: 'imports#forms'
-    post 'import_master_films', to: 'imports#import_master_films'
-    post 'import_films', to: 'imports#import_films'
-    post 'import_machines', to: 'imports#import_machines'
-
     resources :users, except: :show
   end
 
@@ -58,12 +57,6 @@ Pcms::Application.routes.draw do
   end
 
   get 'planning/calendar', to: 'planning#calendar', as: :planning_calendar
-
-  get 'charts/stock_formula_totals', to: 'charts#stock_formula_totals', as: :stock_formula_totals_chart
-  get 'charts/stock_film_type_totals', to: 'charts#stock_film_type_totals', as: :stock_film_type_totals_chart
-  get 'charts/stock_dimensions', to: 'charts#stock_dimensions', as: :stock_dimensions_chart
-  get 'charts/shelf_inventory', to: 'charts#shelf_inventory', as: :shelf_inventory_chart
-
 
   root to: 'films#index', tab: "lamination"
 end

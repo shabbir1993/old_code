@@ -29,6 +29,7 @@ class Film < ActiveRecord::Base
                      .merge(MasterFilm.where("function <> ?", MasterFilm.functions[:test])) }
   scope :deleted, -> { where(deleted: true) }
   scope :not_deleted, -> { where(deleted: false) }
+  scope :has_shelf, -> { where("shelf <> ''") }
   scope :large, ->(cutoff) { join_dimensions.merge(Dimension.large(cutoff)) }
   scope :small, ->(cutoff) { join_dimensions.merge(Dimension.small(cutoff)) }
   scope :reserved, -> { where("sales_order_id IS NOT NULL") }

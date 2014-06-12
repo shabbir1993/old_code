@@ -3,11 +3,23 @@ class FilmsController < ApplicationController
 
   def index
     set_default_sort
-    @films = filtered_films.page(params[:page])
+    @films = filtered_films.order_by(safe_sort, safe_direction).page(params[:page])
     respond_to do |format|
       format.html
       format.csv { render csv: @films }
     end
+  end
+
+  def formula_totals
+    @data = FilmFormulaTotals.new(filtered_films)
+  end
+
+  def dimensions_map
+    @data = DimensionsMap.new(filtered_films)
+  end
+
+  def shelf_inventory
+    @shelves = filtered_films.has_shelf.group_by(&:shelf).sort_by { |k,v| k }
   end
 
   def edit
@@ -86,7 +98,6 @@ class FilmsController < ApplicationController
     tenant_films.join_dimensions
                 .phase(params[:tab], current_tenant)
                 .filter(filtering_params)
-                .order_by(safe_sort, safe_direction)
   end
   helper_method :filtered_films
 

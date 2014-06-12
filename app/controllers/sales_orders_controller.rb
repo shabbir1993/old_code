@@ -1,5 +1,5 @@
 class SalesOrdersController < ApplicationController
-  before_filter :check_admin, only: [:destroy, :return]
+  before_filter :check_admin, only: [:destroy]
 
   def index
     @sales_orders = filtered_orders.page(params[:page])
@@ -17,6 +17,10 @@ class SalesOrdersController < ApplicationController
 
   def lead_time_histogram
     @histogram = LeadTimeHistogram.new(filtered_orders)
+  end
+
+  def product_type_totals
+    @data = LineItemProductTypeTotals.new(filtered_orders.line_items)
   end
   
   def new

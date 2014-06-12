@@ -1,9 +1,5 @@
 <script>
   $(function () { 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      $('#dimensions-map').highcharts().setSize($('#dimensions-map').width(),$('#dimensions-map').height());
-    });
-
     $('#dimensions-map').highcharts({
       chart: {
         type: 'heatmap',
@@ -15,7 +11,7 @@
       },
 
       xAxis: {
-        categories: <%= raw data.x_axis_categories %>,
+        categories: <%= raw @data.x_axis_categories %>,
         gridLineWidth: 2,
         title: {
           text: "Length"
@@ -23,7 +19,7 @@
       },
 
       yAxis: {
-        categories: <%= raw data.y_axis_categories %>,
+        categories: <%= raw @data.y_axis_categories %>,
         gridLineWidth: 2,
         title: {
           text: "Width"
@@ -57,10 +53,9 @@
       },
 
       series: [{
-        name: 'Sales per employee',
         borderWidth: 1,
         data: [ 
-        <% data.map_hash.each do |p| %>
+        <% @data.map_hash.each do |p| %>
         { 
           x: <%= p[:coords][0] %>,
           y: <%= p[:coords][1] %>,

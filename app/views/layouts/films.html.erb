@@ -23,4 +23,15 @@
   <% end %>
 <% end %>
 
+<% content_for :page_head do %>
+  <%= render 'search_form' %>
+
+  <ul class="nav nav-tabs">
+    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
+    <li class="<%= "active" if params[:action] == 'formula_totals' %>"><%= link_to "Formula totals", url_for(params.merge(action: 'formula_totals')) %></li>
+    <li class="<%= "active" if params[:action] == 'dimensions_map' %>"><%= link_to "Dimensions map", url_for(params.merge(action: 'dimensions_map')) %></li>
+    <li class="<%= "active" if params[:action] == 'shelf_inventory' %>"><%= link_to "Shelves", url_for(params.merge(action: 'shelf_inventory')) %></li>
+  </ul>
+<% end %>
+
 <%= render template: "layouts/application" %>

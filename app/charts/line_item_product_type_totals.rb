@@ -1,9 +1,6 @@
-class FilmTotalsByAttributeChart
-  attr_reader :films, :attribute
-
-  def initialize(films, attribute)
-    @films = films
-    @attribute = attribute
+class LineItemProductTypeTotals
+  def initialize(line_items)
+    @items = line_items
   end
 
   def values
@@ -21,16 +18,16 @@ class FilmTotalsByAttributeChart
   private
   
   def unique_values
-    films.pluck("#{attribute}").uniq
+    @items.pluck(:product_type).uniq
   end
 
   def count_and_area_by_value
     unique_values.map do |value|
-      films_with_value = films.where("#{attribute} = ?", value)
+      items_with_value = @items.where(product_type: value)
       {
         value: value.present? ? value : "None",
-        count: films_with_value.count,
-        area: films_with_value.map{ |f| f.area }.sum.to_f
+        count: items_with_value.count,
+        area: items_with_value.map{ |f| f.total_area }.sum.to_f
       }
     end.sort_by { |i| i[:area] }.reverse
   end

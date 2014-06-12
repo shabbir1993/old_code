@@ -1,4 +1,4 @@
-class DimensionsMapData
+class DimensionsMap
   def initialize(records)
     @records = records
   end
@@ -18,11 +18,11 @@ class DimensionsMapData
   end
 
   def max_x_coordinate
-    convert_to_coordinate(@records.maximum(:length))
+    convert_to_coordinate(@records.map(&:length).max)
   end
 
   def max_y_coordinate
-    convert_to_coordinate(@records.maximum(:width))
+    convert_to_coordinate(@records.map(&:width).max)
   end
 
   private
