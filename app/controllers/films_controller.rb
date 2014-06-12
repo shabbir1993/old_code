@@ -93,6 +93,7 @@ class FilmsController < ApplicationController
   def tenant_films
     current_tenant.films
   end
+  helper_method :tenant_films
 
   def filtered_films
     tenant_films.join_dimensions

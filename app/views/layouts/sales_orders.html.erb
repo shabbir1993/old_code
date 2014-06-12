@@ -2,7 +2,9 @@
 
 <% content_for :nav_list do %>
   <%= link_to "In Progress", sales_orders_path(status: 'in_progress'), class: "list-group-item#{" active" if params[:status] == 'in_progress'}" %>
-  <%= link_to "On Hold", sales_orders_path(status: 'on_hold'), class: "list-group-item#{" active" if params[:status] == 'on_hold'}" %>
+  <%= link_to sales_orders_path(status: 'on_hold'), class: "list-group-item#{" active" if params[:status] == 'on_hold'}" do %>
+    On Hold<span class="badge"><%= sales_orders.status('on_hold').count %></span>
+  <% end %>
   <%= link_to "Shipped", sales_orders_path(status: 'shipped'), class: "list-group-item#{" active" if params[:status] == 'shipped'}" %>
   <%= link_to "Cancelled", sales_orders_path(status: 'cancelled'), class: "list-group-item#{" active" if params[:status] == 'cancelled'}" %>
 <% end %>

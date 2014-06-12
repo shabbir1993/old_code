@@ -2,7 +2,7 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy]
 
   def index
-    @sales_orders = filtered_orders.page(params[:page])
+    @sales_orders = filtered_orders.by_code.page(params[:page])
     @total_orders = filtered_orders.count(:all)
     @total_quantity = filtered_orders.line_items.total_quantity
     @total_area = filtered_orders.line_items.total_area
@@ -69,12 +69,13 @@ class SalesOrdersController < ApplicationController
   private
 
   def filtered_orders
-    sales_orders.status(params[:status]).filter(filtering_params).by_code
+    sales_orders.status(params[:status]).filter(filtering_params)
   end
 
   def sales_orders
     current_tenant.sales_orders
   end
+  helper_method :sales_orders
 
   def filtering_params
     params.slice(:text_search, :code_like, :ship_date_before, :ship_date_after)
