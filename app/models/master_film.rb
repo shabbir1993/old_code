@@ -11,8 +11,9 @@ class MasterFilm < ActiveRecord::Base
   has_many :films, dependent: :destroy
   belongs_to :machine
 
-  before_validation :upcase_attributes
-  before_save :set_yield, :set_serial_date
+  before_validation :upcase_attributes, :set_serial_date
+  before_save :set_yield
+  after_update :update_film_serials, if: Proc.new { |mf| mf.serial_changed? }
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
 
@@ -42,6 +43,13 @@ class MasterFilm < ActiveRecord::Base
       dimensions.save!
       movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
       movement.save!
+    end
+  end
+
+  def update_film_serials
+    films.each do |f|
+      div = f.serial[8..-1]
+      f.update_columns(serial: serial + div)
     end
   end
 
