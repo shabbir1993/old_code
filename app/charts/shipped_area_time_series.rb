@@ -4,15 +4,17 @@ class ShippedAreaTimeSeries
     @shipments = shipments
   end
 
-  def film_data
-    @shipments.map do |s|
-      [s[:sort_date].to_datetime.to_i*1000, s[:relation].line_items.product_type_equals('Film').total_area.to_f]
+  def data
+    hash = {}
+    product_types.each do |t|
+      hash[t] = @shipments.map do |s|
+        [s[:sort_date].to_datetime.to_i*1000, s[:relation].line_items.product_type_equals(t).total_area.to_f]
+      end
     end
+    hash
   end
 
-  def glass_data
-    @shipments.map do |s|
-      [s[:sort_date].to_datetime.to_i*1000, s[:relation].line_items.product_type_equals('Glass').total_area.to_f]
-    end
+  def product_types
+    LineItem.pluck(:product_type).uniq
   end
 end

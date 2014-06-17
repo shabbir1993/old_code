@@ -32,13 +32,14 @@
         }
       },
 
-      series: [{
-        name: 'Film',
-        data: <%= raw @time_series.film_data %>
-        }, {
-        name: 'Glass',
-        data: <%= raw @time_series.glass_data %>
-      }]
+      series: [
+      <% @time_series.product_types.each do |t| %>
+        {
+          name: "<%= t %>",
+          data: <%= raw @time_series.data[t] %>
+        }, 
+      <% end %>
+      ]
     });
   });
 </script>
