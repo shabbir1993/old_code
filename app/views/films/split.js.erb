@@ -1,2 +1,2 @@
-$("<%= "#film-#{film.id}" %>").after("<%= j render 'film', film: split_film %>");
-$("<%= "#film-#{split_film.id}" %>").addClass("success");
+$("<%= "#film-#{@film.id}" %>").after("<%= j render 'film', film: @split %>");
+$("<%= "#film-#{@split.id}" %>").addClass("success");

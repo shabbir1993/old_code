@@ -75,21 +75,6 @@ class FilmsController < ApplicationController
     params[:width_greater_than].present? || params[:length_greater_than].present?
   end
 
-  def films
-    @films.page(params[:page])
-  end
-  helper_method :films
-
-  def film
-    @film
-  end
-  helper_method :film
-
-  def split_film
-    @split
-  end
-  helper_method :split_film
-
   def tenant_films
     current_tenant.films
   end

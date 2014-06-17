@@ -1,9 +1,9 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: film } do %>
-  var film_row = $("<%= "#film-#{film.id}" %>")
-  <% if film.previous_changes.keys.include?("phase") %>
-    film_row.replaceWith("<%= j render 'moved_film', film: film %>");
+<%= render layout: 'shared/modal_form_submit', locals: { object: @film } do %>
+  var film_row = $("<%= "#film-#{@film.id}" %>")
+  <% if @film.previous_changes.keys.include?("phase") %>
+    film_row.replaceWith("<%= j render 'moved_film', film: @film %>");
   <% else %>
-    film_row.replaceWith("<%= j render 'film', film: film %>");
+    film_row.replaceWith("<%= j render 'film', film: @film %>");
     $(film_row.selector).addClass("info")
   <% end %>
 <% end %>
