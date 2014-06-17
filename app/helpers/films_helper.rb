@@ -24,4 +24,12 @@ module FilmsHelper
   def search_length
     @search_length ||= params[:min_length].to_f unless params[:min_length].empty?
   end
+
+  def moved_to(film)
+    if film.deleted?
+      "deleted"
+    else
+      film.phase
+    end
+  end
 end

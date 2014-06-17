@@ -97,29 +97,6 @@ class Film < ActiveRecord::Base
     movement.save!
   end
 
-  def phase_label_class
-    case phase
-    when "wip"
-      "label-warning"
-    when "fg"
-      "label-success"
-    else
-      "label-danger"
-    end
-  end
-
-  def moved_to
-    if deleted?
-      "deleted"
-    else
-      phase
-    end
-  end
-
-  def moved?
-    previous_changes.keys.include?("phase")
-  end
-
   def self.total_area
     sum(:area)
   end

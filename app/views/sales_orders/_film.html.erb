@@ -1,4 +1,4 @@
-<li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{film.phase_label_class}" %>">
+<li id="<%= "film-#{film.id}-label" %>" class="<%= "label #{phase_label_class(film)}" %>">
   <%= film.serial %>
   <%= link_to("X", unassign_film_path(film), { remote: true, method: :patch, id: "film-#{film.id}-unassign"}) %>
 </li>

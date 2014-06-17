@@ -1,7 +1,7 @@
 $('#forms-modal').modal('hide');
 <% @films.each do |film| %>
   var film_row = $("<%= "#film-#{film.id}" %>")
-  <% if film.moved? %>
+  <% if film.previous_changes.keys.include?("phase") %>
     film_row.replaceWith("<%= j render 'moved_film', film: film %>");
   <% else %>
     film_row.replaceWith("<%= j render 'film', film: film %>");
