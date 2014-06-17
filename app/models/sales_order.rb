@@ -24,8 +24,6 @@ class SalesOrder < ActiveRecord::Base
 
   scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
   scope :status, ->(status) { where(status: statuses[status]) }
-  scope :has_release_date, -> { where('release_date is not null') }
-  scope :has_due_date, -> { where('due_date is not null') }
   scope :due_date_equals, ->(date) { where(due_date: date) }
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) }
   scope :ship_date_before, ->(date) { where("ship_date <= ?", date) } 

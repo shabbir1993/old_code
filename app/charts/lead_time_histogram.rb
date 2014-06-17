@@ -1,7 +1,7 @@
 class LeadTimeHistogram
 
   def initialize(orders)
-    @orders = orders.shipped.has_release_date
+    @orders = orders.shipped
   end
 
   def lead_day_range

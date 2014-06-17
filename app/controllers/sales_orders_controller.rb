@@ -3,9 +3,6 @@ class SalesOrdersController < ApplicationController
 
   def index
     @sales_orders = filtered_orders.by_code.page(params[:page])
-    @total_orders = filtered_orders.count(:all)
-    @total_quantity = filtered_orders.line_items.total_quantity
-    @total_area = filtered_orders.line_items.total_area
     respond_to do |format|
       format.html
       format.csv do 
@@ -71,6 +68,7 @@ class SalesOrdersController < ApplicationController
   def filtered_orders
     sales_orders.status(params[:status]).filter(filtering_params)
   end
+  helper_method :filtered_orders
 
   def sales_orders
     current_tenant.sales_orders

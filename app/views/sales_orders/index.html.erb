@@ -1,7 +1,7 @@
 <div>
-  Orders: <strong><%= @total_orders %></strong>
-  Pieces: <strong><%= @total_quantity %></strong>
-  Area: <strong><%= number_with_precision(@total_area, precision: 2) %></strong>
+  Orders: <strong><%= filtered_orders.count(:all) %></strong>
+  Pieces: <strong><%= filtered_orders.line_items.total_quantity %></strong>
+  Area: <strong><%= number_with_precision(filtered_orders.line_items.total_area, precision: 2) %></strong>
 </div>
 
 <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>

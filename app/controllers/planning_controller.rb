@@ -6,6 +6,6 @@ class PlanningController < ApplicationController
   private
 
   def sales_orders
-    current_tenant.sales_orders.has_due_date.not_cancelled
+    current_tenant.sales_orders.not_cancelled
   end
 end
