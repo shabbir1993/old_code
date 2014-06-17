@@ -10,11 +10,11 @@ class DimensionsMap
   end
 
   def x_axis_categories
-    (0..max_x_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval-1)}" }
+    (0..max_x_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval)}" }
   end
 
   def y_axis_categories
-    (0..max_y_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval-1)}" }
+    (0..max_y_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval)}" }
   end
 
   def max_x_coordinate
