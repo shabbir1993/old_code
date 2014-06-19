@@ -1,9 +1,3 @@
-<span>
-  <!-- count must be count(:all) to accommodate pg_search query -->
-  Count: <strong><%= filtered_films.count(:all) %></strong>
-  Area: <strong><%= filtered_films.total_area %></strong>
-</span>
-
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
   <%= submit_tag "Move selected", id: "films-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
   <%= link_to_export(method(:films_path), params) %>

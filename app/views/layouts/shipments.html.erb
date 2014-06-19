@@ -8,7 +8,7 @@
 <% end %>
 
 <% content_for :page_head do %>
-  <%= form_tag url_for, method: :get, class: 'form-inline search' do %>
+  <%= form_tag url_for, method: :get, class: 'form-inline search-form' do %>
     <div class="form-group">
       <%= text_field_tag :ship_date_after, params[:ship_date_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>
     </div>

@@ -40,6 +40,8 @@ class Film < ActiveRecord::Base
   scope :order_by, ->(col, dir) { order("#{col} #{dir}") }
   scope :width_greater_than, ->(n) { join_dimensions.merge(Dimension.min_width(n)) }
   scope :length_greater_than, ->(n) { join_dimensions.merge(Dimension.min_length(n)) }
+  scope :serial_date_before, ->(date) { join_master_films.merge(MasterFilm.serial_date_before(date)) }
+  scope :serial_date_after, ->(date) { join_master_films.merge(MasterFilm.serial_date_after(date)) }
 
   include PgSearch
   pg_search_scope :search, 

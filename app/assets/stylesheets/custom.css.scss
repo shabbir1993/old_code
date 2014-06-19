@@ -55,11 +55,7 @@ td.nowrap {
   padding-right: 10px;
 }
 
-.page-head {
-  margin-bottom: 10px;
-}
-
-ol {
+.ul, ol {
   padding: 0;
 }
 
@@ -67,12 +63,8 @@ ol {
   margin-top: 5px;
 }
 
-.search {
+.search-form {
   margin-bottom: 10px;
-
-  .form-control {
-    width: 100px;
-  }
 }
 
 .jumbotron.login {
@@ -123,38 +115,38 @@ ol {
   }
 }
 
+.summary dl {
+  margin-bottom: 0px;
+}
+
+.page-head .nav-tabs {
+  margin-bottom: 15px;
+}
+
 .calendar-header {
   text-align: center;
 
-  h2 {
-    display: inline-block;
-  }
+  h2 { display: inline-block; }
 }
 
 .calendar-table {
+
   td {
     min-height: 100px;
 
     .calendar-item, .panel-heading, .panel-footer {
       padding: 3px 10px;
     }
-
-    dl {
-      margin-bottom: 0;
-
-      dt {
-        width: 80px;
-      }
-      dd {
-        margin-left: 100px;
-      }
-    }
   }
-  .non-month {
-    opacity: 0.5;
+
+  dl {
+    margin-bottom: 0;
+
+    dt { width: 80px; }
+    dd { margin-left: 100px; }
   }
 }
 
-.main .nav-tabs {
-  margin-bottom: 15px;
+.non-month {
+  opacity: 0.5;
 }
