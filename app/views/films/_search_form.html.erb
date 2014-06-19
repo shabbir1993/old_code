@@ -11,33 +11,27 @@
   </div>
   <div id="film-search-collapse" class="collapse">
     <div class="form-group">
-      <%= label_tag :formula_like, "Formula", class: "control-label col-md-2" %>
-      <div class="col-md-10">
+      <%= label_tag :formula_like, "Formula", class: "control-label" %>
+      <div class="col-md-12">
         <%= text_field_tag :formula_like, params[:formula_like], class: "form-control" %>
       </div>
     </div>
     <div class="form-group">
-      <%= label_tag :width_greater_than, "Width >", class: "control-label col-md-2" %>
-      <div class="col-md-10">
-        <%= number_field_tag :width_greater_than, params[:width_greater_than], step: "any", class: "form-control" %>
+      <%= label_tag "Dimensions", nil, class: "control-label" %><br/>
+      <div class="col-md-6">
+        <%= number_field_tag :width_greater_than, params[:width_greater_than], placeholder: "Width", step: "any", class: "form-control" %>
+      </div>
+      <div class="col-md-6">
+        <%= number_field_tag :length_greater_than, params[:length_greater_than], placeholder: "Length", step: "any", class: "form-control" %>
       </div>
     </div>
     <div class="form-group">
-      <%= label_tag :length_greater_than, "Length >", class: "control-label col-md-2" %>
-      <div class="col-md-10">
-        <%= number_field_tag :length_greater_than, params[:length_greater_than], step: "any", class: "form-control" %>
+      <%= label_tag "Date range", nil, class: "control-label" %><br/>
+      <div class="col-md-6">
+        <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
       </div>
-    </div>
-    <div class="form-group">
-      <%= label_tag :serial_date_after, "Start date", class: "control-label col-md-2" %>
-      <div class="col-md-10">
-        <%= text_field_tag :serial_date_after, params[:serial_date_after], class: "form-control bootstrap-datepicker" %>
-      </div>
-    </div>
-    <div class="form-group">
-      <%= label_tag :serial_date_before, "End date", class: "control-label col-md-2" %>
-      <div class="col-md-10">
-        <%= text_field_tag :serial_date_before, params[:serial_date_before], class: "form-control bootstrap-datepicker" %>
+      <div class="col-md-6">
+        <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End", class: "form-control bootstrap-datepicker" %>
       </div>
     </div>
   </div>

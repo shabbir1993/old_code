@@ -12,7 +12,7 @@ class Film < ActiveRecord::Base
 
   accepts_nested_attributes_for :dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes['width'].blank? || attributes['length'].blank? }
 
-  delegate :formula, to: :master_film
+  delegate :formula, :serial_date, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
   delegate :width, :length, to: :primary_dimension
 
