@@ -32,6 +32,7 @@ class MasterFilmsController < ApplicationController
   def filtered_master_films
     master_films.active.function(params[:function]).filter(filtering_params).by_serial
   end
+  helper_method :filtered_master_films
 
   def master_films
     current_tenant.master_films
