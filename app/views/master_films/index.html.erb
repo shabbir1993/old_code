@@ -1,7 +1,7 @@
 <%= paginate @master_films %>
 
 <%= link_to_modal_new(new_master_film_path, "Enter film") %>
-<%= link_to_export(method(:master_films_path), params) %>
+<%= link_to_export("Master films", params) %>
 
 <table class="table table-condensed table-hover">
   <thead>

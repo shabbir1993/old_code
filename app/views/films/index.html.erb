@@ -1,6 +1,6 @@
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
   <%= submit_tag "Move selected", id: "films-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
-  <%= link_to_export(method(:films_path), params) %>
+  <%= link_to_export("Films", params) %>
 
   <%= paginate @films %>
 

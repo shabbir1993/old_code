@@ -1,6 +1,9 @@
 <%= link_to_modal_new(new_sales_order_path, "Enter sales order") %>
-<%= link_to "Export Orders", sales_orders_path(params.merge(format: "csv", data: "orders")), class: "btn btn-default" %>
-<%= link_to "Export Line items", sales_orders_path(params.merge(format: "csv", data: "line_items")), class: "btn btn-default" %>
+
+<div class="btn-group">
+  <%= link_to_export("Orders", params.merge(data: "orders")) %>
+  <%= link_to_export("Line items", params.merge(data: "line_items")) %>
+</div>
 
 <%= paginate @sales_orders %>
 

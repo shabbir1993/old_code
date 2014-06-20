@@ -36,10 +36,11 @@ module ApplicationHelper
     end
   end
 
-  def link_to_export(route_helper, params)
+  def link_to_export(text, params)
     if current_user.admin?
-      export_params = params.merge(format: "csv")
-      link_to "Export", route_helper.call(export_params), class: "btn btn-default"
+      link_to url_for(params.merge(format: "csv")), class: "btn btn-default" do
+        content_tag(:i, nil, class: "fa fa-download") + " " + text
+      end
     end
   end
 
