@@ -31,6 +31,7 @@
     <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
     <li class="<%= "active" if params[:action] == 'lead_time_histogram' %>"><%= link_to "Lead time histogram", url_for(params.merge(action: 'lead_time_histogram')) %></li>
     <li class="<%= "active" if params[:action] == 'product_type_totals' %>"><%= link_to "Product type totals", url_for(params.merge(action: 'product_type_totals')) %></li>
+    <li class="<%= "active" if params[:action] == 'assigned_formula_totals' %>"><%= link_to "Assigned formula totals", url_for(params.merge(action: 'assigned_formula_totals')) %></li>
   </ul>
 <% end %>
 

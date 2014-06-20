@@ -26,6 +26,7 @@ Pcms::Application.routes.draw do
       get :lead_time_histogram
       get :calendar
       get :product_type_totals
+      get :assigned_formula_totals
     end
   end
 

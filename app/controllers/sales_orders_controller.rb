@@ -19,6 +19,11 @@ class SalesOrdersController < ApplicationController
   def product_type_totals
     @data = LineItemProductTypeTotals.new(filtered_orders.line_items)
   end
+
+  def assigned_formula_totals
+    @data = FilmFormulaTotals.new(filtered_orders.films)
+    render 'films/formula_totals'
+  end
   
   def new
     @sales_order = current_tenant.new_sales_order
