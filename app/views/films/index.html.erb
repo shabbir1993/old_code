@@ -4,18 +4,30 @@
 
   <%= paginate @films %>
 
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      Sort: <strong><%= sort.humanize %></strong> 
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li class="<%= "active" if params[:sort] == 'serial' %>"><%= link_to "Serial", url_for(params.merge(sort: 'serial', direction: 'desc')) %></li>
+      <li class="<%= "active" if params[:sort] == 'area' %>"><%= link_to "Area", url_for(params.merge(sort: 'area', direction: 'desc')) %></li>
+      <li class="<%= "active" if params[:sort] == 'shelf' %>"><%= link_to "Shelf", url_for(params.merge(sort: 'shelf', direction: 'asc')) %></li>
+    </ul>
+  </div>
+
   <table class="table table-condensed table-hover">
     <thead>
       <tr>
         <th></th>
         <th></th>
-        <th><%= sort_link 'films.serial', "Serial" %></th>
+        <th>Serial</th>
         <th>Width</th>
         <th>Length</th>
-        <th><%= sort_link 'area' %></th>
-        <th><%= sort_link 'shelf' %></th>
+        <th>Area</th>
+        <th>Shelf</th>
         <th>SO</th>
-        <th><%= sort_link 'note' %></th>
+        <th>Note</th>
         <th>Date</th>
       </tr>
     </thead>

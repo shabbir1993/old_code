@@ -1,9 +1,6 @@
 class FilmsController < ApplicationController
-  SAFE_SORTS = %w(serial width length area shelf note) 
-
   def index
-    set_default_sort
-    @films = filtered_films.order_by(safe_sort, safe_direction).page(params[:page])
+    @films = filtered_films.order_by(sort, direction).page(params[:page])
     respond_to do |format|
       format.html
       format.csv { render csv: @films }
@@ -66,15 +63,6 @@ class FilmsController < ApplicationController
 
   private
 
-  def set_default_sort
-    params[:sort] ||=  dimensions_searched? ? "area" : "serial"
-    params[:direction] ||= dimensions_searched? ? "asc" : "desc"
-  end
-
-  def dimensions_searched?
-    params[:width_greater_than].present? || params[:length_greater_than].present?
-  end
-
   def tenant_films
     current_tenant.films
   end
@@ -87,21 +75,21 @@ class FilmsController < ApplicationController
   end
   helper_method :filtered_films
 
-  def safe_sort
-    if SAFE_SORTS.include?(params[:sort])
-      case params[:sort]
-      when 'serial'
-        'films.serial'
-      else
-        params[:sort]
-      end
-    else
-      'films.serial'
-    end
+  def dimensions_searched?
+    params[:width_greater_than].present? || params[:length_greater_than].present?
   end
 
-  def safe_direction
-    %w(asc desc).include?(params[:direction]) ? params[:direction] : "desc"
+  def sort
+    if dimensions_searched?
+      'area'
+    else
+      params.fetch(:sort) { 'serial' }
+    end
+  end
+  helper_method :sort
+
+  def direction
+    params.fetch(:direction) { 'desc' }
   end
 
   def filtering_params

@@ -24,15 +24,6 @@ module ApplicationHelper
     end
   end
 
-  def sort_link(column, title = nil)
-    title ||= column.titleize
-    arrow_direction = params[:direction] == "asc" ? "up" : "down" if params[:direction].present?
-    icon = column == params[:sort] ? content_tag(:i, nil, class: "fa fa-caret-#{arrow_direction}").html_safe : ""
-    direction = (column == params[:sort] && params[:direction] == "asc") ? "desc" : "asc"
-    new_params = params.merge({ sort: column, direction: direction })
-    link_to(title, new_params) + " " + icon
-  end
-
   def link_to_modal_edit(path, object, options = {})
     link_to path, { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "#{object.class.to_s.downcase}-#{object.id}-edit", class: options[:class] } do
       content_tag(:i, nil, class: "fa fa-edit").html_safe
