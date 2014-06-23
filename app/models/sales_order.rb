@@ -30,8 +30,7 @@ class SalesOrder < ActiveRecord::Base
   scope :ship_date_after, ->(date) { where("ship_date >= ?", date) } 
   scope :text_search, ->(query) { reorder('').search(query) }
   scope :code_like, ->(code) { where('code ILIKE ?', code.gsub('*', '%')) }
-  scope :not_shipped, -> { where("status <> ?", statuses[:shipped]) }
-  scope :not_cancelled, -> { where("status <> ?", statuses[:cancelled]) }
+  scope :status_not, ->(status) { where("status <> ?", statuses[status]) }
 
   def lead_days
     (ship_date - release_date).to_i

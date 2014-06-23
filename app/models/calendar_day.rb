@@ -21,9 +21,9 @@ class CalendarDay
 
   def progress_count
     progress = Hash.new
-    progress[:reserved] = orders_due.not_shipped.films.phase('stock').total_order_fill_count
-    progress[:wip] = orders_due.not_shipped.films.phase('wip').total_order_fill_count
-    progress[:fg] = orders_due.not_shipped.films.phase('fg').total_order_fill_count
+    progress[:reserved] = orders_due.status_not(:shipped).films.phase('stock').total_order_fill_count
+    progress[:wip] = orders_due.status_not(:shipped).films.phase('wip').total_order_fill_count
+    progress[:fg] = orders_due.status_not(:shipped).films.phase('fg').total_order_fill_count
     progress[:shipped] = orders_due.shipped.films.total_order_fill_count
     progress[:total] = orders_due.line_items.total_quantity
     progress
