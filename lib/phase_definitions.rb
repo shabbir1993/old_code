@@ -6,17 +6,17 @@ module PhaseDefinitions
     when "lamination"
       ["inspection"]
     when "inspection"
-      %w{stock wip nc}
+      %w{stock reserved wip nc}
     when "stock"
-      %w{wip nc}
+      %w{reserved wip nc}
     when "wip"
-      %w{fg stock nc}
+      %w{fg reserved stock nc}
     when "fg"
-      %w{wip stock nc}
+      %w{wip stock reserved nc}
     when "nc"
-      %w{scrap stock}
+      %w{scrap stock reserved}
     when "scrap"
-      %w{stock nc}
+      %w{stock reserved nc}
     end
   end
 

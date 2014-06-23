@@ -12,6 +12,8 @@ class Film < ActiveRecord::Base
 
   accepts_nested_attributes_for :dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes['width'].blank? || attributes['length'].blank? }
 
+  enum phase: [ :lamination, :inspection, :stock, :reserved, :wip, :fg, :nc, :scrap]
+
   delegate :formula, :serial_date, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
   delegate :width, :length, to: :primary_dimension
@@ -26,14 +28,12 @@ class Film < ActiveRecord::Base
   scope :join_master_films, -> { joins('INNER JOIN master_films ON master_films.id = films.master_film_id') }
   scope :active, -> { where(deleted: false)
                      .join_master_films
-                     .merge(MasterFilm.where("function <> ?", MasterFilm.functions[:test])) }
+                     .merge(MasterFilm.function_not(:test)) }
   scope :deleted, -> { where(deleted: true) }
   scope :not_deleted, -> { where(deleted: false) }
   scope :has_shelf, -> { where("shelf <> ''") }
   scope :large, ->(cutoff) { join_dimensions.merge(Dimension.large(cutoff)) }
   scope :small, ->(cutoff) { join_dimensions.merge(Dimension.small(cutoff)) }
-  scope :reserved, -> { where("sales_order_id IS NOT NULL") }
-  scope :available, -> { where("sales_order_id IS NULL") }
   scope :text_search, ->(query) { reorder('').search(query) }
   scope :formula_like, ->(formula) { join_master_films
                                     .merge(MasterFilm.formula_like(formula)) }
@@ -69,14 +69,12 @@ class Film < ActiveRecord::Base
 
   def self.phase(phase, tenant = nil)
     case phase
-    when "lamination", "inspection", "stock", "wip", "fg", "nc", "scrap"
-      active.where(phase: phase)
+    when "lamination", "inspection", "stock", "reserved", "wip", "fg", "nc", "scrap"
+      active.send(phase)
     when "large_stock"
-      phase("stock").large(tenant.small_area_cutoff).available
+      active.stock.large(tenant.small_area_cutoff)
     when "small_stock"
-      phase("stock").small(tenant.small_area_cutoff).available
-    when "reserved_stock"
-      phase("stock").reserved
+      active.stock.small(tenant.small_area_cutoff)
     when "deleted"
       deleted
     end

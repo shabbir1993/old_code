@@ -23,6 +23,7 @@ class MasterFilm < ActiveRecord::Base
 
   scope :active, -> { all.joins(:films).merge(Film.not_deleted).uniq }
   scope :function, ->(function) { where(function: functions[function]) }
+  scope :function_not, ->(function) { where("function <> ?", MasterFilm.functions[function]) }
   scope :serial_date_before, ->(date) { where('master_films.serial_date <= ?', date) }
   scope :serial_date_after, ->(date) { where('master_films.serial_date >= ?', date) }
   scope :by_serial, -> { order('master_films.serial DESC') }
