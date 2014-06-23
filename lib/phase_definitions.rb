@@ -1,5 +1,5 @@
 module PhaseDefinitions
-  HARD_PHASES = %w(raw lamination inspection stock wip fg nc scrap)
+  HARD_PHASES = %w(raw lamination inspection stock reserved wip fg nc scrap)
 
   def self.destinations_for(phase)
     case phase
