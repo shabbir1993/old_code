@@ -95,4 +95,9 @@ class FilmsController < ApplicationController
   def filtering_params
     params.slice(:text_search, :formula_like, :width_greater_than, :length_greater_than, :serial_date_before, :serial_date_after)
   end
+
+  def any_searches?
+    filtering_params.any?
+  end
+  helper_method :any_searches?
 end

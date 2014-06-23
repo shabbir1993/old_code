@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div id="master-film-search-collapse" class="collapse">
+  <div id="master-film-search-collapse" class="collapse <%= ' in' if any_searches? %>">
     <div class="form-group">
       <%= label_tag "Date range", nil, class: "control-label" %><br/>
       <div class="col-md-6">

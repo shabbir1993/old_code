@@ -31,4 +31,9 @@ class FilmMovementsController < ApplicationController
   def set_default_start_date
     params[:created_at_after] ||= Date.current
   end
+
+  def any_searches?
+    filtering_params.any?
+  end
+  helper_method :any_searches?
 end

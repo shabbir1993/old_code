@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div id="film-search-collapse" class="collapse">
+  <div id="film-search-collapse" class="collapse <%= ' in' if any_searches? %>">
     <div class="form-group">
       <%= label_tag :formula_like, "Formula", class: "control-label" %>
       <div class="col-md-12">

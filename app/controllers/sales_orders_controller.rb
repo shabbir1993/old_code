@@ -83,4 +83,9 @@ class SalesOrdersController < ApplicationController
   def filtering_params
     params.slice(:text_search, :code_like, :ship_date_before, :ship_date_after)
   end
+
+  def any_searches?
+    filtering_params.any?
+  end
+  helper_method :any_searches?
 end

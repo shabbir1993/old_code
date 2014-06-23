@@ -41,4 +41,9 @@ class MasterFilmsController < ApplicationController
   def filtering_params
     params.slice(:text_search, :serial_date_before, :serial_date_after)
   end
+
+  def any_searches?
+    filtering_params.any?
+  end
+  helper_method :any_searches?
 end

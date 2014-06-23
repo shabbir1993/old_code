@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div id="order-search-collapse" class="collapse">
+  <div id="order-search-collapse" class="collapse <%= ' in' if any_searches? %>">
     <div class="form-group">
       <%= label_tag :code_like, "SO#", class: "control-label" %><br/>
       <div class="col-md-12">
