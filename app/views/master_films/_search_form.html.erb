@@ -1,23 +1,11 @@
-<%= form_tag master_films_path, method: :get, class: 'form-horizontal search-form' do %>
-  <%= hidden_field_tag :function, params[:function] %>
+<%= render layout: 'shared/collapse_search_form', locals: { tab_param: :function, text_field: :text_search, show: any_searches? } do %>
   <div class="form-group">
-    <div class="input-group">
-      <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
-      <div class="input-group-btn">
-        <a data-toggle="collapse" href="#master-film-search-collapse" class="btn btn-default"><span class="caret"></span></a>
-        <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
-      </div>
+    <%= label_tag "Date range", nil, class: "control-label" %><br/>
+    <div class="col-md-6">
+      <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start Date", class: "form-control bootstrap-datepicker" %>
     </div>
-  </div>
-  <div id="master-film-search-collapse" class="collapse <%= ' in' if any_searches? %>">
-    <div class="form-group">
-      <%= label_tag "Date range", nil, class: "control-label" %><br/>
-      <div class="col-md-6">
-        <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start Date", class: "form-control bootstrap-datepicker" %>
-      </div>
-      <div class="col-md-6">
-        <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End Date", class: "form-control bootstrap-datepicker" %>
-      </div>
+    <div class="col-md-6">
+      <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End Date", class: "form-control bootstrap-datepicker" %>
     </div>
   </div>
 <% end %>

@@ -1,31 +1,20 @@
-<%= form_tag url_for, method: :get, class: 'form-horizontal search-form' do %>
+<%= render layout: 'shared/collapse_search_form', locals: { text_field: :text_search, show: any_searches? } do %>
   <div class="form-group">
-    <div class="input-group">
-      <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
-      <div class="input-group-btn">
-        <a data-toggle="collapse" href="#film-movement-search-collapse" class="btn btn-default"><span class="caret"></span></a>
-        <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
-      </div>
+    <%= label_tag "Phases", nil, class: "control-label" %><br/>
+    <div class="col-md-6">
+      <%= select_tag :from_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:from_phase]), prompt: "From", class: "form-control" %>
+    </div>
+    <div class="col-md-6">
+      <%= select_tag :to_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:to_phase]), prompt: "To", class: "form-control" %>
     </div>
   </div>
-  <div id="film-movement-search-collapse" class="collapse <%= ' in' if any_searches? %>">
-    <div class="form-group">
-      <%= label_tag "Phases", nil, class: "control-label" %><br/>
-      <div class="col-md-6">
-        <%= select_tag :from_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:from_phase]), prompt: "From", class: "form-control" %>
-      </div>
-      <div class="col-md-6">
-        <%= select_tag :to_phase, options_for_select(%w(lamination inspection stock wip fg nc scrap), params[:to_phase]), prompt: "To", class: "form-control" %>
-      </div>
+  <div class="form-group">
+    <%= label_tag "Date range", nil, class: "control-label" %><br/>
+    <div class="col-md-6">
+      <%= text_field_tag :created_at_after, params[:created_at_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>
     </div>
-    <div class="form-group">
-      <%= label_tag "Date range", nil, class: "control-label" %><br/>
-      <div class="col-md-6">
-        <%= text_field_tag :created_at_after, params[:created_at_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>
-      </div>
-      <div class="col-md-6">
-        <%= text_field_tag :created_at_before, params[:created_at_before], placeholder: "End date", class: "form-control bootstrap-datepicker" %>
-      </div>
+    <div class="col-md-6">
+      <%= text_field_tag :created_at_before, params[:created_at_before], placeholder: "End date", class: "form-control bootstrap-datepicker" %>
     </div>
   </div>
 <% end %>

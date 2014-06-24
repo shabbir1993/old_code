@@ -1,38 +1,26 @@
-<%= form_tag films_path, method: :get, class: 'form-horizontal search-form' do %>
-  <%= hidden_field_tag :tab, params[:tab] %>
+<%= render layout: 'shared/collapse_search_form', locals: { tab_param: :tab, text_field: :text_search, show: any_searches? } do %>
   <div class="form-group">
-    <div class="input-group">
-      <%= text_field_tag :text_search, params[:text_search], placeholder: "Search", class: "form-control" %>
-      <div class="input-group-btn">
-        <a data-toggle="collapse" href="#film-search-collapse" class="btn btn-default"><span class="caret"></span></a>
-        <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
-      </div>
+    <%= label_tag :formula_like, "Formula", class: "control-label" %>
+    <div class="col-md-12">
+      <%= text_field_tag :formula_like, params[:formula_like], class: "form-control" %>
     </div>
   </div>
-  <div id="film-search-collapse" class="collapse <%= ' in' if any_searches? %>">
-    <div class="form-group">
-      <%= label_tag :formula_like, "Formula", class: "control-label" %>
-      <div class="col-md-12">
-        <%= text_field_tag :formula_like, params[:formula_like], class: "form-control" %>
-      </div>
+  <div class="form-group">
+    <%= label_tag "Dimensions", nil, class: "control-label" %><br/>
+    <div class="col-md-6">
+      <%= number_field_tag :width_greater_than, params[:width_greater_than], placeholder: "Width", step: "any", class: "form-control" %>
     </div>
-    <div class="form-group">
-      <%= label_tag "Dimensions", nil, class: "control-label" %><br/>
-      <div class="col-md-6">
-        <%= number_field_tag :width_greater_than, params[:width_greater_than], placeholder: "Width", step: "any", class: "form-control" %>
-      </div>
-      <div class="col-md-6">
-        <%= number_field_tag :length_greater_than, params[:length_greater_than], placeholder: "Length", step: "any", class: "form-control" %>
-      </div>
+    <div class="col-md-6">
+      <%= number_field_tag :length_greater_than, params[:length_greater_than], placeholder: "Length", step: "any", class: "form-control" %>
     </div>
-    <div class="form-group">
-      <%= label_tag "Date range", nil, class: "control-label" %><br/>
-      <div class="col-md-6">
-        <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
-      </div>
-      <div class="col-md-6">
-        <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End", class: "form-control bootstrap-datepicker" %>
-      </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag "Date range", nil, class: "control-label" %><br/>
+    <div class="col-md-6">
+      <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start", class: "form-control bootstrap-datepicker" %>
+    </div>
+    <div class="col-md-6">
+      <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End", class: "form-control bootstrap-datepicker" %>
     </div>
   </div>
 <% end %>

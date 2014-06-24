@@ -1,0 +1,15 @@
+<%= form_tag url_for, method: :get, class: 'form-horizontal search-form' do %>
+  <%= hidden_field_tag(tab_param, params[tab_param]) if defined? tab_param %>
+  <div class="form-group">
+    <div class="input-group">
+      <%= text_field_tag text_field, params[text_field], placeholder: "Search", class: "form-control" %>
+      <div class="input-group-btn">
+        <a data-toggle="collapse" href="#search-collapse" class="btn btn-default"><span class="caret"></span></a>
+        <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+      </div>
+    </div>
+  </div>
+  <div id="search-collapse" class="collapse <%= ' in' if show %>">
+    <%= yield %>
+  </div>
+<% end %>
