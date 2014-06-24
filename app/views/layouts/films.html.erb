@@ -1,26 +1,24 @@
 <% provide :title, "Production" %>
 
 <% content_for :nav_list do %>
-  <%= link_to "Lamination", films_path(phase: 'lamination'), class: "list-group-item#{" active" if params[:phase] == 'lamination'}" %>
-  <%= link_to "Inspection", films_path(phase: 'inspection'), class: "list-group-item#{" active" if params[:phase] == 'inspection'}" %>
-  <%= link_to films_path(phase: 'large_stock'), class: "list-group-item#{" active" if params[:phase] == 'large_stock'}" do %>
-    <i class="fa fa-stack-overflow fa-lg"></i> Available
+  <%= sidebar_link_to(:phase, 'lamination') { "Lamination" } %>
+  <%= sidebar_link_to(:phase, 'inspection') { "Inspection" } %>
+  <%= sidebar_link_to(:phase, 'large_stock') do %>
+    <i class="fa fa-database"></i> Available
   <% end %>
-  <%= link_to films_path(phase: 'small_stock'), class: "list-group-item#{" active" if params[:phase] == 'small_stock'}" do %>
-    <i class="fa fa-stack-overflow fa-lg"></i> Small
+  <%= sidebar_link_to(:phase, 'small_stock') do %>
+    <i class="fa fa-database"></i> Small
   <% end %>
-  <%= link_to films_path(phase: 'reserved'), class: "list-group-item#{" active" if params[:phase] == 'reserved'}" do %>
-    <i class="fa fa-stack-overflow fa-lg"></i> Reserved
-  <% end %>
-  <%= link_to "WIP", films_path(phase: 'wip'), class: "list-group-item#{" active" if params[:phase] == 'wip'}" %>
-  <%= link_to "FG", films_path(phase: 'fg'), class: "list-group-item#{" active" if params[:phase] == 'fg'}" %>
-  <%= link_to films_path(phase: 'nc'), class: "list-group-item#{" active" if params[:phase] == 'nc'}" do %>
+  <%= sidebar_link_to(:phase, 'reserved') { "Reserved" } %>
+  <%= sidebar_link_to(:phase, 'wip') { "WIP" } %>
+  <%= sidebar_link_to(:phase, 'fg') { "FG" } %>
+  <%= sidebar_link_to(:phase, 'nc') do %>
     NC<span class="badge"><%= tenant_films.phase('nc').count %></span>
   <% end %>
-  <%= link_to "Scrap", films_path(phase: 'scrap'), class: "list-group-item#{" active" if params[:phase] == 'scrap'}" %>
+  <%= sidebar_link_to(:phase, 'scrap') { "Scrap" } %>
   <% if current_user.admin? %>
-    <%= link_to films_path(phase: 'deleted'), class: "list-group-item#{" active" if params[:phase] == 'deleted'}" do %>
-    <i class="fa fa-trash-o fa-lg"></i> Deleted
+    <%= sidebar_link_to(:phase, 'deleted') do %>
+      <i class="fa fa-trash-o fa-lg"></i> Deleted
     <% end %>
   <% end %>
 <% end %>
@@ -42,10 +40,10 @@
   </div>
 
   <ul class="nav nav-tabs">
-    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
-    <li class="<%= "active" if params[:action] == 'formula_totals' %>"><%= link_to "Formula totals", url_for(params.merge(action: 'formula_totals')) %></li>
-    <li class="<%= "active" if params[:action] == 'dimensions_map' %>"><%= link_to "Dimensions map", url_for(params.merge(action: 'dimensions_map')) %></li>
-    <li class="<%= "active" if params[:action] == 'shelf_inventory' %>"><%= link_to "Shelves", url_for(params.merge(action: 'shelf_inventory')) %></li>
+    <%= tab_link_to("Index", 'index') %>
+    <%= tab_link_to("Formula totals", 'formula_totals') %>
+    <%= tab_link_to("Dimensions map", 'dimensions_map') %>
+    <%= tab_link_to("Shelves", 'shelf_inventory') %>
   </ul>
 <% end %>
 

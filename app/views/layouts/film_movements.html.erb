@@ -12,8 +12,8 @@
   </div>
 
   <ul class="nav nav-tabs">
-    <li class="<%= "active" if params[:action] == 'index' %>"><%= link_to "Index", url_for(params.merge(action: 'index')) %></li>
-    <li class="<%= "active" if params[:action] == 'map' %>"><%= link_to "Map", url_for(params.merge(action: 'map')) %></li>
+    <%= tab_link_to("Index", 'index') %>
+    <%= tab_link_to("Map", 'map') %>
   </ul>
 <% end %>
 

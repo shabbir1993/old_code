@@ -1,9 +1,9 @@
 <% provide :title, "Engineering" %>
 
 <% content_for :nav_list do %>
-  <%= link_to "Production", master_films_path(function: 'production'), class: "list-group-item#{" active" if params[:function] == 'production'}" %>
-  <%= link_to "Test", master_films_path(function: 'test'), class: "list-group-item #{" active" if params[:function] == 'test'}" %>
-  <%= link_to "Transfer", master_films_path(function: 'transfer'), class: "list-group-item#{" active" if params[:function] == 'transfer'}" %>
+  <%= sidebar_link_to(:function, 'production') { "Production" } %>
+  <%= sidebar_link_to(:function, 'test') { "Test" } %>
+  <%= sidebar_link_to(:function, 'transfer') { "Transfer" } %>
 <% end %>
 
 <% content_for :page_head do %>

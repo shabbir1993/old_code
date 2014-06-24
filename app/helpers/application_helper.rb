@@ -49,4 +49,16 @@ module ApplicationHelper
       link_to "Delete", object, method: :delete, remote: true, class: "btn btn-danger pull-left"
     end
   end
+
+  def sidebar_link_to(parameter, value, &block)
+    link_to url_for(parameter => value), class: "list-group-item#{" active" if params[parameter] == value}" do
+      yield
+    end
+  end
+
+  def tab_link_to(text, action)
+    content_tag(:li, class: params[:action] == action ? "active" : "") do
+      link_to text, url_for(params.merge(action: action))
+    end
+  end
 end
