@@ -4,7 +4,15 @@
   </div>
   <div class="modal-body">
     <%= serial_input_if_admin(f) %>
-    <%= render 'shared/dimensions_fields', f: f, label: "Effective", width: :effective_width, length: :effective_length %>
+    <div class="form-group">
+      <%= label_tag "Effective", nil, class: "control-label col-md-2" %>
+      <div class="col-md-4">
+        <%= f.number_field :effective_width, placeholder: "Width", step: "any", class: "form-control", default: true %>
+      </div>
+      <div class="col-md-4">
+        <%= f.number_field :effective_length, placeholder: "Length", step: "any", class: "form-control", default: true %>
+      </div>
+    </div>
     <%= render 'master_film_fields', f: f %>
   </div>
   <div class="modal-footer">

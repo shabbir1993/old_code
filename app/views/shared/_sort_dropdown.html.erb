@@ -1,0 +1,15 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    Sort: <strong><%= current[0].humanize %> <i class="fa fa-long-arrow-<%= current[1] == 'asc' ? 'up' : 'down' %>"></i></strong> 
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <% choices.each do |c| %>
+      <li class="<%= "active" if params[:sort] == "#{c[0]}-#{c[1]}" %>">
+      <%= link_to url_for(params.merge(sort: "#{c[0]}-#{c[1]}")) do %>
+        <%= c[0].humanize %> <i class="fa fa-long-arrow-<%= c[1] == 'asc' ? 'up' : 'down' %>"></i>
+      <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>

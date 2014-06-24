@@ -22,7 +22,7 @@ class SalesOrder < ActiveRecord::Base
   pg_search_scope :search, against: [:code, :customer, :ship_to, :note], 
     :using => { tsearch: { prefix: true } }
 
-  scope :by_code, -> { order('substring(code from 6 for 1) DESC, substring(code from 3 for 3) DESC') }
+  scope :order_by, ->(col, dir) { order("#{col} #{dir}") }
   scope :status, ->(status) { where(status: statuses[status]) }
   scope :due_date_equals, ->(date) { where(due_date: date) }
   scope :type, ->(prefix) { where('code ILIKE ?', prefix) }

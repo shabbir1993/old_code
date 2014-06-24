@@ -81,8 +81,8 @@ class FilmsController < ApplicationController
 
   def sort
     params.fetch(:sort) do
-      dimensions_searched? ? 'area_asc' : 'serial_desc'
-    end.split('_')
+      dimensions_searched? ? 'area-asc' : 'serial-desc'
+    end.split('-')
   end
   helper_method :sort
 

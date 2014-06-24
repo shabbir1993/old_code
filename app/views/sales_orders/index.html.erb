@@ -5,6 +5,8 @@
   <%= link_to_export("Line items", params.merge(data: "line_items")) %>
 </div>
 
+<%= render 'shared/sort_dropdown', current: sort, choices: [['code','desc'], ['release_date','desc'], ['due_date','desc'], ['ship_date', 'desc']] %>
+
 <%= paginate @sales_orders %>
 
 <ol class="list-unstyled panel-group">

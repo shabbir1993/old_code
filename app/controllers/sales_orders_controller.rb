@@ -2,7 +2,7 @@ class SalesOrdersController < ApplicationController
   before_filter :check_admin, only: [:destroy]
 
   def index
-    @sales_orders = filtered_orders.by_code.page(params[:page])
+    @sales_orders = filtered_orders.order_by(sort[0], sort[1]).page(params[:page])
     respond_to do |format|
       format.html
       format.csv do 
@@ -79,6 +79,13 @@ class SalesOrdersController < ApplicationController
     current_tenant.sales_orders
   end
   helper_method :sales_orders
+
+  def sort
+    params.fetch(:sort) do
+      'code-desc'
+    end.split('-')
+  end
+  helper_method :sort
 
   def filtering_params
     params.slice(:text_search, :code_like, :ship_date_before, :ship_date_after)
