@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140622223450) do
+ActiveRecord::Schema.define(version: 20140624151838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 20140622223450) do
 
   create_table "films", force: true do |t|
     t.integer "master_film_id",                   null: false
-    t.string  "old_phase",                        null: false
     t.text    "note"
     t.string  "shelf"
     t.boolean "deleted",          default: false
@@ -58,7 +57,6 @@ ActiveRecord::Schema.define(version: 20140622223450) do
   add_index "films", ["area"], name: "index_films_on_area", using: :btree
   add_index "films", ["deleted"], name: "index_films_on_deleted", using: :btree
   add_index "films", ["master_film_id"], name: "index_films_on_master_film_id", using: :btree
-  add_index "films", ["old_phase"], name: "index_films_on_old_phase", using: :btree
   add_index "films", ["sales_order_id"], name: "index_films_on_sales_order_id", using: :btree
   add_index "films", ["serial"], name: "index_films_on_serial", using: :btree
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
