@@ -9,6 +9,8 @@ module PhaseDefinitions
       %w{stock reserved wip nc}
     when "stock"
       %w{reserved wip nc}
+    when "reserved"
+      %w{stock wip nc}
     when "wip"
       %w{fg reserved stock nc}
     when "fg"
