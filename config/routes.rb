@@ -59,5 +59,5 @@ Pcms::Application.routes.draw do
 
   get 'planning/calendar', to: 'planning#calendar', as: :planning_calendar
 
-  root to: 'films#index', tab: "lamination"
+  root to: 'films#index', phase: "lamination"
 end

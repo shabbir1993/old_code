@@ -1,25 +1,25 @@
 <% provide :title, "Production" %>
 
 <% content_for :nav_list do %>
-  <%= link_to "Lamination", films_path(tab: 'lamination'), class: "list-group-item#{" active" if params[:tab] == 'lamination'}" %>
-  <%= link_to "Inspection", films_path(tab: 'inspection'), class: "list-group-item#{" active" if params[:tab] == 'inspection'}" %>
-  <%= link_to films_path(tab: 'large_stock'), class: "list-group-item#{" active" if params[:tab] == 'large_stock'}" do %>
+  <%= link_to "Lamination", films_path(phase: 'lamination'), class: "list-group-item#{" active" if params[:phase] == 'lamination'}" %>
+  <%= link_to "Inspection", films_path(phase: 'inspection'), class: "list-group-item#{" active" if params[:phase] == 'inspection'}" %>
+  <%= link_to films_path(phase: 'large_stock'), class: "list-group-item#{" active" if params[:phase] == 'large_stock'}" do %>
     <i class="fa fa-stack-overflow fa-lg"></i> Available
   <% end %>
-  <%= link_to films_path(tab: 'small_stock'), class: "list-group-item#{" active" if params[:tab] == 'small_stock'}" do %>
+  <%= link_to films_path(phase: 'small_stock'), class: "list-group-item#{" active" if params[:phase] == 'small_stock'}" do %>
     <i class="fa fa-stack-overflow fa-lg"></i> Small
   <% end %>
-  <%= link_to films_path(tab: 'reserved'), class: "list-group-item#{" active" if params[:tab] == 'reserved'}" do %>
+  <%= link_to films_path(phase: 'reserved'), class: "list-group-item#{" active" if params[:phase] == 'reserved'}" do %>
     <i class="fa fa-stack-overflow fa-lg"></i> Reserved
   <% end %>
-  <%= link_to "WIP", films_path(tab: 'wip'), class: "list-group-item#{" active" if params[:tab] == 'wip'}" %>
-  <%= link_to "FG", films_path(tab: 'fg'), class: "list-group-item#{" active" if params[:tab] == 'fg'}" %>
-  <%= link_to films_path(tab: 'nc'), class: "list-group-item#{" active" if params[:tab] == 'nc'}" do %>
+  <%= link_to "WIP", films_path(phase: 'wip'), class: "list-group-item#{" active" if params[:phase] == 'wip'}" %>
+  <%= link_to "FG", films_path(phase: 'fg'), class: "list-group-item#{" active" if params[:phase] == 'fg'}" %>
+  <%= link_to films_path(phase: 'nc'), class: "list-group-item#{" active" if params[:phase] == 'nc'}" do %>
     NC<span class="badge"><%= tenant_films.phase('nc').count %></span>
   <% end %>
-  <%= link_to "Scrap", films_path(tab: 'scrap'), class: "list-group-item#{" active" if params[:tab] == 'scrap'}" %>
+  <%= link_to "Scrap", films_path(phase: 'scrap'), class: "list-group-item#{" active" if params[:phase] == 'scrap'}" %>
   <% if current_user.admin? %>
-    <%= link_to films_path(tab: 'deleted'), class: "list-group-item#{" active" if params[:tab] == 'deleted'}" do %>
+    <%= link_to films_path(phase: 'deleted'), class: "list-group-item#{" active" if params[:phase] == 'deleted'}" do %>
     <i class="fa fa-trash-o fa-lg"></i> Deleted
     <% end %>
   <% end %>

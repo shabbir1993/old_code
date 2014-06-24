@@ -70,7 +70,7 @@ class FilmsController < ApplicationController
 
   def filtered_films
     tenant_films.join_dimensions
-                .phase(params[:tab], current_tenant)
+                .phase(params[:phase], current_tenant)
                 .filter(filtering_params)
   end
   helper_method :filtered_films
