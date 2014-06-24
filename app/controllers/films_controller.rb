@@ -1,6 +1,6 @@
 class FilmsController < ApplicationController
   def index
-    @films = filtered_films.order_by(sort, direction).page(params[:page])
+    @films = filtered_films.order_by(sort[0], sort[1]).page(params[:page])
     respond_to do |format|
       format.html
       format.csv { render csv: @films }
@@ -80,24 +80,13 @@ class FilmsController < ApplicationController
   end
 
   def sort
-    if dimensions_searched?
-      'area'
-    else
-      params.fetch(:sort) { 'serial' }
-    end
+    params.fetch(:sort) do
+      dimensions_searched? ? 'area_asc' : 'serial_desc'
+    end.split('_')
   end
   helper_method :sort
-
-  def direction
-    params.fetch(:direction) { 'desc' }
-  end
 
   def filtering_params
     params.slice(:text_search, :formula_like, :width_greater_than, :length_greater_than, :serial_date_before, :serial_date_after)
   end
-
-  def any_searches?
-    filtering_params.any?
-  end
-  helper_method :any_searches?
 end

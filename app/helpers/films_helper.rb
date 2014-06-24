@@ -1,7 +1,7 @@
 module FilmsHelper
 
   def utilization_label(width, length)
-    if params[:min_width].present? && params[:min_length].present? && width >= search_width && length >= search_length
+    if params[:width_greater_than].present? && params[:length_greater_than].present? && width >= search_width && length >= search_length
       content_tag(:span, class: "label label-warning") do
         number_to_percentage(100*(search_width*search_length)/(width*length), precision: 2)
       end
@@ -18,11 +18,11 @@ module FilmsHelper
   end
 
   def search_width
-    @search_width ||= params[:min_width].to_f unless params[:min_width].empty?
+    @search_width ||= params[:width_greater_than].to_f unless params[:length_greater_than].empty?
   end
 
   def search_length
-    @search_length ||= params[:min_length].to_f unless params[:min_length].empty?
+    @search_length ||= params[:width_greater_than].to_f unless params[:length_greater_than].empty?
   end
 
   def moved_to(film)

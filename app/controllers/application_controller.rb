@@ -47,4 +47,9 @@ private
   def check_admin
     redirect_to root_url unless current_user.admin?
   end
+
+  def any_searches?
+    filtering_params.any?
+  end
+  helper_method :any_searches?
 end
