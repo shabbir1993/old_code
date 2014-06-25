@@ -1,0 +1,10 @@
+<%= form_tag url_for, method: :get, class: 'form-inline search-form' do %>
+  <div class="form-group">
+    <%= text_field_tag :serial_date_after, params[:serial_date_after], placeholder: "Start date", class: "form-control bootstrap-datepicker" %>
+  </div>
+  <div class="form-group">
+    <%= text_field_tag :serial_date_before, params[:serial_date_before], placeholder: "End date", class: "form-control bootstrap-datepicker" %>
+  </div>
+  <%= hidden_field_tag :grouping, params[:grouping] %>
+  <%= submit_tag "Search", name: nil, class: "btn btn-default" %>
+<% end %>
