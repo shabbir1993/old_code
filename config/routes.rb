@@ -3,7 +3,6 @@ Pcms::Application.routes.draw do
     member do
       post :split
       patch :restore
-      patch :unassign
     end
     collection do
       get :edit_multiple

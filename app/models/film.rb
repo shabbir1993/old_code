@@ -80,11 +80,6 @@ class Film < ActiveRecord::Base
     end
   end
 
-  def unassign
-    reset_sales_order
-    save!
-  end
-
   def self.total_order_fill_count
     all.sum(:order_fill_count)
   end

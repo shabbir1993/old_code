@@ -56,11 +56,6 @@ class FilmsController < ApplicationController
     @film.update_attributes(deleted: false)
   end
 
-  def unassign
-    @film = tenant_films.find(params[:id])
-    @film.unassign
-  end
-
   private
 
   def tenant_films
