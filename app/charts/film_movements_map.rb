@@ -4,7 +4,7 @@ class FilmMovementsMap
   end
 
   def categories
-    %w(raw lamination inspection stock wip fg nc scrap)
+    %w(raw lamination inspection stock reserved wip fg nc scrap)
   end
 
   def data
