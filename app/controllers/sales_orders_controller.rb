@@ -63,9 +63,11 @@ class SalesOrdersController < ApplicationController
 
   def update_ship_date
     @sales_order = sales_orders.find(params[:id])
-    @sales_order.update_attributes(params[:sales_order])
-    @sales_order.status = "shipped"
-    @sales_order.save!
+    if @sales_order.update_attributes(params[:sales_order])
+      @sales_order.shipped!
+    else
+      render :display_error_messages
+    end
   end
 
   private

@@ -2,7 +2,7 @@ class SalesOrder < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes
+  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :status
 
   enum status: [ :in_progress, :on_hold, :cancelled, :shipped ]
 
@@ -15,6 +15,7 @@ class SalesOrder < ActiveRecord::Base
                    uniqueness: { case_sensitive: false, 
                                  scope: :tenant_code }
   validates :ship_date, presence: true, if: Proc.new { |o| o.shipped? }
+  validate :ship_date_after_release?
   validates :release_date, presence: true
   validates :due_date, presence: true
 
@@ -95,6 +96,14 @@ class SalesOrder < ActiveRecord::Base
       all.each do |o|
         csv << [o.code, o.customer, o.release_date, o.due_date, o.ship_to, o.status, o.ship_date, o.note]
       end
+    end
+  end
+
+  private
+
+  def ship_date_after_release?
+    if ship_date < release_date
+      errors.add(:base, "Must be shipped after release")
     end
   end
 end
