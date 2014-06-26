@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626012253) do
+ActiveRecord::Schema.define(version: 20140626013350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,15 +26,15 @@ ActiveRecord::Schema.define(version: 20140626012253) do
   add_index "dimensions", ["film_id"], name: "index_dimensions_on_film_id", using: :btree
 
   create_table "film_movements", force: true do |t|
-    t.string   "from_phase",  null: false
-    t.string   "to_phase",    null: false
-    t.decimal  "width"
-    t.decimal  "length"
-    t.string   "actor",       null: false
-    t.integer  "film_id",     null: false
+    t.string   "from_phase",                null: false
+    t.string   "to_phase",                  null: false
+    t.decimal  "width",       default: 0.0, null: false
+    t.decimal  "length",      default: 0.0, null: false
+    t.string   "actor",                     null: false
+    t.integer  "film_id",                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tenant_code", null: false
+    t.string   "tenant_code",               null: false
   end
 
   add_index "film_movements", ["created_at"], name: "index_film_movements_on_created_at", using: :btree
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20140626012253) do
     t.string  "shelf"
     t.boolean "deleted",          default: false
     t.integer "sales_order_id"
-    t.integer "order_fill_count", default: 1
+    t.integer "order_fill_count", default: 1,     null: false
     t.string  "tenant_code",                      null: false
     t.string  "serial",                           null: false
     t.decimal "area",             default: 0.0,   null: false
