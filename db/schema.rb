@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626010738) do
+ActiveRecord::Schema.define(version: 20140626012253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20140626010738) do
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
 
   create_table "line_items", force: true do |t|
-    t.integer "sales_order_id",               null: false
-    t.decimal "custom_width",   default: 0.0, null: false
-    t.decimal "custom_length",  default: 0.0, null: false
-    t.integer "quantity",       default: 1,   null: false
+    t.integer "sales_order_id", null: false
+    t.decimal "custom_width",   null: false
+    t.decimal "custom_length",  null: false
+    t.integer "quantity",       null: false
     t.string  "wire_length"
     t.string  "busbar_type"
     t.text    "note"
-    t.string  "product_type",                 null: false
+    t.string  "product_type",   null: false
   end
 
   add_index "line_items", ["sales_order_id"], name: "index_line_items_on_sales_order_id", using: :btree
