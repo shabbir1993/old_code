@@ -8,6 +8,10 @@ body {
   margin: 0 !important;
 }
 
+.chart {
+  min-height: 600px;
+}
+
 td.select-box {
   width: 22px;
 }
@@ -20,8 +24,11 @@ td.select-box {
   margin-top: 5px;
 }
 
-.search-form .form-group {
-  margin-bottom: 5px;
+.search-form {
+  margin-bottom: 10px;
+  .form-group {
+    margin-bottom: 5px;
+}
 }
 
 .jumbotron.login {
