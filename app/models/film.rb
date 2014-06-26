@@ -58,7 +58,7 @@ class Film < ActiveRecord::Base
   def update_and_move(attrs, destination, user)
     before_phase = phase
     if update_attributes(attrs)
-      if PhaseDefinitions.front_end?(before_phase)
+      if %(lamination inspection).include?(before_phase)
         master_film.effective_width = width
         master_film.effective_length = length
         master_film.save!
@@ -102,6 +102,27 @@ class Film < ActiveRecord::Base
       all.join_dimensions.each do |f|
         csv << [f.serial, f.formula, f.width, f.length, f.area, f.shelf, f.sales_order_code, f.phase]
       end
+    end
+  end
+
+  def valid_destinations
+    case phase
+    when "lamination"
+      ["inspection"]
+    when "inspection"
+      %w{stock reserved wip nc}
+    when "stock"
+      %w{reserved wip nc}
+    when "reserved"
+      %w{stock wip nc}
+    when "wip"
+      %w{fg reserved stock nc}
+    when "fg"
+      %w{wip stock reserved nc}
+    when "nc"
+      %w{scrap stock reserved}
+    when "scrap"
+      %w{stock reserved nc}
     end
   end
 

@@ -14,7 +14,7 @@ module FilmsHelper
   end
 
   def destination_choices(films)
-    films.map{ |f| PhaseDefinitions.destinations_for(f.phase) }.uniq.reduce(:&)
+    films.map{ |f| f.valid_destinations }.uniq.reduce(:&)
   end
 
   def search_width
