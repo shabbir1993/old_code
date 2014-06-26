@@ -1,9 +1,6 @@
 <%= modal_form_for @sales_order do |f| %>
-  <div class="modal-header">
-    <h4 class="modal-title text-center"><%= @sales_order.code %></h4>
-  </div>
   <div class="modal-body">
-    <%= code_input_if_admin(f) %>
+    <%= f.text_field :code, label: "SO#", disabled: !current_user.admin? %>
     <%= f.text_field :customer, label: "Customer" %>
     <%= f.text_field :ship_to, label: "Ship to" %>
     <%= render "shared/date_field", f: f, name: :release_date, label: "Released" %>

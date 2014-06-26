@@ -1,9 +1,6 @@
 <%= modal_form_for @master_film do |f| %>
-  <div class="modal-header">
-    <h4 class="modal-title text-center"><%= @master_film.serial %></h4>
-  </div>
   <div class="modal-body">
-    <%= serial_input_if_admin(f) %>
+    <%= f.text_field :serial, disabled: !current_user.admin? %>
     <div class="form-group">
       <%= label_tag "Effective", nil, class: "control-label col-md-2" %>
       <div class="col-md-4">
