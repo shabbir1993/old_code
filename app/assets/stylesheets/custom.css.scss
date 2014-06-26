@@ -4,55 +4,12 @@ body {
   min-height: 600px;
 }
 
-.pagination.pagination-sm {
-  margin: 0;
-}
-
-.chart {
-  height: 800px;
+.pagination {
+  margin: 0 !important;
 }
 
 td.select-box {
   width: 22px;
-}
-
-td.actions {
-  width: 44px;
-}
-
-td.serial {
-  min-width: 90px;
-}
-
-td.note {
-  max-width: 200px; // keeps from overflowing right
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-td.nowrap {
-  white-space: nowrap;
-}
-
-.table tbody tr.info td {
-  background-color: #d9edf7;
-  border-color: #c3dbe7;
-}
-
-.table-hover tbody tr.info:hover td {
-  background-color: #c4e3f3;
-  border-color: #b1d0e0;
-}
-
-.sidebar {
-  position: absolute;
-  width: 160px;
-}
-
-.main, .page-head {
-  margin-left: 180px;
-  padding-right: 10px;
 }
 
 .ul, ol {
@@ -63,12 +20,8 @@ td.nowrap {
   margin-top: 5px;
 }
 
-.search-form {
-  margin-bottom: 10px;
-
-  .form-group {
-    margin-bottom: 5px;
-  }
+.search-form .form-group {
+  margin-bottom: 5px;
 }
 
 .jumbotron.login {
@@ -81,30 +34,11 @@ td.nowrap {
   margin-top: 50px;
 }
 
-.destination-fields {
-  display: none;
-}
-
 .modal .panel {
   margin-bottom: 0;
 }
 
-.modal-footer {
-  .form-group {
-    width: 300px;
-    float: left;
-  }
-
-  .checkbox {
-    text-align: left
-  }
-}
-
 .datepicker {z-index: 1151 !important;}
-
-.label a {
-  color: #dddddd
-}
 
 .progress {
   margin-bottom: 10px !important;
@@ -121,13 +55,14 @@ td.nowrap {
 
 .summary dl {
   margin-bottom: 0px;
+  opacity: 0.75;
 }
 
-.page-head .nav-tabs {
-  margin-bottom: 15px;
+.page-head {
+  margin-bottom: 10px;
 }
 
-.page-head, .sidebar {
+.content {
   margin-top: 15px;
 }
 
@@ -161,10 +96,4 @@ td.nowrap {
 
 .non-month {
   opacity: 0.5;
-}
-
-.summary {
-  dl {
-    opacity: 0.75;
-  }
 }

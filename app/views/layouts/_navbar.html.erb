@@ -1,21 +1,23 @@
 <div class="navbar navbar-inverse navbar-static-top">
-  <%= link_to "PCMS", root_url, class: "navbar-brand" %>
-  <ul class="nav navbar-nav">
-    <li class="<%= 'active' if params[:controller] == 'films' %>"><%= link_to "Films", films_path(phase: "lamination") %></li>
-    <li class="<%= 'active' if params[:controller] == 'master_films' %>"><%= link_to "Engineering", master_films_path(function: 'production') %></li>
-    <li class="<%= 'active' if params[:controller] == 'sales_orders' %>"><%= link_to "Orders", sales_orders_path(status: 'in_progress') %></li>
-    <li class="<%= 'active' if params[:controller] == 'planning' %>"><%= link_to "Planning", planning_calendar_path %></li>
-    <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
-    <ul class="dropdown-menu">
-      <li class="<%= 'active' if params[:controller] == 'film_movements' %>"><%= link_to "Movements", film_movements_path %></li>
-      <li class="<%= 'active' if params[:controller] == 'productions' %>"><%= link_to "Production", productions_path(grouping: 'by_day') %></li>
-      <li class="<%= 'active' if params[:controller] == 'shipments' %>"><%= link_to "Shipments", shipments_path(grouping: 'by_day') %></li>
+  <div class="container-fluid">
+    <%= link_to "PCMS", root_url, class: "navbar-brand" %>
+    <ul class="nav navbar-nav">
+      <li class="<%= 'active' if params[:controller] == 'films' %>"><%= link_to "Films", films_path(phase: "lamination") %></li>
+      <li class="<%= 'active' if params[:controller] == 'master_films' %>"><%= link_to "Engineering", master_films_path(function: 'production') %></li>
+      <li class="<%= 'active' if params[:controller] == 'sales_orders' %>"><%= link_to "Orders", sales_orders_path(status: 'in_progress') %></li>
+      <li class="<%= 'active' if params[:controller] == 'planning' %>"><%= link_to "Planning", planning_calendar_path %></li>
+      <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li class="<%= 'active' if params[:controller] == 'film_movements' %>"><%= link_to "Movements", film_movements_path %></li>
+        <li class="<%= 'active' if params[:controller] == 'productions' %>"><%= link_to "Production", productions_path(grouping: 'by_day') %></li>
+        <li class="<%= 'active' if params[:controller] == 'shipments' %>"><%= link_to "Shipments", shipments_path(grouping: 'by_day') %></li>
+      </ul>
+      </li>
+      <% if current_user.admin? %>
+        <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", users_path %></li>
+      <% end %>
     </ul>
-    </li>
-    <% if current_user.admin? %>
-      <li class="<%= 'active' if params[:controller].split("/").first == 'admin' %>"><%= link_to "Admin", users_path %></li>
-    <% end %>
-  </ul>
-  <p class="navbar-text navbar-right">Logged in as <%= "#{current_user.full_name} (#{current_tenant.name})" %> | <%= link_to "Logout", logout_path, id: "logout", class: "navbar-link" %></p>
+    <p class="navbar-text navbar-right">Logged in as <%= "#{current_user.full_name} (#{current_tenant.name})" %> | <%= link_to "Logout", logout_path, id: "logout", class: "navbar-link" %></p>
+  </div>
 </div>
