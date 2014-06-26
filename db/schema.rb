@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626002150) do
+ActiveRecord::Schema.define(version: 20140626002836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,21 +116,19 @@ ActiveRecord::Schema.define(version: 20140626002150) do
   add_index "master_films", ["tenant_code"], name: "index_master_films_on_tenant_code", using: :btree
 
   create_table "sales_orders", force: true do |t|
-    t.string   "code",                         null: false
+    t.string   "code",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "customer"
-    t.date     "due_date",                     null: false
-    t.date     "release_date",                 null: false
+    t.date     "due_date",                 null: false
+    t.date     "release_date",             null: false
     t.string   "ship_to"
     t.date     "ship_date"
     t.text     "note"
-    t.string   "tenant_code",                  null: false
-    t.boolean  "cancelled",    default: false
-    t.integer  "status",       default: 0,     null: false
+    t.string   "tenant_code",              null: false
+    t.integer  "status",       default: 0, null: false
   end
 
-  add_index "sales_orders", ["cancelled"], name: "index_sales_orders_on_cancelled", using: :btree
   add_index "sales_orders", ["due_date"], name: "index_sales_orders_on_due_date", using: :btree
   add_index "sales_orders", ["ship_date"], name: "index_sales_orders_on_ship_date", using: :btree
   add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree

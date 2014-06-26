@@ -2,7 +2,7 @@ class SalesOrder < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :cancelled
+  attr_accessible :code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes
 
   enum status: [ :in_progress, :on_hold, :cancelled, :shipped ]
 
