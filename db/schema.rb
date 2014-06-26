@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626002836) do
+ActiveRecord::Schema.define(version: 20140626004020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20140626002836) do
     t.string   "film_code"
     t.string   "thinky_code"
     t.integer  "machine_id"
-    t.decimal  "effective_width"
-    t.decimal  "effective_length"
+    t.decimal  "effective_width",  default: 0.0,          null: false
+    t.decimal  "effective_length", default: 0.0,          null: false
     t.string   "operator"
     t.string   "chemist"
     t.text     "note"
@@ -101,16 +101,13 @@ ActiveRecord::Schema.define(version: 20140626002836) do
     t.decimal  "micrometer_left"
     t.decimal  "micrometer_right"
     t.decimal  "run_speed"
-    t.boolean  "inactive",         default: false
     t.string   "inspector"
-    t.boolean  "in_house",         default: true
     t.date     "serial_date",      default: '2014-05-15', null: false
     t.integer  "function",         default: 0,            null: false
     t.decimal  "yield"
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin
-  add_index "master_films", ["inactive"], name: "index_master_films_on_inactive", using: :btree
   add_index "master_films", ["machine_id"], name: "index_master_films_on_machine_id", using: :btree
   add_index "master_films", ["serial"], name: "index_master_films_on_serial", using: :btree
   add_index "master_films", ["tenant_code"], name: "index_master_films_on_tenant_code", using: :btree
