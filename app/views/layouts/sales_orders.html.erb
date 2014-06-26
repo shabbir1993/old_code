@@ -9,24 +9,22 @@
   <%= sidebar_link_to(:status, 'cancelled') { "Cancelled" } %>
 <% end %>
 
-<% content_for :page_head do %>
-  <div class="row">
-    <div class="col-md-5 search">
-      <%= render 'search_form' %>
-    </div>
+<% content_for :search do %>
+  <%= render 'search_form' %>
+<% end %>
 
-    <div class="col-md-5 col-md-offset-2 summary">
-      <dl class="dl-horizontal pull-right">
-        <dt>Orders</dt>
-        <dd><%= filtered_orders.count(:all) %></dd>
-        <dt>Quantity</dt>
-        <dd><%= filtered_orders.line_items.total_quantity %></dd>
-        <dt>Custom Area</dt>
-        <dd><%= number_with_precision(filtered_orders.line_items.total_area, precision: 2) %></dd>
-      </dl>
-    </div>
-  </div>
+<% content_for :summary do %>
+  <dl class="dl-horizontal pull-right">
+    <dt>Orders</dt>
+    <dd><%= filtered_orders.count(:all) %></dd>
+    <dt>Quantity</dt>
+    <dd><%= filtered_orders.line_items.total_quantity %></dd>
+    <dt>Custom Area</dt>
+    <dd><%= number_with_precision(filtered_orders.line_items.total_area, precision: 2) %></dd>
+  </dl>
+<% end %>
 
+<% content_for :tabs do %>
   <ul class="nav nav-tabs">
     <%= tab_link_to("Index", 'index') %>
     <%= tab_link_to("Lead time histogram", 'lead_time_histogram') %>

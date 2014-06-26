@@ -6,21 +6,17 @@
   <%= sidebar_link_to(:function, 'transfer') { "Transfer" } %>
 <% end %>
 
-<% content_for :page_head do %>
-  <div class="row">
-    <div class="col-md-5 search">
-      <%= render 'search_form' %>
-    </div>
+<% content_for :search do %>
+  <%= render 'search_form' %>
+<% end %>
 
-    <div class="col-md-5 col-md-offset-2 summary">
-      <dl class="dl-horizontal pull-right">
-        <dt>Count</dt>
-        <dd><%= filtered_master_films.count(:all) %></dd>
-        <dt>Effective Area</dt>
-        <dd><%= number_with_precision(filtered_master_films.total_effective_area, precision: 2) %></dd>
-      </dl>
-    </div>
-  </div>
+<% content_for :summary do %>
+  <dl class="dl-horizontal pull-right">
+    <dt>Count</dt>
+    <dd><%= filtered_master_films.count(:all) %></dd>
+    <dt>Effective Area</dt>
+    <dd><%= number_with_precision(filtered_master_films.total_effective_area, precision: 2) %></dd>
+  </dl>
 <% end %>
 
 <%= render template: "layouts/application" %>

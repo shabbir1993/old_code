@@ -1,4 +1,4 @@
-<% provide :title, "Shipments" %>
+<% provide :title, "Shipments history" %>
 
 <% content_for :nav_list do %>
   <%= sidebar_link_to(:grouping, 'by_day') { "Daily" } %>
@@ -7,13 +7,11 @@
   <%= sidebar_link_to(:grouping, 'by_quarter') { "Quarterly" } %>
 <% end %>
 
-<% content_for :page_head do %>
-  <div class="row">
-    <div class="col-md-5 search">
-      <%= render 'search_form' %>
-    </div>
-  </div>
+<% content_for :search do %>
+  <%= render 'search_form' %>
+<% end %>
 
+<% content_for :nav do %>
   <ul class="nav nav-tabs">
     <%= tab_link_to("Index", 'index') %>
     <%= tab_link_to("Utilization", 'utilization_time_series') %>

@@ -29,7 +29,15 @@
       </div>
     </div>
     <div class="page-head">
-      <%= yield :page_head %>
+      <div class="row controls">
+        <div class="col-md-5 search">
+          <%= yield :search %>
+        </div>
+        <div class="col-md-5 col-md-offset-2 summary">
+          <%= yield :summary %>
+        </div>
+      </div>
+      <%= yield :nav %>
     </div>
   <% end %>
   <div class="main">
