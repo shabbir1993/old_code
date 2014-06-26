@@ -47,6 +47,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def assigned_film_percentage
+    return 0 if total_quantity == 0
     100*assigned_film_count/total_quantity
   end
 
@@ -102,7 +103,7 @@ class SalesOrder < ActiveRecord::Base
   private
 
   def ship_date_after_release?
-    if ship_date < release_date
+    if ship_date.present? && ship_date < release_date
       errors.add(:base, "Must be shipped after release")
     end
   end
