@@ -4,8 +4,8 @@
   <td><%= shipment[:relation].line_items.product_type_equals('Film').total_quantity %></td>
   <td><%= shipment[:relation].line_items.product_type_equals('Glass').total_quantity %></td>
   <td><%= shipment[:relation].line_items.total_quantity %></td>
-  <td><%= number_with_precision(shipment[:relation].line_items.product_type_equals('Film').total_area, precision: 2) %></td>
-  <td><%= number_with_precision(shipment[:relation].line_items.product_type_equals('Glass').total_area, precision: 2) %></td>
-  <td><%= number_with_precision(shipment[:relation].line_items.total_area, precision: 2) %></td>
-  <td><%= number_with_precision(shipment[:relation].avg_utilization, precision: 2) %></td>
+  <td><%= format_area(shipment[:relation].line_items.product_type_equals('Film').total_area) %></td>
+  <td><%= format_area(shipment[:relation].line_items.product_type_equals('Glass').total_area) %></td>
+  <td><%= format_area(shipment[:relation].line_items.total_area) %></td>
+  <td><%= format_utilization(shipment[:relation].avg_utilization) %></td>
 </tr>

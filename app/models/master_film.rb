@@ -55,7 +55,7 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def effective_area
-    AreaCalculator.calculate(effective_width, effective_length, tenant.area_divisor)
+    effective_width*effective_length/tenant.area_divisor
   end
 
   def defect_count(type)

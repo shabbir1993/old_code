@@ -20,7 +20,7 @@
     <dt>Quantity</dt>
     <dd><%= filtered_orders.line_items.total_quantity %></dd>
     <dt>Custom Area</dt>
-    <dd><%= number_with_precision(filtered_orders.line_items.total_area, precision: 2) %></dd>
+    <dd><%= format_area(filtered_orders.line_items.total_area) %></dd>
   </dl>
 <% end %>
 

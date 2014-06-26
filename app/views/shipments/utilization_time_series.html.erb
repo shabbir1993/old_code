@@ -25,7 +25,7 @@
           zIndex: 5,
           label: {
             align: 'right',
-            text: "<%= number_with_precision(@time_series.overall_average, precision: 2) %>"
+            text: "<%= format_utilization(@time_series.overall_average) %>"
           }
         }]
       },

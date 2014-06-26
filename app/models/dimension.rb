@@ -8,7 +8,7 @@ class Dimension < ActiveRecord::Base
   scope :large, ->(cutoff) { where("dimensions.width*dimensions.length >= ?", cutoff) }
 
   def area
-    AreaCalculator.calculate(width, length, tenant.area_divisor).round(2)
+    width*length/tenant.area_divisor
   end
 
   def tenant

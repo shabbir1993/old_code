@@ -17,7 +17,7 @@ class LineItem < ActiveRecord::Base
   end
 
   def custom_area
-    custom_width*custom_length / tenant.area_divisor
+    custom_width*custom_length/tenant.area_divisor
   end
 
   def total_area

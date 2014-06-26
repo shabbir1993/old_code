@@ -41,8 +41,8 @@
   <div class="progress text-center">
     <span>
       count: <strong><%= "#{sales_order.assigned_film_count}/#{sales_order.total_quantity}" %></strong> 
-      area: <strong><%= "#{number_with_precision(sales_order.total_assigned_area, precision: 2)}/#{number_with_precision(sales_order.total_custom_area, precision: 2)}" %></strong>
-      utilization: <strong><%= number_to_percentage(sales_order.utilization, precision: 2) %></strong>
+      area: <strong><%= "#{format_area(sales_order.total_assigned_area)}/#{format_area(sales_order.total_custom_area)}" %></strong>
+      utilization: <strong><%= format_utilization(sales_order.utilization) %></strong>
     </span>
     <div class="progress-bar" style="<%= "width: #{sales_order.assigned_film_percentage}%" %>"></div>
   </div>

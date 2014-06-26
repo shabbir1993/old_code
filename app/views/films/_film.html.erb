@@ -33,7 +33,7 @@
   </td>
   <td class="area">
     <% film.dimensions.each do |d| %>
-      <%= "#{d.area}#{utilization_label(d.width, d.length)}#{tag('br')}".html_safe %>
+      <%= "#{format_area(d.area)}#{utilization_label(d.width, d.length)}#{tag('br')}".html_safe %>
     <% end %>
   </td>
   <td class="shelf"><%= film.shelf %></td>

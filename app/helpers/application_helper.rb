@@ -61,4 +61,16 @@ module ApplicationHelper
       link_to text, url_for(params.merge(action: action))
     end
   end
+
+  def format_area(area)
+    number_with_precision(area, delimiter: ',', precision: 2)
+  end
+
+  def format_yield(yld)
+    number_to_percentage(yld, precision: 2)
+  end
+
+  def format_utilization(util)
+    number_to_percentage(util, precision: 2)
+  end
 end

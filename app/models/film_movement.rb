@@ -26,8 +26,7 @@ class FilmMovement < ActiveRecord::Base
     associated_against: { film: [:serial] }
 
   def area
-    return width*length/tenant.area_divisor if width && length && tenant.area_divisor
-    0
+    width*length/tenant.area_divisor
   end
 
   def self.to_csv(options = {})

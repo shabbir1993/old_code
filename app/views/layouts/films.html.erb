@@ -32,7 +32,7 @@
     <dt>Pieces</dt>
     <dd><%= filtered_films.count(:all) %></dd>
     <dt>Area</dt>
-    <dd><%= filtered_films.total_area %></dd>
+    <dd><%= format_area(filtered_films.total_area) %></dd>
   </dl>
 <% end %>
 
