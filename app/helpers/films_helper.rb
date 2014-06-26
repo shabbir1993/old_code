@@ -1,5 +1,4 @@
 module FilmsHelper
-
   def utilization_label(width, length)
     if params[:width_greater_than].present? && params[:length_greater_than].present? && width >= search_width && length >= search_length
       content_tag(:span, class: "label label-warning") do
@@ -23,13 +22,5 @@ module FilmsHelper
 
   def search_length
     @search_length ||= params[:length_greater_than].to_f unless params[:length_greater_than].empty?
-  end
-
-  def moved_to(film)
-    if film.deleted?
-      "deleted"
-    else
-      film.phase
-    end
   end
 end

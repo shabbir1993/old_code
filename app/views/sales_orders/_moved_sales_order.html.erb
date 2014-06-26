@@ -1,7 +1,7 @@
 <li id="<%= "salesorder-#{sales_order.id}" %>" class="panel panel-info">
 <div class="panel-heading">
   <h4 class="panel-title">
-    <strong><%= sales_order.code %></strong> <i class="fa fa-arrow-right"></i> <%= sales_order.persisted? ? sales_order.status.humanize : "Deleted" %>
+    <strong><%= sales_order.code %></strong> <i class="fa fa-arrow-right"></i> <%= sales_order.status.humanize %>
   </h4>
 </div>
 </li>

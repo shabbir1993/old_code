@@ -36,6 +36,7 @@ class SalesOrdersController < ApplicationController
   end
 
   def edit 
+    session[:return_to] ||= request.referer
     @sales_order = sales_orders.find(params[:id])
     render layout: false
   end
@@ -54,6 +55,7 @@ class SalesOrdersController < ApplicationController
   def destroy
     @sales_order = sales_orders.find(params[:id])
     @sales_order.destroy!
+    redirect_to session.delete(:return_to), notice: "Order #{@sales_order.code} deleted."
   end
 
   def edit_ship_date

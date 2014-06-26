@@ -20,6 +20,7 @@ class FilmsController < ApplicationController
   end
 
   def edit
+    session[:return_to] ||= request.referer
     @film = tenant_films.find(params[:id])
     render layout: false
   end
@@ -49,6 +50,7 @@ class FilmsController < ApplicationController
   def destroy
     @film = tenant_films.find(params[:id])
     @film.update_attributes(deleted: true)
+    redirect_to session.delete(:return_to), notice: "Film #{@film.serial} deleted."
   end
 
   def restore

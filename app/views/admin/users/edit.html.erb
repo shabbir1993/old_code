@@ -6,7 +6,7 @@
     <%= render 'shared_fields', f: f %>
   </div>
   <div class="modal-footer">
-    <%= link_to "Delete", @user, method: :delete, class: "btn btn-danger pull-left" %>
+    <%= link_to_delete_if_admin(@user) %>
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <%= f.submit "Update", class: "btn btn-success" %>
   </div>

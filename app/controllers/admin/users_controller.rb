@@ -14,6 +14,7 @@ class Admin::UsersController < AdminController
   end
 
   def edit
+    session[:return_to] ||= request.referer
     @user = users.find(params[:id])
     render layout: false
   end
@@ -26,7 +27,7 @@ class Admin::UsersController < AdminController
   def destroy
     @user = users.find(params[:id])
     @user.destroy!
-    redirect_to users_path, notice: "User #{@user.full_name} deleted."
+    redirect_to session.delete(:return_to), notice: "User #{@user.full_name} deleted."
   end
 
   private

@@ -46,7 +46,7 @@ module ApplicationHelper
 
   def link_to_delete_if_admin(object)
     if current_user.admin?
-      link_to "Delete", object, method: :delete, remote: true, class: "btn btn-danger pull-left"
+      link_to "Delete", object, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger pull-left"
     end
   end
 

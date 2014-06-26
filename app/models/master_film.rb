@@ -20,6 +20,8 @@ class MasterFilm < ActiveRecord::Base
   validates :serial, presence: true, 
                      uniqueness: { case_sensitive: false, scope: :tenant_code },
                      format: { with: /\A[A-Z]\d{4}-\d{2}\z/ }
+  validates :effective_width, numericality: { greater_than_or_equal_to: 0 }
+  validates :effective_length, numericality: { greater_than_or_equal_to: :effective_width }
 
   scope :active, -> { all.joins(:films).merge(Film.not_deleted).uniq }
   scope :function, ->(function) { where(function: functions[function]) }
