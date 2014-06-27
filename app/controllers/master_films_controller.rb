@@ -6,7 +6,9 @@ class MasterFilmsController < ApplicationController
 
   def create
     @master_film = current_tenant.new_master_film(params[:master_film])
-    render :display_error_messages unless @master_film.save_and_create_child(current_user)
+    unless @master_film.save_and_create_child(current_user)
+      render :display_modal_error_messages, locals: { object: @master_film }
+    end
   end
 
   def index
@@ -24,7 +26,9 @@ class MasterFilmsController < ApplicationController
 
   def update
     @master_film = master_films.find(params[:id])
-    render :display_error_messages unless @master_film.update_attributes(params[:master_film].reverse_merge(defects: {}))
+    unless @master_film.update_attributes(params[:master_film].reverse_merge(defects: {}))
+      render :display_modal_error_messages, locals: { object: @master_film }
+    end
   end 
 
   private

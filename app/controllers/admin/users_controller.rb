@@ -10,7 +10,9 @@ class Admin::UsersController < AdminController
 
   def create
     @user = current_tenant.new_user(params[:user])
-    render :display_error_messages unless @user.save
+    unless @user.save
+      render :display_modal_error_messages, locals: { object: @user }
+    end
   end
 
   def edit
@@ -21,7 +23,9 @@ class Admin::UsersController < AdminController
 
   def update
     @user = users.find(params[:id])
-    render :display_error_messages unless @user.update(params[:user])
+    unless @user.update(params[:user])
+      render :display_modal_error_messages, locals: { object: @user }
+    end
   end 
 
   def destroy

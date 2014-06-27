@@ -1,8 +1,0 @@
-<% if object.errors.any? %>
-  $('.modal .error-messages').remove();
-  $('.modal .modal-body').prepend("<%= j render 'shared/error_messages', object: object %>");
-<% else %>
-  $('#forms-modal').modal('hide')
-  <%= yield %>
-<% end %>
-

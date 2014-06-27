@@ -1,4 +1,3 @@
-<%= render layout: 'shared/modal_form_submit', locals: { object: @sales_order } do %>
-  var sales_order_row = $("<%= "#salesorder-#{@sales_order.id}" %>")
-  sales_order_row.replaceWith("<%= j render 'moved_sales_order', sales_order: @sales_order %>");
-<% end %>
+$('#forms-modal').modal('hide')
+var sales_order_row = $("<%= "#salesorder-#{@sales_order.id}" %>")
+sales_order_row.replaceWith("<%= j render 'moved_sales_order', sales_order: @sales_order %>");

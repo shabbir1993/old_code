@@ -38,15 +38,20 @@ class MasterFilm < ActiveRecord::Base
     using: { tsearch: { prefix: true } },
     associated_against: { machine: [:code] }
 
-  def save_and_create_child(user)
+  def save_and_create_child(actor)
     if save
-      film = films.build(serial: "#{serial}-1", area: 0, tenant_code: tenant_code, phase: "lamination")
-      film.save!
-      dimensions = film.dimensions.build(width: 0, length: 0)
-      dimensions.save!
-      movement = film.film_movements.build(from_phase: "raw", to_phase: "lamination", actor: user.full_name, tenant_code: tenant_code)
-      movement.save!
+      film = create_film(:lamination)
+      film.record_movement("raw", "lamination", actor)
     end
+  end
+
+  def create_film(phase, width = 0, length = 0)
+    film = films.create!(serial: "#{serial}-#{next_division}", 
+                         tenant_code: tenant_code, 
+                         phase: phase)
+    film.create_dimension(width, length)
+    film.set_area
+    film
   end
 
   def update_film_serials
@@ -76,11 +81,11 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def next_division
-    films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max + 1
+    films.pluck(:serial).map { |s| s[/.+-.+-(\d+)/, 1].to_i }.max.to_i + 1
   end
 
   def self.total_effective_area
-    all.map{ |mf| mf.effective_area.to_f }.sum
+    all.map{ |mf| mf.effective_area }.sum
   end
 
   def self.avg_yield
@@ -125,6 +130,6 @@ class MasterFilm < ActiveRecord::Base
   end
 
   def yieldable?
-    effective_area && mix_mass && machine
+    mix_mass && machine
   end
 end

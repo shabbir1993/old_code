@@ -32,7 +32,9 @@ class SalesOrdersController < ApplicationController
 
   def create
     @sales_order = current_tenant.new_sales_order(params[:sales_order])
-    render :display_error_messages unless @sales_order.save
+    unless @sales_order.save
+      render :display_modal_error_messages, locals: { object: @sales_order }
+    end
   end
 
   def edit 
@@ -43,7 +45,9 @@ class SalesOrdersController < ApplicationController
 
   def update
     @sales_order = sales_orders.find(params[:id])
-    render :display_error_messages unless @sales_order.update_attributes(params[:sales_order])
+    unless @sales_order.update_attributes(params[:sales_order])
+      render :display_modal_error_messages, locals: { object: @sales_order }
+    end
   end
 
   def move
@@ -68,7 +72,7 @@ class SalesOrdersController < ApplicationController
     if @sales_order.update_attributes(params[:sales_order])
       @sales_order.shipped!
     else
-      render :display_error_messages
+      render :display_modal_error_messages, locals: { object: @sales_order }
     end
   end
 

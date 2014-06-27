@@ -18,7 +18,8 @@ class Film < ActiveRecord::Base
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
   delegate :width, :length, to: :primary_dimension
 
-  before_update :upcase_shelf, :set_area
+  before_update :set_area
+  before_save :upcase_shelf
 
   validates :phase, presence: true
   validates :order_fill_count, numericality: { greater_than: 0 }
@@ -50,12 +51,14 @@ class Film < ActiveRecord::Base
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
   def split
-    split = master_film.films.build(serial: "#{master_film.serial}-#{master_film.next_division}", area: area, tenant_code: tenant_code, phase: phase).tap(&:save!)
-    split.dimensions.build(width: width, length: length).save!
-    split
+    split = master_film.create_film(phase, width, length)
   end
 
-  def update_and_move(attrs, destination, user)
+  def create_dimension(width = 0, length = 0)
+    dimensions.create!(width: width, length: length)
+  end
+
+  def update_and_move(attrs, destination, actor)
     before_phase = phase
     if update_attributes(attrs)
       if %(lamination inspection).include?(before_phase)
@@ -63,7 +66,7 @@ class Film < ActiveRecord::Base
         master_film.effective_length = length
         master_film.save!
       end
-      move_to(destination, user) if destination.present?
+      move_to(destination, actor) if destination.present?
     end
   end
 
@@ -84,12 +87,20 @@ class Film < ActiveRecord::Base
     all.sum(:order_fill_count)
   end
 
-  def move_to(destination, user)
+  def move_to(destination, actor)
     reset_sales_order unless %w(stock reserved wip fg).include?(destination)
     self.phase = destination
-    movement = film_movements.build(from_phase: phase_was, to_phase: destination, width: width, length: length, actor: user.full_name, tenant_code: tenant_code)
+    record_movement(phase_was, destination, actor)
     save!
-    movement.save!
+  end
+
+  def record_movement(from, to, actor)
+    film_movements.create!(from_phase: from, 
+                           to_phase: to, 
+                           actor: actor.full_name, 
+                           width: width,
+                           length: length,
+                           tenant_code: tenant_code)
   end
 
   def self.total_area
@@ -114,7 +125,7 @@ class Film < ActiveRecord::Base
     when "stock"
       %w{reserved wip nc}
     when "reserved"
-      %w{stock wip nc}
+      %w{wip stock nc}
     when "wip"
       %w{fg reserved stock nc}
     when "fg"
@@ -124,6 +135,10 @@ class Film < ActiveRecord::Base
     when "scrap"
       %w{stock reserved nc}
     end
+  end
+
+  def set_area
+    self.area = primary_dimension.area
   end
 
   private
@@ -145,9 +160,5 @@ class Film < ActiveRecord::Base
     if dimensions.empty? || dimensions.all? {|dimension| dimension.marked_for_destruction? }
       errors.add(:base, 'Must have dimensions')
     end
-  end
-
-  def set_area
-    self.area = primary_dimension.area
   end
 end
