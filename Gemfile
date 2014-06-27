@@ -33,11 +33,12 @@ group :test, :development do
 end
 
 group :development do
+  gem 'thin', '~> 1.6.2'
   gem 'spring', '~> 1.1.2'
   gem 'spring-commands-rspec', '~> 1.0.2'
 end
 
 group :production do
-  gem "thin", "~> 1.5.1"
+  gem 'unicorn', '~> 4.8.3'
   gem 'rails_12factor'
 end
