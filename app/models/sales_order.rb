@@ -56,7 +56,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def total_assigned_area
-    films.map{ |f| f.area.to_f }.sum
+    films.map{ |f| f.area }.sum
   end
 
   def past_due?
@@ -80,7 +80,7 @@ class SalesOrder < ActiveRecord::Base
   end
 
   def self.total_assigned_area
-    films.map{ |f| f.area.to_f }.sum
+    films.map{ |f| f.area }.sum
   end
 
   def self.line_items

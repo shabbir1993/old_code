@@ -15,7 +15,7 @@ class MasterFilmsController < ApplicationController
     @master_films = filtered_master_films.page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { render csv: @master_films.limit(1000) }
+      format.csv { render csv: filtered_master_films }
     end
   end
 

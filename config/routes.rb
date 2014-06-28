@@ -53,6 +53,7 @@ Pcms::Application.routes.draw do
   resources :productions, only: [:index] do
     collection do
       get :yield_time_series
+      get :produced_area_time_series
     end
   end
 

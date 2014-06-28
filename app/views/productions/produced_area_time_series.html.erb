@@ -1,0 +1,47 @@
+<script>
+  $(function () {
+    $('#produced_area_time_series').highcharts({
+      chart: {
+        type: 'column'
+      },
+
+      title: {
+        text: false
+      },
+
+      xAxis: {
+        type: 'datetime'
+      },
+
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Area'
+        }
+      },
+
+      tooltip: {
+        shared: true
+      },
+
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          groupPadding: 0,
+          stacking: 'normal'
+        }
+      },
+
+      series: [
+      <% @time_series.formulas.each do |t| %>
+        {
+          name: "<%= t %>",
+          data: <%= raw @time_series.data[t] %>
+        }, 
+      <% end %>
+      ]
+    });
+  });
+</script>
+
+<div id="produced_area_time_series" class="chart"></div>
