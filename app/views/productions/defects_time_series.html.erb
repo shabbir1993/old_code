@@ -2,7 +2,7 @@
   $(function () {
     $('#defects_time_series').highcharts({
       chart: {
-        type: 'column'
+        type: 'area'
       },
 
       title: {
@@ -16,14 +16,12 @@
       yAxis: {
         min: 0,
         title: {
-          text: 'Count'
+          text: 'Occurrences'
         }
       },
 
       plotOptions: {
-        column: {
-          pointPadding: 0,
-          groupPadding: 0,
+        area: {
           stacking: 'normal'
         }
       },

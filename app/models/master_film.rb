@@ -71,7 +71,7 @@ class MasterFilm < ActiveRecord::Base
 
   def self.defect_occurrences
     ary = defect_types.map do |t|
-      [t, select { |mf| mf.defect_count(t) > 0 }.count]
+      [t, select { |mf| mf.defects[t] }.count]
     end
     Hash[ary]
   end

@@ -8,20 +8,26 @@ class DefectsTimeSeries
   def data
     hash = {}
     defects.each do |d|
-      hash[d] = defect_occurrences_by_date.map { |ary| [ary[0], ary[1][d].to_i] }
+      hash[d] = cumulative_defect_occurrences_by_date.map { |ary| [ary[0], ary[1][d].to_i] }
     end
     hash
   end
 
   def defects
-    @master_films.defect_types
+    @defects ||= @master_films.defect_types
   end
 
   private
 
-  def defect_occurrences_by_date
+  def cumulative_defect_occurrences_by_date
+    cum_defects = {}
     @ary ||= @productions.map do |p|
-      [p[:sort_date].to_datetime.to_i*1000, p[:relation].defect_occurrences]
+      cum_defects = sum_defects(cum_defects, p[:relation].defect_occurrences)
+      [p[:sort_date].to_datetime.to_i*1000, cum_defects]
     end
+  end
+
+  def sum_defects(a, b)
+    a.merge(b) { |k, oldval, newval| oldval + newval }
   end
 end
