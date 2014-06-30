@@ -67,6 +67,8 @@ class Film < ActiveRecord::Base
         master_film.save!
       end
       move_to(destination, actor) if destination.present?
+      # true so it returns true
+      true
     end
   end
 
