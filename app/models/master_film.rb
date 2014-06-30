@@ -69,6 +69,13 @@ class MasterFilm < ActiveRecord::Base
     defects[type].to_i
   end
 
+  def self.defect_occurrences
+    ary = defect_types.map do |t|
+      [t, select { |mf| mf.defect_count(t) > 0 }.count]
+    end
+    Hash[ary]
+  end
+
   def defects_sum
     defects.values.map(&:to_i).sum
   end

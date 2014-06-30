@@ -26,8 +26,8 @@ class LineItemProductTypeTotals
       items_with_value = @items.where(product_type: value)
       {
         value: value.present? ? value : "None",
-        count: items_with_value.count,
-        area: items_with_value.map{ |f| f.total_area }.sum.to_f
+        count: items_with_value.total_quantity,
+        area: items_with_value.total_area.to_f
       }
     end.sort_by { |i| i[:area] }.reverse
   end

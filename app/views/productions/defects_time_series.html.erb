@@ -1,0 +1,43 @@
+<script>
+  $(function () {
+    $('#defects_time_series').highcharts({
+      chart: {
+        type: 'column'
+      },
+
+      title: {
+        text: false
+      },
+
+      xAxis: {
+        type: 'datetime'
+      },
+
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Count'
+        }
+      },
+
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          groupPadding: 0,
+          stacking: 'normal'
+        }
+      },
+
+      series: [
+      <% @time_series.defects.each do |t| %>
+        {
+          name: "<%= t %>",
+          data: <%= raw @time_series.data[t] %>
+        }, 
+      <% end %>
+      ]
+    });
+  });
+</script>
+
+<div id="defects_time_series" class="chart"></div>

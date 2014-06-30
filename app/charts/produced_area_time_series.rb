@@ -8,8 +8,8 @@ class ProducedAreaTimeSeries
   def data
     hash = {}
     formulas.each do |t|
-      hash[t] = @productions.map do |s|
-        [s[:sort_date].to_datetime.to_i*1000, s[:relation].formula_like(t).total_effective_area.to_f]
+      hash[t] = @productions.map do |p|
+        [p[:sort_date].to_datetime.to_i*1000, p[:relation].formula_like(t).total_effective_area.to_f]
       end
     end
     hash

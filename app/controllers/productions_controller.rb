@@ -13,6 +13,10 @@ class ProductionsController < ApplicationController
     @time_series = ProducedAreaTimeSeries.new(grouped_productions, filtered_production_master_films)
   end
 
+  def defects_time_series
+    @time_series = DefectsTimeSeries.new(grouped_productions, filtered_production_master_films)
+  end
+
   private
   
   def grouped_productions

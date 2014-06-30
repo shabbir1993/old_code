@@ -54,6 +54,7 @@ Pcms::Application.routes.draw do
     collection do
       get :yield_time_series
       get :produced_area_time_series
+      get :defects_time_series
     end
   end
 
