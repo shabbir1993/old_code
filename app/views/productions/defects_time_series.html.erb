@@ -30,7 +30,8 @@
       <% @time_series.defects.each do |t| %>
         {
           name: "<%= t %>",
-          data: <%= raw @time_series.data[t] %>
+          data: <%= raw @time_series.data[t] %>,
+          visible: false
         }, 
       <% end %>
       ]
