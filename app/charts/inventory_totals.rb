@@ -9,8 +9,8 @@ class InventoryTotals
     daily_totals = current_totals
     phases.each do |p|
       hash[p] = dates_in_reverse.map do |d|
+        daily_totals = daily_totals.merge(differential_hash(d)) { |k,oldval,newval| oldval + newval } unless d == Date.today
         [d.to_datetime.to_i*1000, daily_totals[p].to_f]
-        daily_totals = daily_totals.merge(differential_hash(d)) { |k,oldval,newval| oldval + newval }
       end
     end
     hash
