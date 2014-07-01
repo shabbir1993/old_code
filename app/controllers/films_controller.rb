@@ -3,7 +3,7 @@ class FilmsController < ApplicationController
     @films = filtered_films.order_by(sort[0], sort[1]).page(params[:page])
     respond_to do |format|
       format.html
-      format.csv { render csv: @films }
+      format.csv { render csv: filtered_films }
     end
   end
 
