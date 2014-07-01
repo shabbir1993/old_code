@@ -8,10 +8,12 @@ class InventoryTotals
     hash = {}
     daily_totals = current_totals
     phases.each do |p|
-      hash[p] = dates_in_reverse.map do |d|
-        daily_totals = daily_totals.merge(differential_hash(d)) { |k,oldval,newval| oldval + newval } unless d == Date.today
-        [d.to_datetime.to_i*1000, daily_totals[p].to_f]
+      ary = []
+      dates_in_reverse.each do |d|
+        ary << [d.to_datetime.to_i*1000, daily_totals[p].to_f]
+        daily_totals = daily_totals.merge(differential_hash(d)) { |k,oldval,newval| oldval + newval }
       end
+      hash[p] = ary
     end
     hash
   end
@@ -37,7 +39,7 @@ class InventoryTotals
   end
 
   def phase_differential(phase, date)
-    scoped_movements(date).to_phase(phase).map { |m| m.area }.sum - scoped_movements(date).from_phase(phase).map { |m| m.area }.sum
+    scoped_movements(date).from_phase(phase).map { |m| m.area }.sum - scoped_movements(date).to_phase(phase).map { |m| m.area }.sum
   end
 
   def scoped_movements(date)
