@@ -1,0 +1,35 @@
+<script>
+  $(function () {
+    $('#inventory_totals_time_series').highcharts({
+      chart: {
+        type: 'area'
+      },
+      title: {
+        text: false
+      },
+      xAxis: {
+        type: 'datetime'
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Area'
+        }
+      },
+      plotOptions: {
+        area: {
+          stacking: 'normal'
+        }
+      },
+      series: [
+      <% @time_series.phases.each do |p| %>
+        {
+          name: "<%= p %>",
+          data: <%= raw @time_series.data[p] %>
+        }, 
+      <% end %>
+      ]
+    });
+  });
+</script>
+<div id="inventory_totals_time_series" class="chart"></div>

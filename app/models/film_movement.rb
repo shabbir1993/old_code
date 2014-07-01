@@ -16,9 +16,11 @@ class FilmMovement < ActiveRecord::Base
   scope :sort_by_created_at, -> { order('film_movements.created_at DESC') }
   scope :created_at_before, ->(date) { where("film_movements.created_at <= ?", date) } 
   scope :created_at_after, ->(date) { where("film_movements.created_at >= ?", date) } 
+  scope :date_created, ->(date) { where("DATE(film_movements.created_at) = ?", date) }
   scope :to_phase, ->(phase) { where(to_phase: phase.downcase) } 
   scope :from_phase, ->(phase) { where(from_phase: phase.downcase) } 
   scope :text_search, ->(query) { reorder('').search(query) }
+  scope :large, ->(cutoff) { where("film_movements.width*film_movements.length >= ?", cutoff) }
 
   pg_search_scope :search, 
     against: [:from_phase, :to_phase, :actor], 

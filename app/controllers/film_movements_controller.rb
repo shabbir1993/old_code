@@ -2,7 +2,7 @@ class FilmMovementsController < ApplicationController
   before_filter :set_default_start_date
 
   def index
-    @film_movements = film_movements.page(params[:page])
+    @film_movements = film_movements.sort_by_created_at.page(params[:page])
     respond_to do |format|
       format.html
       format.csv { render csv: film_movements }
@@ -15,13 +15,18 @@ class FilmMovementsController < ApplicationController
     @map_data = map.data
   end
 
+  def inventory_totals
+    @time_series = InventoryTotals.new(tenant_movements, current_tenant)
+  end
+
   private
 
+  def tenant_movements
+    current_tenant.film_movements.exclude_deleted_films
+  end
+
   def film_movements 
-    @movements ||= current_tenant.film_movements
-      .exclude_deleted_films
-      .filter(filtering_params)
-      .sort_by_created_at
+    tenant_movements.filter(filtering_params)
   end
 
   def filtering_params

@@ -40,6 +40,7 @@ Pcms::Application.routes.draw do
   resources :film_movements, only: [:index] do
     collection do
       get :map
+      get :inventory_totals
     end
   end
 
