@@ -4,6 +4,7 @@ class Admin::UsersController < AdminController
   end
 
   def new
+    raise StandardError, "This is a test"
     @user = current_tenant.new_user
     render layout: false
   end

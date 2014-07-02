@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   before_action :check_auth
   before_action :check_ip
+  before_action :set_user_context, if: :current_user
   around_action :set_tenant_time_zone, if: :current_tenant
 
 private
@@ -52,4 +53,8 @@ private
     filtering_params.any?
   end
   helper_method :any_searches?
+
+  def set_user_context
+    Raven.user_context username: current_user.username
+  end
 end
