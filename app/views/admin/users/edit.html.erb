@@ -3,7 +3,18 @@
     <h4 class="modal-title text-center"><%= @user.full_name %></h4>
   </div>
   <div class="modal-body">
-    <%= render 'shared_fields', f: f %>
+    <%= f.text_field :username %>
+    <%= f.select :role_level, User.role_levels.keys, {}, label: "Role" %>
+    <div class="col-md-offset-2 col-md-10">
+      <%= link_to "change password", "#", class: "show-password-fields" %>
+    </div>
+    <div class="password-fields">
+      <%= f.password_field :password %>
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <%= f.check_box :chemist %>
+    <%= f.check_box :operator %>
+    <%= f.check_box :inspector %>
   </div>
   <div class="modal-footer">
     <%= link_to_delete_if_admin(@user) %>

@@ -4,7 +4,13 @@
   </div>
   <div class="modal-body">
     <%= f.text_field :full_name %>
-    <%= render 'shared_fields', f: f %>
+    <%= f.text_field :username %>
+    <%= f.password_field :password %>
+    <%= f.password_field :password_confirmation %>
+    <%= f.select :role_level, User.role_levels.keys, {}, label: "Role" %>
+    <%= f.check_box :chemist %>
+    <%= f.check_box :operator %>
+    <%= f.check_box :inspector %>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
