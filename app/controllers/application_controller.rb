@@ -42,6 +42,7 @@ private
   end
 
   def deny_access
+    session[:forward_to] = request.fullpath
     redirect_to login_url
   end
 

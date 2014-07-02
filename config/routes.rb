@@ -30,7 +30,6 @@ Pcms::Application.routes.draw do
   end
 
   get 'login', to: 'sessions#new'
-  get 'sessions', to: 'sessions#index'
   post 'login', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'
 
