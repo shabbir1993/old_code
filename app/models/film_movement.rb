@@ -5,8 +5,6 @@ class FilmMovement < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  attr_accessible :from_phase, :to_phase, :width, :length, :actor, :film_id, :film, :tenant_code
-
   belongs_to :film
 
   delegate :serial, :formula, :sales_order_code, to: :film

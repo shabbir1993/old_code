@@ -7,7 +7,6 @@ gem 'jquery-rails', '3.0.4'
 gem 'bcrypt-ruby', '~> 3.1.5'
 gem 'uglifier', '>= 2.2.1'
 gem 'bootstrap-sass', '~> 3.1.1.1'
-gem 'protected_attributes'
 
 # nokogiri 1.6.2 segmentation faults when running rspec
 gem 'nokogiri', '1.6.1'

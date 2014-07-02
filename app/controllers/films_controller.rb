@@ -27,7 +27,7 @@ class FilmsController < ApplicationController
 
   def update
     @film = tenant_films.find(params[:id])
-    unless @film.update_and_move(params[:film], params[:film][:destination], current_user)
+    unless @film.update_and_move(film_params, params[:film][:destination], current_user)
       render :display_modal_error_messages, locals: { object: @film }
     end
   end 
@@ -40,7 +40,7 @@ class FilmsController < ApplicationController
   def update_multiple
     @films = tenant_films.find(params[:film_ids])
     @films.each do |film|
-      film.update_and_move(params[:film].reject { |k,v| v.blank? }, params[:film][:destination], current_user)
+      film.update_and_move(update_multiple_films_params, params[:film][:destination], current_user)
     end
   end
 
@@ -87,5 +87,13 @@ class FilmsController < ApplicationController
 
   def filtering_params
     params.slice(:text_search, :formula_like, :width_greater_than, :length_greater_than, :serial_date_before, :serial_date_after)
+  end
+
+  def film_params
+    params.require(:film).permit(:note, :shelf, :sales_order_id, :order_fill_count, dimensions_attributes: [:width, :length, :_destroy, :id])
+  end
+
+  def update_multiple_films_params
+    params.require(:film).reject { |k,v| v.blank? }.permit(:shelf, :sales_order_id)
   end
 end

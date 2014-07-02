@@ -4,8 +4,6 @@ class MasterFilm < ActiveRecord::Base
 
   DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear']
 
-  attr_accessible :serial, :effective_width, :effective_length, :formula, :mix_mass, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :defects, :micrometer_left, :micrometer_right, :run_speed, :function
-
   enum function: [ :production, :test, :transfer ]
 
   has_many :films, dependent: :destroy
@@ -117,7 +115,7 @@ class MasterFilm < ActiveRecord::Base
     month = serial[1,2].to_i
     day = serial[3,2].to_i
     self.serial_date = Date.new(year, month, day)
-  rescue ArgumentError
+  rescue ArgumentError, NoMethodError
     self.errors[:serial] = "does not correspond to a valid date"
   end
   

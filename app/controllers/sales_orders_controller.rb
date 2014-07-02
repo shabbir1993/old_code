@@ -31,7 +31,7 @@ class SalesOrdersController < ApplicationController
   end
 
   def create
-    @sales_order = current_tenant.new_sales_order(params[:sales_order])
+    @sales_order = current_tenant.new_sales_order(order_params)
     unless @sales_order.save
       render :display_modal_error_messages, locals: { object: @sales_order }
     end
@@ -45,7 +45,7 @@ class SalesOrdersController < ApplicationController
 
   def update
     @sales_order = sales_orders.find(params[:id])
-    unless @sales_order.update_attributes(params[:sales_order])
+    unless @sales_order.update_attributes(order_params)
       render :display_modal_error_messages, locals: { object: @sales_order }
     end
   end
@@ -69,7 +69,7 @@ class SalesOrdersController < ApplicationController
 
   def update_ship_date
     @sales_order = sales_orders.find(params[:id])
-    if @sales_order.update_attributes(params[:sales_order])
+    if @sales_order.update_attributes(order_params)
       @sales_order.shipped!
     else
       render :display_modal_error_messages, locals: { object: @sales_order }
@@ -97,5 +97,9 @@ class SalesOrdersController < ApplicationController
 
   def filtering_params
     params.slice(:text_search, :code_like, :ship_date_before, :ship_date_after)
+  end
+
+  def order_params
+    params.require(:sales_order).permit(:code, :customer, :ship_to, :release_date, :due_date, :ship_date, :note, :line_items_attributes, :status, line_items_attributes: [:custom_width, :custom_length, :quantity, :product_type, :wire_length, :busbar_type, :note, :id, :_destroy])
   end
 end

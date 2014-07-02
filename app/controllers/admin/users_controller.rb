@@ -9,7 +9,7 @@ class Admin::UsersController < AdminController
   end
 
   def create
-    @user = current_tenant.new_user(params[:user])
+    @user = current_tenant.new_user(user_params)
     unless @user.save
       render :display_modal_error_messages, locals: { object: @user }
     end
@@ -23,7 +23,7 @@ class Admin::UsersController < AdminController
 
   def update
     @user = users.find(params[:id])
-    unless @user.update(params[:user])
+    unless @user.update(user_params)
       render :display_modal_error_messages, locals: { object: @user }
     end
   end 
@@ -38,5 +38,9 @@ class Admin::UsersController < AdminController
 
   def users
     current_tenant.users
+  end
+
+  def user_params
+    params.require(:user).permit(:username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector)
   end
 end

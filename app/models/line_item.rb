@@ -1,5 +1,4 @@
 class LineItem < ActiveRecord::Base
-  attr_accessible :custom_width, :custom_length, :quantity, :product_type, :wire_length, :busbar_type, :note
 
   belongs_to :sales_order
 

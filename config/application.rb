@@ -21,5 +21,8 @@ module Pcms
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.i18n.enforce_available_locales = false
+
+    # raise exception when unpermitted attributes are assigned
+    config.action_controller.action_on_unpermitted_parameters = :raise
   end
 end

@@ -1,8 +1,6 @@
 class User < ActiveRecord::Base
   include Tenancy
 
-  attr_accessible :username, :full_name, :password, :password_confirmation, :chemist, :operator, :role_level, :inspector
-
   has_secure_password
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
