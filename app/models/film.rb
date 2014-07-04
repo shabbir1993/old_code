@@ -2,8 +2,6 @@ class Film < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  attr_reader :destination
-
   belongs_to :master_film
   belongs_to :sales_order
   has_many :film_movements

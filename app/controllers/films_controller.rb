@@ -27,7 +27,7 @@ class FilmsController < ApplicationController
 
   def update
     @film = tenant_films.find(params[:id])
-    unless @film.update_and_move(film_params, params[:film][:destination], current_user)
+    unless @film.update_and_move(film_params, params[:destination], current_user)
       render :display_modal_error_messages, locals: { object: @film }
     end
   end 
@@ -40,7 +40,7 @@ class FilmsController < ApplicationController
   def update_multiple
     @films = tenant_films.find(params[:film_ids])
     @films.each do |film|
-      film.update_and_move(update_multiple_films_params, params[:film][:destination], current_user)
+      film.update_and_move(update_multiple_films_params, params[:destination], current_user)
     end
   end
 
