@@ -7,6 +7,9 @@
       title: {
         text: false
       },
+      legend: {
+        enabled: false
+      },
       xAxis: {
         title: {
           text: 'Lead days'
@@ -22,6 +25,7 @@
         }
       },
       series: [{
+        name: "Orders",
         data: <%= raw @histogram.data %>
       }]
     });

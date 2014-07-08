@@ -1,4 +1,4 @@
-<li id="<%= "salesorder-#{sales_order.id}" %>" class="panel panel-default">
+<li id="<%= "salesorder-#{sales_order.id}" %>" class="salesorder panel panel-default">
 <div class="panel-heading">
   <%= link_to_modal_edit(edit_sales_order_path(sales_order), sales_order, class: "pull-left edit-sales-order") %>
   <div class="dropdown pull-right">
@@ -46,7 +46,7 @@
     </span>
     <div class="progress-bar" style="<%= "width: #{sales_order.assigned_film_percentage}%" %>"></div>
   </div>
-  <ul class="list-inline">
+  <ul class="list-inline salesorder-films">
     <%= render partial: "film", collection: sales_order.films %>
   </ul>
 </div>

@@ -5,8 +5,10 @@ module SalesOrdersHelper
       "label-warning"
     when "fg"
       "label-success"
-    else
+    when "reserved"
       "label-danger"
+    else
+      "label-default"
     end
   end
 end
