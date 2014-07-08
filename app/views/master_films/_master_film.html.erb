@@ -14,7 +14,11 @@
   <td class="effective_width"><%= master_film.effective_width %></td>
   <td class="effective_length"><%= master_film.effective_length %></td>
   <td class="yield"><%= format_yield(master_film.yield) %></td>
-  <td class="defects_sum"><%= master_film.defects_sum %></td>
+  <td class="defects_sum">
+    <span class="badge" data-toggle="tooltip" data-html="true" data-placement="right" title="<%= master_film.defects.map { |k,v| "#{k} #{v}" }.join("<br\>") %>">
+      <%= master_film.defects_sum %>
+    </span>
+  </td>
   <td class="serial_date"><%= master_film.serial_date %></td>
   <td class="note"><%= master_film.note %></td>
 </tr>
