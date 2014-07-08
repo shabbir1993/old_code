@@ -1,0 +1,7 @@
+<tr id="<%= "machine-#{machine.id}" %>">
+  <td>
+    <%= link_to_modal_edit(edit_machine_path(machine), machine, class: "edit-machine") %>
+  </td>
+  <td class="code"><%= machine.code %></td>
+  <td class="yield_constant"><%= machine.yield_constant %></td>
+</tr>

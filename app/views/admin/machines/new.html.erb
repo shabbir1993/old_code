@@ -1,0 +1,12 @@
+<%= modal_form_for @machine do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">New machine</h4>
+  </div>
+  <div class="modal-body">
+    <%= render 'machine_fields', f: f %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Create machine", class: "btn btn-success" %>
+  </div>
+<% end %>

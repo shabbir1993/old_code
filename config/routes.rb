@@ -35,6 +35,7 @@ Pcms::Application.routes.draw do
 
   scope module: "admin" do
     resources :users, except: :show
+    resources :machines, except: :show
   end
 
   resources :film_movements, only: [:index] do

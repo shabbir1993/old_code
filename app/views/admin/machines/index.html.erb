@@ -1,0 +1,19 @@
+<%= paginate @machines %>
+
+<%= link_to_modal_new(new_machine_path, "New machine") %>
+
+<table class="table table-condensed table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Yield constant</th>
+  </tr>
+  <tr>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render @machines %>
+  </tbody>
+</table>
+

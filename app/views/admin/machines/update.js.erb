@@ -1,0 +1,4 @@
+var machine_row = $("<%= "#machine-#{@machine.id}" %>")
+$('#forms-modal').modal('hide')
+machine_row.replaceWith("<%= j render 'machine', machine: @machine %>");
+$(machine_row.selector).addClass("info");
