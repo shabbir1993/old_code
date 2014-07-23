@@ -1,5 +1,5 @@
 Pcms::Application.routes.draw do
-  resources :films, except: [:new, :create, :show] do
+  resources :films, except: [:new, :create] do
     member do
       post :split
       patch :restore
@@ -11,6 +11,10 @@ Pcms::Application.routes.draw do
       get :dimensions_map
       get :shelf_inventory
     end
+  end
+
+  namespace :api, defaults: { format: 'json' } do
+    resources :films, only: [:show]
   end
 
   resources :master_films, except: [:show, :destroy]
