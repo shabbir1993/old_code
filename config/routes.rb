@@ -17,6 +17,7 @@ Pcms::Application.routes.draw do
     resources :films, only: [:show, :update] do
       collection do
         patch :update_multiple
+        get :assignable_orders
       end
     end
   end
