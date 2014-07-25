@@ -23,6 +23,10 @@ module Api
       end
     end
 
+    def assignable_orders
+      @in_progress_orders = current_tenant.sales_orders.in_progress
+    end
+
     private
 
     def film_params
