@@ -14,7 +14,11 @@ Pcms::Application.routes.draw do
   end
 
   namespace :api, defaults: { format: 'json' } do
-    resources :films, only: [:show, :update, :update_multiple]
+    resources :films, only: [:show, :update] do
+      collection do
+        patch :update_multiple
+      end
+    end
   end
 
   resources :master_films, except: [:show, :destroy]

@@ -1,5 +1,6 @@
 module Api
   class FilmsController < ApplicationController
+    skip_before_filter  :verify_authenticity_token
     respond_to :json
 
     def show
@@ -8,7 +9,11 @@ module Api
 
     def update
       @film = tenant_films.find(params[:id])
-      @film.update_and_move(film_params, params[:destination], current_user)
+      if @film.update_and_move(film_params, params[:destination], current_user)
+        respond_with "success"
+      else
+        render json: @film.errors.full_messages.to_json
+      end
     end
 
     def update_multiple
@@ -21,7 +26,11 @@ module Api
     private
 
     def film_params
-      params.require(:film).permit(:note, :shelf, :sales_order_id, :order_fill_count, dimensions_attributes: [:width, :length, :_destroy, :id])
+      params.permit(:note, :shelf, :sales_order_id, :order_fill_count, dimensions_attributes: [:width, :length, :_destroy, :id])
+    end
+
+    def update_multiple_films_params
+      params.reject { |k,v| v.blank? }.permit(:shelf, :sales_order_id)
     end
 
     def tenant_films
