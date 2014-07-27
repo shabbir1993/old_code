@@ -32,6 +32,6 @@ class ProductionsController < ApplicationController
   end
 
   def filtering_params
-    params.slice(:serial_date_before, :serial_date_after)
+    params.slice(:serial_date_before, :serial_date_after, :formula_like)
   end
 end
