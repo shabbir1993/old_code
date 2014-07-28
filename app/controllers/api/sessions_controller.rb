@@ -7,7 +7,7 @@ module Api
       user = User.find_by(username: params[:username])
       if user && user.authenticate(params[:password])
         session[:user_id] = user.id
-        render nothing: true, status: 200
+        render json: { full_name: user.full_name }, status: 200
       else
         render nothing: true, status: 403
       end
@@ -15,7 +15,7 @@ module Api
 
     def destroy
       session[:user_id] = nil
-      render status: 200
+      render nothing: true, status: 200
     end
   end
 end

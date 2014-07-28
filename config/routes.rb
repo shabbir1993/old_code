@@ -15,7 +15,7 @@ Pcms::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     post 'login', to: 'sessions#create'
-    get 'logout', to: 'sessions#destroy'
+    post 'logout', to: 'sessions#destroy'
     resources :films, only: [:show, :update] do
       collection do
         patch :update_multiple
@@ -42,7 +42,7 @@ Pcms::Application.routes.draw do
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
-  get 'logout', to: 'sessions#destroy'
+  post 'logout', to: 'sessions#destroy'
 
   scope module: "admin" do
     resources :users, except: :show
