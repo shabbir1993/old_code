@@ -14,6 +14,8 @@ Pcms::Application.routes.draw do
   end
 
   namespace :api, defaults: { format: 'json' } do
+    post 'login', to: 'sessions#create'
+    get 'logout', to: 'sessions#destroy'
     resources :films, only: [:show, :update] do
       collection do
         patch :update_multiple

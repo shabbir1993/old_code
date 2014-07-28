@@ -12,7 +12,7 @@ module Api
       if @film.update_and_move(film_params, params[:destination], current_user)
         respond_with "success"
       else
-        render json: @film.errors.full_messages.to_json
+        render json: @film.errors.full_messages.to_json, status: 500
       end
     end
 
@@ -34,7 +34,7 @@ module Api
     end
 
     def update_multiple_films_params
-      params.reject { |k,v| v.blank? }.permit(:shelf, :sales_order_id)
+      params.reject { |k,v| v.blank? }.permit(:shelf)
     end
 
     def tenant_films
