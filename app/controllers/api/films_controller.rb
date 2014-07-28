@@ -1,7 +1,5 @@
 module Api
-  class FilmsController < ApplicationController
-    skip_before_filter  :verify_authenticity_token
-    respond_to :json
+  class FilmsController < ApiController
 
     def show
       @film = tenant_films.find(params[:id])

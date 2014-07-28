@@ -1,13 +1,13 @@
 module Api
-  class SessionsController < ApplicationController
-    skip_before_filter  :verify_authenticity_token
-    respond_to :json
+  class SessionsController < ApiController
+    skip_before_action :check_auth
+    skip_before_action :check_ip
 
     def create
       user = User.find_by(username: params[:username])
       if user && user.authenticate(params[:password])
         session[:user_id] = user.id
-        render json: { full_name: user.full_name }, status: 200
+        render json: { full_name: user.full_name }
       else
         render nothing: true, status: 403
       end
@@ -15,7 +15,7 @@ module Api
 
     def destroy
       session[:user_id] = nil
-      render nothing: true, status: 200
+      render nothing: true
     end
   end
 end
