@@ -8,9 +8,9 @@ module Api
     end
 
     def update
-      @film = tenant_films.find(params[:id])
+      @film = tenant_films.find_by_serial(params[:serial])
       if @film.update_and_move(film_params, params[:destination], current_user)
-        respond_with "success"
+        render json: @film.to_json
       else
         render json: @film.errors.full_messages.to_json, status: 500
       end
@@ -21,6 +21,7 @@ module Api
       @films.each do |film|
         film.update_and_move(update_multiple_films_params, params[:destination], current_user)
       end
+      render json: @films.to_json
     end
 
     def assignable_orders

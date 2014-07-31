@@ -14,9 +14,10 @@ class LeadTimeHistogram
 
   def data
     lead_day_range.map do |d|
+      orders = lead_days_ary.select { |_,v| v == d }
       { 
-        serials: lead_days_ary.select { |_,v| v == d }.keys,
-        count: lead_days_ary.select { |_,v| v == d }.count
+        serials: orders.keys,
+        count: orders.count
       }
     end
   end
