@@ -11,7 +11,8 @@ end
 json.shelf @film.shelf
 if @film.sales_order
   json.sales_order @film.sales_order, :id, :code
-  json.order_fill_count @film.order_fill_count
 end
+
+json.order_fill_count @film.order_fill_count
 json.note @film.note
 json.phase @film.phase
