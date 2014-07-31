@@ -2,7 +2,7 @@ module Api
   class FilmsController < ApiController
 
     def show
-      @film = tenant_films.find(params[:id])
+      @film = tenant_films.find_by_serial(params[:serial])
     end
 
     def update
