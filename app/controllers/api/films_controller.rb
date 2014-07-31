@@ -4,14 +4,12 @@ module Api
     def show
       @film = tenant_films.find_by_serial!(params[:serial])
     rescue ActiveRecord::RecordNotFound
-      render nothing: true, status: 404
+      render text: "Film does not exist.", status: 404
     end
 
     def update
       @film = tenant_films.find_by_serial(params[:serial])
-      if @film.update_and_move(film_params, params[:destination], current_user)
-        render json: @film.to_json
-      else
+      unless @film.update_and_move(film_params, params[:destination], current_user)
         render json: @film.errors.full_messages.to_json, status: 500
       end
     end

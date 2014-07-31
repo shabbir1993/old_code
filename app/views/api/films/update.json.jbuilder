@@ -15,4 +15,3 @@ if @film.sales_order
 end
 json.note @film.note
 json.phase @film.phase
-json.allowed_destinations @film.valid_destinations
