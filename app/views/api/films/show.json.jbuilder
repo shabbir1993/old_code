@@ -9,7 +9,9 @@ json.dimensions @film.dimensions do |dimension|
 end
 
 json.shelf @film.shelf
-json.sales_order_code @film.sales_order_code
+if @film.sales_order
+  json.sales_order @film.sales_order, :id, :code
+end
 json.order_fill_count @film.order_fill_count
 json.note @film.note
 json.phase @film.phase

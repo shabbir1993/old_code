@@ -13,16 +13,20 @@ class LeadTimeHistogram
   end
 
   def data
-    lead_day_range.map { |d| lead_days_ary.grep(d).count }
+    lead_day_range.map do |d|
+      { 
+        serials: lead_days_ary.select { |_,v| v == d }.keys,
+        count: lead_days_ary.select { |_,v| v == d }.count
+      }
   end
 
   private
 
   def lead_days_ary
-    @orders.map { |o| o.lead_days }
+    @orders.map { |o| { o.code => o.lead_days } }
   end
 
   def max_lead_days
-    lead_days_ary.max
+    lead_days_ary.values.max
   end
 end
