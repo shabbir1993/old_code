@@ -2,7 +2,9 @@ module Api
   class FilmsController < ApiController
 
     def show
-      @film = tenant_films.find_by_serial(params[:serial])
+      @film = tenant_films.find_by_serial!(params[:serial])
+    rescue ActiveRecord::RecordNotFound
+      render nothing: true, status: 404
     end
 
     def update
