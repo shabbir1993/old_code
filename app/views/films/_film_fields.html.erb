@@ -19,6 +19,6 @@
 <%= f.text_area :note %>
 <div class="form-group">
   <div class="col-md-offset-2 col-md-8">
-    <%= select_tag :destination, options_for_select(destination_choices([film])), { prompt: "Move to...", class: "form-control" } %>
+    <%= select_tag :destination, options_for_select(film.valid_destinations - [film.phase]), { prompt: "Move to...", class: "form-control" } %>
   </div>
 </div>

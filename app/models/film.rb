@@ -63,7 +63,9 @@ class Film < ActiveRecord::Base
         master_film.effective_length = length
         master_film.save!
       end
-      move_to(destination, actor) if destination.present?
+      if destination.present && destination != self.phase
+        move_to(destination, actor)
+      end
       true
     end
   end
@@ -117,21 +119,21 @@ class Film < ActiveRecord::Base
   def valid_destinations
     case phase
     when "lamination"
-      ["inspection"]
+      %w{inspection lamination}
     when "inspection"
-      %w{stock reserved wip nc}
+      %w{inspection stock reserved wip nc}
     when "stock"
-      %w{reserved wip nc}
+      %w{stock reserved wip nc}
     when "reserved"
-      %w{wip stock nc}
+      %w{wip reserved stock nc}
     when "wip"
-      %w{fg reserved stock nc}
+      %w{fg reserved stock wip nc}
     when "fg"
-      %w{wip stock reserved nc}
+      %w{wip fg stock reserved nc}
     when "nc"
-      %w{scrap stock reserved}
+      %w{scrap stock reserved nc}
     when "scrap"
-      %w{stock reserved nc}
+      %w{stock reserved nc scrap}
     end
   end
 
