@@ -63,7 +63,7 @@ class Film < ActiveRecord::Base
         master_film.effective_length = length
         master_film.save!
       end
-      if destination.present && destination != self.phase
+      if destination.present? && destination != self.phase
         move_to(destination, actor)
       end
       true

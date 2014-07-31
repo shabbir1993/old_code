@@ -25,7 +25,7 @@ class LeadTimeHistogram
   private
 
   def lead_days_hash
-    @orders.map { |o| [o.code, o.lead_days] }
+    Hash[@orders.map { |o| [o.code, o.lead_days] }]
   end
 
   def max_lead_days
