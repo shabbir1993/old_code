@@ -18,6 +18,7 @@ class LeadTimeHistogram
         serials: lead_days_ary.select { |_,v| v == d }.keys,
         count: lead_days_ary.select { |_,v| v == d }.count
       }
+    end
   end
 
   private
