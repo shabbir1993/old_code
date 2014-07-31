@@ -8,14 +8,14 @@ module Api
     end
 
     def update
-      @film = tenant_films.find_by_serial(params[:serial])
+      @film = tenant_films.find_by_serial!(params[:serial])
       unless @film.update_and_move(film_params, params[:destination], current_user)
         render json: @film.errors.full_messages.to_json, status: 500
       end
     end
 
     def update_multiple
-      @films = tenant_films.find(params[:film_ids])
+      @films = tenant_films.where(serial: params[:film_serials])
       @films.each do |film|
         film.update_and_move(update_multiple_films_params, params[:destination], current_user)
       end
