@@ -24,13 +24,23 @@
           text: 'Orders count'
         }
       },
+      tooltip: {
+        formatter: function () {
+          var serial_array = this.point.serials;
+          var serial_str = ""; 
+          for(var i = 0; i < serial_array.length; i++){
+            serial_str = serial_str + serial_array[i] + '<br>';
+          }
+          return serial_str;
+        }
+      },
       series: [{
         name: "Orders",
               data: [
                 <% @histogram.data.each do |p| %>
                   {
-count: <%= raw p[:count] %>,
-       serials: <%= raw p[:serials]
+                    y: <%= raw p[:count] %>,
+                           serials: <%= raw p[:serials] %>
                   },
             <% end %>
               ]
