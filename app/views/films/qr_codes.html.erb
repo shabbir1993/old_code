@@ -23,19 +23,3 @@
 <div class="modal-footer">
   <%= link_to("Print", "#", id: "print-qr", class: "btn btn-default") %>
 </div>
-
-<script>
-$('#print-qr').click(function () {
-    var qrStyles = '<head><link rel="stylesheet", media="all, print", type="text/css" href="public/assets/qr.css"></head>'
-    var qrCodes = document.getElementById("qr-container");
-    var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-    WinPrint.document.writeln('<!DOCTYPE html>');
-    WinPrint.document.writeln('<html><head><title></title>');
-    WinPrint.document.write(qrStyles)
-    WinPrint.document.writeln('</head><body>');
-    WinPrint.document.write(qrCodes.innerHTML);
-    WinPrint.document.writeln('</body></html>');
-    WinPrint.focus();
-    WinPrint.print();
-    });
-</script>

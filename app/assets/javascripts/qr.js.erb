@@ -1,0 +1,14 @@
+jQuery(function() {
+  var qrStyles = '<%= stylesheet_link_tag "application", :media => "all" %>';
+  $('#forms-modal').on('click', '#print-qr', function(event) {
+    var qrCodes = document.getElementById("qr-container");
+    var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+    WinPrint.document.writeln('<!DOCTYPE html>');
+    WinPrint.document.writeln('<html><head><title></title>');
+    WinPrint.document.write(qrStyles)
+    WinPrint.document.writeln('</head><body>');
+    WinPrint.document.write(qrCodes.innerHTML);
+    WinPrint.document.writeln('</body></html>');
+    WinPrint.focus();
+  });
+});
