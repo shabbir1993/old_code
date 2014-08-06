@@ -127,6 +127,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (10.3.2)
+    rqrcode (0.4.2)
     rspec-core (3.0.0)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.0)
@@ -209,6 +210,7 @@ DEPENDENCIES
   poltergeist (~> 1.5.0)
   rails (= 4.1.0)
   rails_12factor
+  rqrcode (= 0.4.2)
   rspec-rails (~> 3.0.0.beta2)
   sass-rails (~> 4.0.0)
   sentry-raven!

@@ -1,0 +1,45 @@
+<head>
+<%= stylesheet_link_tag "qr", media: "all" %>
+</head>
+
+<div class="modal-body" id="qr-container">
+  <div id="qr-codes">
+  <% @films.each do |f| %>
+  <div class="qr-code text-center">
+  <table>
+    <% f.qr_code.modules.each_index do |x| %>
+      <tr>  
+      <% f.qr_code.modules.each_index do |y| %>
+        <% if f.qr_code.dark?(x,y) %>
+          <td class="black"/>
+        <% else %>
+          <td class="white"/>
+        <% end %>
+      <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <%= f.serial %>
+  </div>
+  <% end %>
+  </div>
+</div>
+<div class="modal-footer">
+  <%= link_to("Print", "#", id: "print-qr", class: "btn btn-default") %>
+</div>
+
+<script>
+$('#print-qr').click(function () {
+    var qrStyles = '<head><link rel="stylesheet", media="all, print", type="text/css" href="assets/qr.css"></head>'
+    var qrCodes = document.getElementById("qr-container");
+    var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+    WinPrint.document.writeln('<!DOCTYPE html>');
+    WinPrint.document.writeln('<html><head><title></title>');
+    WinPrint.document.write(qrStyles)
+    WinPrint.document.writeln('</head><body>');
+    WinPrint.document.write(qrCodes.innerHTML);
+    WinPrint.document.writeln('</body></html>');
+    WinPrint.focus();
+    WinPrint.print();
+    });
+</script>

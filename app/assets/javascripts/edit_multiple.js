@@ -7,14 +7,14 @@ jQuery(function() {
     return false;
   });
 
-  // enables edit multiple button
+  // enables submit buttons
   $("input.film-select").click(function() {
     var unchecked = $('input.film-select:checked').length;
     if (unchecked >= 1) {
-      $('#films-edit-multiple').removeAttr('disabled');
+      $('.submit-selected').removeAttr('disabled');
     }
     else {
-      $('#films-edit-multiple').attr('disabled', 'disabled');
+      $('.submit-selected').attr('disabled', 'disabled');
     }
   });
 });

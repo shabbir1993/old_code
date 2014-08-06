@@ -15,6 +15,7 @@ gem 'pg', '0.17.0'
 gem 'highcharts-rails', '~> 4.0.1'
 gem "kaminari", "~> 0.15.1"
 gem 'simple_calendar', '~> 1.1.3'
+gem 'rqrcode', '0.4.2'
 gem 'jbuilder', '~> 2.1.3'
 gem "pg_search", "~> 0.7.0"
 gem "bootstrap-datepicker-rails", "~> 1.1.1.8"

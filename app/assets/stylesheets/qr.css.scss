@@ -1,0 +1,26 @@
+.qr-code {
+  -webkit-print-color-adjust: exact;
+  margin-bottom: 10px;
+  text-align: center;
+  table {
+    margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+    td {
+      border-width: 0; 
+      border-style: none;
+      border-color: #0000ff; 
+      border-collapse: collapse; 
+      padding: 0; 
+      margin: 0; 
+      width: 4px; 
+      height: 4px; 
+      &.black { background-color: #000; }
+      &.white { background-color: #fff; }
+    }
+  }
+}

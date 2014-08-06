@@ -1,4 +1,5 @@
 class Film < ActiveRecord::Base
+  require 'rqrcode'
   include Filterable
   include Tenancy
 
@@ -135,6 +136,10 @@ class Film < ActiveRecord::Base
     when "scrap"
       %w{stock reserved nc scrap}
     end
+  end
+
+  def qr_code
+    @qr ||= RQRCode::QRCode.new(serial, size: 2, level: :h)
   end
 
   def set_area

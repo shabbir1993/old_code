@@ -10,6 +10,7 @@ Pcms::Application.routes.draw do
       get :formula_totals
       get :dimensions_map
       get :shelf_inventory
+      get :qr_codes
     end
   end
 

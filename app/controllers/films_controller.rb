@@ -1,4 +1,6 @@
 class FilmsController < ApplicationController
+  require 'rqrcode'
+
   def index
     @films = filtered_films.order_by(sort[0], sort[1]).page(params[:page])
     respond_to do |format|
@@ -34,7 +36,11 @@ class FilmsController < ApplicationController
 
   def edit_multiple
     @films = tenant_films.find(params[:film_ids])
-    render layout: false
+    if params[:edit]
+      render :edit_multiple, layout: false
+    elsif params[:qrcodes]
+      render :qr_codes, layout: false
+    end
   end
 
   def update_multiple

@@ -1,5 +1,6 @@
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
-  <%= submit_tag "Edit selected", id: "films-edit-multiple", class: "btn btn-default", disabled: 'disabled' %>
+  <button name="edit" class="btn btn-default submit-selected" disabled="disabled"><i class="fa fa-check"></i> Edit</button>
+  <button name="qrcodes" class="btn btn-default submit-selected" disabled="disabled"><i class="fa fa-check"></i> QR codes</button>
 
   <%= link_to_export("Films", params) %>
 
