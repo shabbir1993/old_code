@@ -1,5 +1,5 @@
 jQuery(function() {
-  var qrStyles = '<%= stylesheet_link_tag "application", :media => "all" %>';
+  var qrStyles = '<%= stylesheet_link_tag "qr", :media => "all" %>';
   $('#forms-modal').on('click', '#print-qr', function(event) {
     var qrCodes = document.getElementById("qr-container");
     var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
