@@ -14,6 +14,8 @@ class MasterFilm < ActiveRecord::Base
   after_update :update_film_serials, if: Proc.new { |mf| mf.serial_changed? }
 
   delegate :code, to: :machine, prefix: true, allow_nil: true
+  alias_attribute :width, :effective_width
+  alias_attribute :length, :effective_length
 
   validates :serial, presence: true, 
                      uniqueness: { case_sensitive: false, scope: :tenant_code },

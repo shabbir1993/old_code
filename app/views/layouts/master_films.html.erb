@@ -19,4 +19,11 @@
   </dl>
 <% end %>
 
+<% content_for :nav do %>
+  <ul class="nav nav-tabs">
+    <%= tab_link_to("Index", 'index') %>
+    <%= tab_link_to("Effective Dimensions map", 'dimensions_map') %>
+  </ul>
+<% end %>
+
 <%= render template: "layouts/application" %>

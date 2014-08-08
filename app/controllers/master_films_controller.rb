@@ -19,6 +19,10 @@ class MasterFilmsController < ApplicationController
     end
   end
 
+  def dimensions_map
+    @data = DimensionsMap.new(filtered_master_films)
+  end
+
   def edit
     @master_film = master_films.find(params[:id])
     render layout: false

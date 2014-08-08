@@ -25,7 +25,11 @@ Pcms::Application.routes.draw do
     end
   end
 
-  resources :master_films, except: [:show, :destroy]
+  resources :master_films, except: [:show, :destroy] do
+    collection do
+      get :dimensions_map
+    end
+  end
 
   resources :sales_orders, except: [:show] do
     member do
