@@ -120,21 +120,21 @@ class Film < ActiveRecord::Base
   def valid_destinations
     case phase
     when "lamination"
-      %w{inspection lamination}
+      %w{inspection}
     when "inspection"
-      %w{inspection stock reserved wip nc}
-    when "stock"
       %w{stock reserved wip nc}
+    when "stock"
+      %w{reserved wip nc}
     when "reserved"
-      %w{wip reserved stock nc}
+      %w{wip stock nc}
     when "wip"
-      %w{fg reserved stock wip nc}
+      %w{fg reserved stock nc}
     when "fg"
-      %w{wip fg stock reserved nc}
+      %w{wip stock reserved nc}
     when "nc"
-      %w{scrap stock reserved nc}
+      %w{scrap stock reserved}
     when "scrap"
-      %w{stock reserved nc scrap}
+      %w{stock reserved nc}
     end
   end
 
