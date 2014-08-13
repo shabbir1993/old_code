@@ -19,7 +19,8 @@ Pcms::Application.routes.draw do
     post 'logout', to: 'sessions#destroy'
     resources :films, only: [:show, :update], param: :serial do
       member do
-        post :split
+        # using get for split for rack issue 676
+        get :split
       end
       collection do
         patch :update_multiple
