@@ -14,6 +14,13 @@ module Api
       end
     end
 
+    def split
+      film = tenant_films.find_by_serial!(params[:serial])
+      @split = film.split
+    rescue ActiveRecord::RecordNotFound
+      render text: "Film does not exist.", status: 404
+    end
+
     def update_multiple
       @films = tenant_films.where(serial: params[:film_serials])
       @films.each do |film|

@@ -18,6 +18,9 @@ Pcms::Application.routes.draw do
     post 'login', to: 'sessions#create'
     post 'logout', to: 'sessions#destroy'
     resources :films, only: [:show, :update], param: :serial do
+      member do
+        post :split
+      end
       collection do
         patch :update_multiple
         get :assignable_orders
