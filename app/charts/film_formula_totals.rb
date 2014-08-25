@@ -19,7 +19,8 @@ class FilmFormulaTotals
   private
   
   def unique_values
-    @films.pluck('master_films.formula').uniq
+    # didn't use pluck because of pg_search bug
+    @films.map(&:formula).uniq
   end
 
   def count_and_area_by_value

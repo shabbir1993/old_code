@@ -49,7 +49,7 @@ class Film < ActiveRecord::Base
     associated_against: { master_film: [:formula], sales_order: [:code] }
 
   def split
-    split = master_film.create_film(phase, width, length)
+    master_film.create_film(phase, width, length)
   end
 
   def create_dimension(width = 0, length = 0)
