@@ -24,8 +24,6 @@ class Tenant
     @yield_multiplier = PROPERTIES[code][:yield_multiplier]
   end
 
-  private
-
   def self.asset_classes
     [User, FilmMovement, SalesOrder, MasterFilm, Film, Machine]
   end
