@@ -28,7 +28,7 @@ class FilmFormulaTotals
       films_with_value = @films.where("master_films.formula = ?", value)
       {
         value: value.present? ? value : "None",
-        count: films_with_value.count,
+        count: films_with_value.count(:all),
         area: films_with_value.map{ |f| f.area }.sum.to_f
       }
     end.sort_by { |i| i[:area] }.reverse
