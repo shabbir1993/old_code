@@ -105,7 +105,7 @@ class Film < ActiveRecord::Base
   end
 
   def self.total_area
-    sum(:area)
+    all.map{ |f| f.area }.sum.to_f
   end
 
   def self.to_csv(options = {})
