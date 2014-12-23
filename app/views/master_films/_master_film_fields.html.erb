@@ -7,6 +7,8 @@
 <%= f.select :chemist, current_tenant.users.chemists.names, { prompt: "Choose chemist..." }, { class: "form-control" } %>
 <%= f.select :operator, current_tenant.users.operators.names, { prompt: "Choose operator..." }, { class: "form-control" } %>
 <%= f.select :inspector, current_tenant.users.inspectors.names, { prompt: "Choose inspector..." }, { class: "form-control" } %>
+<%= f.number_field :temperature, label: "Temp", step: "any" %>
+<%= f.number_field :humidity, label: "Humidity", step: "any" %>
 <%= f.number_field :micrometer_left, label: "Mike L", step: "any" %>
 <%= f.number_field :micrometer_right, label: "Mike R", step: "any" %>
 <%= f.number_field :run_speed, step: "any" %>
