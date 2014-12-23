@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141223062841) do
+ActiveRecord::Schema.define(version: 20141223233616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,9 @@ ActiveRecord::Schema.define(version: 20141223062841) do
 
   add_index "film_movements", ["created_at"], name: "index_film_movements_on_created_at", using: :btree
   add_index "film_movements", ["film_id"], name: "index_film_movements_on_film_id", using: :btree
+  add_index "film_movements", ["from_phase"], name: "index_film_movements_on_from_phase", using: :btree
   add_index "film_movements", ["tenant_code"], name: "index_film_movements_on_tenant_code", using: :btree
+  add_index "film_movements", ["to_phase"], name: "index_film_movements_on_to_phase", using: :btree
 
   create_table "films", force: true do |t|
     t.integer "master_film_id",                   null: false
@@ -57,6 +59,7 @@ ActiveRecord::Schema.define(version: 20141223062841) do
   add_index "films", ["area"], name: "index_films_on_area", using: :btree
   add_index "films", ["deleted"], name: "index_films_on_deleted", using: :btree
   add_index "films", ["master_film_id"], name: "index_films_on_master_film_id", using: :btree
+  add_index "films", ["phase"], name: "index_films_on_phase", using: :btree
   add_index "films", ["sales_order_id"], name: "index_films_on_sales_order_id", using: :btree
   add_index "films", ["serial"], name: "index_films_on_serial", using: :btree
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
@@ -129,7 +132,9 @@ ActiveRecord::Schema.define(version: 20141223062841) do
   end
 
   add_index "sales_orders", ["due_date"], name: "index_sales_orders_on_due_date", using: :btree
+  add_index "sales_orders", ["release_date"], name: "index_sales_orders_on_release_date", using: :btree
   add_index "sales_orders", ["ship_date"], name: "index_sales_orders_on_ship_date", using: :btree
+  add_index "sales_orders", ["status"], name: "index_sales_orders_on_status", using: :btree
   add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree
 
   create_table "users", force: true do |t|
@@ -146,5 +151,6 @@ ActiveRecord::Schema.define(version: 20141223062841) do
   end
 
   add_index "users", ["tenant_code"], name: "index_users_on_tenant_code", using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
 end
