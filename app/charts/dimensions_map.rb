@@ -1,4 +1,6 @@
 class DimensionsMap
+  INTERVAL = 5
+
   def initialize(records)
     @records = records
   end
@@ -10,11 +12,11 @@ class DimensionsMap
   end
 
   def x_axis_categories
-    (0..max_x_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval)}" }
+    (0..max_x_coordinate).map { |c| "#{c*INTERVAL}-#{c*INTERVAL + (INTERVAL)}" }
   end
 
   def y_axis_categories
-    (0..max_y_coordinate).map { |c| "#{c*interval}-#{c*interval + (interval)}" }
+    (0..max_y_coordinate).map { |c| "#{c*INTERVAL}-#{c*INTERVAL + (INTERVAL)}" }
   end
 
   def max_x_coordinate
@@ -32,14 +34,10 @@ class DimensionsMap
   end
 
   def convert_to_coordinate(dimension)
-    ((dimension || 0)/interval).round
+    ((dimension || 0)/INTERVAL).round
   end
 
   def pluck_serials(array)
     array.map { |i| i.serial }
-  end
-
-  def interval
-    5
   end
 end

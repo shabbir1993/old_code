@@ -22,23 +22,6 @@ gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 gem "skylight"
 
-group :test do
-  gem 'capybara', '~> 2.2.1'
-  gem 'poltergeist', '~> 1.5.0'
-  gem 'database_cleaner', '1.2.0'
-end
-
-group :test, :development do
-  gem 'rspec-rails', '~> 3.0.0.beta2'
-  gem "factory_girl_rails", "~> 4.4.1"
-end
-
-group :development do
-  gem 'thin', '~> 1.6.2'
-  gem 'spring', '~> 1.1.2'
-  gem 'spring-commands-rspec', '~> 1.0.2'
-end
-
 group :production do
   gem 'unicorn', '~> 4.8.3'
   gem 'rails_12factor'

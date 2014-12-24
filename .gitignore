@@ -17,4 +17,5 @@
 # Ignore DS_Store
 .DS_Store
 
+# exclude SSL files
 /ssl
