@@ -23,6 +23,6 @@ gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 gem "skylight"
 
 group :production do
-  gem 'unicorn', '~> 4.8.3'
+  gem 'puma', '~> 2.10.2'
   gem 'rails_12factor'
 end
