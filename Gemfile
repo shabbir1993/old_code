@@ -22,7 +22,9 @@ gem "bootstrap-datepicker-rails", "~> 1.1.1.8"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 gem "skylight"
 
+gem 'puma', '~> 2.10.2'
+gem 'rack-timeout' # used to timeout puma requests
+
 group :production do
-  gem 'puma', '~> 2.10.2'
   gem 'rails_12factor'
 end
