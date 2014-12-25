@@ -19,3 +19,6 @@
 
 # exclude SSL files
 /ssl
+
+#exclude local environment variables
+/.env

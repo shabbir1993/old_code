@@ -1,7 +1,6 @@
 <%= form_tag edit_multiple_films_path, id: "get-edit-multiple", method: :get, remote: true do %>
   <button name="edit" class="btn btn-default submit-selected" disabled="disabled"><i class="fa fa-check"></i> Edit</button>
   <button name="qrcodes" class="btn btn-default submit-selected" disabled="disabled"><i class="fa fa-check"></i> QR codes</button>
-
   <%= link_to_export("Films", params) %>
 
   <%= render 'shared/sort_dropdown', current: sort, choices: [['serial','desc'], ['area','asc'], ['shelf','asc']] %>
