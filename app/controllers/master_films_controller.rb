@@ -24,12 +24,12 @@ class MasterFilmsController < ApplicationController
   end
 
   def edit
-    @master_film = master_films.find(params[:id])
+    @master_film = tenant_master_films.find(params[:id])
     render layout: false
   end
 
   def update
-    @master_film = master_films.find(params[:id])
+    @master_film = tenant_master_films.find(params[:id])
     unless @master_film.update_attributes(master_film_params)
       render :display_modal_error_messages, locals: { object: @master_film }
     end
@@ -38,12 +38,15 @@ class MasterFilmsController < ApplicationController
   private
 
   def filtered_master_films
-    master_films.active.function(params[:function]).filter(filtering_params).by_serial
+    @filtered_master_films ||= tenant_master_films.active
+                                                  .function(params[:function])
+                                                  .filter(filtering_params)
+                                                  .by_serial
   end
   helper_method :filtered_master_films
 
-  def master_films
-    current_tenant.master_films
+  def tenant_master_films
+    @tenant_master_films ||= current_tenant.master_films
   end
 
   def filtering_params

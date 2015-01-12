@@ -24,7 +24,7 @@ class ShipmentsController < ApplicationController
   end
 
   def set_default_start_date
-    params[:ship_date_after] ||= 1.year.ago.to_date
+    params[:ship_date_after] ||= 1.month.ago.to_date
   end
 
   def filtering_params

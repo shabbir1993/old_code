@@ -69,14 +69,14 @@ class FilmsController < ApplicationController
   private
 
   def tenant_films
-    current_tenant.films
+    @tenant_films ||= current_tenant.films
   end
   helper_method :tenant_films
 
   def filtered_films
-    tenant_films.join_dimensions
-                .phase(params[:phase], current_tenant)
-                .filter(filtering_params)
+    @filtered_films ||= tenant_films.join_dimensions
+                                    .phase(params[:phase], current_tenant)
+                                    .filter(filtering_params)
   end
   helper_method :filtered_films
 

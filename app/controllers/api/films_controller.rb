@@ -44,7 +44,7 @@ module Api
     end
 
     def tenant_films
-      current_tenant.films
+      @tenant_films ||= current_tenant.films
     end
   end
 end
