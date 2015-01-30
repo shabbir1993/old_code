@@ -12,7 +12,7 @@ class Film < ActiveRecord::Base
 
   enum phase: [ :lamination, :inspection, :stock, :reserved, :wip, :fg, :nc, :scrap]
 
-  delegate :formula, :serial_date, to: :master_film
+  delegate :formula, :serial_date, :b_value, to: :master_film
   delegate :code, to: :sales_order, prefix: true, allow_nil: true
   delegate :width, :length, to: :primary_dimension
 
