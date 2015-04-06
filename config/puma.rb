@@ -1,18 +1,14 @@
-workers Integer(ENV['PUMA_WORKERS'] || 3)
-threads Integer(ENV['MIN_THREADS']  || 1), Integer(ENV['MAX_THREADS'] || 16)
+workers ENV.fetch('WEB_CONCURRENCY') { 2 }.to_i
 
+threads_count = ENV.fetch('MAX_THREADS') { 5 }.to_i
+threads threads_count, threads_count
+
+rackup DefaultRackup
+port ENV.fetch('PORT') { 3000 }
+environment ENV.fetch('RACK_ENV') { 'development' }
 preload_app!
-
-rackup      DefaultRackup
-port        ENV['PORT']     || 3000
-environment ENV['RACK_ENV'] || 'development'
 
 on_worker_boot do
   # worker specific setup
-  ActiveSupport.on_load(:active_record) do
-    config = ActiveRecord::Base.configurations[Rails.env] ||
-      Rails.application.config.database_configuration[Rails.env]
-    config['pool'] = ENV['MAX_THREADS'] || 16
-    ActiveRecord::Base.establish_connection(config)
-  end
+  ActiveRecord::Base.establish_connection
 end
