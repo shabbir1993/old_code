@@ -21,7 +21,6 @@ gem 'jbuilder', '~> 2.2.13'
 gem 'pg_search', '~> 0.7.9'
 gem 'bootstrap-datepicker-rails', '~> 1.4.0'
 gem "sentry-raven", git: "https://github.com/getsentry/raven-ruby.git"
-gem "skylight"
 
 gem 'puma', '~> 2.11.2'
 gem 'rack-timeout' # used to timeout puma requests
