@@ -105,7 +105,7 @@ class MasterFilm < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << %w(Serial Formula Mix/g Machine ITO Thinky Chemist Operator Inspector EffW EffL) + types
       all.each do |mf|
-        csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code, mf.thinky_code, mf.chemist, mf.operator, mf.inspector, mf.effective_width, mf.effective_length] + types.map{ |type| mf.defect_count(type) }
+        csv << [mf.serial, mf.formula, mf.mix_mass, mf.machine_code, mf.film_code_top, mf.film_code_bottom, mf.thinky_code, mf.chemist, mf.operator, mf.inspector, mf.effective_width, mf.effective_length] + types.map{ |type| mf.defect_count(type) }
       end
     end
   end
@@ -123,7 +123,8 @@ class MasterFilm < ActiveRecord::Base
   
   def upcase_attributes
     formula.upcase! if formula.present?
-    film_code.upcase! if film_code.present?
+    film_code_top.upcase! if film_code_top.present?
+    film_code_bottom.upcase! if film_code_bottom.present?
     thinky_code.upcase! if thinky_code.present?
     serial.upcase! if serial.present?
   end

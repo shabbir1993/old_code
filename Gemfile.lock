@@ -138,8 +138,6 @@ GEM
       tilt (~> 1.1)
     simple_calendar (1.1.10)
       rails (>= 3.0)
-    skylight (0.6.0)
-      activesupport (>= 3.0.0)
     sprockets (3.0.0)
       rack (~> 1.0)
     sprockets-rails (2.2.4)
@@ -178,5 +176,4 @@ DEPENDENCIES
   sass-rails (~> 5.0.3)
   sentry-raven!
   simple_calendar (~> 1.1.10)
-  skylight
   uglifier (~> 2.7.1)
