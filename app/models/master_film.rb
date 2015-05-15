@@ -34,7 +34,7 @@ class MasterFilm < ActiveRecord::Base
   
   include PgSearch
   pg_search_scope :search, 
-    against: [:serial, :formula, :film_code, :thinky_code, :operator, :chemist, :inspector, :defects, :note], 
+    against: [:serial, :formula, :film_code_top, :film_code_bottom, :thinky_code, :operator, :chemist, :inspector, :defects, :note], 
     using: { tsearch: { prefix: true } },
     associated_against: { machine: [:code] }
 

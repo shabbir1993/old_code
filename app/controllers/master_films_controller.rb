@@ -54,7 +54,7 @@ class MasterFilmsController < ApplicationController
   end
 
   def master_film_params
-    params.require(:master_film).permit(:serial, :effective_width, :effective_length, :formula, :mix_mass, :b_value, :temperature, :humidity, :film_code, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :micrometer_left, :micrometer_right, :run_speed, :function, :defects).tap do |white_listed|
+    params.require(:master_film).permit(:serial, :effective_width, :effective_length, :formula, :mix_mass, :b_value, :temperature, :humidity, :film_code_top, :film_code_bottom, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :micrometer_left, :micrometer_right, :run_speed, :function, :defects).tap do |white_listed|
       white_listed[:defects] = params[:master_film][:defects] || {}
     end
   end

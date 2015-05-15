@@ -2,7 +2,8 @@
 <%= f.text_field :formula %>
 <%= f.number_field :mix_mass, step: "any" %>
 <%= f.collection_select :machine_id, current_tenant.machines, :id, :code, { prompt: "Choose machine..."}, { class: "form-control" } %>
-<%= f.text_field :film_code %>
+<%= f.text_field :film_code_top, label: "ITO top" %>
+<%= f.text_field :film_code_bottom, label: "ITO bottom" %>
 <%= f.text_field :thinky_code %>
 <%= f.select :chemist, current_tenant.users.chemists.names, { prompt: "Choose chemist..." }, { class: "form-control" } %>
 <%= f.select :operator, current_tenant.users.operators.names, { prompt: "Choose operator..." }, { class: "form-control" } %>
