@@ -23,8 +23,8 @@ class ModalFormBuilder < ActionView::Helpers::FormBuilder
     content_tag :div, class: "form-group" do
       content_tag :div, class: "col-md-offset-2 col-md-6" do
         content_tag :div, class: "checkbox" do
-          label(name) +
-          super(name)
+          super(name) +
+          label(name)
         end
       end
     end
