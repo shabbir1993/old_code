@@ -5,19 +5,19 @@ module SimpleCalendarHelper
 
   def calendar_title
     ->(date) do 
-      content_tag :h2, "#{date.strftime("%B")} #{date.year}", class: "calendar-title" 
+      content_tag :h3, "#{date.strftime("%B")} #{date.year}", class: "calendar-title" 
     end
   end
 
   def calendar_previous_link
     ->(param, date_range) do 
-      link_to content_tag(:i,"", class: 'fa fa-chevron-left fa-lg'), { param => date_range.first - 1.day }
+      link_to content_tag(:i,"", class: 'fa fa-chevron-left fa-lg'), { param => date_range.first - 1.day }, class: "calendar-prev-link"
     end
   end
 
   def calendar_next_link
     ->(param, date_range) do 
-      link_to content_tag(:i,"", class: 'fa fa-chevron-right fa-lg'), { param => date_range.last + 1.day }
+      link_to content_tag(:i,"", class: 'fa fa-chevron-right fa-lg'), { param => date_range.last + 1.day }, class: "calendar-next-link"
     end
   end
 

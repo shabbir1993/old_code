@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  VALID_IPS = ["66.226.220.106",   #PI Dallas
+  VALID_IPS = ["66.226.220.106",   #PI Dallas (805)
                "66.226.207.10",
                "120.33.232.194",   #PE Fujian
                "127.0.0.1"]        #localhost
@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   before_action :check_auth
   before_action :check_ip
-  before_action :set_user_context, if: :current_user
+  before_action :set_raven_user_context, if: :current_user
   around_action :set_tenant_time_zone, if: :current_tenant
 
 private
@@ -56,7 +56,7 @@ private
   end
   helper_method :any_searches?
 
-  def set_user_context
+  def set_raven_user_context
     Raven.user_context username: current_user.username
   end
 end

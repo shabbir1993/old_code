@@ -1,0 +1,26 @@
+<div class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <%= link_to "Avionics", root_url(subdomain: 'avionics'), class: "navbar-brand" %>
+    <ul class="nav navbar-nav">
+      <li><%= link_to "Production Calendar", avionics_job_dates_path %></li>
+      <li><%= link_to "Job Orders", avionics_job_orders_path %></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
+    <%= date.day %>
+    <% if !job_dates.empty? %>
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <% job_dates.each do |job_date| %>
+            <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="" data-trigger="hover" data-html="true">
+              <%= job_date.step %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</div>

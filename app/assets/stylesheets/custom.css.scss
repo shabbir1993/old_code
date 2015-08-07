@@ -82,7 +82,10 @@ td.select-box {
 .calendar-header {
   text-align: center;
 
-  h2 { display: inline-block; }
+  .calendar-title { display: inline-block; }
+
+  .calendar-prev-link { margin-right: 1em }
+  .calendar-next-link { margin-left: 1em }
 }
 
 .calendar-table {

@@ -1,4 +1,15 @@
 Pcms::Application.routes.draw do
+
+  constraints subdomain: 'avionics' do
+    scope module: 'avionics', as: 'avionics' do
+      resources :job_orders do
+        collection { post :import_csv }
+      end
+      resources :job_dates
+    end
+    get '/', to: 'avionics/job_dates#index'
+  end
+
   resources :films, except: [:new, :create] do
     member do
       post :split
