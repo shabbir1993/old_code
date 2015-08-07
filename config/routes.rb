@@ -1,14 +1,14 @@
 Pcms::Application.routes.draw do
 
-  constraints subdomain: 'avionics' do
-    scope module: 'avionics', as: 'avionics' do
-      resources :job_orders do
-        collection { post :import_csv }
-      end
-      resources :job_dates
+  namespace 'avionics' do
+    resources :job_orders, only: [:index] do
+      collection { post :import_csv }
     end
-    get '/', to: 'avionics/job_dates#index'
+    resources :job_dates, only: [:index]
   end
+
+  get '/avionics', to: redirect('/avionics/job_dates')
+
 
   resources :films, except: [:new, :create] do
     member do
