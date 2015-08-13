@@ -11,35 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150807004114) do
+ActiveRecord::Schema.define(version: 20150811195951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
-
-  create_table "avionics_job_dates", force: :cascade do |t|
-    t.integer  "avionics_job_order_id", null: false
-    t.string   "step",                  null: false
-    t.string   "date_type",             null: false
-    t.date     "value",                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "avionics_job_dates", ["avionics_job_order_id"], name: "index_avionics_job_dates_on_avionics_job_order_id", using: :btree
-  add_index "avionics_job_dates", ["value"], name: "index_avionics_job_dates_on_value", using: :btree
-
-  create_table "avionics_job_orders", force: :cascade do |t|
-    t.string   "serial",      default: "", null: false
-    t.string   "quantity",    default: "", null: false
-    t.string   "part_number", default: "", null: false
-    t.string   "run_number",  default: "", null: false
-    t.string   "note",        default: "", null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "avionics_job_orders", ["serial"], name: "index_avionics_job_orders_on_serial", unique: true, using: :btree
 
   create_table "dimensions", force: :cascade do |t|
     t.decimal "width",   default: 0.0, null: false
@@ -87,6 +63,30 @@ ActiveRecord::Schema.define(version: 20150807004114) do
   add_index "films", ["sales_order_id"], name: "index_films_on_sales_order_id", using: :btree
   add_index "films", ["serial"], name: "index_films_on_serial", using: :btree
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
+
+  create_table "job_dates", force: :cascade do |t|
+    t.integer  "job_order_id", null: false
+    t.string   "step",         null: false
+    t.string   "date_type",    null: false
+    t.date     "value",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_dates", ["job_order_id"], name: "index_job_dates_on_job_order_id", using: :btree
+  add_index "job_dates", ["value"], name: "index_job_dates_on_value", using: :btree
+
+  create_table "job_orders", force: :cascade do |t|
+    t.string   "serial",      default: "", null: false
+    t.string   "quantity",    default: "", null: false
+    t.string   "part_number", default: "", null: false
+    t.string   "run_number",  default: "", null: false
+    t.string   "note",        default: "", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "job_orders", ["serial"], name: "index_job_orders_on_serial", unique: true, using: :btree
 
   create_table "line_items", force: :cascade do |t|
     t.integer "sales_order_id", null: false
@@ -179,5 +179,5 @@ ActiveRecord::Schema.define(version: 20150807004114) do
   add_index "users", ["tenant_code"], name: "index_users_on_tenant_code", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
-  add_foreign_key "avionics_job_dates", "avionics_job_orders"
+  add_foreign_key "job_dates", "job_orders"
 end

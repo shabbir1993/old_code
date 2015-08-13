@@ -1,13 +1,13 @@
 Pcms::Application.routes.draw do
 
-  namespace 'avionics' do
-    resources :job_orders, only: [:index] do
+  scope 'amo', module: 'amo' do
+    resources :job_orders do
       collection { post :import_csv }
     end
     resources :job_dates, only: [:index]
   end
 
-  get '/avionics', to: redirect('/avionics/job_dates')
+  get '/amo', to: redirect('/amo/job_dates')
 
 
   resources :films, except: [:new, :create] do

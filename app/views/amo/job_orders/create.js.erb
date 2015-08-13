@@ -1,0 +1,3 @@
+$('#forms-modal').modal('hide')
+$('.main #job-orders').prepend("<%= j render 'job_order', job_order: @job_order %>");
+$("<%= "#joborder-#{@job_order.id}" %>").addClass("success")

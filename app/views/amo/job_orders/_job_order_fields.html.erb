@@ -1,0 +1,16 @@
+<%= f.text_field :serial, label: "Job Order #" %>
+<%= f.text_field :part_number, label: "Part #" %>
+<%= f.text_field :run_number, label: "Run #" %>
+<%= f.text_field :quantity %>
+
+<hr>
+
+<% @job_dates.each_with_index do |job_date, i| %>
+  <fieldset>
+    <%= f.fields_for "job_dates[#{i}]", job_date do |jdf| %>
+      <%= render "shared/date_field", f: jdf, name: :value, label: jdf.object.step %>
+      <%= jdf.hidden_field :step %>
+      <%= jdf.hidden_field :date_type %>
+    <% end %>
+  </fieldset>
+<% end %>

@@ -1,0 +1,13 @@
+<%= modal_form_for @job_order do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">Edit job order</h4>
+  </div>
+  <div class="modal-body">
+    <%= render 'job_order_fields', f: f %>
+  </div>
+  <div class="modal-footer">
+    <%= link_to "Delete", @job_order, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger pull-left" %>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Update job order", class: "btn btn-success", data: { disable_with: "Submitting..." } %>
+  </div>
+<% end %>

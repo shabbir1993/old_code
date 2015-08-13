@@ -1,0 +1,5 @@
+$('#forms-modal').modal('hide')
+var job_order_row = $("<%= "#joborder-#{@job_order.id}" %>")
+$(job_order_row).replaceWith("<%= j render 'job_order', job_order: @job_order %>");
+$(job_order_row.selector).addClass("info")
+

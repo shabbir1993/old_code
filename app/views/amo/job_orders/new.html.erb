@@ -1,0 +1,12 @@
+<%= modal_form_for @job_order do |f| %>
+  <div class="modal-header">
+    <h4 class="modal-title text-center">Enter job order</h4>
+  </div>
+  <div class="modal-body">
+    <%= render 'job_order_fields', f: f %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Add job order", class: "btn btn-success", data: { disable_with: "Submitting..." } %>
+  </div>
+<% end %>

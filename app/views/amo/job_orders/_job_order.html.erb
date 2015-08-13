@@ -1,0 +1,29 @@
+<tr id="<%= "joborder-#{job_order.id}" %>">
+  <td class="actions">
+    <%= link_to edit_job_order_path(job_order), { :"data-toggle" => "modal", :"data-target" => "#forms-modal", id: "job-order-#{job_order.id}-edit" } do %>
+      <i class="fa fa-edit"></i>
+    <% end %>
+  </td>
+  <td>
+    <strong><%= job_order.serial %></strong>
+  </td>
+  <td>
+    <%= job_order.quantity %>
+  </td>
+  <td>
+    <%= job_order.part_number %>
+  </td>
+  <td>
+    <%= job_order.run_number %>
+  </td>
+  <td>
+    <%= job_order.note %>
+  </td>
+  <% JobDate::STEPS.each do |step| %>
+    <td>
+      <% if job_date = job_order.job_dates.find_by(step: step, date_type: "planned") %>
+        <%= job_date.value %>
+      <% end %>
+    </td>
+  <% end %>
+</tr>
