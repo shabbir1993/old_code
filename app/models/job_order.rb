@@ -15,4 +15,12 @@ class JobOrder < ActiveRecord::Base
       end
     end
   end
+
+  def date_of(step, date_type)
+    if job_date = job_dates.find_by(step: step, date_type: date_type)
+      job_date.value
+    else
+      ""
+    end
+  end
 end
