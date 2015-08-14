@@ -7,11 +7,11 @@ module JobDatesHelper
         "Rel"
       end
     when "due"
-      content_tag :span, class: "#{shared_classes} label-danger" do
+      content_tag :span, class: "#{shared_classes} label-warning" do
         "Due"
       end
     else
-      content_tag :span, class: "#{shared_classes} label-warning" do
+      content_tag :span, class: "#{shared_classes} label-default" do
         step
       end
     end
