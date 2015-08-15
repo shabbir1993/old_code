@@ -23,4 +23,8 @@ class JobOrder < ActiveRecord::Base
       ""
     end
   end
+
+  def supermarket?
+    part_number =~ /^sm/i
+  end
 end
