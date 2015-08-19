@@ -4,7 +4,7 @@ class Amo::JobOrdersController < AmoController
   http_basic_authenticate_with name: "james", password: "jamesonly"
 
   def index
-    @job_orders = JobOrder.order(serial: :desc).page(params[:page])
+    @job_orders = filtered_job_orders.page(params[:page])
   end
 
   def new
@@ -51,55 +51,75 @@ class Amo::JobOrdersController < AmoController
     redirect_to session.delete(:return_to), notice: "Job Order #{@job_order.serial} deleted."
   end
 
-  def import_csv
+  def new_import
+  end
+
+  def import
     csv_file = params[:job_orders_csv]
-    CSV.foreach(csv_file.path, headers: true) do |row|
-      job_order_number = row["Job Order No."]
-      if job_order_number
-        job_order = JobOrder.find_or_initialize_by(serial: row["Job Order No."])
 
-        job_order.part_number = row["Part Number"] || ""
-        job_order.run_number = row["Run Number"] || ""
-        job_order.quantity = row["Qty."] || ""
+    if csv_file.nil? || content_type != "text/csv"
+      flash[:alert] = "Please choose a csv file."
+    else
+      CSV.foreach(csv_file.path, headers: true) do |row|
+        job_order_number = row["Job Order No."]
+        if job_order_number
+          job_order = JobOrder.find_or_initialize_by(serial: row["Job Order No."])
 
-        job_order.save!
+          job_order.part_number = row["Part Number"] || ""
+          job_order.run_number = row["Run Number"] || ""
+          job_order.quantity = row["Qty."] || ""
 
-        [
-          ["Date Released", "released"],
-          ["Due date", "due"],
-          ["Y.R.", "YR"],
-          ["W.R.", "WR"],
-          ["Fill", "fill"],
-          ["E. Test", "Etest"],
-          ["PLZ", "PLZ"],
-          ["Mask", "mask"],
-          ["BE", "BE"],
-          ["Q.C.", "QC"]
-        ].each do |date_pair|
-          date_string = row[date_pair[0]]
-          logger.debug(date_string)
-          if date_string.present?
-            logger.debug("HELLO")
-            job_date = job_order.job_dates.find_or_initialize_by(step: date_pair[1])
+          job_order.save!
 
-            job_date.date_type = params[:date_type]
-            parsed_date = date_string.to_date
-            if parsed_date.year < 2000
-              parsed_date.change(year: parsed_date.year + 2000)
+          [
+            ["Date Released", "released"],
+            ["Due date", "due"],
+            ["Y.R.", "YR"],
+            ["W.R.", "WR"],
+            ["Fill", "fill"],
+            ["E. Test", "Etest"],
+            ["PLZ", "PLZ"],
+            ["Mask", "mask"],
+            ["BE", "BE"],
+            ["Q.C.", "QC"]
+          ].each do |date_pair|
+            date_string = row[date_pair[0]]
+            logger.debug(date_string)
+            if date_string.present?
+              logger.debug("HELLO")
+              job_date = job_order.job_dates.find_or_initialize_by(step: date_pair[1])
+
+              job_date.date_type = params[:date_type]
+              parsed_date = date_string.to_date
+              if parsed_date.year < 2000
+                parsed_date.change(year: parsed_date.year + 2000)
+              end
+              job_date.value = parsed_date
+              job_date.save!
             end
-            job_date.value = parsed_date
-            job_date.save!
           end
         end
       end
+      flash[:notice] = "Job orders imported"
     end
 
-    redirect_to job_orders_path, notice: "Job orders imported."
+    redirect_to new_import_job_orders_path
   end
 
   private
 
   def job_order_params
     params.require(:job_order).permit(:serial, :part_number, :run_number, :quantity, :note)
+  end
+
+  def filtered_job_orders
+    @filtered_job_orders ||= JobOrder
+    .filter(filtering_params)
+    .by_serial
+  end
+  helper_method :filtered_job_orders
+
+  def filtering_params
+    params.slice(:text_search, :serial_like, :run_number_like, :part_number_like)
   end
 end

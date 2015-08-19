@@ -1,0 +1,9 @@
+<div class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <%= link_to "AMO", root_url(subdomain: 'amo'), class: "navbar-brand" %>
+    <ul class="nav navbar-nav">
+      <li><%= link_to "Production Calendar", job_dates_path %></li>
+      <li><%= link_to "Job Orders", job_orders_path %></li>
+    </ul>
+  </div>
+</div>

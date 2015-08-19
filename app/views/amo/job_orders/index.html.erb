@@ -1,50 +1,22 @@
-<div class="navbar navbar-inverse navbar-static-top">
-  <div class="container-fluid">
-    <%= link_to "AMO", root_url(subdomain: 'amo'), class: "navbar-brand" %>
-    <ul class="nav navbar-nav">
-      <li><%= link_to "Production Calendar", job_dates_path %></li>
-      <li><%= link_to "Job Orders", job_orders_path %></li>
-    </ul>
-  </div>
-</div>
+<%= paginate @job_orders %>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-4">
-      <h3>Import job orders from CSV</h3>
-      <%= form_tag import_csv_job_orders_path, multipart: true do %>
-        <div class="form-group">
-          <%= file_field_tag :job_orders_csv %>
-        </div>
-        <div class="form-group">
-          <%= label_tag :date_type, "Planned or Actual?" %>
-          <%= select_tag :date_type, options_for_select(["planned", "actual"], "planned"), class: "form-control" %>
-        </div>
-        <%= submit_tag "Import", class: "btn btn-primary" %>
+<%= link_to_modal_new(new_job_order_path, "Enter job order") %>
+
+<table id="job-orders" class="table table-condensed">
+  <thead>
+    <tr>
+      <th></th>
+      <th>JO#</th>
+      <th>Qty</th>
+      <th>Part #</th>
+      <th>Run #</th>
+      <th>Note</th>
+      <% JobDate::STEPS.each do |step| %>
+        <th>
+          <%= step %>
+        </th>
       <% end %>
-    </div>
-  </div>
-
-  <%= paginate @job_orders %>
-
-  <%= link_to_modal_new(new_job_order_path, "Enter job order") %>
-
-  <table id="job-orders" class="table table-condensed">
-    <thead>
-      <tr>
-        <th></th>
-        <th>JO#</th>
-        <th>Qty</th>
-        <th>Part #</th>
-        <th>Run #</th>
-        <th>Note</th>
-        <% JobDate::STEPS.each do |step| %>
-          <th>
-            <%= step %>
-          </th>
-        <% end %>
-      </tr>
-    </thead>
-    <%= render partial: "job_order", collection: @job_orders %>
-  </table>
-</div>
+    </tr>
+  </thead>
+  <%= render partial: "job_order", collection: @job_orders %>
+</table>

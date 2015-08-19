@@ -1,0 +1,52 @@
+<% content_for :content do %>
+  <div id="forms-modal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
+
+  <% if controller_path.split('/').first == "amo" %>
+    <%= render "layouts/amo/navbar" %>
+  <% else %>
+    <%= render "layouts/navbar" %>
+  <% end %>
+
+  <div class="container-fluid">
+    <% flash.each do |name, msg| %>
+      <div class="alert alert-<%= name == :notice ? "success" : "warning" %>">
+        <a class="close" data-dismiss="alert">x</a>
+        <%= msg %>
+      </div>
+    <% end %>
+    <div class="row content">
+      <% if content_for?(:nav_list) %>
+        <div class="col-sm-2">
+          <div class="sidebar">
+            <div class="list-group">
+              <%= yield :nav_list %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="<%= content_for?(:nav_list) ? 'col-sm-10' : 'col-sm-12' %>">
+        <div class="page-head">
+          <div class="row controls">
+            <div class="col-md-5 search">
+              <%= yield :search %>
+            </div>
+            <div class="col-md-5 col-md-offset-2 summary">
+              <%= yield :summary %>
+            </div>
+          </div>
+          <%= yield :nav %>
+        </div>
+        <div class="main">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render template: "layouts/application" %>

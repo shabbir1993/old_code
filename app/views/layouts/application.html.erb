@@ -9,48 +9,8 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div id="forms-modal" class="modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-        </div>
-      </div>
-    </div>
-    <%= render "layouts/navbar" if current_user.present? %>
-    <div class="container-fluid">
-      <% flash.each do |name, msg| %>
-        <div class="alert alert-<%= name == :notice ? "success" : "warning" %>">
-          <a class="close" data-dismiss="alert">x</a>
-          <%= msg %>
-        </div>
-      <% end %>
-      <% if current_user.present? %>
-        <div class="row content">
-          <div class="col-sm-2 col-md-2 col-lg-2">
-            <div class="sidebar">
-              <div class="list-group">
-                <%= yield :nav_list %>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-10 col-md-10 col-lg-10">
-            <div class="page-head">
-              <div class="row controls">
-                <div class="col-md-5 search">
-                  <%= yield :search %>
-                </div>
-                <div class="col-md-5 col-md-offset-2 summary">
-                  <%= yield :summary %>
-                </div>
-              </div>
-              <%= yield :nav %>
-            </div>
-          <% end %>
-          <div class="main">
-            <%= yield %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+
+    <%= content_for?(:content) ? yield(:content) : yield %>
+
+  </body>
 </html>

@@ -38,10 +38,7 @@ class MasterFilmsController < ApplicationController
   private
 
   def filtered_master_films
-    @filtered_master_films ||= tenant_master_films.active
-                                                  .function(params[:function])
-                                                  .filter(filtering_params)
-                                                  .by_serial
+    @filtered_master_films ||= tenant_master_films.active.function(params[:function]).filter(filtering_params).by_serial
   end
   helper_method :filtered_master_films
 

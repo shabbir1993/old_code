@@ -1,33 +1,21 @@
-<div class="navbar navbar-inverse navbar-static-top">
-  <div class="container-fluid">
-    <%= link_to "AMO", root_url(subdomain: 'amo'), class: "navbar-brand" %>
-    <ul class="nav navbar-nav">
-      <li><%= link_to "Production Calendar", job_dates_path %></li>
-      <li><%= link_to "Job Orders", job_orders_path %></li>
-    </ul>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
-    <%= date.day %>
-    <% if !job_dates.empty? %>
-      <div class="panel panel-default">
-        <ul class="list-group">
-          <% job_dates.each do |job_date| %>
-            <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>JO#</dt><dd>#{job_date.serial}</dd><dt>Released</dt><dd>#{job_date.job_order.date_of("released", "planned")}</dd><dt>Due</dt><dd>#{job_date.job_order.date_of("due", "planned")}</dd></dl>" %>" data-trigger="hover" data-html="true">
-              <div class="clearfix">
-                <strong class="pull-left"><%= job_date.part_number %></strong>
-                <span class="badge pull-right"><%= job_date.quantity %></span>
-              </div>
-              <div class="clearfix">
-                <span class="pull-left"><%= job_date.run_number %></span>
-                <%= step_icon(job_date) %>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+<%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
+  <%= date.day %>
+  <% if !job_dates.empty? %>
+    <div class="panel panel-default">
+      <ul class="list-group">
+        <% job_dates.each do |job_date| %>
+          <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>JO#</dt><dd>#{job_date.serial}</dd><dt>Released</dt><dd>#{job_date.job_order.date_of("released", "planned")}</dd><dt>Due</dt><dd>#{job_date.job_order.date_of("due", "planned")}</dd></dl>" %>" data-trigger="hover" data-html="true">
+            <div class="clearfix">
+              <strong class="pull-left"><%= job_date.part_number %></strong>
+              <span class="badge pull-right"><%= job_date.quantity %></span>
+            </div>
+            <div class="clearfix">
+              <span class="pull-left"><%= job_date.run_number %></span>
+              <%= step_icon(job_date) %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-</div>
+<% end %>

@@ -1,0 +1,21 @@
+<%= render layout: 'shared/collapse_search_form', locals: { tab_param: :function, text_field: :text_search, show: any_searches? } do %>
+  <div class="form-group">
+    <%= label_tag :serial_like, "Job #", class: "control-label" %>
+    <div class="col-md-12">
+      <%= text_field_tag :serial_like, params[:serial_like], class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag :part_number, "Part #", class: "control-label" %>
+    <div class="col-md-12">
+      <%= text_field_tag :part_number_like, params[:part_number_like], class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag :run_number, "Run #", class: "control-label" %>
+    <div class="col-md-12">
+      <%= text_field_tag :run_number_like, params[:run_number_like], class: "form-control" %>
+    </div>
+  </div>
+<% end %>
+

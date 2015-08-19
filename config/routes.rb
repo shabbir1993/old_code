@@ -2,7 +2,8 @@ Pcms::Application.routes.draw do
 
   scope 'amo', module: 'amo' do
     resources :job_orders do
-      collection { post :import_csv }
+      collection { get :new_import }
+      collection { post :import }
     end
     resources :job_dates, only: [:index]
   end

@@ -1,0 +1,21 @@
+<% provide :title, "Job Orders" %>
+
+<% content_for :search do %>
+  <%= render 'search_form' %>
+<% end %>
+
+<% content_for :summary do %>
+  <dl class="dl-horizontal pull-right">
+    <dt>Count</dt>
+    <dd><%= filtered_job_orders.count(:all) %></dd>
+  </dl>
+<% end %>
+
+<% content_for :nav do %>
+  <ul class="nav nav-tabs">
+    <%= tab_link_to("Index", 'index') %>
+    <%= tab_link_to("Import", 'new_import') %>
+  </ul>
+<% end %>
+
+<%= render template: "layouts/dashboard" %>
