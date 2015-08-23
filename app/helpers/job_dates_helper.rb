@@ -15,7 +15,7 @@ module JobDatesHelper
       end
     else
       content_tag :span, class: "#{shared_classes} label-default" do
-        step
+        job_date.step
       end
     end
   end

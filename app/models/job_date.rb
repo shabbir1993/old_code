@@ -1,5 +1,5 @@
 class JobDate < ActiveRecord::Base
-  STEPS = %w(released YR WR fill Etest PLZ mask BE QC due).freeze
+  STEPS = %w(released YR WR fill ET PLZ mask BE QC due).freeze
   DATE_TYPES = %w(planned actual).freeze
 
   extend SimpleCalendar

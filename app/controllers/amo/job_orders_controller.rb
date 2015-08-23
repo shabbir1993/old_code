@@ -57,7 +57,7 @@ class Amo::JobOrdersController < AmoController
   def import
     csv_file = params[:job_orders_csv]
 
-    if csv_file.nil? || content_type != "text/csv"
+    if csv_file.nil? || csv_file.content_type != "text/csv"
       flash[:alert] = "Please choose a csv file."
     else
       CSV.foreach(csv_file.path, headers: true) do |row|
@@ -67,26 +67,21 @@ class Amo::JobOrdersController < AmoController
 
           job_order.part_number = row["Part Number"] || ""
           job_order.run_number = row["Run Number"] || ""
-          job_order.quantity = row["Qty."] || ""
 
           job_order.save!
 
           [
-            ["Date Released", "released"],
-            ["Due date", "due"],
             ["Y.R.", "YR"],
             ["W.R.", "WR"],
             ["Fill", "fill"],
-            ["E. Test", "Etest"],
+            ["E. Test", "ET"],
             ["PLZ", "PLZ"],
             ["Mask", "mask"],
             ["BE", "BE"],
             ["Q.C.", "QC"]
           ].each do |date_pair|
             date_string = row[date_pair[0]]
-            logger.debug(date_string)
             if date_string.present?
-              logger.debug("HELLO")
               job_date = job_order.job_dates.find_or_initialize_by(step: date_pair[1])
 
               job_date.date_type = params[:date_type]
