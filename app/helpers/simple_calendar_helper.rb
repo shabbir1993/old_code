@@ -30,7 +30,6 @@ module SimpleCalendarHelper
       today = Date.current
       td_class = ["day"]
       td_class << "info" if today == current_calendar_date
-      td_class << "non-month" if start_date.month != current_calendar_date.month
       { class: td_class, data: { day: current_calendar_date } }
     end
   end
