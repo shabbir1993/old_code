@@ -67,10 +67,13 @@ class Amo::JobOrdersController < AmoController
 
           job_order.part_number = row["Part Number"] || ""
           job_order.run_number = row["Run Number"] || ""
+          job_order.quantity = row["Qty."] || ""
 
           job_order.save!
 
           [
+            ["Date Released", "released"],
+            ["Due date", "due"],
             ["Y.R.", "YR"],
             ["W.R.", "WR"],
             ["Fill", "fill"],

@@ -1,20 +1,38 @@
 <%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
   <%= date.day %>
   <% if !job_dates.empty? %>
-    <div class="panel panel-default">
-      <ul class="list-group">
-        <% job_dates.each do |job_date| %>
-          <li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>JO#</dt><dd>#{job_date.serial}</dd><dt>Released</dt><dd>#{job_date.job_order.date_of("released", "planned")} <span class='badge'>#{job_date.quantity}</span></dd><dt>Due</dt><dd>#{job_date.job_order.date_of("due", "planned")}</dd></dl>" %>" data-trigger="hover" data-html="true">
-            <div class="clearfix">
-              <strong class="pull-left"><%= job_date.part_number %></strong>
-            </div>
-            <div class="clearfix">
-              <span class="pull-left"><%= job_date.run_number %></span>
-              <%= step_icon(job_date) %>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <% rel_job_dates = job_dates.select { |jd| jd.display_step == "released" } %>
+    <% fe_job_dates = job_dates.select { |jd| JobDate::FE_DISPLAY_STEPS.include?(jd.display_step) } %>
+    <% be_job_dates = job_dates.select { |jd| JobDate::BE_DISPLAY_STEPS.include?(jd.display_step) } %>
+
+    <% if !fe_job_dates.empty? %>
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <% fe_job_dates.sort_by { |jd| JobDate::FE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
+            <%= render partial: "job_date", locals: { job_date: job_date } %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if !be_job_dates.empty? %>
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <% be_job_dates.sort_by { |jd| JobDate::BE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
+            <%= render partial: "job_date", locals: { job_date: job_date } %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if !rel_job_dates.empty? %>
+      <div class="panel panel-default">
+        <ul class="list-group">
+          <% rel_job_dates.each do |job_date| %>
+            <%= render partial: "job_date", locals: { job_date: job_date } %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
