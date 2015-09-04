@@ -1,28 +1,12 @@
 module JobDatesHelper
   def step_icon(display_step)
     label_color = case display_step
-                  when "released"
-                    "LimeGreen"
-                  when "YR"
-                    "LightYellow"
-                  when "WR"
-                    "Yellow"
-                  when "fill"
-                    "Gold"
-                  when "ET"
-                    "Orange"
-                  when "SM"
-                    "DarkOrange"
+                  when "YR", "WR", "fill", "ET", "SM"
+                    "LightSteelBlue"
+                  when "PLZ", "BE", "QC", "FG", "released"
+                    "Gray"
                   when "mask"
                     "Black"
-                  when "PLZ"
-                    "Gray"
-                  when "BE"
-                    "LightSteelBlue"
-                  when "QC"
-                    "Pink"
-                  when "FG"
-                    "Red"
                   else
                     raise "invalid step"
                   end
