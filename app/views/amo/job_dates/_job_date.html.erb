@@ -1,4 +1,4 @@
-<li class="calendar-item list-group-item list-group-item-warning" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>JO#</dt><dd>#{job_date.serial}</dd><dt>Released</dt><dd>#{job_date.job_order.date_of("released", "planned")} <span class='badge'>#{job_date.quantity}</span></dd><dt>Due</dt><dd>#{job_date.job_order.date_of("due", "planned")}</dd></dl>" %>" data-trigger="hover" data-html="true">
+<li class="calendar-item list-group-item list-group-item-warning <%= 'active' if active %>" data-toggle="popover" data-content="<%= "<dl class='dl-horizontal'><dt>JO#</dt><dd>#{job_date.serial}</dd><dt>Released</dt><dd>#{job_date.job_order.date_of("released", "planned")} <span class='badge'>#{job_date.quantity}</span></dd><dt>Due</dt><dd>#{job_date.job_order.date_of("due", "planned")}</dd></dl>" %>" data-trigger="hover" data-html="true">
   <div class="clearfix">
     <strong class="pull-left"><%= job_date.part_number %></strong>
   </div>

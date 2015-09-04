@@ -9,7 +9,7 @@
       <div class="panel panel-default">
         <ul class="list-group">
           <% fe_job_dates.sort_by { |jd| JobDate::FE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date } %>
+            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
           <% end %>
         </ul>
       </div>
@@ -19,7 +19,7 @@
       <div class="panel panel-default">
         <ul class="list-group">
           <% be_job_dates.sort_by { |jd| JobDate::BE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date } %>
+            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
           <% end %>
         </ul>
       </div>
@@ -29,7 +29,7 @@
       <div class="panel panel-default">
         <ul class="list-group">
           <% rel_job_dates.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date } %>
+            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
           <% end %>
         </ul>
       </div>

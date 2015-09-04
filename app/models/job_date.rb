@@ -1,4 +1,6 @@
 class JobDate < ActiveRecord::Base
+  include Filterable
+
   STEPS = %w(released YR WR fill ET PLZ mask BE QC due).freeze
   FE_DISPLAY_STEPS = %w(YR WR fill ET SM).freeze
   BE_DISPLAY_STEPS = %w(mask PLZ BE QC FG).freeze
@@ -16,6 +18,14 @@ class JobDate < ActiveRecord::Base
   validates :date_type, inclusion: { in: DATE_TYPES }
   validates :value, presence: true
   validates_uniqueness_of :job_order_id, scope: [:step, :date_type]
+
+  scope :text_search, ->(query) { reorder('').search(query) }
+
+  include PgSearch
+  pg_search_scope :search, 
+    against: [:step], 
+    using: { tsearch: { prefix: true } },
+    associated_against: { job_order: [:serial, :part_number, :quantity, :run_number, :note] }
 
   def display_step
     if step == "due" && job_order.supermarket?

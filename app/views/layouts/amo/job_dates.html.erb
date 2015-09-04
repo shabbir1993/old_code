@@ -1,3 +1,7 @@
 <% provide :title, "Production Calendar" %>
 
+<% content_for :search do %>
+  <%= render 'search_form' %>
+<% end %>
+
 <%= render template: "layouts/dashboard" %>
