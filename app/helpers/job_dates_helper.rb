@@ -2,7 +2,7 @@ module JobDatesHelper
   def step_icon(display_step)
     label_color = case display_step
                   when "released"
-                    "Lime"
+                    "LimeGreen"
                   when "YR"
                     "LightYellow"
                   when "WR"

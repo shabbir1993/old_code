@@ -61,37 +61,22 @@ class Amo::JobOrdersController < AmoController
       flash[:alert] = "Please choose a csv file."
     else
       CSV.foreach(csv_file.path, headers: true) do |row|
-        job_order_number = row["Job Order No."]
+        job_order_number = row["job_order_number"]
         if job_order_number
-          job_order = JobOrder.find_or_initialize_by(serial: row["Job Order No."])
-
-          job_order.part_number = row["Part Number"] || ""
-          job_order.run_number = row["Run Number"] || ""
-          job_order.quantity = row["Qty."] || ""
+          job_order = JobOrder.find_or_initialize_by(serial: job_order_number)
+          job_order.part_number = row["part_number"] || ""
+          job_order.run_number = row["run_number"] || ""
+          job_order.quantity = row["quantity"] || ""
 
           job_order.save!
 
-          [
-            ["Date Released", "released"],
-            ["Due date", "due"],
-            ["Y.R.", "YR"],
-            ["W.R.", "WR"],
-            ["Fill", "fill"],
-            ["E. Test", "ET"],
-            ["PLZ", "PLZ"],
-            ["Mask", "mask"],
-            ["BE", "BE"],
-            ["Q.C.", "QC"]
-          ].each do |date_pair|
-            date_string = row[date_pair[0]]
+          JobDate::STEPS.each do |step|
+            date_string = row[step]
             if date_string.present?
-              job_date = job_order.job_dates.find_or_initialize_by(step: date_pair[1])
+              job_date = job_order.job_dates.find_or_initialize_by(step: step)
 
               job_date.date_type = params[:date_type]
               parsed_date = date_string.to_date
-              if parsed_date.year < 2000
-                parsed_date.change(year: parsed_date.year + 2000)
-              end
               job_date.value = parsed_date
               job_date.save!
             end
