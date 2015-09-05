@@ -19,7 +19,11 @@ class JobDate < ActiveRecord::Base
   validates :value, presence: true
   validates_uniqueness_of :job_order_id, scope: [:step, :date_type]
 
+  scope :join_job_orders, -> { joins('INNER JOIN job_orders ON job_orders.id = job_dates.job_order_id') }
+
   scope :text_search, ->(query) { reorder('').search(query) }
+  scope :part_number_like, ->(part_number) { join_job_orders
+                                        .merge(JobOrder.part_number_like(part_number)) }
 
   include PgSearch
   pg_search_scope :search, 

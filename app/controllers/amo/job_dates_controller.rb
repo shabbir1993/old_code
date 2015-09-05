@@ -22,6 +22,6 @@ class Amo::JobDatesController < AmoController
   helper_method :found_job_dates
 
   def filtering_params
-    params.slice(:text_search)
+    params.slice(:text_search, :part_number_like)
   end
 end
