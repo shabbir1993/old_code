@@ -6,8 +6,8 @@ class InventoryTotals
 
   def data
     hash = {}
-    daily_totals = current_totals
     phases.each do |p|
+      daily_totals = current_totals
       ary = []
       dates_in_reverse.each do |d|
         ary << [d.to_datetime.to_i*1000, daily_totals[p].to_f]
@@ -26,7 +26,7 @@ class InventoryTotals
 
   def current_totals
     ary = phases.map do |p|
-      [p, @tenant.films.large(@tenant.small_area_cutoff).phase(p, @tenant).total_area]
+      [p, @tenant.films.phase(p).large(@tenant.small_area_cutoff).total_area]
     end
     Hash[ary]
   end
