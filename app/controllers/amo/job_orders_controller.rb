@@ -76,7 +76,7 @@ class Amo::JobOrdersController < AmoController
               job_date = job_order.job_dates.find_or_initialize_by(step: step)
 
               job_date.date_type = params[:date_type]
-              parsed_date = date_string.to_date
+              parsed_date = Date.strptime(date_string.strip, '%m/%e/%Y')
               job_date.value = parsed_date
               job_date.save!
             end

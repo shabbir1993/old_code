@@ -1,5 +1,4 @@
 class Tenant
-
   PROPERTIES = { 
     'pi' => { name: "PI",
               time_zone: "Central Time (US & Canada)", 
