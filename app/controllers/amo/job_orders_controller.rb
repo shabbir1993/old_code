@@ -57,7 +57,7 @@ class Amo::JobOrdersController < AmoController
   def import
     csv_file = params[:job_orders_csv]
 
-    if csv_file.nil? || csv_file.content_type != "text/csv"
+    if csv_file.nil? || File.extname(csv_file.original_filename) != ".csv"
       flash[:alert] = "Please choose a csv file."
     else
       CSV.foreach(csv_file.path, headers: true) do |row|
@@ -76,7 +76,7 @@ class Amo::JobOrdersController < AmoController
               job_date = job_order.job_dates.find_or_initialize_by(step: step)
 
               job_date.date_type = params[:date_type]
-              parsed_date = Date.strptime(date_string.strip, '%m/%e/%Y')
+              parsed_date = Date.strptime(date_string.strip, '%m/%d/%Y')
               job_date.value = parsed_date
               job_date.save!
             end
