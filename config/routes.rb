@@ -44,6 +44,7 @@ Pcms::Application.routes.draw do
   resources :master_films, except: [:show, :destroy] do
     collection do
       get :dimensions_map
+      get :bvalue_series
     end
   end
 

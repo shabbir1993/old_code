@@ -23,6 +23,11 @@ class MasterFilmsController < ApplicationController
     @data = DimensionsMap.new(filtered_master_films)
   end
 
+  def bvalue_series
+    filtered_master_films_with_bvalue = filtered_master_films.where.not(b_value: nil)
+    @series = BvalueSeries.new(filtered_master_films_with_bvalue)
+  end
+
   def edit
     @master_film = tenant_master_films.find(params[:id])
     render layout: false

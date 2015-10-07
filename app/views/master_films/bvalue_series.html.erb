@@ -1,0 +1,53 @@
+<script>
+  $(function () {
+    $('#bstar_series').highcharts({
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: false
+      },
+      xAxis: {
+        type: 'linear',
+        title: {
+          text: 'Serial'
+        },
+        categories: <%= raw @series.data.map(&:first) %>,
+        labels: {
+          step: 20,
+          rotation: -70
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'b*'
+        },
+        plotLines: [{
+          color: 'red',
+          value: 6,
+          width: 2,
+          zIndex: 5,
+          label: {
+            align: 'right',
+            text: 'USL'
+          }
+        }, {
+          color: 'orange',
+          value: 3,
+          width: 2,
+          zIndex: 5,
+          label: {
+            align: 'right',
+            text: 'LSL'
+          }
+        }]
+      },
+      series: [{
+        name: 'b*',
+        data: <%= raw @series.data.map(&:last) %>
+      }]
+    });
+  });
+</script>
+<div id="bstar_series" class="chart"></div>
