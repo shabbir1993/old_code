@@ -19,4 +19,5 @@
 //= require highcharts/modules/no-data-to-display
 //= require highcharts/modules/heatmap
 //= require highcharts/modules/exporting
+//= require technical-indicators.src
 //= require_tree .

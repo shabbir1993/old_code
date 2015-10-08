@@ -45,7 +45,15 @@
       },
       series: [{
         name: 'b*',
-        data: <%= raw @series.data.map(&:last) %>
+        data: <%= raw @series.data.map(&:last) %>,
+        id: 'primary'
+      },{
+        name: '25pt EMA',
+        linkedTo: 'primary',
+        showInLegend: true,
+        type: 'trendline',
+        algorithm: 'EMA',
+        periods: 25
       }]
     });
   });
