@@ -67,6 +67,7 @@ class Amo::JobOrdersController < AmoController
           job_order.part_number = row["part_number"] || ""
           job_order.run_number = row["run_number"] || ""
           job_order.quantity = row["quantity"] || ""
+          job_order.priority = row["priority"] || ""
 
           job_order.save!
 
@@ -92,7 +93,7 @@ class Amo::JobOrdersController < AmoController
   private
 
   def job_order_params
-    params.require(:job_order).permit(:serial, :part_number, :run_number, :quantity, :note)
+    params.require(:job_order).permit(:serial, :part_number, :run_number, :quantity, :priority, :note)
   end
 
   def filtered_job_orders

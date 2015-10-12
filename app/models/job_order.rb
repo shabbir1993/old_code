@@ -40,4 +40,8 @@ class JobOrder < ActiveRecord::Base
   def supermarket?
     part_number =~ /^sm/i
   end
+
+  def rush?
+    !!(priority =~ /rush/)
+  end
 end

@@ -17,6 +17,9 @@
     <%= job_order.run_number %>
   </td>
   <td>
+    <%= job_order.priority %>
+  </td>
+  <td>
     <%= job_order.note %>
   </td>
   <% JobDate::STEPS.each do |step| %>
