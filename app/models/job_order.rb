@@ -42,6 +42,10 @@ class JobOrder < ActiveRecord::Base
   end
 
   def rush?
-    !!(priority =~ /rush/)
+    !!(priority =~ /rush/i)
+  end
+
+  def urgent?
+    !!(priority =~ /urgent/i)
   end
 end
