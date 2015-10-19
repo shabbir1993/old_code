@@ -5,6 +5,16 @@ class Amo::JobDatesController < AmoController
     @job_dates = month_job_dates
   end
 
+  def be_schedule
+    today = Time.zone.today
+    four_week_be_dates = JobDate.where(value: today.beginning_of_week..(today + 28).end_of_week, step: "BE").order(value: :asc)
+    @week_grouped_be_dates = four_week_be_dates.group_by do |job_date|
+      job_date.value.beginning_of_week
+    end
+
+    render layout: 'application'
+  end
+
   private
 
   def month_job_dates

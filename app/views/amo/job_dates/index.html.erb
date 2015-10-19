@@ -1,3 +1,5 @@
+<%= link_to "Print BE schedule", be_schedule_job_dates_path, class: "btn btn-default", target: '_blank' %>
+
 <%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
   <%= date.day %>
   <% if !job_dates.empty? %>

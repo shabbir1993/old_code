@@ -121,3 +121,9 @@ td.select-box {
 .password-fields {
   display: none;
 }
+
+.table-borderless {
+  td, th {
+    border: none !important;
+  }
+}

@@ -5,7 +5,10 @@ Pcms::Application.routes.draw do
       collection { get :new_import }
       collection { post :import }
     end
-    resources :job_dates, only: [:index]
+
+    resources :job_dates, only: [:index] do
+      collection { get :be_schedule }
+    end
   end
 
   get '/amo', to: redirect('/amo/job_dates')

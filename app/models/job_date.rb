@@ -11,7 +11,7 @@ class JobDate < ActiveRecord::Base
 
   belongs_to :job_order
 
-  delegate :part_number, :quantity, :serial, :run_number, to: :job_order
+  delegate :part_number, :quantity, :serial, :run_number, :rush?, :urgent?, to: :job_order
 
   validates :job_order, presence: true
   validates :step, inclusion: { in: STEPS }

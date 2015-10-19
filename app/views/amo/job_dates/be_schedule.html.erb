@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <table class="table table-condensed table-borderless">
+        <tbody>
+          <% @week_grouped_be_dates.each do |week_start, be_dates| %>
+            <tr>
+              <th>
+                <h4>
+                  <%= week_start.strftime('%-m/%-d') %>
+                  -
+                  <%= week_start.end_of_week.strftime('%-m/%-d') %>
+                </h4>
+              </th>
+            </tr>
+            <% be_dates.each do |be_date| %>
+              <tr>
+                <td class="<%= 'text-danger' if be_date.rush? || be_date.urgent? %>">
+                  <%= be_date.part_number %>
+                </td>
+                <td>
+                  <%= be_date.quantity %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
