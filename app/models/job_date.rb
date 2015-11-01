@@ -4,7 +4,6 @@ class JobDate < ActiveRecord::Base
   STEPS = %w(released YR WR fill ET PLZ mask BE QC).freeze
   FE_DISPLAY_STEPS = %w(YR WR fill ET SM).freeze
   BE_DISPLAY_STEPS = %w(mask PLZ BE QC FG).freeze
-  DATE_TYPES = %w(planned actual).freeze
 
   extend SimpleCalendar
   has_calendar attribute: :value
@@ -15,9 +14,8 @@ class JobDate < ActiveRecord::Base
 
   validates :job_order, presence: true
   validates :step, inclusion: { in: STEPS }
-  validates :date_type, inclusion: { in: DATE_TYPES }
   validates :value, presence: true
-  validates_uniqueness_of :job_order_id, scope: [:step, :date_type]
+  validates_uniqueness_of :job_order_id, scope: :step
 
   scope :join_job_orders, -> { joins('INNER JOIN job_orders ON job_orders.id = job_dates.job_order_id') }
 

@@ -11,8 +11,12 @@
   <fieldset>
     <%= f.fields_for "job_dates[#{i}]", job_date do |jdf| %>
       <%= render "shared/date_field", f: jdf, name: :value, label: jdf.object.step %>
+      <div class="col-md-8 col-md-offset-2 checkbox">
+        <label>
+          <%= jdf.check_box :completed %>
+        </label>
+      </div>
       <%= jdf.hidden_field :step %>
-      <%= jdf.hidden_field :date_type %>
     <% end %>
   </fieldset>
 <% end %>

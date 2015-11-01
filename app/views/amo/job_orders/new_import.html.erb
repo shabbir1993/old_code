@@ -5,10 +5,6 @@
       <div class="form-group">
         <%= file_field_tag :job_orders_csv %>
       </div>
-      <div class="form-group">
-        <%= label_tag :date_type, "Planned or Actual?" %>
-        <%= select_tag :date_type, options_for_select(["planned"], "planned"), class: "form-control" %>
-      </div>
       <%= submit_tag "Import", class: "btn btn-primary" %>
     <% end %>
   </div>

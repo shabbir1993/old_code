@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012210724) do
+ActiveRecord::Schema.define(version: 20151101005814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,12 +66,12 @@ ActiveRecord::Schema.define(version: 20151012210724) do
   add_index "films", ["tenant_code"], name: "index_films_on_tenant_code", using: :btree
 
   create_table "job_dates", force: :cascade do |t|
-    t.integer  "job_order_id", null: false
-    t.string   "step",         null: false
-    t.string   "date_type",    null: false
-    t.date     "value",        null: false
+    t.integer  "job_order_id",                 null: false
+    t.string   "step",                         null: false
+    t.date     "value",                        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "completed",    default: false, null: false
   end
 
   add_index "job_dates", ["job_order_id"], name: "index_job_dates_on_job_order_id", using: :btree

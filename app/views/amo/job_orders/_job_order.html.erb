@@ -24,7 +24,7 @@
   </td>
   <% JobDate::STEPS.each do |step| %>
     <td>
-      <% if job_date = job_order.job_dates.find_by(step: step, date_type: "planned") %>
+      <% if job_date = job_order.job_dates.find_by(step: step) %>
         <%= job_date.value %>
       <% end %>
     </td>

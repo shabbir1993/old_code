@@ -10,7 +10,7 @@ class Amo::JobOrdersController < AmoController
   def new
     @job_order = JobOrder.new
     @job_dates = JobDate::STEPS.map do |step|
-      @job_order.job_dates.find_or_initialize_by(step: step, date_type: "planned")
+      @job_order.job_dates.find_or_initialize_by(step: step)
     end
     render layout: false
   end
@@ -29,7 +29,7 @@ class Amo::JobOrdersController < AmoController
     session[:return_to] ||= request.referer
     @job_order = JobOrder.find(params[:id])
     @job_dates = JobDate::STEPS.map do |step|
-      @job_order.job_dates.find_or_initialize_by(step: step, date_type: "planned")
+      @job_order.job_dates.find_or_initialize_by(step: step)
     end
     render layout: false
   end
@@ -60,9 +60,10 @@ class Amo::JobOrdersController < AmoController
     if csv_file.nil? || File.extname(csv_file.original_filename) != ".csv"
       flash[:alert] = "Please choose a csv file."
     else
+      JobOrder.destroy_all
       CSV.foreach(csv_file.path, headers: true) do |row|
         job_order_number = row["job_order_number"]
-        if job_order_number
+        if job_order_number.present?
           job_order = JobOrder.find_or_initialize_by(serial: job_order_number)
           job_order.part_number = row["part_number"] || ""
           job_order.run_number = row["run_number"] || ""
@@ -75,8 +76,10 @@ class Amo::JobOrdersController < AmoController
             date_string = row[step]
             if date_string.present?
               job_date = job_order.job_dates.find_or_initialize_by(step: step)
-
-              job_date.date_type = params[:date_type]
+              if completed_date_match = /\[(.*?)\]/.match(date_string)
+                date_string = completed_date_match[0]
+                job_date.completed = true
+              end
               parsed_date = Date.strptime(date_string.strip, '%m/%d/%Y')
               job_date.value = parsed_date
               job_date.save!
