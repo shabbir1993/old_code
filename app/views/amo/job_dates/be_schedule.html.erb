@@ -15,8 +15,14 @@
             </tr>
             <% be_dates.each do |be_date| %>
               <tr>
-                <td class="<%= 'text-danger' if be_date.rush? || be_date.urgent? %>">
-                  <%= be_date.part_number %>
+                <td>
+                  <% if be_date.rush? || be_date.urgent? %>
+                    <strong>
+                      <%= be_date.part_number %>
+                    </strong>
+                  <% else %>
+                    <%= be_date.part_number %>
+                  <% end %>
                 </td>
                 <td>
                   <%= be_date.quantity %>
