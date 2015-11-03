@@ -1,40 +1,42 @@
 <%= link_to "Print BE schedule", be_schedule_job_dates_path, class: "btn btn-default", target: '_blank' %>
 
-<%= month_calendar events: @job_dates, title: calendar_title, header: calendar_header, previous_link: calendar_previous_link, next_link: calendar_next_link, table: calendar_table, td: calendar_td do |date, job_dates| %>
-  <%= date.day %>
-  <% if !job_dates.empty? %>
-    <% rel_job_dates = job_dates.select { |jd| jd.display_step == "released" } %>
-    <% fe_job_dates = job_dates.select { |jd| JobDate::FE_DISPLAY_STEPS.include?(jd.display_step) } %>
-    <% be_job_dates = job_dates.select { |jd| JobDate::BE_DISPLAY_STEPS.include?(jd.display_step) } %>
+<% @month_grouped_job_dates.each do |k,month_job_dates| %>
+  <%= month_calendar events: month_job_dates, title: calendar_title, header: calendar_header, previous_link: nil, next_link: nil, table: calendar_table, td: calendar_td, start_date: month_job_dates.first.value do |date, job_dates| %>
+    <%= date.day %>
+    <% if !job_dates.empty? %>
+      <% rel_job_dates = job_dates.select { |jd| jd.display_step == "released" } %>
+      <% fe_job_dates = job_dates.select { |jd| JobDate::FE_DISPLAY_STEPS.include?(jd.display_step) } %>
+      <% be_job_dates = job_dates.select { |jd| JobDate::BE_DISPLAY_STEPS.include?(jd.display_step) } %>
 
-    <% if !fe_job_dates.empty? %>
-      <div class="panel panel-default">
-        <ul class="list-group">
-          <% fe_job_dates.sort_by { |jd| JobDate::FE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+      <% if !fe_job_dates.empty? %>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <% fe_job_dates.sort_by { |jd| JobDate::FE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
+              <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-    <% if !be_job_dates.empty? %>
-      <div class="panel panel-default">
-        <ul class="list-group">
-          <% be_job_dates.sort_by { |jd| JobDate::BE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+      <% if !be_job_dates.empty? %>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <% be_job_dates.sort_by { |jd| JobDate::BE_DISPLAY_STEPS.index(jd.display_step) }.each do |job_date| %>
+              <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-    <% if !rel_job_dates.empty? %>
-      <div class="panel panel-default">
-        <ul class="list-group">
-          <% rel_job_dates.each do |job_date| %>
-            <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
-          <% end %>
-        </ul>
-      </div>
+      <% if !rel_job_dates.empty? %>
+        <div class="panel panel-default">
+          <ul class="list-group">
+            <% rel_job_dates.each do |job_date| %>
+              <%= render partial: "job_date", locals: { job_date: job_date, active: found_job_dates.include?(job_date) } %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

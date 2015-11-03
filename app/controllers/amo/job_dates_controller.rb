@@ -2,7 +2,7 @@ class Amo::JobDatesController < AmoController
   http_basic_authenticate_with name: "avionics", password: "PI805"
 
   def index
-    @job_dates = month_job_dates
+    @month_grouped_job_dates = JobDate.order(:value).group_by { |jd| jd.value.beginning_of_month }
   end
 
   def be_schedule
