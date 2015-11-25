@@ -17,14 +17,9 @@ class Amo::JobDatesController < AmoController
 
   private
 
-  def month_job_dates
-    selected_date = params.fetch(:start_date, Time.zone.today).to_date
-    @month_job_dates ||= JobDate.where(value: selected_date.beginning_of_month.beginning_of_week..selected_date.end_of_month.end_of_week)
-  end
-
   def found_job_dates
     if any_searches?
-      @found_job_dates ||= month_job_dates.filter(filtering_params)
+      @found_job_dates ||= JobDate.filter(filtering_params)
     else
       @found_job_dates ||= []
     end
