@@ -48,6 +48,7 @@ Pcms::Application.routes.draw do
     collection do
       get :dimensions_map
       get :bvalue_series
+      get :wep_series
     end
   end
 

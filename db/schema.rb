@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131003721) do
+ActiveRecord::Schema.define(version: 20160131042206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,7 +137,12 @@ ActiveRecord::Schema.define(version: 20160131003721) do
     t.decimal  "temperature"
     t.decimal  "humidity"
     t.decimal  "b_value"
-    t.string   "film_code_bottom"
+    t.decimal  "wep_uv_on"
+    t.decimal  "wep_visible_on"
+    t.decimal  "wep_ir_on"
+    t.decimal  "wep_uv_off"
+    t.decimal  "wep_visible_off"
+    t.decimal  "wep_ir_off"
   end
 
   add_index "master_films", ["defects"], name: "master_films_defects", using: :gin

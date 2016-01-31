@@ -1,0 +1,39 @@
+<script>
+  $(function () {
+    $('#wep_series').highcharts({
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: false
+      },
+      xAxis: {
+        type: 'linear',
+        title: {
+          text: 'Serial'
+        },
+        categories: <%= raw @series.data.map(&:first) %>,
+        labels: {
+          step: 20,
+          rotation: -70
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '% transmission'
+        }
+      },
+      series: [{
+        name: 'Visible ON',
+        data: <%= raw @series.data.map { |row| row[1] } %>,
+        id: 'visible-on'
+      },{
+        name: 'IR OFF',
+        data: <%= raw @series.data.map { |row| row[2] } %>,
+        id: 'ir-off'
+      }]
+    });
+  });
+</script>
+<div id="wep_series" class="chart"></div>

@@ -28,6 +28,11 @@ class MasterFilmsController < ApplicationController
     @series = BvalueSeries.new(filtered_master_films_with_bvalue)
   end
 
+  def wep_series
+    filtered_master_films_with_wep_values = filtered_master_films.where.not(wep_visible_on: nil, wep_ir_off: nil)
+    @series = WepSeries.new(filtered_master_films_with_wep_values)
+  end
+
   def edit
     @master_film = tenant_master_films.find(params[:id])
     render layout: false
@@ -56,7 +61,7 @@ class MasterFilmsController < ApplicationController
   end
 
   def master_film_params
-    params.require(:master_film).permit(:serial, :effective_width, :effective_length, :formula, :mix_mass, :b_value, :temperature, :humidity, :film_code_top, :film_code_bottom, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :micrometer_left, :micrometer_right, :run_speed, :function, :defects).tap do |white_listed|
+    params.require(:master_film).permit(:serial, :effective_width, :effective_length, :formula, :mix_mass, :b_value, :temperature, :humidity, :film_code_top, :machine_id, :thinky_code, :chemist, :operator, :inspector, :note, :micrometer_left, :micrometer_right, :run_speed, :function, :defects, :wep_uv_on, :wep_visible_on, :wep_ir_on, :wep_uv_off, :wep_visible_off, :wep_ir_off).tap do |white_listed|
       white_listed[:defects] = params[:master_film][:defects] || {}
     end
   end
