@@ -15,7 +15,7 @@ jQuery(function() {
     var regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
-    $('.add-fields-link-wrapper').before($(this).data('fields').replace(regexp, time));
+    $(this).closest('.add-fields-link-wrapper').before($(this).data('fields').replace(regexp, time));
     event.preventDefault();
   });
 

@@ -16,6 +16,14 @@
     <%= f.number_field :order_fill_count, placeholder: "Count", class: "form-control", default: true %>
   </div>
 </div>
+<%= f.fields_for :solder_measurements do |smf| %>
+  <%= render 'solder_measurement_fields', f: smf %>
+<% end %>
+<div class="add-fields-link-wrapper form-group">
+  <div class="col-md-offset-2 col-md-8">
+    <%= link_to_add_fields "Add solder measurement", f, :solder_measurements %>
+  </div>
+</div>
 <%= f.text_area :note %>
 <div class="form-group">
   <div class="col-md-offset-2 col-md-8">

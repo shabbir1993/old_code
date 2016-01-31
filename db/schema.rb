@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101005814) do
+ActiveRecord::Schema.define(version: 20160131003721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,12 @@ ActiveRecord::Schema.define(version: 20151101005814) do
   add_index "sales_orders", ["ship_date"], name: "index_sales_orders_on_ship_date", using: :btree
   add_index "sales_orders", ["status"], name: "index_sales_orders_on_status", using: :btree
   add_index "sales_orders", ["tenant_code"], name: "index_sales_orders_on_tenant_code", using: :btree
+
+  create_table "solder_measurements", force: :cascade do |t|
+    t.decimal "height1", default: 0.0, null: false
+    t.decimal "height2", default: 0.0, null: false
+    t.integer "film_id",               null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username",        limit: 255,                 null: false

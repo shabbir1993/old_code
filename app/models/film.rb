@@ -7,8 +7,10 @@ class Film < ActiveRecord::Base
   belongs_to :sales_order
   has_many :film_movements
   has_many :dimensions, -> { order('id ASC') }
+  has_many :solder_measurements, -> { order('id ASC') }
 
   accepts_nested_attributes_for :dimensions, allow_destroy: true, reject_if: proc { |attributes| attributes['width'].blank? || attributes['length'].blank? }
+  accepts_nested_attributes_for :solder_measurements, allow_destroy: true, reject_if: proc { |attributes| attributes['height1'].blank? || attributes['height2'].blank? }
 
   enum phase: [ :lamination, :inspection, :stock, :reserved, :wip, :fg, :nc, :scrap]
 

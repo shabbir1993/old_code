@@ -96,7 +96,9 @@ class FilmsController < ApplicationController
   end
 
   def film_params
-    params.require(:film).permit(:note, :shelf, :sales_order_id, :order_fill_count, dimensions_attributes: [:width, :length, :_destroy, :id])
+    params.require(:film).permit(:note, :shelf, :sales_order_id, :order_fill_count,
+                                 dimensions_attributes: [:width, :length, :_destroy, :id],
+                                 solder_measurements_attributes: [:height1, :height2, :_destroy, :id])
   end
 
   def update_multiple_films_params
