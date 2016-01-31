@@ -21,6 +21,10 @@ class FilmsController < ApplicationController
     @shelves = filtered_films.has_shelf.group_by(&:shelf).sort_by { |k,v| k }
   end
 
+  def solder_series
+    @data = SolderSeries.new(filtered_films)
+  end
+
   def edit
     session[:return_to] ||= request.referer
     @film = tenant_films.find(params[:id])

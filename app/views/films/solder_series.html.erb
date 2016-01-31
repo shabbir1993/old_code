@@ -1,0 +1,51 @@
+<script>
+  $(function () {
+    $('#solder-series').highcharts({
+      chart: {
+        type: 'scatter'
+      },
+      title: {
+        text: false
+      },
+      tooltip:{
+        formatter:function(){
+          return 'serial: <strong>' + this.key + '</strong><br />height: <strong>' + this.y + '</strong>';
+        }
+      },
+      xAxis: {
+        title: {
+          text: 'Serial'
+        },
+        categories: <%= raw @data.categories %>,
+        labels: {
+          step: 20,
+          rotation: -70
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'solder height'
+        },
+        plotLines: [{
+          color: 'red',
+          value: 0.043,
+          width: 2,
+          zIndex: 5,
+          label: {
+            align: 'right',
+            text: 'Max'
+          }
+        }]
+      },
+      series: [{
+        name: 'height 1',
+        data: <%= @data.data[:height1].to_json.html_safe %>,
+      },{
+        name: 'height 2',
+        data: <%= @data.data[:height2].to_json.html_safe %>,
+      }]
+    });
+  });
+</script>
+<div id="solder-series" class="chart"></div>
