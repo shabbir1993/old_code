@@ -1,3 +1,14 @@
+<div class="pull-right">
+  <dl class="dl-horizontal">
+    <dt>mean</dt>
+    <dd><%= number_with_precision(@data.mean, precision: 5) %></dd>
+    <dt>3 sigma</dt>
+    <dd><%= number_with_precision(@data.three_sigma, precision: 5) %></dd>
+    <dt>CpK</dt>
+    <dd><%= number_with_precision(@data.cpk, precision: 5) %></dd>
+  </dl>
+</div>
+
 <script>
   $(function () {
     $('#solder-series').highcharts({
