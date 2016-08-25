@@ -2,7 +2,7 @@ class MasterFilm < ActiveRecord::Base
   include Filterable
   include Tenancy
 
-  DEFECT_TYPES = ['Air Bubble', 'Clear Spot', 'Dent', 'Dust/Dirt', 'Edge Delam', 'Non-Uniform', 'ROM', 'Wavy', 'Clear edges', 'BBL', 'Pickle', 'Short', 'White Spot', 'Spacer Spot', 'Clear Area', 'Dropper Mark', 'Foamy Streak', 'Streak', 'Thick Spot', 'Thick Material', 'Bend', 'Blocker Mark', 'BWS', 'Spacer Cluster', 'Glue Impression', 'Brown line', 'Scratch', 'Clear Peak', 'Material Traces', 'Small Clear', 'Transverse line', 'Knot']
+    DEFECT_TYPES = ['Air Bubble', 'BBL', 'Bend', 'Blocker Mark', 'Brown Line', 'BWS', 'Clear Area', 'Clear Edges', 'Clear Peak', 'Clear Spot', 'Dent', 'Dropper Mark', 'Dust/Dirt', 'Edge Delam', 'Foamy Streak', 'Glue Impression', 'Knot', 'Material Traces', 'Non-Uniform', 'Pickle', 'ROM', 'Scratch', 'Short', 'Small Clear', 'Spacer Spot', 'Streak', 'Thick Spot', 'Thick Material', 'Transverse Line', 'Wavy', 'White Spot']
 
   enum function: [ :production, :test, :transfer ]
 
