@@ -83,6 +83,7 @@ GEM
     minitest (5.6.0)
     multi_json (1.11.0)
     multipart-post (2.0.0)
+    newrelic_rpm (3.16.2.321)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     pg (0.18.1)
@@ -90,7 +91,7 @@ GEM
       activerecord (>= 3.1)
       activesupport (>= 3.1)
       arel
-    puma (2.11.2)
+    puma (3.6.0)
       rack (>= 1.1, < 2.0)
     rack (1.6.0)
     rack-test (0.6.3)
@@ -164,10 +165,11 @@ DEPENDENCIES
   jbuilder (~> 2.2.13)
   jquery-rails (= 4.0.3)
   kaminari (~> 0.16.3)
+  newrelic_rpm
   nokogiri (= 1.6.1)
   pg (~> 0.18.1)
   pg_search (~> 0.7.9)
-  puma (~> 2.11.2)
+  puma (~> 3.6.0)
   rack-timeout
   rails (= 4.2.1)
   rails_12factor
@@ -177,3 +179,9 @@ DEPENDENCIES
   sentry-raven!
   simple_calendar (~> 1.1.10)
   uglifier (~> 2.7.1)
+
+RUBY VERSION
+   ruby 2.2.3p173
+
+BUNDLED WITH
+   1.12.5
