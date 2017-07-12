@@ -130,7 +130,7 @@ class MasterFilm < ActiveRecord::Base
 
   def set_yield
     if yieldable?
-      self.yield = (((((effective_width*effective_length)/144)/mix_mass)/machine.yield_constant)*100)
+      self.yield = 100*tenant.yield_multiplier*(effective_area/mix_mass)/machine.yield_constant
     else
       self.yield = nil
     end
