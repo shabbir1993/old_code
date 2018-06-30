@@ -1,4 +1,4 @@
-class JobOrder < ActiveRecord::Base
+class JobOrder < ApplicationRecord
   include Filterable
 
   has_many :job_dates, autosave: true, dependent: :destroy

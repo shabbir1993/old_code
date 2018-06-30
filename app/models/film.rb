@@ -1,4 +1,4 @@
-class Film < ActiveRecord::Base
+class Film < ApplicationRecord
   require 'rqrcode'
   include Filterable
   include Tenancy

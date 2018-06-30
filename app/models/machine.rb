@@ -1,4 +1,4 @@
-class Machine < ActiveRecord::Base
+class Machine < ApplicationRecord
   include Tenancy
 
   validates :code, presence: true

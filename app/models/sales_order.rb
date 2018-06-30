@@ -1,4 +1,4 @@
-class SalesOrder < ActiveRecord::Base
+class SalesOrder < ApplicationRecord
   include Filterable
   include Tenancy
 

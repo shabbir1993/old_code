@@ -1,4 +1,4 @@
-class Dimension < ActiveRecord::Base
+class Dimension < ApplicationRecord
   belongs_to :film
 
   validates :width, numericality: { greater_than_or_equal_to: 0 }

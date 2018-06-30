@@ -1,4 +1,4 @@
-class JobDate < ActiveRecord::Base
+class JobDate < ApplicationRecord
   include Filterable
 
   STEPS = %w(released YR WR fill ET PLZ mask BE QC).freeze

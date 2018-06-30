@@ -1,4 +1,4 @@
-class SolderMeasurement < ActiveRecord::Base
+class SolderMeasurement < ApplicationRecord
   belongs_to :film
 
   validates :height1, numericality: { greater_than_or_equal_to: 0 }
